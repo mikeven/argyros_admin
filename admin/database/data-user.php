@@ -63,14 +63,14 @@
 		return mysql_insert_id();	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function iniciarSesion( $email, $pass, $dbh ){
+	function login( $email, $pass, $lnk ){
 		session_start();
 		$idresult = 0; 
 		$sql = "select * from users where email = '$email' and password='$pass'";
-		
-		$data = mysql_query ( $sql, $dbh );
-		$data_user = mysql_fetch_array( $data );
-		$nrows = mysql_num_rows( $data );
+		//echo $sql;
+		$data = mysqli_query ( $lnk, $sql );
+		$data_user = mysqli_fetch_array( $data );
+		$nrows = mysqli_num_rows( $data );
 		
 		if( $nrows > 0 ){
 			$_SESSION["login"] = 1;
@@ -115,9 +115,9 @@
 	//Inicio de sesión (asinc)
 	if( isset( $_POST["login"] ) ){
 		include( "bd.php" );
-		$usuario = $_POST["usuario"];
-		$pass = $_POST["passw"];
-		$return = iniciarSesion( $usuario, $pass, $dbh );
+		$usuario = $_POST["email"];
+		$pass = $_POST["password"];
+		$return = login( $usuario, $pass, $link );
 		
 		echo $return;
 	}
@@ -160,7 +160,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	//Inicio de sesión
 	if( isset( $_SESSION["login"] ) ){
-		$idu = $_SESSION["user"]["idUsuario"];
+		$idu = $_SESSION["user"]["idUser"];
 	}else $idu = NULL;
 	
 	/* ----------------------------------------------------------------------------------- */

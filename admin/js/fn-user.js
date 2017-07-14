@@ -10,15 +10,16 @@ function log_in(){
 	var form = $('#loginform');
 	$.ajax({
         type:"POST",
-        url:"bd/data-usuario.php",
+        url:"database/data-user.php",
         data:form.serialize(),
         success: function( response ){
-			if( response == 1 ){
+			$("#response").html( response );
+			/*if( response == 1 ){
 				window.location = "main.php";
 			}
 			else {
 				$("#response").html( error_m );
-			}
+			}*/
         }
     });
 }
@@ -140,26 +141,6 @@ function modificarDatosUsuario( param ){
     });
 }
 /* --------------------------------------------------------- */
-function obtenerFilaTablaCtasBancarias( data ){
-	var fila = "<tr id='cb"+data.id+"'><th>" + data.banco + "</th><th>" + data.desc + "</th>"+
-	"<th><button type='button' class='btn btn-block btn-danger btn-xs ecb' onclick='elimRegCA(" + data.id + ")'>"
-    + "<i class='fa fa-times'></i></button></th></tr>";
-
-    return fila;
-}
-/* --------------------------------------------------------- */
-function actualizarTablaCtasBancarias( a, data ){
-	if( a == '+' ){
-		var item_d = obtenerFilaTablaCtasBancarias( data );
-		$( item_d ).appendTo( "#lbancos_usuario tbody").show("slow");
-		$( '#bdescripcion' ).val(""); $("#banco").val(0);
-	}else{
-		$( "#cb" + data ).hide('slow', function(){ 
-			$( this ).remove(); 
-		});
-	}
-}
-/* --------------------------------------------------------- */
 function agregarCuentaBancaria(){
 	var idu = $( '#idu_sesion' ).val();
 	var vbanco = $( '#banco' ).val();
@@ -203,26 +184,7 @@ function elimRegCA( idc ){
         }
     });
 }
-/* --------------------------------------------------------- */
-function checkCuentaBancaria(){
-	//Validación de formulario de cuenta bancaria previo a su registro
-	var error = 0; 
-	
-	if( $("#bdescripcion").val() == "" ){
-		//Cliente no seleccionado
-		$("#tx-vmsj").html( "Debe indicar una descripción" );
-		$("#bdescripcion").css({'border-color' : '#dd4b39'});	
-		error = 1;
-	}
 
-	if( error == 1 ){
-		//Asignar ventana de mensaje como mensaje de error
-		$("#ventana_mensaje").addClass("modal-danger");
-		$("#tit_vmsj").html( "Error" );
-	}
-	
-	return error;	
-}
 /* --------------------------------------------------------- */
 
 $( document ).ready(function() {

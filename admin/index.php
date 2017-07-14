@@ -5,7 +5,7 @@
      */
     session_start();
     ini_set( 'display_errors', 1 );
-    include( "database/data-usuario.php" );
+    include( "database/data-user.php" );
     checkSession( 'index' );
 ?>
 <!DOCTYPE html>
@@ -49,12 +49,13 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <div align="center"><img src="../images/logo.png"></div>
+                        <div align="center"><img src="images/logo.png"></div>
                         <h3 class="panel-title" align="center">Iniciar sesión</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        <form id="loginform" role="form">
                             <fieldset>
+                                <input name="login" type="hidden" value="1"/>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                 </div>
@@ -67,8 +68,9 @@
                                     </label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="index.html" class="btn btn-lg btn-success btn-block" onClick="log_in()">Login</a>
+                                <a href="#!" class="btn btn-lg btn-success btn-block" onClick="log_in()">Login</a>
                             </fieldset>
+                            <div id="response"></div>
                         </form>
                     </div>
                 </div>
@@ -87,7 +89,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
-    <script src="js/fn-usuario.js"></script>
+    <script src="js/fn-user.js"></script>
 
 </body>
 
