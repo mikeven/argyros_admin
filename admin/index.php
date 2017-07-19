@@ -49,7 +49,7 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <div align="center"><img src="images/logo.png"></div>
+                        <div align="center"><img src="images/alogo.png" width="150px"></div>
                         <h3 class="panel-title" align="center">Iniciar sesión</h3>
                     </div>
                     <div class="panel-body">

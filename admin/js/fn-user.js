@@ -14,12 +14,12 @@ function log_in(){
         data:form.serialize(),
         success: function( response ){
 			$("#response").html( response );
-			/*if( response == 1 ){
+			if( response == 1 ){
 				window.location = "main.php";
 			}
 			else {
 				$("#response").html( error_m );
-			}*/
+			}
         }
     });
 }

@@ -160,7 +160,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	//Inicio de sesión
 	if( isset( $_SESSION["login"] ) ){
-		$idu = $_SESSION["user"]["idUser"];
+		$idu = $_SESSION["user"]["id"];
 	}else $idu = NULL;
 	
 	/* ----------------------------------------------------------------------------------- */
@@ -226,27 +226,6 @@
 		else
 			$res["mje"] = "Error al actualizar contraseña";
 		
-		echo json_encode( $res );	
-	}
-	/* ----------------------------------------------------------------------------------- */
-	//Agregar cuenta bancaria (asinc)
-	if( isset( $_POST["banco"] ) ){
-		
-		include("bd.php");
-		$cuenta["banco"] = $_POST["banco"];
-		$cuenta["desc"] = $_POST["desc"];
-		
-		$idc = guardarCuentaBancaria( $dbh, $cuenta, $_POST["id_u"] );
-		
-		if( ( $idc != 0 ) && ( $idc != "" ) ){
-			$res["exito"] = 1;
-			$res["mje"] = "Cuenta registrada";
-			$cuenta["id"] = $idc;
-			$res["registro"] = $cuenta;
-		}else{
-			$res["exito"] = 0;
-			$res["mje"] = "Error al registrar cuenta";
-		}
 		echo json_encode( $res );	
 	}
 	/* ----------------------------------------------------------------------------------- */
