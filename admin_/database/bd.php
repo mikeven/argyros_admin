@@ -8,9 +8,9 @@
 	$basedatos = "dbargyros";
 	//require_once($_SERVER['DOCUMENT_ROOT'].'/lib/FirePHPCore/fb.php');
 	
-	$link = mysqli_connect ( $servidor, $usuariobd, $passbd ) or die('No se puede conectar a '.$servidor.": ". mysql_error());
-	mysqli_select_db ( $link, $basedatos );
-	mysqli_query( $link, "SET NAMES 'utf8'" );
+	$dbh = mysqli_connect ( $servidor, $usuariobd, $passbd ) or die('No se puede conectar a '.$servidor.": ". mysql_error());
+	mysqli_select_db ( $dbh, $basedatos );
+	mysqli_query( $dbh, "SET NAMES 'utf8'" );
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	function cambiaf_a_mysql( $fecha ){
@@ -18,6 +18,15 @@
 		list( $dia, $mes, $ano ) = explode( "/", $fecha );
     	$lafecha = "$ano-$mes-$dia";
 		return $lafecha; 
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerListaRegistros( $data ){
+		//Devuelve un arreglo con los resultados de un resultset de BD
+		$lista_c = array();
+		while( $c = mysqli_fetch_array( $data ) ){
+			$lista_c[] = $c;	
+		}
+		return $lista_c;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerFechaConFormato($lnk, $fecha, $formato){

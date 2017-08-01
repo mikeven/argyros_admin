@@ -5,7 +5,9 @@
      */
     session_start();
     ini_set( 'display_errors', 1 );
+    include( "database/bd.php" );
     include( "database/data-user.php" );
+    include( "database/data-countries.php" );
     checkSession( '' );
 ?>
 <!DOCTYPE html>
@@ -17,7 +19,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Inicio :: Argyros Admin</title>
+    <title>Países :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,9 +37,20 @@
     <!-- bootstrap-daterangepicker -->
     <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    <!-- Datatables -->
+    <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
   </head>
+
+  <?php
+    $paises = obtenerListaPaises( $dbh );
+  ?>
 
   <body class="nav-md">
     <div class="container body">
@@ -51,7 +64,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Plain Page</h3>
+                <h3>Países</h3>
               </div>
 
               <div class="title_right">
@@ -91,7 +104,10 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                      Add content to the page ...
+                    <p class="text-muted font-13 m-b-30">
+                      
+                    </p>
+                    <?php include("sections/tables/table-countries.php");?>
                   </div>
                 </div>
               </div>
@@ -144,8 +160,25 @@
     <script src="vendors/moment/min/moment.min.js"></script>
     <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
+    <!-- Datatables -->
+    <script src="vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="vendors/jszip/dist/jszip.min.js"></script>
+    <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+
     <!-- Custom Theme Scripts -->
-    <script src="build/js/custom.min.js"></script>
+    <script src="js/custom.js"></script>
 	
   </body>
 </html>

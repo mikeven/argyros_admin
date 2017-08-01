@@ -1,7 +1,7 @@
 <div class="col-md-3 left_col">
 <div class="left_col scroll-view">
 <div class="navbar nav_title" style="border: 0;">
-  <a href="index.html" class="site_title"><img src="images/alogo.png" width="160"></a>
+  <a href="home.php" class="site_title"><img src="images/alogo.png" width="160"></a>
 </div>
 
 <div class="clearfix"></div>
@@ -22,7 +22,7 @@
                 <a href="#!"><i class="fa fa-barcode fa-fw"></i>Productos</a>
             </li>
             <li>
-                <a href="#!">Categorías</a>
+                <a href="categories.php">Categorías</a>
             </li>
             <li>
                 <a href="#!">Subcategorías</a>
@@ -31,7 +31,7 @@
                 <a href="#!">Líneas</a>
             </li>
             <li>
-                <a href="#!">Países</a>
+                <a href="paises.php">Países</a>
             </li>
             <li><a href="#">Propiedades <span class="fa fa-chevron-down"></span></a>
               <ul class="nav child_menu">
