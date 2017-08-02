@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-07-2017 a las 00:05:42
+-- Tiempo de generación: 03-08-2017 a las 00:40:11
 -- Versión del servidor: 5.7.11
 -- Versión de PHP: 5.6.19
 
@@ -629,30 +629,6 @@ CREATE TABLE `images` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `lines`
---
-
-CREATE TABLE `lines` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Volcado de datos para la tabla `lines`
---
-
-INSERT INTO `lines` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Infantil', '2017-07-13 19:25:53', NULL, NULL),
-(2, 'Religioso', '2017-07-13 19:25:53', NULL, NULL),
-(3, 'Masculino', '2017-07-13 19:25:53', NULL, NULL),
-(4, 'Femenino', '2017-07-13 19:25:53', NULL, NULL);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `line_product`
 --
 
@@ -847,6 +823,30 @@ CREATE TABLE `permission_role` (
   `permission_id` int(10) UNSIGNED NOT NULL,
   `role_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `plines`
+--
+
+CREATE TABLE `plines` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `plines`
+--
+
+INSERT INTO `plines` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Infantil', '2017-07-13 19:25:53', NULL, NULL),
+(2, 'Religioso', '2017-07-13 19:25:53', NULL, NULL),
+(3, 'Masculino', '2017-07-13 19:25:53', NULL, NULL),
+(4, 'Femenino', '2017-07-13 19:25:53', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1216,12 +1216,6 @@ ALTER TABLE `images`
   ADD KEY `images_product_detail_id_index` (`product_detail_id`);
 
 --
--- Indices de la tabla `lines`
---
-ALTER TABLE `lines`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `line_product`
 --
 ALTER TABLE `line_product`
@@ -1290,6 +1284,12 @@ ALTER TABLE `permissions`
 ALTER TABLE `permission_role`
   ADD PRIMARY KEY (`permission_id`,`role_id`),
   ADD KEY `permission_role_role_id_foreign` (`role_id`);
+
+--
+-- Indices de la tabla `plines`
+--
+ALTER TABLE `plines`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `products`
@@ -1426,11 +1426,6 @@ ALTER TABLE `countries`
 ALTER TABLE `images`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `lines`
---
-ALTER TABLE `lines`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
 -- AUTO_INCREMENT de la tabla `line_product`
 --
 ALTER TABLE `line_product`
@@ -1470,6 +1465,11 @@ ALTER TABLE `order_details`
 --
 ALTER TABLE `permissions`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `plines`
+--
+ALTER TABLE `plines`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `products`
 --
@@ -1540,7 +1540,7 @@ ALTER TABLE `images`
 -- Filtros para la tabla `line_product`
 --
 ALTER TABLE `line_product`
-  ADD CONSTRAINT `line_product_line_id_foreign` FOREIGN KEY (`line_id`) REFERENCES `lines` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `line_product_line_id_foreign` FOREIGN KEY (`line_id`) REFERENCES `plines` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `line_product_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
