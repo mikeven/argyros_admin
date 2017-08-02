@@ -25,10 +25,10 @@
                 <a href="categories.php">Categorías</a>
             </li>
             <li>
-                <a href="#!">Subcategorías</a>
+                <a href="subcategories.php">Subcategorías</a>
             </li>
             <li>
-                <a href="#!">Líneas</a>
+                <a href="lineas.php">Líneas</a>
             </li>
             <li>
                 <a href="paises.php">Países</a>

@@ -1,35 +1,16 @@
 <?php
 	/* ----------------------------------------------------------------------------------- */
-	/* Argyros - Funciones de países */
+	/* Argyros - Funciones de líneas */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerListaCategorias( $dbh ){
-		//Devuelve la lista de categorías principales de productos
-		$q = "Select id, name from categories order by name ASC";
+	function obtenerListaLineas( $dbh ){
+		//Devuelve la lista de líneas principales de productos
+		$q = "Select id, name from plines order by name ASC";
 		
 		$data = mysqli_query( $dbh, $q );
-		$lista_c = obtenerListaRegistros( $data );
-		return $lista_c;	
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function obtenerListaSubCategorias( $dbh ){
-		//Devuelve la lista de categorías principales de productos
-		$q = "Select s.id, s.name as name, c.name as cname from subcategories s, categories c 
-		where s.category_id = c.id order by name ASC";
-		
-		$data = mysqli_query( $dbh, $q );
-		$lista_c = obtenerListaRegistros( $data );
-		return $lista_c;	
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function obtenerListaSubCategoriasCategoria( $dbh, $idcateg ){
-		//Devuelve la lista de subcategorías de una categoría padre
-		$q = "Select id, name from subcategories where category_id = $idcateg order by name ASC";
-		
-		$data = mysqli_query( $dbh, $q );
-		$lista_c = obtenerListaRegistros( $data );
-		return $lista_c;	
+		$lista_l = obtenerListaRegistros( $data );
+		return $lista_l;	
 	}
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */

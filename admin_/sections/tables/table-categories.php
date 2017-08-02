@@ -2,15 +2,28 @@
   <thead>
     <tr>
       <th>Categoría</th>
-      <th> </th>
+      <th>Subcategorías</th>
+      <th>Editar</th>
+      <th>Borrar</th>
     </tr>
   </thead>
 
   <tbody>
-    <?php foreach ( $categorias as $c ) { ?>
+      <?php 
+        foreach ( $categorias as $c ) { 
+          $subcategories = obtenerListaSubCategoriasCategoria( $dbh, $c["id"] )
+      ?>
       <tr>
         <td><?php echo $c["name"]; ?></td>
-        <td><?php ?></td>
+        <td>
+          <?php 
+            foreach ( $subcategories as $sc ) { 
+              echo "<div>$sc[name]</div>";  
+            }
+          ?>
+        </td>
+        <td><a href="#!">Editar</a></td>
+        <td><a href="#!">Borrar</a></td>
       </tr>
     <?php } ?>
   </tbody>
