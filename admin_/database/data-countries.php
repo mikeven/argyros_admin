@@ -4,13 +4,25 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
+	function ajustarDataManufactura( $lista ){
+		$lista_a = array();
+		foreach ( $lista as $p ) {
+			if( $p["manufacture"] == 0 )
+				$p["is_manufacture"] = "No";
+			if( $p["manufacture"] == 1 )
+				$p["is_manufacture"] = "Sí";
+			$lista_a[] = $p;
+		}
+		return $lista_a;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaPaises( $dbh ){
 		//Devuelve la lista de países registrados
 		$q = "Select id, name, manufacture from countries order by name ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_c = obtenerListaRegistros( $data );
-		return $lista_c;	
+		return ajustarDataManufactura( $lista_c );	
 	}
 
 	/* ----------------------------------------------------------------------------------- */

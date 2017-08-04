@@ -10,7 +10,7 @@
     <?php foreach ( $paises as $p ) { ?>
       <tr>
         <td><?php echo $p["name"]; ?></td>
-        <td><?php echo $p["manufacture"]; ?></td>
+        <td><?php echo $p["is_manufacture"]; ?></td>
       </tr>
     <?php } ?>
   </tbody>

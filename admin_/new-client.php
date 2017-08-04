@@ -1,13 +1,14 @@
 <?php
     /*
-     * Argyros Admin - Inicio
+     * Argyros Admin - Trabajos
      * 
      */
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
-    include( "database/data-categories.php" );
+    include( "fn/common-functions.php" );
+    include( "database/data-clients.php" );
     checkSession( '' );
 ?>
 <!DOCTYPE html>
@@ -19,7 +20,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Categorías :: Argyros Admin</title>
+    <title>Nuevo cliente :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -49,7 +50,8 @@
   </head>
 
   <?php
-    $categorias = obtenerListaCategorias( $dbh );
+    $clientes = obtenerListaClientes( $dbh );
+    $grupos = obtenerListaGruposClientes( $dbh );
   ?>
 
   <body class="nav-md">
@@ -64,7 +66,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Categorías</h3>
+                <h3>Nuevo cliente</h3>
               </div>
 
               <div class="title_right">
@@ -83,47 +85,96 @@
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-4 col-sm-6 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear categoría</h2>
+                    <h2>Datos de nuevo cliente</h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre categoría">
-                        </div>
-                      </div>
-                      
-                      <div class="ln_solid"></div>
-                      <div class="form-group">
-                        <div align="center">
-                          <button type="submit" class="btn btn-success">Guardar</button>
-                        </div>
-                      </div>
-
-                    </form>  
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lista de categorías</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                      <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li> -->
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-categories.php");?>
+                    <div class="row">
+                      
+                      <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" placeholder="Nombre">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Apellido </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" placeholder="Apellido">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Email</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" placeholder="Email">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">País</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" placeholder="País">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Ciudad </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" placeholder="Variable D">
+                            </div>
+                          </div>
+                        </div>
+                        
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Dirección </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" placeholder="Material">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Teléfono </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" placeholder="Material">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="password" class="form-control" placeholder="Material">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Confirmar contraseña </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="password" class="form-control" placeholder="Material">
+                            </div>
+                          </div>
+                            
+                        </div>
+                        
+                      
+                      </form>
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div align="center">
+                          <button type="submit" class="btn btn-success">Crear</button>
+                        </div>
+                      </div>  
+                    
+                    </div>
+
                   </div>
                 </div>
               </div>

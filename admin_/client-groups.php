@@ -7,7 +7,7 @@
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
-    include( "database/data-lineas.php" );
+    include( "database/data-clients.php" );
     checkSession( '' );
 ?>
 <!DOCTYPE html>
@@ -19,7 +19,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Categorías :: Argyros Admin</title>
+    <title>Tipo de clientes :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -49,7 +49,8 @@
   </head>
 
   <?php
-    $lineas = obtenerListaLineas( $dbh );
+    $clientes = obtenerListaClientes( $dbh );
+    $grupos = obtenerListaGruposClientes( $dbh );
   ?>
 
   <body class="nav-md">
@@ -64,7 +65,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Líneas</h3>
+                <h3>Tipos de clientes</h3>
               </div>
 
               <div class="title_right">
@@ -86,7 +87,7 @@
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear Línea</h2>
+                    <h2>Crear grupo</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
@@ -97,20 +98,43 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre categoría">
+                          <input type="text" class="form-control" placeholder="Nombre grupo">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Descripción </label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable A </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <textarea class="form-control" rows="3" placeholder="Descripción de la línea"></textarea>
+                          <input type="text" class="form-control" placeholder="Variable A">
                         </div>
                       </div>
-                      
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable B </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" placeholder="Variable B">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable C </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" placeholder="Variable C">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable D </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" placeholder="Variable D">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" placeholder="Material">
+                        </div>
+                      </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div align="center">
-                          <button type="submit" class="btn btn-success">Guardar</button>
+                          <button type="submit" class="btn btn-success">Crear</button>
                         </div>
                       </div>
 
@@ -121,7 +145,7 @@
               <div class="col-md-8 col-sm-5 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Plain Page</h2>
+                    <h2>Lista de subcategorías</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
@@ -129,7 +153,7 @@
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-lineas.php");?>
+                    <?php include("sections/tables/table-group-clients.php");?>
                   </div>
                 </div>
               </div>
