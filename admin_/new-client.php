@@ -9,6 +9,7 @@
     include( "database/data-user.php" );
     include( "fn/common-functions.php" );
     include( "database/data-clients.php" );
+    include( "database/data-countries.php" );
     checkSession( '' );
 ?>
 <!DOCTYPE html>
@@ -24,6 +25,7 @@
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
@@ -52,6 +54,7 @@
   <?php
     $clientes = obtenerListaClientes( $dbh );
     $grupos = obtenerListaGruposClientes( $dbh );
+    $paises = obtenerListaPaises( $dbh );
   ?>
 
   <body class="nav-md">
@@ -120,9 +123,14 @@
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">País</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Países </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" placeholder="País">
+                              <select class="form-control">
+                                <option disabled>Seleccione</option>
+                                <?php foreach ( $paises as $p ) { ?>
+                                  <option><?php echo $p["name"] ?></option>
+                                <?php } ?>
+                              </select>
                             </div>
                           </div>
                           <div class="form-group">
@@ -169,7 +177,7 @@
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div align="center">
-                          <button type="submit" class="btn btn-success">Crear</button>
+                          <button type="submit" class="btn btn-success">Registrar</button>
                         </div>
                       </div>  
                     
@@ -193,6 +201,7 @@
     <script src="vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
     <!-- FastClick -->
     <script src="vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->

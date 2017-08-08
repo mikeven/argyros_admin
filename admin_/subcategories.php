@@ -23,6 +23,7 @@
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
@@ -104,7 +105,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Categorías </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="form-control">
+                          <select class="form-control selectpicker">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
                               <option><?php echo $c["name"] ?></option>
@@ -153,6 +154,7 @@
     <script src="vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
     <!-- FastClick -->
     <script src="vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->

@@ -10,10 +10,10 @@
 
   <tbody>
     <?php 
-      foreach ( $colors as $c ) { 
+      foreach ( $lineas as $l ) { 
     ?>
     <tr>
-      <td><?php echo $c["name"]; ?></td>
+      <td><?php echo $l["name"]; ?></td>
       <td> </td>
       <td><a href="#!">Editar</a></td>
       <td><a href="#!">Borrar</a></td>

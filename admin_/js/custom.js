@@ -5050,6 +5050,10 @@ if (typeof NProgress != 'undefined') {
 	   
 	   
 	$(document).ready(function() {
+
+		$('.selectpicker').selectpicker({
+			noneSelectedText: "Seleccione"
+		});
 				
 		init_sparklines();
 		init_flot_chart();
@@ -5085,6 +5089,9 @@ if (typeof NProgress != 'undefined') {
 		init_CustomNotification();
 		init_autosize();
 		init_autocomplete();
+
+
+
 				
 	});	
 	

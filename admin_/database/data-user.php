@@ -117,7 +117,7 @@
 		include( "bd.php" );
 		$usuario = $_POST["email"];
 		$pass = $_POST["password"];
-		$return = login( $usuario, $pass, $link );
+		$return = login( $usuario, $pass, $dbh );
 		
 		echo $return;
 	}

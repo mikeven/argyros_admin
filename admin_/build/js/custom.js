@@ -49,8 +49,6 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
     $NAV_MENU = $('.nav_menu'),
     $FOOTER = $('footer');
 
-	
-	
 // Sidebar
 function init_sidebar() {
 // TODO: This is some kind of easy fix, maybe we can improve this
@@ -5028,7 +5026,7 @@ if (typeof NProgress != 'undefined') {
 	   
 	   
 	$(document).ready(function() {
-				
+
 		init_sparklines();
 		init_flot_chart();
 		init_sidebar();
