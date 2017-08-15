@@ -13,12 +13,13 @@ function log_in(){
         url:"database/data-user.php",
         data:form.serialize(),
         success: function( response ){
+        	alert(response);
 			$("#response").html( response );
 			if( response == 1 ){
 				window.location = "home.php";
 			}
 			else {
-				$("#response").html( error_m );
+				//$("#response").html( error_m );
 			}
         }
     });
@@ -188,12 +189,11 @@ function elimRegCA( idc ){
 /* --------------------------------------------------------- */
 
 $( document ).ready(function() {
-    $("#bt_ag_ctab").on( "click", function(){
-		$("#closeModal").click();
-		if( checkCuentaBancaria() == 0 )
-			agregarCuentaBancaria();
-		else
-			$("#enl_vmsj").click();
+    $("#seltprecio").on( "change", function(){
+		$(".oprecio").hide("slow");
+		if( $(this).val() == "g" ) $("#valor_gramo").fadeIn('slow');
+		if( $(this).val() == "p" ) $("#valor_pieza").fadeIn('slow');
+		if( $(this).val() == "mo" ) $("#valor_mo").fadeIn('slow');
     });
 });
 

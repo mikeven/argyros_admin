@@ -1,8 +1,8 @@
 <?php
-    /*
-     * Argyros Admin - Detalle del producto
-     * 
-     */
+  /*
+   * Argyros Admin - Detalle del producto
+   * 
+   */
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
@@ -21,7 +21,6 @@
     include( "fn/fn-prices.php" );
 
     checkSession( '' );
-
     
 ?>
 <!DOCTYPE html>
@@ -71,6 +70,7 @@
       min-height: 353px;
       border: 1px solid #2a3f54;
     }
+    .oprecio{display: none;}
   </style>
 
   <?php
@@ -182,11 +182,33 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo de precio </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="tprecio" class="form-control selectpicker">
+                                  <select id="seltprecio" name="tprecio" class="form-control selectpicker">
+                                    <option value="">Seleccione</option>
                                     <?php foreach ( $tprecios as $tp ) { ?>
-                                      <option><?php echo $tp ?></option>
+                                      <option value="<?php echo $tp["tipo"] ?>"><?php echo $tp["etiqueta"]; ?></option>
                                     <?php } ?>
                                   </select>
+                                </div>
+                              </div>
+
+                              <div id="valor_pieza" class="form-group oprecio">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de la pieza </label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                  <input name="valor_pieza" type="text" class="form-control" placeholder="Valor de pieza">
+                                </div>
+                              </div>
+
+                              <div id="valor_mo" class="form-group oprecio">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de mano de obra </label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                  <input name="valor_mano_obra" type="text" class="form-control" placeholder="Valor Mano de obra">
+                                </div>
+                              </div>
+
+                              <div id="valor_gramo" class="form-group oprecio">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor del gramo </label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                  <input name="valor_gramo" type="text" class="form-control" placeholder="Valor del gramo">
                                 </div>
                               </div>
 
@@ -302,6 +324,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-product.js"></script>
     
 	
   </body>

@@ -19,7 +19,7 @@
       <li><a><i class="fa fa-barcode fa-fw"></i>Productos <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
             <li>
-                <a href="#!"><i class="fa fa-barcode fa-fw"></i>Productos</a>
+                <a href="#!">Productos</a>
             </li>
             <li>
                 <a href="categories.php">Categorías</a>
@@ -57,12 +57,12 @@
             </li>
         </ul>
       </li>
-      <li><a href="forms.html"><i class="fa fa-file-text-o fa-fw"></i>Pedidos</a>
+      <li><a href="#!"><i class="fa fa-file-text-o fa-fw"></i>Pedidos</a>
       </li>
       <li><a><i class="fa fa-users fa-fw"></i>Usuarios <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
             <li>
-                <a href="#">Roles<span class="fa arrow"></span></a>
+                <a href="#!">Roles<span class="fa arrow"></span></a>
             </li>
             <li>
                 <a href="users.php">Todos</a>

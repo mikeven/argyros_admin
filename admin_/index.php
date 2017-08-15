@@ -65,9 +65,8 @@
 
                 <div class="clearfix"></div>
                 <br />
-
                 <div>
-                  <h1><i class="fa fa-paw"></i> Argyros Admin</h1>
+                  <h1><img dt> Argyros Admin</h1>
                   <p>©2017 Administrador de contenido</p>
                 </div>
                 <div id="response"></div>

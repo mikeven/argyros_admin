@@ -25,6 +25,7 @@
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
@@ -100,14 +101,14 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre categoría">
+                          <input type="text" class="form-control" placeholder="Nombre de baño">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Baños </label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="form-control">
-                            <option disabled>Seleccione</option>
+                          <select name="material" class="form-control selectpicker">
+                            <option selected> </option>
                             <?php foreach ( $materiales as $m ) { ?>
                               <option><?php echo $m["name"] ?></option>
                             <?php } ?>
@@ -155,6 +156,7 @@
     <script src="vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
     <!-- FastClick -->
     <script src="vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->

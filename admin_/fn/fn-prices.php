@@ -5,9 +5,9 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerOpcionesPrecios(){
 		$tipo_precios = array(
-			"Por pieza",
-			"Por gramo",
-			"Mano de obra"
+			array("tipo" => "p",  "etiqueta" => "Por pieza"),
+			array("tipo" => "g",  "etiqueta" => "Por gramo"),
+			array("tipo" => "mo", "etiqueta" => "Mano de obra")
 		);
 		return $tipo_precios;
 	}

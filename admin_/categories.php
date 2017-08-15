@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Inicio
+     * Argyros Admin - Categorías
      * 
      */
     session_start();
@@ -44,6 +44,11 @@
     <link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
@@ -89,16 +94,16 @@
                   <div class="x_title">
                     <h2>Crear categoría</h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                      
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="frm_ncategoria" data-parsley-validate class="form-horizontal form-label-left">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre categoría">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre categoría">
                         </div>
                       </div>
                       
@@ -106,9 +111,14 @@
                       <div class="form-group">
                         <div align="center">
                           <button type="submit" class="btn btn-success">Guardar</button>
+                          <button type="button" class="btn btn-default source" onclick="new PNotify({
+                                  title: 'Regular Success',
+                                  text: 'That thing that you were trying to do worked!',
+                                  type: 'success',
+                                  styling: 'bootstrap3'
+                              });">Success</button>
                         </div>
                       </div>
-
                     </form>  
                   </div>
                 </div>
@@ -194,6 +204,11 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
