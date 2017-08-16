@@ -112,7 +112,7 @@
                   <div class="x_content">
                     
                     <form id="frm_nproduct" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="new-product.php?p=1" method="post">
+                      action="product-detail.php?p=1" method="post">
                         <p class="text-muted font-13 m-b-30"> </p>
                         
                         <div class="row">
@@ -122,22 +122,22 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Código </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input type="text" class="form-control" placeholder="Código de producto">
+                                  <input type="text" class="form-control" name="codigo" placeholder="Código de producto">
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input type="text" class="form-control" placeholder="Nombre de producto">
+                                  <input type="text" class="form-control" name="nombre" placeholder="Nombre de producto">
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">País de origen </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select class="form-control selectpicker">
+                                  <select name="pais" class="form-control selectpicker">
                                     <option disabled>Seleccione</option>
                                     <?php foreach ( $paises as $p ) { ?>
-                                      <option><?php echo $p["name"] ?></option>
+                                      <option value="<?php echo $p["code"] ?>"><?php echo $p["name"] ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>
@@ -146,9 +146,9 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Línea </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="linea" class="form-control selectpicker" multiple>
+                                  <select name="linea[]" class="form-control selectpicker" multiple>
                                     <?php foreach ( $lineas as $l ) { ?>
-                                      <option><?php echo $l["name"] ?></option>
+                                      <option value="<?php echo $l["id"] ?>"><?php echo $l["name"] ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>
@@ -157,7 +157,8 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Descripción </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <textarea class="form-control" rows="3" placeholder="Texto descriptivo de producto"></textarea>
+                                  <textarea class="form-control" rows="3" name="descripcion" 
+                                  placeholder="Texto descriptivo de producto"></textarea>
                                 </div>
                               </div>
                               
@@ -168,10 +169,10 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoría </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select class="form-control selectpicker">
+                                  <select name="categoria" class="form-control selectpicker">
                                     <option disabled>Seleccione</option>
                                     <?php foreach ( $categorias as $c ) { ?>
-                                      <option><?php echo $c["name"] ?></option>
+                                      <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>
@@ -180,20 +181,20 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select class="form-control selectpicker">
+                                  <select name="subcategoria" class="form-control selectpicker">
                                     <?php foreach ( $categorias as $c ) { ?>
-                                      <option><?php echo $c["name"] ?></option>
+                                      <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Materiales </label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select class="form-control selectpicker">
+                                  <select name="material" class="form-control selectpicker">
                                     <?php foreach ( $materiales as $m ) { ?>
-                                      <option><?php echo $m["name"] ?></option>
+                                      <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>
@@ -202,9 +203,9 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Trabajo </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="trabajo" class="form-control selectpicker" multiple>
+                                  <select name="trabajo[]" class="form-control selectpicker" multiple>
                                     <?php foreach ( $trabajos as $t ) { ?>
-                                      <option><?php echo $t["name"] ?></option>
+                                      <option value="<?php echo $t["id"] ?>"><?php echo $t["name"] ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>
@@ -216,8 +217,9 @@
                         <div class="ln_solid"></div>
                         <div class="form-group">
                           <div align="center">
-                            <button type="submit" class="btn btn-success">Registrar</button>
+                            <button id="bot_guardar_nuevo_producto" type="button" class="btn btn-success">Guardar</button>
                           </div>
+                          <div id="ghres"></div>
                         </div>
                     
                     </form>
@@ -297,6 +299,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-product.js"></script>
 	
   </body>
 </html>

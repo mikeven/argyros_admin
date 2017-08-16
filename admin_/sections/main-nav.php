@@ -19,7 +19,7 @@
       <li><a><i class="fa fa-barcode fa-fw"></i>Productos <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
             <li>
-                <a href="#!">Productos</a>
+                <a href="products.php">Productos</a>
             </li>
             <li>
                 <a href="categories.php">Categorías</a>

@@ -19,8 +19,11 @@
     include( "database/data-categories.php" );
 
     include( "fn/fn-prices.php" );
-
     checkSession( '' );
+    
+    if( isset( $_GET["p"] ) ){
+        $idp = $_GET["p"];    
+    }
     
 ?>
 <!DOCTYPE html>
@@ -83,6 +86,8 @@
     $categorias = obtenerListaCategorias( $dbh );       // database/data-categories.php
     $paises = obtenerListaPaisesProductores( $dbh );    // database/data-countries.php
     $tprecios = obtenerOpcionesPrecios();               // fn/fn-prices.php
+
+    $producto = obtenerProductoPorId( $dbh, $idp );
   ?>
 
   <body class="nav-md">
@@ -137,13 +142,14 @@
                             <div class="col-md-6 col-sm-6 col-xs-12">
                               
                               <div class="form-group">
-                                <label class="control-label">Producto: </label> Nombre de producto
+                                <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
                               </div>
                               <div class="form-group">
-                                <label class="control-label">Categoría: </label> Categoría - Subcategoría
+                                <label class="control-label">Categoría: </label> 
+                                <?php echo $producto["categoria"]." > ".$producto["subcategoria"]; ?>
                               </div>
                               <div class="form-group">
-                                <label class="control-label">Material: </label> Material
+                                <label class="control-label">Material: </label> <?php echo $producto["material"]; ?>
                               </div>
                               <div class="ln_solid"></div>
                               <div class="form-group">

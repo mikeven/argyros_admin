@@ -27,7 +27,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaPaisesProductores( $dbh ){
 		//Devuelve la lista de países registrados identificados como productores
-		$q = "Select id, name, manufacture from countries where manufacture = 1 order by name ASC";
+		$q = "Select id, code, name, manufacture from countries where manufacture = 1 order by name ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_p = obtenerListaRegistros( $data );
