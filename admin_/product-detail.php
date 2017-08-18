@@ -73,21 +73,24 @@
       min-height: 353px;
       border: 1px solid #2a3f54;
     }
+    #talla_peso{
+      padding: 8px 0;
+      height: auto;
+      border: 1px solid #ccc;
+    }
     .oprecio{display: none;}
   </style>
 
   <?php
-    $banos = obtenerListaBanos( $dbh );                 // database/data-treatments.php
-    $lineas = obtenerListaLineas( $dbh );               // database/data-lines.php
-    $tallas = obtenerListaTallas( $dbh );               // database/data-sizes.php
-    $colores = obtenerListaColores( $dbh );             // database/data-colors.php
-    $trabajos = obtenerListaTrabajos( $dbh );           // database/data-makings.php
-    $materiales = obtenerListaMateriales( $dbh );       // database/data-materials.php
-    $categorias = obtenerListaCategorias( $dbh );       // database/data-categories.php
-    $paises = obtenerListaPaisesProductores( $dbh );    // database/data-countries.php
-    $tprecios = obtenerOpcionesPrecios();               // fn/fn-prices.php
-
+    $banos = obtenerListaBanos( $dbh );                               // database/data-treatments.php
+    $lineas = obtenerListaLineas( $dbh );                             // database/data-lines.php
+    $colores = obtenerListaColores( $dbh );                           // database/data-colors.php
+    $trabajos = obtenerListaTrabajos( $dbh );                         // database/data-makings.php
+    $tprecios = obtenerOpcionesPrecios();                             // fn/fn-prices.php
+    
     $producto = obtenerProductoPorId( $dbh, $idp );
+    $tallas = obtenerListaTallasCategoria( $dbh, $producto["cid"] );  // database/data-sizes.php
+    
   ?>
 
   <body class="nav-md">
@@ -133,7 +136,7 @@
                   </div>
                   <div class="x_content">
                     
-                    <form id="frm_nproduct" data-parsley-validate class="form-horizontal form-label-left" 
+                    <form id="frm_ndetproduct" data-parsley-validate class="form-horizontal form-label-left" 
                       action="new-product.php?p=1" method="post">
                         <p class="text-muted font-13 m-b-30"> </p>
                         
@@ -142,7 +145,9 @@
                             <div class="col-md-6 col-sm-6 col-xs-12">
                               
                               <div class="form-group">
+                                <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
                                 <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
+                                <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
                               </div>
                               <div class="form-group">
                                 <label class="control-label">Categoría: </label> 
@@ -157,7 +162,7 @@
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                   <select name="bano" class="form-control selectpicker">
                                     <?php foreach ( $banos as $b ) { ?>
-                                      <option><?php echo $b["name"] ?></option>
+                                      <option value="<?php echo $b["id"] ?>"><?php echo $b["name"] ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>
@@ -168,18 +173,7 @@
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                   <select name="color" class="form-control selectpicker">
                                     <?php foreach ( $colores as $c ) { ?>
-                                      <option><?php echo $c["name"] ?></option>
-                                    <?php } ?>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="talla" class="form-control selectpicker">
-                                    <?php foreach ( $tallas as $t ) { ?>
-                                      <option><?php echo $t["name"] ?></option>
+                                      <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>
@@ -191,7 +185,9 @@
                                   <select id="seltprecio" name="tprecio" class="form-control selectpicker">
                                     <option value="">Seleccione</option>
                                     <?php foreach ( $tprecios as $tp ) { ?>
-                                      <option value="<?php echo $tp["tipo"] ?>"><?php echo $tp["etiqueta"]; ?></option>
+                                      <option value="<?php echo $tp["tipo"] ?>">
+                                        <?php echo $tp["etiqueta"]; ?>
+                                      </option>
                                     <?php } ?>
                                   </select>
                                 </div>
@@ -200,33 +196,55 @@
                               <div id="valor_pieza" class="form-group oprecio">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de la pieza </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input name="valor_pieza" type="text" class="form-control" placeholder="Valor de pieza">
+                                  <input name="valor_pieza" type="text" class="form-control" placeholder="Valor de pieza" 
+                                  value="0.00">
                                 </div>
                               </div>
 
                               <div id="valor_mo" class="form-group oprecio">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de mano de obra </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input name="valor_mano_obra" type="text" class="form-control" placeholder="Valor Mano de obra">
+                                  <input name="valor_mano_obra" type="text" class="form-control" placeholder="Valor Mano de obra" 
+                                  value="0.00">
                                 </div>
                               </div>
 
                               <div id="valor_gramo" class="form-group oprecio">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor del gramo </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input name="valor_gramo" type="text" class="form-control" placeholder="Valor del gramo">
+                                  <input name="valor_gramo" type="text" class="form-control" placeholder="Valor del gramo" 
+                                  value="0.00">
+                                </div>
+                              </div>
+                              
+                              <div class="ln_solid"></div>
+
+                              <div class="form-group">
+                                
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla - Peso </label>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                  <button type="button" class="btn btn-primary" data-toggle="modal" 
+                                    data-target="#size-table">Seleccionar</button>
+                                  <?php include( "sections/modals/sizes-table.php" );?>
+                                </div>
+                                <div id="tallas_seleccion" class="col-md-5 col-sm-5 col-xs-12">
+                                  
                                 </div>
                               </div>
 
+                              <div class="ln_solid"></div>
+
                               <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Peso en gramos </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input type="text" class="form-control" placeholder="peso (gr: 00.00)">
+                                <div align="center">
+                                  <button id="bot_guardar_det_producto" type="button" class="btn btn-success">Guardar</button>
                                 </div>
+                                <div id="ghres"></div>
                               </div>
                               
                             </div>
 
+
+                            <!-- Columna derecha -->
                             <div class="col-md-6 col-sm-6 col-xs-12">
                               
                               <div id="img_uploader" class="dropzone">

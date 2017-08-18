@@ -5,7 +5,6 @@
 */
 /* --------------------------------------------------------- */	
 /* --------------------------------------------------------- */
-/* --------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 function obtenerEnlaceDocumentoCreado( documento, frt ){
 	//var frm = dataUrlDoc( documento, tipo );
@@ -70,15 +69,16 @@ function marcarCampo( campo, error ){
 		campo.css({'border-color' : '#ccc'});
 }
 /* ----------------------------------------------------------------------------------- */
-function enviarRespuesta( res, modo, idhtml ){
+function enviarRespuesta( res, modo, url ){
 	//Manejo de respuesta de acuerdo al modo indicado
 	if( modo == "ventana" ){
 		ventanaMensaje( res.exito, res.mje );
 	}
+	
 	if( modo == "redireccion" ){
-		var url = "ficha_articulo.php?a=" + res.articulo.id;
 		window.location.href = url;
 	}
+
 	if( modo == "print" ){
 		alertaMensaje( res.exito, res.mje );
 	}
@@ -102,10 +102,10 @@ function arrayMjes( modo ){
 	//
 	var amensajes = [], modalmje = [], alertmje = [];
 	
-	modalmje["idhtml"] = "#ventana_mensaje";
-	modalmje["titulo"] = "#tit_vmsj";
-	modalmje["mensaje"] = "#tx-vmsj";
-	modalmje["clase"] = "modal-danger";
+	modalmje["idhtml"] = "#win-resp-msg";
+	modalmje["titulo"] = "#titulo_msg";
+	modalmje["mensaje"] = "#texto_msg";
+	
 	alertmje["idhtml"] = "#resalerta";
 	alertmje["titulo"] = "#tresalerta";
 	alertmje["mensaje"] = "#txmjealerta";

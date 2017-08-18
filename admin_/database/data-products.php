@@ -19,7 +19,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerProductoPorId( $dbh, $idp ){
 		//Devuelve los datos de un producto dado su id
-		$q = "select p.id, p.code as codigo, p.name as nombre, p.description as descripcion, 
+		$q = "select p.id, p.code as codigo, p.name as nombre, p.description as descripcion, p.category_id as cid,  
 		p.is_visible as visible, co.name as pais, ca.name as categoria, sc.name as subcategoria, 
 		m.name as material FROM products p, categories ca, subcategories sc, countries co, materials m 
 		where p.category_id = ca.id and p.subcategory_id = sc.id and p.material_id = m.id 
@@ -64,6 +64,17 @@
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function agregarDetalleProducto( $dbh, $detalle ){
+		//Guarda el registro de detalle de un producto
+		$q = "insert into product_details ( product_id, color_id, treatment_id, price_type, piece_price_value, 
+		manufacture_value, weight_price_value, created_at ) values ( $detalle[idproducto], $detalle[color], 
+		$detalle[bano], '$detalle[tprecio]', $detalle[valor_pieza], $detalle[valor_mano_obra], $detalle[valor_gramo], NOW())";
+		
+		//echo $q;
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_insert_id( $dbh );
+	}
 	
 	/* ----------------------------------------------------------------------------------- */
 	function registrarAsociaciones( $dbh, $producto ){
@@ -85,7 +96,7 @@
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
 	
-	//
+	//Registro de nuevo producto
 	if( isset( $_POST["form_np"] ) ){
 		include( "bd.php" );	
 		parse_str( $_POST["form_np"], $producto );
@@ -94,10 +105,28 @@
 		$idp = agregarProducto( $dbh, $producto );
 		$producto["id"] = $idp;
 		registrarAsociaciones( $dbh, $producto );
-		echo $idp;
-	}
-	else {
 
+		if( ( $idp != 0 ) && ( $idp != "" ) ){
+			$res["exito"] = 1;
+			$res["mje"] = "Registro exitoso";
+			$res["reg"] = $producto;
+		}else{
+			$res["exito"] = 0;
+			$res["mje"] = "Error al registrar producto";
+			$res["reg"] = NULL;
+		}
+
+		echo json_encode( $res );
+	}
+	
+	//Registro de nuevo detalle de producto
+	if( isset( $_POST["form_ndetp"] ) ){
+		include( "bd.php" );	
+		parse_str( $_POST["form_ndetp"], $detalle );
+
+		//print_r( $detalle );
+		$idd = agregarDetalleProducto( $dbh, $detalle );
+		echo $idd;
 	}
 	/* ----------------------------------------------------------------------------------- */
 

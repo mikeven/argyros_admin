@@ -15,13 +15,15 @@
   </thead>
   <tbody>
       <?php 
-        foreach ( $productos as $p ) { 
+        foreach ( $productos as $p ) {
+          $lnk_p = "product-data.php?p=$p[id]";
+          //$lnk_d = "product-detail.php?p=$p[id]"; 
       ?>
       <tr>
         <td><a href="#!">Ocultar</a></td>
         <td><?php echo $p["id"]; ?></td>
         <td><?php echo $p["codigo"]; ?></td>
-        <td><?php echo $p["nombre"]; ?></td>
+        <td><a href="<?php echo $lnk_p; ?>"><?php echo $p["nombre"]; ?></a></td>
         <td><?php echo $p["descripcion"]; ?></td>
         <td><?php echo $p["categoria"]; ?></td>
         <td><?php echo $p["subcategoria"]; ?></td>

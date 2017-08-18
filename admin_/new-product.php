@@ -84,7 +84,7 @@
                 <h3>Nuevo producto</h3>
               </div>
 
-              <div class="title_right">
+              <!--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -93,7 +93,7 @@
                     </span>
                   </div>
                 </div>
-              </div>
+              </div> -->
             
             </div>
 
@@ -169,7 +169,7 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoría </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="categoria" class="form-control selectpicker">
+                                  <select id="selcateg" name="categoria" class="form-control selectpicker">
                                     <option disabled>Seleccione</option>
                                     <?php foreach ( $categorias as $c ) { ?>
                                       <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
@@ -181,10 +181,8 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="subcategoria" class="form-control selectpicker">
-                                    <?php foreach ( $categorias as $c ) { ?>
-                                      <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
-                                    <?php } ?>
+                                  <select id="val_subc" name="subcategoria" class="form-control">
+                                    
                                   </select>
                                 </div>
                               </div>
@@ -220,6 +218,9 @@
                             <button id="bot_guardar_nuevo_producto" type="button" class="btn btn-success">Guardar</button>
                           </div>
                           <div id="ghres"></div>
+                          <button type="button" class="btn btn-primary" data-toggle="modal" 
+                          data-target=".bs-example-modal-sm">Respuesta</button>
+                          <?php include( "sections/modals/response_message.php" );?>
                         </div>
                     
                     </form>
@@ -299,6 +300,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-ui.js"></script>
     <script src="js/fn-product.js"></script>
 	
   </body>
