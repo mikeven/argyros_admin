@@ -49,6 +49,7 @@
 
     <!-- dropzone -->
     <link href="vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+    <link href="css/fileinput.css" rel="stylesheet">
 	
     <!-- bootstrap-progressbar -->
     <link href="vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
@@ -90,6 +91,7 @@
     
     $producto = obtenerProductoPorId( $dbh, $idp );
     $tallas = obtenerListaTallasCategoria( $dbh, $producto["cid"] );  // database/data-sizes.php
+    $t0 = obtenerValoresTallaCero( $dbh );
     
   ?>
 
@@ -130,134 +132,140 @@
                   <div class="x_title">
                     <h2>Detalle de producto</h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li> -->
+                     <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li> -->
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     
-                    <form id="frm_ndetproduct" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="new-product.php?p=1" method="post">
+                    
                         <p class="text-muted font-13 m-b-30"> </p>
                         
                         <div class="row">
                           
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                              
-                              <div class="form-group">
-                                <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
-                                <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
-                                <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label">Categoría: </label> 
-                                <?php echo $producto["categoria"]." > ".$producto["subcategoria"]; ?>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label">Material: </label> <?php echo $producto["material"]; ?>
-                              </div>
-                              <div class="ln_solid"></div>
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Baño </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="bano" class="form-control selectpicker">
-                                    <?php foreach ( $banos as $b ) { ?>
-                                      <option value="<?php echo $b["id"] ?>"><?php echo $b["name"] ?></option>
-                                    <?php } ?>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Color </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="color" class="form-control selectpicker">
-                                    <?php foreach ( $colores as $c ) { ?>
-                                      <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
-                                    <?php } ?>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo de precio </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="seltprecio" name="tprecio" class="form-control selectpicker">
-                                    <option value="">Seleccione</option>
-                                    <?php foreach ( $tprecios as $tp ) { ?>
-                                      <option value="<?php echo $tp["tipo"] ?>">
-                                        <?php echo $tp["etiqueta"]; ?>
-                                      </option>
-                                    <?php } ?>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div id="valor_pieza" class="form-group oprecio">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de la pieza </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input name="valor_pieza" type="text" class="form-control" placeholder="Valor de pieza" 
-                                  value="0.00">
-                                </div>
-                              </div>
-
-                              <div id="valor_mo" class="form-group oprecio">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de mano de obra </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input name="valor_mano_obra" type="text" class="form-control" placeholder="Valor Mano de obra" 
-                                  value="0.00">
-                                </div>
-                              </div>
-
-                              <div id="valor_gramo" class="form-group oprecio">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor del gramo </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input name="valor_gramo" type="text" class="form-control" placeholder="Valor del gramo" 
-                                  value="0.00">
-                                </div>
-                              </div>
-                              
-                              <div class="ln_solid"></div>
-
-                              <div class="form-group">
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                              <form id="frm_ndetproduct" data-parsley-validate class="form-horizontal form-label-left" 
+                                action="new-product.php?p=1" method="post">
                                 
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla - Peso </label>
-                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                  <button type="button" class="btn btn-primary" data-toggle="modal" 
-                                    data-target="#size-table">Seleccionar</button>
-                                  <?php include( "sections/modals/sizes-table.php" );?>
+                                <div class="form-group">
+                                  <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
+                                  <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
+                                  <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
                                 </div>
-                                <div id="tallas_seleccion" class="col-md-5 col-sm-5 col-xs-12">
-                                  
+                                
+                                <div class="form-group">
+                                  <label class="control-label">Categoría: </label> 
+                                  <?php echo $producto["categoria"]." > ".$producto["subcategoria"]; ?>
                                 </div>
-                              </div>
+                                
+                                <div class="form-group">
+                                  <label class="control-label">Material: </label> 
+                                  <?php echo $producto["material"]; ?>
+                                </div>
+                                
+                                <div class="ln_solid"></div>
+                                
+                                <div class="form-group">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Baño </label>
+                                  <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <select name="bano" class="form-control selectpicker">
+                                      <?php foreach ( $banos as $b ) { ?>
+                                        <option value="<?php echo $b["id"] ?>"><?php echo $b["name"] ?></option>
+                                      <?php } ?>
+                                    </select>
+                                  </div>
+                                </div>
 
-                              <div class="ln_solid"></div>
-
-                              <div class="form-group">
-                                <div align="center">
-                                  <button id="bot_guardar_det_producto" type="button" class="btn btn-success">Guardar</button>
+                                <div class="form-group">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Color </label>
+                                  <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <select name="color" class="form-control selectpicker">
+                                      <?php foreach ( $colores as $c ) { ?>
+                                        <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                                      <?php } ?>
+                                    </select>
+                                  </div>
                                 </div>
-                                <div id="ghres"></div>
-                              </div>
+
+                                <div class="form-group">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo de precio </label>
+                                  <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <select id="seltprecio" name="tprecio" class="form-control selectpicker">
+                                      <option value="">Seleccione</option>
+                                      <?php foreach ( $tprecios as $tp ) { ?>
+                                        <option value="<?php echo $tp["tipo"] ?>">
+                                          <?php echo $tp["etiqueta"]; ?>
+                                        </option>
+                                      <?php } ?>
+                                    </select>
+                                  </div>
+                                </div>
+
+                                <div id="valor_pieza" class="form-group oprecio">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de la pieza </label>
+                                  <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input name="valor_pieza" type="text" class="form-control" placeholder="Valor de pieza" 
+                                    value="0.00">
+                                  </div>
+                                </div>
+
+                                <div id="valor_mo" class="form-group oprecio">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de mano de obra </label>
+                                  <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input name="valor_mano_obra" type="text" class="form-control" placeholder="Valor Mano de obra" 
+                                    value="0.00">
+                                  </div>
+                                </div>
+
+                                <div id="valor_gramo" class="form-group oprecio">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor del gramo </label>
+                                  <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input name="valor_gramo" type="text" class="form-control" placeholder="Valor del gramo" 
+                                    value="0.00">
+                                  </div>
+                                </div>
                               
-                            </div>
+                                <div class="ln_solid"></div>
 
+                                <div class="form-group">
+                                  
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla - Peso </label>
+                                  <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" 
+                                      data-target="#size-table">Seleccionar</button>
+                                    <?php include( "sections/modals/sizes-weight.php" );?>
+
+                                  </div>
+                                  <div id="tallas_seleccion" class="col-md-5 col-sm-5 col-xs-12"> </div>
+                                  <div id="valor_tseleccion" class="col-md-5 col-sm-5 col-xs-12"> </div>
+
+                                </div>
+
+                              </form> 
+                            
+                            </div>
 
                             <!-- Columna derecha -->
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                              
-                              <div id="img_uploader" class="dropzone">
-                                <div class="fallback">
-                                  <input name="file" type="file" multiple />
-                                </div>
-                              </div>  
-                                                      
-                            </div>
+                            <div class="col-md-7 col-sm-7 col-xs-12">
+                              <div id="img_uploader" class="s">
 
+                                <div id="panel_upload_photos">
+                                  <input id="images" name="images[]" type="file" multiple class="file-loading">
+                                  
+                                </div>
+
+                              </div>
+                            </div>
+                        
                         </div>
-                    
-                    </form>
+
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                          <div align="center">
+                            <button id="bot_guardar_det_producto" type="button" class="btn btn-success">Guardar</button>
+                          </div>
+                          <div id="ghres"></div>
+                        </div>
 
                   </div>
                 
@@ -279,6 +287,8 @@
     <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+
+
 
     <!-- FastClick -->
     <script src="vendors/fastclick/lib/fastclick.js"></script>
@@ -316,16 +326,46 @@
 
     <!-- Dropzone -->
     <script src="js/dropzone.js"></script>
+    <script src="js/fileinput.js"></script>
+    <script src="js/locales/es.js"></script>
+
     <script>
         Dropzone.autoDiscover = false;
 
         $(document).ready(function() {
         
-          $("#img_uploader").dropzone({ 
-            url: "http://127.0.0.1/argyros/trunk/admin_/uploads",
-            dictDefaultMessage:"Arrastre las imágenes del producto correspondientes al color seleccionado..." 
+          $("#myId").dropzone({ 
+            url: "http://127.0.0.1/argyros/trunk/admin_/uploads/upload.php",
+            dictDefaultMessage:"Arrastre las imágenes del XXX correspondientes al color seleccionado..." 
           });
+          
+        });
+    </script>
+    <script>
+        var server_url = "database/data-products.php";
+        $("#images").fileinput({
+            uploadUrl: server_url, // server upload action
+            uploadAsync: true,
+            maxFileCount: 6,
+            language: "es",
+            width: '50px',
+            autoReplace: false,
+            removeFromPreviewOnError: true,
+            uploadExtraData: function() {
+                return {
+                    file_sending: "product_detail_pic",
+                    id_producto:  <?php echo $idp; ?>
+                };
+            }
+        }).on('filelock', function(event, filestack, extraData) {
+            var fstack = filestack.filter(function(n){ return n != undefined });
+            console.log('Files selected - ' + fstack.length);
+        });
 
+        $("#images").on('fileuploaded', function(event, data, previewId, index) {
+            var form = data.form, files = data.files, extra = data.extra,
+                response = data.response, reader = data.reader;
+            console.log(files);
         });
     </script>
 

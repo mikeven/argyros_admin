@@ -111,12 +111,13 @@
                   </div>
                   <div class="x_content">
                     
-                    <form id="frm_nproduct" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="product-detail.php?p=1" method="post">
+                    
                         <p class="text-muted font-13 m-b-30"> </p>
                         
                         <div class="row">
                           
+                          <form id="frm_nproduct" data-parsley-validate class="form-horizontal form-label-left" 
+                            action="product-detail.php?p=1" method="post">
                             <div class="col-md-6 col-sm-6 col-xs-12">
                               
                               <div class="form-group">
@@ -163,6 +164,7 @@
                               </div>
                               
                             </div>
+                          
 
                             <div class="col-md-6 col-sm-6 col-xs-12">
                               
@@ -210,7 +212,9 @@
                               </div>
                                                       
                             </div>
-
+                          
+                          </form>
+                        
                         </div>
                         <div class="ln_solid"></div>
                         <div class="form-group">
@@ -223,7 +227,7 @@
                           <?php include( "sections/modals/response_message.php" );?>
                         </div>
                     
-                    </form>
+                    
 
                   </div>
                 

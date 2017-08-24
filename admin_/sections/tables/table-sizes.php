@@ -13,13 +13,13 @@
       <?php 
         foreach ( $sizes as $s ) { 
       ?>
-      <tr>
-        <td><?php echo $s["name"]; ?></td>
-        <td> </td>
-        <td><?php echo $s["cname"]; ?></td>
-        <td><a href="#!">Editar</a></td>
-        <td><a href="#!">Borrar</a></td>
-      </tr>
+        <tr>
+          <td><?php echo $s["name"]; ?></td>
+          <td> </td>
+          <td><?php echo $s["cname"]; ?></td>
+          <td><a href="#!">Editar</a></td>
+          <td><a href="#!">Borrar</a></td>
+        </tr>
     <?php } ?>
   </tbody>
 </table>

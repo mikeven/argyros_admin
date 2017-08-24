@@ -99,7 +99,8 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="frm_ncategoria" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="frm_ncategoria" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-categories.php?ncategoria" method="post">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
@@ -108,15 +109,10 @@
                       </div>
                       
                       <div class="ln_solid"></div>
+
                       <div class="form-group">
                         <div align="center">
                           <button type="submit" class="btn btn-success">Guardar</button>
-                          <button type="button" class="btn btn-default source" onclick="new PNotify({
-                                  title: 'Regular Success',
-                                  text: 'That thing that you were trying to do worked!',
-                                  type: 'success',
-                                  styling: 'bootstrap3'
-                              });">Success</button>
                           
                         </div>
                       </div>
@@ -147,6 +143,14 @@
         <!-- footer content -->
         <?php include( "sections/footer.php" ); ?>
         <!-- /footer content -->
+
+        <button type="button" class="btn btn-default source hidden" onclick="new PNotify({
+            title: '',
+            text: 'That thing that you were trying to do worked!',
+            type: 'success',
+            styling: 'bootstrap3'
+        });">Success</button>
+
       </div>
     </div>
 

@@ -72,10 +72,31 @@
 		$detalle[bano], '$detalle[tprecio]', $detalle[valor_pieza], $detalle[valor_mano_obra], $detalle[valor_gramo], NOW())";
 		
 		//echo $q;
-		$data = mysqli_query( $dbh, $q );
-		return mysqli_insert_id( $dbh );
+		//$data = mysqli_query( $dbh, $q );
+		//return mysqli_insert_id( $dbh );
+		return 1; 
 	}
-	
+	/* ----------------------------------------------------------------------------------- */
+	function guardarTallasDetalleProducto( $dbh, $idd, $idtalla, $peso ){
+		//Guarda el registro de tallas y pesos de un detalle de producto
+		$q = "insert into size_product_detail ( weight, size_id, product_detail_id ) 
+				values ( $peso, $idtalla, $idd )";
+		
+		//$data = mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function registrarTallasDetalleProducto( $dbh, $idd, $tallas ){
+		//Procesa los datos de tallas-peso del detalle de producto para almacenar en la BD
+		foreach ( $tallas as $reg ) {
+			guardarTallasDetalleProducto( $dbh, $idd, $reg->idt, $reg->peso );
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function agregarImagenDetalleProducto( $dbh, $idd, $image ){
+		//Guarda el registro de una imagen asociada a un detalle de un producto dado por idd
+		$q = "insert into images ( path, image_path_300x300, thumb_path_50x50, product_detail_id, created_at ) 
+		values ( '', '', '', $idd, NOW() )";
+	}
 	/* ----------------------------------------------------------------------------------- */
 	function registrarAsociaciones( $dbh, $producto ){
 		
@@ -90,6 +111,39 @@
 			asociarTrabajoProducto( $dbh, $idt, $producto["id"] );
 		}
 
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function uploadPictures( $dbh, $images, $idu ){
+		//Guarda los archivos de imágenes de detalle de producto y almacena urls en la BD
+		$success = null;
+		$paths = array();
+		$html_markups = array();
+		$filenames = $images['name'];
+		$url_dest = "../uploads/";
+		$url_dest_show = "uploads/";
+
+		$html_img = "<img src='{url}' class='file-preview-image' alt='Desert' title='Desert'>";
+		
+		for( $i = 0; $i < count( $filenames ); $i++ ){
+			$data_ext = explode( '.', basename( $filenames[$i] ) );
+			$ext = array_pop( $data_ext ); $fname = array_pop( $data_ext );
+			$md5 =  md5( uniqid() );
+			$target = $url_dest . $fname.$md5 . "." . $ext;
+			$target_show = $url_dest_show . $fname.$md5 . "." . $ext;
+			
+			if( move_uploaded_file( $images['tmp_name'][$i], $target ) ) {
+				$success = true;
+				$paths[] = $target;
+				$html_markups[] = "<img src='".$target_show."' class='file-preview-image' alt='".$filenames[$i]."' title='Desert'>";
+			} else {
+				$success = false;
+				break;
+			}
+		}
+		//guardarImagenesProductos( $dbh, $idd, $paths );
+		$info["paths"] = $paths;
+		$info["html_markups"] = $html_markups;
+		return $info;	
 	}
 
 	/* ----------------------------------------------------------------------------------- */
@@ -118,16 +172,29 @@
 
 		echo json_encode( $res );
 	}
-	
+	/* ----------------------------------------------------------------------------------- */
 	//Registro de nuevo detalle de producto
 	if( isset( $_POST["form_ndetp"] ) ){
 		include( "bd.php" );	
 		parse_str( $_POST["form_ndetp"], $detalle );
+		$tallas = json_decode( $_POST["vtallas"] );
 
-		//print_r( $detalle );
+		print_r( $tallas );
 		$idd = agregarDetalleProducto( $dbh, $detalle );
-		echo $idd;
+		registrarTallasDetalleProducto( $dbh, $idd, $tallas );
 	}
 	/* ----------------------------------------------------------------------------------- */
-
+	if( isset( $_POST["file_sending"] ) ){
+		include( "bd.php" );
+		//Maneja los datos de las imágenes recibidas para detalle de productos
+		if ( empty( $_FILES['images'] ) ) {
+			$output = array('error' => 'No hay imágenes para cargar');
+			echo json_encode( $output );
+		} else {
+			$images = $_FILES['images'];
+			$info = uploadPictures( $dbh, $images, $_POST['id_producto']);
+			$output = array('initialPreview' => $info["html_markups"] );
+			echo json_encode( $output );
+		}
+	}
 ?>

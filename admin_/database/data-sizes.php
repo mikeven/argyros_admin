@@ -13,7 +13,7 @@
 		$lista_c = obtenerListaRegistros( $data );
 		return $lista_c;	
 	}
-
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaTallasCategoria( $dbh, $id_categoria ){
 		//Devuelve la lista de tallas de productos asociadas a una categoría
 		$q = "Select s.id, s.name as name, c.name as cname from sizes s, categories c 
@@ -22,6 +22,13 @@
 		$data = mysqli_query( $dbh, $q );
 		$lista_c = obtenerListaRegistros( $data );
 		return $lista_c;	
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerValoresTallaCero( $dbh ){
+		//Devuelve los valores de la talla por defecto del sistema
+		$q = "Select id, name from sizes where name = '0'";
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_fetch_array( $data );	
 	}
 
 	/* ----------------------------------------------------------------------------------- */

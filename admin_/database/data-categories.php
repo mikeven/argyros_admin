@@ -31,6 +31,15 @@
 		$lista_c = obtenerListaRegistros( $data );
 		return $lista_c;	
 	}
+
+	function agregarCategoria( $dbh, $nombre ){
+		//Devuelve la lista de subcategorías de una categoría padre
+		$q = "insert into categories (name, created_at ) values ('$nombre', NOW())";
+		
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_insert_id( $dbh );	
+	}
+
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
 	/* ----------------------------------------------------------------------------------- */
@@ -41,6 +50,14 @@
 		$subcategorias = obtenerListaSubCategoriasCategoria( $dbh, $idc );
 		echo json_encode( $subcategorias );
 	}
-	
+	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_GET["ncategoria"] ) ){
+		include( "bd.php" );
+		$idc = agregarCategoria( $dbh, $_POST["nombre"] );
+		echo "id: ".$idc;
+		if( ( $idc != 0 ) && ( $idc != "" ) ){
+			header( "Location: ../categories.php?agregar_categoria&success" );
+		}
+	}
 	/* ----------------------------------------------------------------------------------- */
 ?>
