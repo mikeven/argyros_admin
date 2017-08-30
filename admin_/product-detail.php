@@ -137,8 +137,6 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    
-                    
                         <p class="text-muted font-13 m-b-30"> </p>
                         
                         <div class="row">
@@ -238,11 +236,11 @@
                                   </div>
                                   <div id="tallas_seleccion" class="col-md-5 col-sm-5 col-xs-12"> </div>
                                   <div id="valor_tseleccion" class="col-md-5 col-sm-5 col-xs-12"> </div>
+                                  <div id="image-response"></div>
 
                                 </div>
 
                               </form> 
-                            
                             </div>
 
                             <!-- Columna derecha -->
@@ -253,7 +251,7 @@
                                   <input id="images" name="images[]" type="file" multiple class="file-loading">
                                   
                                 </div>
-
+                                
                               </div>
                             </div>
                         
@@ -268,7 +266,6 @@
                         </div>
 
                   </div>
-                
                 </div>
               </div>
             </div>
@@ -359,14 +356,20 @@
             }
         }).on('filelock', function(event, filestack, extraData) {
             var fstack = filestack.filter(function(n){ return n != undefined });
-            console.log('Files selected - ' + fstack.length);
+            console.log( 'Files selected - ' + fstack.length );
         });
 
         $("#images").on('fileuploaded', function(event, data, previewId, index) {
-            var form = data.form, files = data.files, extra = data.extra,
+            var form = data.form, files = data.files, extra = data.extra, 
                 response = data.response, reader = data.reader;
-            console.log(files);
+            console.log( response );
+            processDataResponse();
         });
+        
+        $("#images").on('filebatchuploadcomplete', function(event, data, previewId, index) {
+            processDataResponse();
+        });
+
     </script>
 
     <!-- Datatables -->

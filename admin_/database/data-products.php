@@ -72,16 +72,15 @@
 		$detalle[bano], '$detalle[tprecio]', $detalle[valor_pieza], $detalle[valor_mano_obra], $detalle[valor_gramo], NOW())";
 		
 		//echo $q;
-		//$data = mysqli_query( $dbh, $q );
-		//return mysqli_insert_id( $dbh );
-		return 1; 
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_insert_id( $dbh );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function guardarTallasDetalleProducto( $dbh, $idd, $idtalla, $peso ){
 		//Guarda el registro de tallas y pesos de un detalle de producto
 		$q = "insert into size_product_detail ( weight, size_id, product_detail_id ) 
 				values ( $peso, $idtalla, $idd )";
-		
+		echo $q;
 		//$data = mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -113,14 +112,33 @@
 
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function moverArchivoImagenProducto( $archivo, $nombre ){
+		$destino = "../catalog/".$nombre;
+		rename( $archivo, $destino );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function guardarImagenesDetalleProducto( $dbh, $idd, $img ){
+		
+		$nombre = explode( '../uploads/', $img );
+		$url = moverArchivoImagenProducto( $img, $nombre[1] );
+
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function procesarImagenes( $dbh, $idd, $data ){
+		$imagenes = $data["urlimgs"];
+		foreach ( $imagenes as $img ){
+			guardarImagenesDetalleProducto( $dbh, $idd, $img );	
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function uploadPictures( $dbh, $images, $idu ){
 		//Guarda los archivos de imágenes de detalle de producto y almacena urls en la BD
 		$success = null;
 		$paths = array();
 		$html_markups = array();
 		$filenames = $images['name'];
-		$url_dest = "../uploads/";
-		$url_dest_show = "uploads/";
+		$url_dest = "../uploads/";			//Ubicación del archivo destino después de la carga
+		$url_dest_show = "uploads/";		//Ubicación de foto de previsualización después de la carga
 
 		$html_img = "<img src='{url}' class='file-preview-image' alt='Desert' title='Desert'>";
 		
@@ -134,7 +152,8 @@
 			if( move_uploaded_file( $images['tmp_name'][$i], $target ) ) {
 				$success = true;
 				$paths[] = $target;
-				$html_markups[] = "<img src='".$target_show."' class='file-preview-image' alt='".$filenames[$i]."' title='Desert'>";
+				$html_markups[] = "<img src='".$target_show."' class='file-preview-image fpiup' alt='".
+									$filenames[$i]."' title='Desert' data-uimg='".$target."'>";
 			} else {
 				$success = false;
 				break;
@@ -179,9 +198,9 @@
 		parse_str( $_POST["form_ndetp"], $detalle );
 		$tallas = json_decode( $_POST["vtallas"] );
 
-		print_r( $tallas );
 		$idd = agregarDetalleProducto( $dbh, $detalle );
-		registrarTallasDetalleProducto( $dbh, $idd, $tallas );
+		//registrarTallasDetalleProducto( $dbh, $idd, $tallas );
+		procesarImagenes( $dbh, $idd, $detalle );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_POST["file_sending"] ) ){
@@ -192,7 +211,7 @@
 			echo json_encode( $output );
 		} else {
 			$images = $_FILES['images'];
-			$info = uploadPictures( $dbh, $images, $_POST['id_producto']);
+			$info = uploadPictures( $dbh, $images, $_POST['id_producto'] );
 			$output = array('initialPreview' => $info["html_markups"] );
 			echo json_encode( $output );
 		}

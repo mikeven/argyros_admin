@@ -73,6 +73,7 @@ function seleccionarTallas(){
 		
 		$( "#valor_tseleccion" ).html( $( elem ) );
 		$( "#tallas_seleccion" ).html( $( etiq ) );
+		
 	});			
 }
 /* --------------------------------------------------------- */
@@ -106,10 +107,23 @@ function agregarDetalleProducto(){
 			console.log(response);
 			//window.location = "product-data.php?p=" + idp;
         }
-    });	
+    });
 }
 /* --------------------------------------------------------- */
+function addCampoImg( valor ){
+	
+	var fld = "<input type='hidden' name='urlimgs[]' value='" + valor + "'>";
+	//$("#image-response").html( fld );
+	$(fld).appendTo( "#image-response" );
+}
 
+function processDataResponse(){
+	$("#image-response").html( "" );
+	$.each( $(".fpiup"), function() {	// vt_seleccionado: valor_tallas_seleccionado
+		addCampoImg( $(this).attr("data-uimg") );	
+	});
+}
+/* --------------------------------------------------------- */
 $( document ).ready(function() {
     $("#seltprecio").on( "change", function(){
 		$(".oprecio").hide("slow");
