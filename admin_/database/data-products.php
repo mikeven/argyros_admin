@@ -31,14 +31,33 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDetalleProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
-		$q = "select dp.id, c.name as color, t.name as bano, dp.price_type as tipo_precio, dp.weight as peso, 
+		$q = "select dp.id as id, c.name as color, t.name as bano, dp.price_type as tipo_precio, dp.weight as peso, 
 		dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
 		dp.weight_price_value as precio_peso FROM product_details dp, treatments t, colors c 
 		where dp.color_id = c.id and dp.treatment_id = t.id and dp.product_id = $idp";
-
+		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		$lista_d = obtenerListaRegistros( $data );
 		return $lista_d;		
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerImagenesDetalleProducto( $dbh, $idd ){
+		//Devuelve los registros de imágenes de detalle de producto
+		$q = "select path from images where product_detail_id = $idd";
+		//echo $q;
+		$data = mysqli_query( $dbh, $q );
+		$lista_d = obtenerListaRegistros( $data );
+		return $lista_d;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerTallasDetalleProducto( $dbh, $idd ){
+		//Devuelve los registros de tallas de detalle de producto
+		$q = "select s.name as talla, spd.weight as peso from size_product_detail spd, sizes s 
+		where spd.size_id = s.id and spd.product_detail_id = $idd";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista_d = obtenerListaRegistros( $data );
+		return $lista_d;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function asociarLineaProducto( $dbh, $idl, $idp ){
@@ -71,7 +90,7 @@
 		manufacture_value, weight_price_value, created_at ) values ( $detalle[idproducto], $detalle[color], 
 		$detalle[bano], '$detalle[tprecio]', $detalle[valor_pieza], $detalle[valor_mano_obra], $detalle[valor_gramo], NOW())";
 		
-		//echo $q;
+		echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
@@ -80,8 +99,8 @@
 		//Guarda el registro de tallas y pesos de un detalle de producto
 		$q = "insert into size_product_detail ( weight, size_id, product_detail_id ) 
 				values ( $peso, $idtalla, $idd )";
-		echo $q;
-		//$data = mysqli_query( $dbh, $q );
+		//echo $q;
+		$data = mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function registrarTallasDetalleProducto( $dbh, $idd, $tallas ){
@@ -94,7 +113,8 @@
 	function agregarImagenDetalleProducto( $dbh, $idd, $image ){
 		//Guarda el registro de una imagen asociada a un detalle de un producto dado por idd
 		$q = "insert into images ( path, image_path_300x300, thumb_path_50x50, product_detail_id, created_at ) 
-		values ( '', '', '', $idd, NOW() )";
+		values ( '$image', '', '', $idd, NOW() )";
+		$data = mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function registrarAsociaciones( $dbh, $producto ){
@@ -113,14 +133,18 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function moverArchivoImagenProducto( $archivo, $nombre ){
+		//Mueve los archivos de imágenes de la carpeta de carga a la carpeta de catálogo 
 		$destino = "../catalog/".$nombre;
 		rename( $archivo, $destino );
+
+		return $nombre;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function guardarImagenesDetalleProducto( $dbh, $idd, $img ){
 		
 		$nombre = explode( '../uploads/', $img );
 		$url = moverArchivoImagenProducto( $img, $nombre[1] );
+		agregarImagenDetalleProducto( $dbh, $idd, $url );
 
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -199,7 +223,7 @@
 		$tallas = json_decode( $_POST["vtallas"] );
 
 		$idd = agregarDetalleProducto( $dbh, $detalle );
-		//registrarTallasDetalleProducto( $dbh, $idd, $tallas );
+		registrarTallasDetalleProducto( $dbh, $idd, $tallas );
 		procesarImagenes( $dbh, $idd, $detalle );
 	}
 	/* ----------------------------------------------------------------------------------- */

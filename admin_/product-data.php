@@ -106,29 +106,35 @@
                           
                             <div class="col-md-4 col-sm-4 col-xs-12">
                               
-                              <div class="form-group">
-                                <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label">Descripción: </label> <?php echo $producto["descripcion"]; ?>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label">Categoría: 
-                                </label> <?php echo $producto["categoria"]." > ".$producto["subcategoria"]; ?>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label">Material: </label> <?php echo $producto["material"]; ?>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label">País: </label> <?php echo $producto["pais"]; ?>
-                              </div>
+                                <div class="form-group">
+                                    <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Descripción: </label> <?php echo $producto["descripcion"]; ?>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Categoría: 
+                                    </label> <?php echo $producto["categoria"]." > ".$producto["subcategoria"]; ?>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Material: </label> <?php echo $producto["material"]; ?>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">País: </label> <?php echo $producto["pais"]; ?>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-info btn-xs">Editar</button>
+                                </div>
                               
                             </div>
 
                             <div class="col-md-8 col-sm-8 col-xs-12">
                                 <h4>Detalle de producto</h4>      
                                 <?php 
-                                    foreach ( $dproducto as $dp ) { 
+                                    foreach ( $dproducto as $dp ) {
+                                        $imagenes_detalle = obtenerImagenesDetalleProducto( $dbh, $dp["id"] );
+                                        $tallas_detalle = obtenerTallasDetalleProducto( $dbh, $dp["id"] ); 
+
                                 ?>
                                 <div class="row">
                                     <div class="col-md-4 col-sm-4 col-xs-12">
@@ -151,25 +157,39 @@
                                             <label class="control-label">Precio por peso: </label> <?php echo $dp["precio_peso"]; ?>
                                         </div>
                                         
+                                        <div class="data-talla-detalle">
+                                            <table class="table table-striped table-bordered">
+                                              <thead>
+                                                <tr><th>Talla</th><th>Peso</th>
+                                                </tr>
+                                              </thead>
+
+                                              <tbody>
+                                                <?php 
+                                                    foreach ( $tallas_detalle as $talla ) { 
+                                                ?>
+                                                    <tr>
+                                                    <td><?php echo $talla["talla"]; ?></td>
+                                                    <td><?php echo $talla["peso"]; ?> </td>
+                                                    </tr>
+                                                <?php } ?>
+                                              </tbody>
+                                            </table>
+                                        </div> 
+                                        
                                     </div>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <div class="thumb_detailproduct">
-                                            <img src="images/ring-black.png" width="60px">
-                                        </div> 
-                                        <div class="thumb_detailproduct">
-                                            <img src="images/ring-black.png" width="60px">
-                                        </div>
-                                        <div class="thumb_detailproduct">
-                                            <img src="images/ring-black.png" width="60px">
-                                        </div>
-                                        <div class="thumb_detailproduct">
-                                            <img src="images/ring-black.png" width="60px">
-                                        </div>
-                                        <div class="thumb_detailproduct">
-                                            <img src="images/ring-black.png" width="60px">
-                                        </div>
-                                        <div class="thumb_detailproduct">
-                                            <img src="images/ring-black.png" width="60px">
+                                        <?php 
+                                            foreach ( $imagenes_detalle as $img ) { 
+                                        ?>
+                                            <div class="thumb_detailproduct">
+                                                <img src="<?php echo $img["path"]; ?>" width="60px">
+                                            </div> 
+                                        <?php 
+                                            }
+                                        ?>
+                                        <div class="right" style="float:right;">
+                                            <button type="button" class="btn btn-info btn-xs">Editar</button>
                                         </div>
                                     </div>
 

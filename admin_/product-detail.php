@@ -218,8 +218,8 @@
                                 <div id="valor_gramo" class="form-group oprecio">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor del gramo </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input name="valor_gramo" type="text" class="form-control" placeholder="Valor del gramo" 
-                                    value="0.00">
+                                    <input name="valor_gramo" type="text" class="form-control" 
+                                    placeholder="Valor del gramo" value="0.00">
                                   </div>
                                 </div>
                               
@@ -229,10 +229,9 @@
                                   
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla - Peso </label>
                                   <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" 
-                                      data-target="#size-table">Seleccionar</button>
-                                    <?php include( "sections/modals/sizes-weight.php" );?>
-
+                                    <button type="button" class="btn btn-primary" 
+                                    data-toggle="modal" data-target="#size-table">Seleccionar</button>
+                                    <?php include( "sections/modals/sizes-weight.php" ); ?>
                                   </div>
                                   <div id="tallas_seleccion" class="col-md-5 col-sm-5 col-xs-12"> </div>
                                   <div id="valor_tseleccion" class="col-md-5 col-sm-5 col-xs-12"> </div>
