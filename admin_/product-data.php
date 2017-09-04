@@ -10,9 +10,11 @@
     include( "fn/common-functions.php" );
     include( "database/data-products.php" );
     checkSession( '' );
-    $idp = 2;
+    
     if( isset( $_GET["p"] ) ){
         $idp = $_GET["p"];    
+    }else{
+
     }
 ?>
 <!DOCTYPE html>
@@ -61,11 +63,17 @@
             border: 1px solid #ccc;
             float: left;
         }
+
+        .data-talla-detalle{
+            padding-top: 15px;
+        }
     </style>
 
   <?php
-    $producto = obtenerProductoPorId( $dbh, $idp );
-    $dproducto = obtenerDetalleProductoPorId( $dbh, $idp );
+    if( isset( $idp ) ) {
+        $producto = obtenerProductoPorId( $dbh, $idp );
+        $dproducto = obtenerDetalleProductoPorId( $dbh, $idp );
+    }
   ?>
 
   <body class="nav-md">
@@ -101,7 +109,7 @@
                     <form id="frm_nproduct" data-parsley-validate class="form-horizontal form-label-left" 
                       action="new-product.php?p=1" method="post">
                         <p class="text-muted font-13 m-b-30"> </p>
-                        
+                        <?php if( isset( $idp ) ) { ?>
                         <div class="row">
                           
                             <div class="col-md-4 col-sm-4 col-xs-12">
@@ -201,7 +209,7 @@
                             </div>
 
                         </div>
-                    
+                        <?php } ?>
                     </form>
                   </div>
                 </div>

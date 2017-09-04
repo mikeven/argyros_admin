@@ -41,6 +41,17 @@
 		return $lista_d;		
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerRegistroDetalleProductoPorId( $dbh, $idd ){
+		//Devuelve un registro de detalle de producto dado su id
+		$q = "select dp.id as id, c.id as color, t.id as bano, dp.price_type as tipo_precio, dp.weight as peso, 
+		dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, dp.product_id as pid, 
+		dp.weight_price_value as precio_peso FROM product_details dp, treatments t, colors c 
+		where dp.color_id = c.id and dp.treatment_id = t.id and dp.id = $idd";
+		
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_fetch_array( $data );		
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerImagenesDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de imágenes de detalle de producto
 		$q = "select path from images where product_detail_id = $idd";
@@ -52,12 +63,22 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerTallasDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de tallas de detalle de producto
-		$q = "select s.name as talla, spd.weight as peso from size_product_detail spd, sizes s 
+		$q = "select spd.size_id as idtalla, s.name as talla, spd.weight as peso from size_product_detail spd, sizes s 
 		where spd.size_id = s.id and spd.product_detail_id = $idd";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_d = obtenerListaRegistros( $data );
 		return $lista_d;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerDatosDetalleProductoPorId( $dbh, $idd ){
+		//
+		$detalle["datos"]		= obtenerRegistroDetalleProductoPorId( $dbh, $idd );
+		$detalle["tallas"] 		= obtenerTallasDetalleProducto( $dbh, $idd );
+		$detalle["imagenes"] 	= obtenerImagenesDetalleProducto( $dbh, $idd );
+
+		return $detalle;
+		
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function asociarLineaProducto( $dbh, $idl, $idp ){
@@ -93,6 +114,16 @@
 		echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function editarDatosDetalleProducto( $dbh, $detalle ){
+		//Actualiza los datos de detalle de producto
+		$q = "update product_details set color_id = $detalle[color], treatment_id = $detalle[bano], 
+		price_type = '$detalle[tprecio]', piece_price_value = $detalle[valor_pieza], manufacture_value = $detalle[valor_mano_obra], 
+		weight_price_value = $detalle[valor_gramo], updated_at = NOW() where id = $detalle[iddetalle]";
+
+
+		echo $q;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function guardarTallasDetalleProducto( $dbh, $idd, $idtalla, $peso ){
@@ -226,6 +257,23 @@
 		registrarTallasDetalleProducto( $dbh, $idd, $tallas );
 		procesarImagenes( $dbh, $idd, $detalle );
 	}
+
+	//Edición de datos de detalle de producto
+	if( isset( $_POST["form_modif_detprod"] ) ){
+		include( "bd.php" );	
+		parse_str( $_POST["form_modif_detprod"], $detalle );
+
+		$idd = editarDatosDetalleProducto( $dbh, $detalle );
+	}
+
+	//Edición de datos de detalle de producto
+	if( isset( $_POST["form_modif_detprod"] ) ){
+		include( "bd.php" );	
+		parse_str( $_POST["form_modif_detprod"], $detalle );
+
+		$idd = editarDatosDetalleProducto( $dbh, $detalle );
+	}
+
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_POST["file_sending"] ) ){
 		include( "bd.php" );

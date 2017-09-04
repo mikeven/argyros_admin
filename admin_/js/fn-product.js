@@ -110,6 +110,42 @@ function agregarDetalleProducto(){
     });
 }
 /* --------------------------------------------------------- */
+function editarDatosDetalleProducto(){
+	//Envía al servidor la petición de edición de datos de detalle de producto. 
+
+	var form = $("#frm_mddetalle");
+	var form_det = form.serialize();
+	
+	$.ajax({
+        type:"POST",
+        url:"database/data-products.php",
+        data:{ form_modif_detprod: form_det },
+        success: function( response ){
+			//res = jQuery.parseJSON(response);
+			console.log( response );
+			//window.location = "product-data.php?p=" + idp;
+        }
+    });
+}
+/* --------------------------------------------------------- */
+function editarTallasDetalleProducto(){
+	//Envía al servidor la petición de edición de tallas de detalle de producto. 
+
+	var form = $("#frm_mtalladetalle");
+	var form_det = form.serialize();
+	
+	$.ajax({
+        type:"POST",
+        url:"database/data-products.php",
+        data:{ modif_tallasdetprod: form_det },
+        success: function( response ){
+			//res = jQuery.parseJSON(response);
+			console.log( response );
+			//window.location = "product-data.php?p=" + idp;
+        }
+    });
+}
+/* --------------------------------------------------------- */
 function addCampoImg( valor ){
 	
 	var fld = "<input type='hidden' name='urlimgs[]' value='" + valor + "'>";
@@ -123,14 +159,22 @@ function processDataResponse(){
 		addCampoImg( $(this).attr("data-uimg") );	
 	});
 }
+
+function mostrarDatosValorPorTipoPrecio( tprecio ){
+	
+	if( tprecio == "g" ) $("#valor_gramo").fadeIn('slow');
+	if( tprecio == "p" ) $("#valor_pieza").fadeIn('slow');
+	if( tprecio == "mo" ) $("#valor_mo").fadeIn('slow');
+}
 /* --------------------------------------------------------- */
 $( document ).ready(function() {
+    
     $("#seltprecio").on( "change", function(){
 		$(".oprecio").hide("slow");
-		if( $(this).val() == "g" ) $("#valor_gramo").fadeIn('slow');
-		if( $(this).val() == "p" ) $("#valor_pieza").fadeIn('slow');
-		if( $(this).val() == "mo" ) $("#valor_mo").fadeIn('slow');
+		mostrarDatosValorPorTipoPrecio( $(this).val() );
     });
+
+    mostrarDatosValorPorTipoPrecio( $("#seltprecio").val() );
 
     $("#selcateg").on( "change", function(){
 		$("#val_subc").html("");
@@ -145,6 +189,18 @@ $( document ).ready(function() {
 	$("#bot_guardar_det_producto").on( "click", function(){
 		agregarDetalleProducto();	
     });
+
+    /*Bloque peticiones para editar datos asociados a detalle de producto*/
+
+    $("#bot_editar_detproducto").on( "click", function(){
+		editarDatosDetalleProducto();	
+    });
+
+    $("#bot_edit_tallasdetalle").on( "click", function(){
+		editarTallasDetalleProducto();	
+    });
+
+
 
 	$("#bot_seltallas").on( "click", function(){
 		seleccionarTallas();	
