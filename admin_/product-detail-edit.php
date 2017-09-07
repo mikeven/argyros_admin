@@ -27,7 +27,7 @@
         $detalle = obtenerDatosDetalleProductoPorId( $dbh, $iddet );
         $datos_det = $detalle["datos"];
         $tallas_det = $detalle["tallas"];
-        $imgs_det = $detalle["imagenes"];            
+        $imgs_det = $detalle["imagenes"];
     }
     
 ?>
@@ -91,7 +91,28 @@
       margin-bottom: 50px;
     }
 
+    .galdetexist{
+      padding: 4px;
+      margin: 5px;
+      /*height: 140px;*/
+      border: 1px solid #2a3f54;
+    }
+
+    #galeria_detalle {
+      max-height: 800px;
+      overflow-y:scroll; 
+    }
+
+    .imgdetprod_delopt {
+      padding: 3px 1px; 
+    }
+
     .oprecio{ display: none; }
+
+    .opt_confelimimg_detprod{
+      display: none;
+    }
+    .optcanconf{ margin: 0 5px; }
 
   </style>
 
@@ -264,7 +285,7 @@
                                 <div class="form-group">
                                     <div align="center"><h5>Edición de tallas</h5></div>
                                     <div class="ln_solid"></div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla - Peso </label>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla - Peso</label>
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                       <button type="button" class="btn btn-primary" 
                                       data-toggle="modal" data-target="#size-table">Seleccionar</button>
@@ -304,18 +325,28 @@
 
                         <div class="row">
                           <div align="center"><h5>Edición de imágenes</h5></div>
+                          
                           <div class="ln_solid"></div>
-                          <div class="col-md-6 col-sm-6 col-xs-12"></div>
                           
                           <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div align="center"><h5>Imágenes existentes</h5></div>
+                            <div class="ln_solid"></div>
+                            <div id="galeria_detalle">
+                              <?php include( "fn/fn-detail_product_gallery.php" ); ?>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div align="center"><h5>Carga de nuevas imágenes</h5></div>
+                            <div class="ln_solid"></div>
                             <div id="img_uploader" class="s">
-
                               <div id="panel_upload_photos">
                                 <input id="images" name="images[]" type="file" multiple class="file-loading">
                               </div>
                               <div id="image-response"></div>
                             </div>
                           </div>
+
                         </div>
 
                         <div class="ln_solid"></div>

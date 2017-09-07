@@ -130,14 +130,13 @@ function editarDatosDetalleProducto(){
 /* --------------------------------------------------------- */
 function editarTallasDetalleProducto(){
 	//Envía al servidor la petición de edición de tallas de detalle de producto. 
-
-	var form = $("#frm_mtalladetalle");
-	var form_det = form.serialize();
+	var iddet = $("#iddetalle").val();
+	var tallas = obtenerValoresTallasSeleccionadas();
 	
 	$.ajax({
         type:"POST",
         url:"database/data-products.php",
-        data:{ modif_tallasdetprod: form_det },
+        data:{ modif_tallasdetprod: tallas, idt: iddet },
         success: function( response ){
 			//res = jQuery.parseJSON(response);
 			console.log( response );
@@ -200,11 +199,28 @@ $( document ).ready(function() {
 		editarTallasDetalleProducto();	
     });
 
+	$(".lnk_elimimg_detprod").on( "click", function(){
+		var ec = $(this).attr( "data-target" ) ;
+		$(this).fadeOut(20);
+		$("#" + ec).fadeIn(50);
+    });
+
+    $(".lnk_cancelim_idetp").on( "click", function(){
+		var ecanc = $(this).attr( "data-target" );
+		var bloc = $(this).attr( "data-bloc" );
+
+		//alert(ecanc +" "+bloc);
+		$( "#" + bloc ).fadeOut( 20 );
+		$( "#" + ecanc ).fadeIn( 50 );
+    });
+
 
 
 	$("#bot_seltallas").on( "click", function(){
 		seleccionarTallas();	
     });
+
+
 
 
 });

@@ -54,7 +54,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerImagenesDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de imágenes de detalle de producto
-		$q = "select path from images where product_detail_id = $idd";
+		$q = "select id, path from images where product_detail_id = $idd";
 		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		$lista_d = obtenerListaRegistros( $data );
@@ -122,8 +122,21 @@
 		price_type = '$detalle[tprecio]', piece_price_value = $detalle[valor_pieza], manufacture_value = $detalle[valor_mano_obra], 
 		weight_price_value = $detalle[valor_gramo], updated_at = NOW() where id = $detalle[iddetalle]";
 
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function borrarRegistrosTallasDetalleProducto( $dbh, $iddet ){
+		//Elimina todos los registros de tallas asociados a un detalle de producto.
+		$q = "delete from size_product_detail where product_detail_id = $iddet";
+		$data = mysqli_query( $dbh, $q );
 
-		echo $q;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function editarTallasDetalleProducto( $dbh, $iddet, $tallas ){
+		//Actualiza los datos de tallas en detalle de producto
+		borrarRegistrosTallasDetalleProducto( $dbh, $iddet );
+		registrarTallasDetalleProducto( $dbh, $iddet, $tallas );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function guardarTallasDetalleProducto( $dbh, $idd, $idtalla, $peso ){
@@ -257,7 +270,7 @@
 		registrarTallasDetalleProducto( $dbh, $idd, $tallas );
 		procesarImagenes( $dbh, $idd, $detalle );
 	}
-
+	/* ----------------------------------------------------------------------------------- */
 	//Edición de datos de detalle de producto
 	if( isset( $_POST["form_modif_detprod"] ) ){
 		include( "bd.php" );	
@@ -265,15 +278,15 @@
 
 		$idd = editarDatosDetalleProducto( $dbh, $detalle );
 	}
-
-	//Edición de datos de detalle de producto
-	if( isset( $_POST["form_modif_detprod"] ) ){
+	/* ----------------------------------------------------------------------------------- */
+	//Edición de tallas en detalle de producto
+	if( isset( $_POST["modif_tallasdetprod"] ) ){
 		include( "bd.php" );	
-		parse_str( $_POST["form_modif_detprod"], $detalle );
-
-		$idd = editarDatosDetalleProducto( $dbh, $detalle );
+		
+		$iddet = $_POST["idt"];
+		$tallas = json_decode( $_POST["modif_tallasdetprod"] );
+		$idd = editarTallasDetalleProducto( $dbh, $iddet, $tallas );
 	}
-
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_POST["file_sending"] ) ){
 		include( "bd.php" );
