@@ -61,10 +61,18 @@
 		return $lista_d;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerImagenDetalleProductoPorId( $dbh, $id_img ){
+		//Devuelve el registro de imagen de detalle de producto
+		$q = "select id, path from images where id = $id_img";
+		//echo $q;
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_fetch_array( $data );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerTallasDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de tallas de detalle de producto
-		$q = "select spd.size_id as idtalla, s.name as talla, spd.weight as peso from size_product_detail spd, sizes s 
-		where spd.size_id = s.id and spd.product_detail_id = $idd";
+		$q = "select spd.size_id as idtalla, s.name as talla, spd.weight as peso, spd.visible as visible 
+		from size_product_detail spd, sizes s where spd.size_id = s.id and spd.product_detail_id = $idd";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_d = obtenerListaRegistros( $data );
@@ -133,16 +141,51 @@
 
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function editarTallasDetalleProducto( $dbh, $iddet, $tallas ){
-		//Actualiza los datos de tallas en detalle de producto
-		borrarRegistrosTallasDetalleProducto( $dbh, $iddet );
-		registrarTallasDetalleProducto( $dbh, $iddet, $tallas );
+	function existeRegistroTallaDetalle( $iddet, $id_talla ){
+		//Chequea si existe un registro con valores de talla-detalle
+		$existe = false;
+		$q = "select * from size_product_detail where size_id = $id_talla and product_detail_id = $iddet";
+		$data = mysqli_query( $dbh, $q );
+		$nregs = mysqli_num_rows( $data );
+		
+		if( $nregs > 0 )
+			$existe = true;
+		
+		return $existe;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function guardarTallasDetalleProducto( $dbh, $idd, $idtalla, $peso ){
+	function editarTallasDetalleProducto( $dbh, $iddet, $tallas ){
+		//Actualiza los datos de tallas en detalle de producto
+		foreach ( $tallas as  $reg ) {
+			$e = existeRegistroTallaDetalle( $iddet,  $reg->idt );
+			if( $e == true ){
+				actualizarTallasDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso );
+			}else{
+				guardarTallaDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso );
+			}
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function eliminarRegistroImagenDetalleProducto( $dbh, $id_img ){
+		//Elimina el registro de imagen de detalle de producto en la BD
+		$q = "delete from images where id = $id_img";
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function eliminarImagenDetalleProducto( $dbh, $id_img ){
+		//Elimina el archivo de imagen de detalle de producto e invoca la eliminación de la BD. 
+		$prefijo_url = "../"; 
+		$img = obtenerImagenDetalleProductoPorId( $dbh, $id_img );
+		$res["archivo"] = unlink( $prefijo_url.$img["path"] );
+		$res["databas"] = eliminarRegistroImagenDetalleProducto( $dbh, $img["id"] );
+		print_r( $res );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function guardarTallaDetalleProducto( $dbh, $idd, $idtalla, $peso ){
 		//Guarda el registro de tallas y pesos de un detalle de producto
 		$q = "insert into size_product_detail ( weight, size_id, product_detail_id ) 
-				values ( $peso, $idtalla, $idd )";
+			   values ( $peso, $idtalla, $idd )";
 		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 	}
@@ -150,7 +193,7 @@
 	function registrarTallasDetalleProducto( $dbh, $idd, $tallas ){
 		//Procesa los datos de tallas-peso del detalle de producto para almacenar en la BD
 		foreach ( $tallas as $reg ) {
-			guardarTallasDetalleProducto( $dbh, $idd, $reg->idt, $reg->peso );
+			guardarTallaDetalleProducto( $dbh, $idd, $reg->idt, $reg->peso );
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -180,14 +223,15 @@
 		//Mueve los archivos de imágenes de la carpeta de carga a la carpeta de catálogo 
 		$destino = "../catalog/".$nombre;
 		rename( $archivo, $destino );
-
-		return $nombre;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function guardarImagenesDetalleProducto( $dbh, $idd, $img ){
-		
+		//Reubica el archivo de la imagen desde la carpeta de cargas a la carpeta destino
+		//Envía la url destino a registrarse en la BD.
+		$prefijo_destino = "catalog/";
 		$nombre = explode( '../uploads/', $img );
-		$url = moverArchivoImagenProducto( $img, $nombre[1] );
+		moverArchivoImagenProducto( $img, $nombre[1] );
+		$url = $prefijo_destino.$nombre[1];
 		agregarImagenDetalleProducto( $dbh, $idd, $url );
 
 	}
@@ -286,6 +330,35 @@
 		$iddet = $_POST["idt"];
 		$tallas = json_decode( $_POST["modif_tallasdetprod"] );
 		$idd = editarTallasDetalleProducto( $dbh, $iddet, $tallas );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	//Eliminación de imagen de detalle de producto
+	if( isset( $_POST["elim_imgdetprod"] ) ){
+		include( "bd.php" );	
+		
+		$id_img = $_POST["elim_imgdetprod"];
+		$res = eliminarImagenDetalleProducto( $dbh, $id_img );
+
+		/*if ( ( $res != 0 ) && ( $res != "" ) ){
+			$res["exito"] = 1;
+			$res["mje"] = "Foto eliminada con éxito";
+			$res["reg"] = NULL;
+		} else {
+			$res["exito"] = 0;
+			$res["mje"] = "Error al borrar foto";
+			$res["reg"] = NULL;
+		}
+
+		echo json_encode( $res ); */
+	}
+	/* ----------------------------------------------------------------------------------- */
+	//Agregar nuevas imágenes de detalle de producto ya existente
+	if( isset( $_POST["form_nimgsdetp"] ) ){
+		include( "bd.php" );	
+		parse_str( $_POST["form_nimgsdetp"], $detalle );
+		$idd = $_POST["idt"];
+		
+		procesarImagenes( $dbh, $idd, $detalle );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_POST["file_sending"] ) ){

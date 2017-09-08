@@ -145,20 +145,59 @@ function editarTallasDetalleProducto(){
     });
 }
 /* --------------------------------------------------------- */
+function eliminarImagenDetalleProducto( cuadro, id_img ){
+	//Envía al servidor la petición de eliminar imagen de detalle de producto. 
+	var img_gal = $( "#" + cuadro );
+	
+	$.ajax({
+        type:"POST",
+        url:"database/data-products.php",
+        data:{ elim_imgdetprod: id_img },
+        success: function( response ){
+			//res = jQuery.parseJSON(response);
+			console.log( response );
+			$(img_gal).hide("slow");
+			//window.location = "product-data.php?p=" + idp;
+        }
+    });		
+}
+/* --------------------------------------------------------- */
+function agregarImagenesDetalleProducto(){
+	//Envía al servidor la petición de guardar las imágenes cargadas por el plugin. 
+
+	var form = $("#frm_nimg_detprod");
+	var form_img = form.serialize();
+	var iddet = $("#iddetalle").val();
+	
+	$.ajax({
+        type:"POST",
+        url:"database/data-products.php",
+        data:{ form_nimgsdetp: form_img, idt: iddet },
+        success: function( response ){
+			//res = jQuery.parseJSON(response);
+			console.log(response);
+			//window.location = "product-data.php?p=" + idp;
+        }
+    });
+}
+/* --------------------------------------------------------- */
 function addCampoImg( valor ){
 	
 	var fld = "<input type='hidden' name='urlimgs[]' value='" + valor + "'>";
 	//$("#image-response").html( fld );
 	$(fld).appendTo( "#image-response" );
 }
-
-function processDataResponse(){
+/* --------------------------------------------------------- */
+function agregarCamposOcultosImagenes(){
+	//Toma los datos enviados después de la carga del plugin 
+	//para crear campos ocultos en el documento html que serán 
+	//usados posteriormente para procesar en la base de datos.
 	$("#image-response").html( "" );
-	$.each( $(".fpiup"), function() {	// vt_seleccionado: valor_tallas_seleccionado
+	$.each( $(".fpiup"), function() {
 		addCampoImg( $(this).attr("data-uimg") );	
 	});
 }
-
+/* --------------------------------------------------------- */
 function mostrarDatosValorPorTipoPrecio( tprecio ){
 	
 	if( tprecio == "g" ) $("#valor_gramo").fadeIn('slow');
@@ -214,14 +253,15 @@ $( document ).ready(function() {
 		$( "#" + ecanc ).fadeIn( 50 );
     });
 
-
+    $(".lnk_confelim_idet").on( "click", function(){
+    	var cuadro = $(this).attr( "data-gal" );
+    	var id_img = $(this).attr( "data-idimg" );
+    	eliminarImagenDetalleProducto( cuadro, id_img );
+    });
 
 	$("#bot_seltallas").on( "click", function(){
 		seleccionarTallas();	
     });
-
-
-
 
 });
 

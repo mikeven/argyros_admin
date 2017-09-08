@@ -354,19 +354,18 @@
                 };
             }
         }).on('filelock', function(event, filestack, extraData) {
-            var fstack = filestack.filter(function(n){ return n != undefined });
-            console.log( 'Files selected - ' + fstack.length );
+          var fstack = filestack.filter(function(n){ return n != undefined });
+          console.log( 'Files selected - ' + fstack.length );
         });
 
-        $("#images").on('fileuploaded', function(event, data, previewId, index) {
-            var form = data.form, files = data.files, extra = data.extra, 
-                response = data.response, reader = data.reader;
-            console.log( response );
-            processDataResponse();
+        $("#images").on('fileuploaded', function( event, data, previewId, index ) {
+          var form = data.form, files = data.files, extra = data.extra, response = data.response, reader = data.reader;
+          console.log( response );
+          agregarCamposOcultosImagenes();
         });
         
-        $("#images").on('filebatchuploadcomplete', function(event, data, previewId, index) {
-            processDataResponse();
+        $("#images").on('filebatchuploadcomplete', function( event, data, previewId, index ) {
+          agregarCamposOcultosImagenes();
         });
 
     </script>

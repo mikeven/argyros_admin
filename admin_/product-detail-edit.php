@@ -96,6 +96,7 @@
       margin: 5px;
       /*height: 140px;*/
       border: 1px solid #2a3f54;
+      border-radius: 3px;
     }
 
     #galeria_detalle {
@@ -113,6 +114,11 @@
       display: none;
     }
     .optcanconf{ margin: 0 5px; }
+
+    .lnk_confelim_idet{ color: #d43f3a; }
+    .lnk_confelim_idet:hover{ color: #d43f3a; text-decoration: underline; }
+    .lnk_elimimg_detprod:hover{ color: #d43f3a; }
+
 
   </style>
 
@@ -291,6 +297,7 @@
                                       data-toggle="modal" data-target="#size-table">Seleccionar</button>
                                       <?php include( "sections/modals/sizes-weight-edit.php" ); ?>
                                     </div>
+                                    
                                     <div id="tallas_seleccion" class="col-md-5 col-sm-5 col-xs-12"> 
                                       <?php 
                                         foreach ( $tallas_det as $rt ) { 
@@ -299,6 +306,7 @@
                                         } 
                                       ?>
                                     </div>
+
                                     <div id="valor_tseleccion" class="col-md-5 col-sm-5 col-xs-12">
                                       <?php 
                                         foreach ( $tallas_det as $rt ) { 
@@ -329,7 +337,7 @@
                           <div class="ln_solid"></div>
                           
                           <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div align="center"><h5>Imágenes existentes</h5></div>
+                            <div align="center"><h5>Imágenes del producto</h5></div>
                             <div class="ln_solid"></div>
                             <div id="galeria_detalle">
                               <?php include( "fn/fn-detail_product_gallery.php" ); ?>
@@ -343,7 +351,9 @@
                               <div id="panel_upload_photos">
                                 <input id="images" name="images[]" type="file" multiple class="file-loading">
                               </div>
-                              <div id="image-response"></div>
+                              <form id="frm_nimg_detprod" name="frm_agregar_nuevas_imagenes">
+                                <div id="image-response"></div>
+                              </form>
                             </div>
                           </div>
 
@@ -351,7 +361,6 @@
 
                         <div class="ln_solid"></div>
                         
-
                   </div>
                 </div>
               </div>
@@ -442,19 +451,19 @@
                 };
             }
         }).on('filelock', function(event, filestack, extraData) {
-            var fstack = filestack.filter(function(n){ return n != undefined });
-            console.log( 'Files selected - ' + fstack.length );
+          var fstack = filestack.filter(function(n){ return n != undefined });
+          console.log( 'Files selected - ' + fstack.length );
         });
 
         $("#images").on('fileuploaded', function(event, data, previewId, index) {
-            var form = data.form, files = data.files, extra = data.extra, 
-                response = data.response, reader = data.reader;
-            console.log( response );
-            processDataResponse();
+          var form = data.form, files = data.files, extra = data.extra, response = data.response, reader = data.reader;
+          console.log( response );
+          agregarCamposOcultosImagenes();
         });
         
         $("#images").on('filebatchuploadcomplete', function(event, data, previewId, index) {
-            processDataResponse();
+          agregarCamposOcultosImagenes();
+          agregarImagenesDetalleProducto();            
         });
 
     </script>

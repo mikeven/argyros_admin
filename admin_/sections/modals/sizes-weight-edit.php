@@ -1,5 +1,5 @@
-<div id="size-table" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
+<div id="size-table" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
 
       <div class="modal-header">
@@ -10,10 +10,7 @@
       <div id="sizestable" class="modal-body">
         <table class="table">
           <thead>
-            <tr>
-              <th>Talla</th>
-              <th>Peso</th>
-            </tr>
+            <tr><th>Talla</th><th>Peso</th><th>Disponibilidad</th><th>Acción</th></tr>
           </thead>
           <tbody>
             <tr style="background:#ccc;">
@@ -28,7 +25,11 @@
             <?php
               $n = 1; 
               foreach ( $tallas as $t ) {
-                $vpeso = obtenerPesoTallaRegistrado( $t["id"], $tallas_det ); 
+                $data = obtenerDatosTallaRegistrada( $t["id"], $tallas_det );
+                // $tallas_det: tallas registradas en detalle prod
+                $vpeso = $data["peso"]; 
+                $disponibilidad = $data["disp"];
+                $lnk = $data["ldsp"];  
             ?>
             <tr>
               <td><?php echo $t["name"] ?>
@@ -38,6 +39,8 @@
                 <input type="text" class="form-control valtallas_sel" placeholder="Peso (gr: 0.00)" 
                 value="<?php echo $vpeso ?>" data-t="nt<?php echo $n; ?>">
               </td>
+              <td><?php echo $disponibilidad; ?></td>
+              <td><?php echo $lnk; ?></td>
             </tr>
 
             <?php $n++; } ?>  

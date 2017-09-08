@@ -168,10 +168,8 @@
                                         <div class="data-talla-detalle">
                                             <table class="table table-striped table-bordered">
                                               <thead>
-                                                <tr><th>Talla</th><th>Peso</th>
-                                                </tr>
+                                                <tr><th>Talla</th><th>Peso</th><th>Acción</th></tr>
                                               </thead>
-
                                               <tbody>
                                                 <?php 
                                                     foreach ( $tallas_detalle as $talla ) { 
@@ -179,6 +177,7 @@
                                                     <tr>
                                                     <td><?php echo $talla["talla"]; ?></td>
                                                     <td><?php echo $talla["peso"]; ?> </td>
+                                                    <td><i class="fa fa-trash"></i> Ocultar</td>
                                                     </tr>
                                                 <?php } ?>
                                               </tbody>
@@ -197,7 +196,9 @@
                                             }
                                         ?>
                                         <div class="right" style="float:right;">
-                                            <button type="button" class="btn btn-info btn-xs">Editar</button>
+                                            <a href="product-detail-edit.php?id=<?php echo $dp["id"]; ?>">
+                                                <button type="button" class="btn btn-info btn-xs">Editar</button>
+                                            </a>
                                         </div>
                                     </div>
 
