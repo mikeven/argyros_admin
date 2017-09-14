@@ -22,7 +22,7 @@
             }
           ?>
         </td>
-        <td><a href="#!">Editar</a></td>
+        <td><a href="category-edit.php?id=<?php echo $c["id"]; ?>">Editar</a></td>
         <td><a href="#!">Borrar</a></td>
       </tr>
     <?php } ?>

@@ -8,7 +8,14 @@
     include( "database/bd.php" );
     include( "database/data-user.php" );
     include( "database/data-categories.php" );
+    include( "fn/common-functions.php" );
     checkSession( '' );
+
+    if( isset( $_GET["id"] ) ){
+      $idsc = $_GET["id"];
+      $subcategoria = obtenerSubCategoriaPorId( $dbh, $idsc );
+      $categorias = obtenerListaCategorias( $dbh );
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +26,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Subcategorías :: Argyros Admin</title>
+    <title>Editar subcategoría :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -49,11 +56,6 @@
     <link href="build/css/custom.min.css" rel="stylesheet">
   </head>
 
-  <?php
-    $subcategorias = obtenerListaSubCategorias( $dbh );
-    $categorias = obtenerListaCategorias( $dbh );
-  ?>
-
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
@@ -66,7 +68,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Subcategorías</h3>
+                <h3>Editar subcategoría</h3>
               </div>
 
               <!--<div class="title_right">
@@ -88,31 +90,36 @@
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear subcategoría</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>-->
+                    <h2>Editar subcategoría</h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="frm_msubcategoria" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-categories.php?subcategory-edit" method="post">
+                      
                       <div class="form-group">
+                        <input id="idsubcategoria" name="idsubcategoria" type="hidden" value="<?php echo $idsc; ?>">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre categoría">
+                          <input type="text" class="form-control" placeholder="Nombre categoría" 
+                          value="<?php echo $subcategoria["name"]; ?>" name="nombre">
                         </div>
                       </div>
+
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Categorías </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="form-control selectpicker">
+                          <select class="form-control selectpicker" name="idcategoria">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
-                              <option><?php echo $c["name"] ?></option>
+                              <option value="<?php echo $c["id"] ?>" 
+                                <?php echo sop( $c["id"], $subcategoria["idcategoria"] );?> > <?php echo $c["name"] ?>
+                              </option>
                             <?php } ?>
                           </select>
                         </div>
                       </div>
+
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div align="center">
@@ -125,19 +132,7 @@
                 </div>
               </div>
               <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lista de subcategorías</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>-->
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-subcategories.php");?>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>

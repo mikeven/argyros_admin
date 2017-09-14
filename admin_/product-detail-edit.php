@@ -1,6 +1,6 @@
 <?php
   /*
-   * Argyros Admin - Detalle del producto
+   * Argyros Admin - Detalle del producto edición
    * 
    */
     session_start();
@@ -19,7 +19,7 @@
     include( "database/data-categories.php" );
 
     include( "fn/fn-prices.php" );
-     include( "fn/fn-sizes.php" );
+    include( "fn/fn-sizes.php" );
     checkSession( '' );
     
     if( isset( $_GET["id"] ) ){
@@ -118,7 +118,6 @@
     .lnk_confelim_idet{ color: #d43f3a; }
     .lnk_confelim_idet:hover{ color: #d43f3a; text-decoration: underline; }
     .lnk_elimimg_detprod:hover{ color: #d43f3a; }
-
 
   </style>
 

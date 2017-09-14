@@ -6,13 +6,19 @@
 	function obtenerDatosTallaRegistrada( $tid, $tallas_reg ){
 		$data = array();
 		foreach ( $tallas_reg as $tr ) {
+			$data["peso"] = "";
+			$data["ldsp"] = "";
+			$data["disp"] = "";
+			//echo $tid." = ".$tr["idtalla"];
 			
 			if( $tr["idtalla"] == $tid ){
 				$data["peso"] = $tr["peso"];
 				$data["ldsp"] = obtenerEnlaceDisponibilidadTalla( $tr["visible"] );
 				$data["disp"] = obtenerEtiquetaDisponibilidadTalla( $tr["visible"] );
+				break; 
 			}
 		}
+
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */

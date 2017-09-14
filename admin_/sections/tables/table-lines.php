@@ -14,8 +14,8 @@
     ?>
     <tr>
       <td><?php echo $l["name"]; ?></td>
-      <td> </td>
-      <td><a href="#!">Editar</a></td>
+      <td><?php echo $l["description"]; ?></td>
+      <td><a href="lines-edit.php?id=<?php echo $l["id"]; ?>">Editar</a></td>
       <td><a href="#!">Borrar</a></td>
     </tr>
     <?php } ?>

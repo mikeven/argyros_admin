@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Trabajos
+     * Argyros Admin - Ficha de producto
      * 
      */
     session_start();
@@ -131,7 +131,9 @@
                                     <label class="control-label">País: </label> <?php echo $producto["pais"]; ?>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-info btn-xs">Editar</button>
+                                    <a href="product-edit.php?id=<?php echo $idp; ?>">
+                                        <button type="button" class="btn btn-info btn-xs">Editar</button>
+                                    </a>
                                 </div>
                               
                             </div>

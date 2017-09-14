@@ -19,7 +19,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Categorías :: Argyros Admin</title>
+    <title>Líneas :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -68,7 +68,7 @@
                 <h3>Líneas</h3>
               </div>
 
-              <div class="title_right">
+              <!--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -77,7 +77,7 @@
                     </span>
                   </div>
                 </div>
-              </div>
+              </div>-->
             
             </div>
 
@@ -94,21 +94,25 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="frm_nlinea" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-lines.php?nline" method="post">
+                      
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre categoría">
+                          <input type="text" class="form-control" placeholder="Nombre de línea" name="nombre">
                         </div>
                       </div>
+
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Descripción </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <textarea class="form-control" rows="3" placeholder="Descripción de la línea"></textarea>
+                          <textarea class="form-control" rows="3" placeholder="Descripción de la línea" name="descripcion"></textarea>
                         </div>
                       </div>
                       
                       <div class="ln_solid"></div>
+
                       <div class="form-group">
                         <div align="center">
                           <button type="submit" class="btn btn-success">Guardar</button>

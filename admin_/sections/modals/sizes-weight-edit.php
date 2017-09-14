@@ -23,10 +23,13 @@
               </td>
             </tr>
             <?php
-              $n = 1; 
+              $n = 1;
+              
+              //$tallas: registro general de tallas registradas en la categoría
               foreach ( $tallas as $t ) {
                 $data = obtenerDatosTallaRegistrada( $t["id"], $tallas_det );
-                // $tallas_det: tallas registradas en detalle prod
+                //$tallas_det: tallas registradas en detalle prod
+                
                 $vpeso = $data["peso"]; 
                 $disponibilidad = $data["disp"];
                 $lnk = $data["ldsp"];  

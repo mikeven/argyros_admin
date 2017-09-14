@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Inicio
+     * Argyros Admin - Edición categoría
      * 
      */
     session_start();
@@ -9,6 +9,12 @@
     include( "database/data-user.php" );
     include( "database/data-categories.php" );
     checkSession( '' );
+
+    if( isset( $_GET["id"] ) ){
+        $idc = $_GET["id"];
+        $categoria = obtenerCategoriaPorId( $dbh, $idc );
+        $subcategories = obtenerListaSubCategoriasCategoria( $dbh, $idc );
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +25,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Subcategorías :: Argyros Admin</title>
+    <title>Editar categoría :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -45,12 +51,17 @@
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
   </head>
 
   <?php
-    $subcategorias = obtenerListaSubCategorias( $dbh );
+    
     $categorias = obtenerListaCategorias( $dbh );
   ?>
 
@@ -66,7 +77,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Subcategorías</h3>
+                <h3>Editar categoría</h3>
               </div>
 
               <!--<div class="title_right">
@@ -88,38 +99,31 @@
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear subcategoría</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>-->
+                    <h2>Editar nombre de categoría</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      
+                    </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="frm_mcategoria" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-categories.php?category-edit" method="post">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre categoría">
+                          <input id="idcategoria" name="idcategoria" type="hidden" value="<?php echo $idc; ?>">
+                          <input name="nombre" type="text" class="form-control" 
+                          placeholder="Nombre categoría" value="<?php echo $categoria["name"]; ?>">
                         </div>
                       </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Categorías </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="form-control selectpicker">
-                            <option disabled>Seleccione</option>
-                            <?php foreach ( $categorias as $c ) { ?>
-                              <option><?php echo $c["name"] ?></option>
-                            <?php } ?>
-                          </select>
-                        </div>
-                      </div>
+                      
                       <div class="ln_solid"></div>
+
                       <div class="form-group">
                         <div align="center">
                           <button type="submit" class="btn btn-success">Guardar</button>
                         </div>
                       </div>
-
                     </form>  
                   </div>
                 </div>
@@ -127,7 +131,7 @@
               <div class="col-md-8 col-sm-5 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Lista de subcategorías</h2>
+                    <h2>Subcategorías</h2>
                     <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>-->
@@ -135,7 +139,7 @@
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-subcategories.php");?>
+                    <?php include("sections/tables/table-subcategories-cat.php");?>
                   </div>
                 </div>
               </div>
@@ -147,6 +151,14 @@
         <!-- footer content -->
         <?php include( "sections/footer.php" ); ?>
         <!-- /footer content -->
+
+        <button type="button" class="btn btn-default source hidden" onclick="new PNotify({
+            title: '',
+            text: 'That thing that you were trying to do worked!',
+            type: 'success',
+            styling: 'bootstrap3'
+        });">Success</button>
+
       </div>
     </div>
 
@@ -205,6 +217,11 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>

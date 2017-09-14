@@ -5,7 +5,6 @@
  */
 
 function agregarProducto(){
-
 	var fs = $('#frm_nproduct').serialize();
 	//$("#ghres").html( fs );	
 
@@ -17,6 +16,21 @@ function agregarProducto(){
         	console.log( response );
 			res = jQuery.parseJSON( response );
 			enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.id );
+        }
+    });
+}
+/* --------------------------------------------------------- */
+function editarProducto(){
+	var fs = $('#frm_mproduct').serialize();
+
+	$.ajax({
+        type:"POST",
+        url:"database/data-products.php",
+        data:{ form_mp: fs },
+        success: function( response ){
+        	console.log( response );
+			//res = jQuery.parseJSON( response );
+			//enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.id );
         }
     });
 }
@@ -219,11 +233,17 @@ $( document ).ready(function() {
 		var idc = $(this).val();
 		mostrarSubcategorias( idc );
     });
-
+    // ============================================================================ //
+    /*new-product.php*/
 	$("#bot_guardar_nuevo_producto").on( "click", function(){
 		agregarProducto();	
     });
 
+    /*new-product.php*/
+	
+
+	// ============================================================================ //
+	/*product-detail.php*/
 	$("#bot_guardar_det_producto").on( "click", function(){
 		agregarDetalleProducto();	
     });
@@ -262,6 +282,12 @@ $( document ).ready(function() {
 	$("#bot_seltallas").on( "click", function(){
 		seleccionarTallas();	
     });
+	
+	/*product-edit.php*/
+	$("#bot_editar_producto").on( "click", function(){
+		editarProducto();	
+    });
+
 
 });
 

@@ -12,13 +12,12 @@
 		$lista_l = obtenerListaRegistros( $data );
 		return $lista_l;	
 	}
+	
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
 	/* ----------------------------------------------------------------------------------- */
-	//Inicio de sesión
-	if( isset( $_SESSION["login"] ) ){
-		$idu = $_SESSION["user"]["id"];
-	}else $idu = NULL;
+	
+	
 	/* ----------------------------------------------------------------------------------- */
 
 ?>
