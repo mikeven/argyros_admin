@@ -95,20 +95,21 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="frm_nsubcategoria" data-parsley-validate class="form-horizontal form-label-left" 
+                    action="database/data-categories.php?nsubcategoria" method="post">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre categoría">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre subcategoría">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Categorías </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="form-control selectpicker">
+                          <select name="idcategoria" class="form-control selectpicker">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
-                              <option><?php echo $c["name"] ?></option>
+                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                             <?php } ?>
                           </select>
                         </div>

@@ -1,6 +1,6 @@
 <?php
 	/* ----------------------------------------------------------------------------------- */
-	/* Argyros - Funciones de países */
+	/* Argyros - Funciones de categorías */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
@@ -71,6 +71,15 @@
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );	
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function agregarSubcategoria( $dbh, $nombre, $idcategoria ){
+		//Agrega un registro de subcategoría de producto
+		$q = "insert into subcategories ( name, category_id, created_at ) 
+				values ( '$nombre', $idcategoria, NOW() )";
+		echo $q;
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_insert_id( $dbh );
+	}
 
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
@@ -89,6 +98,15 @@
 		//echo "id: ".$idc;
 		if( ( $idc != 0 ) && ( $idc != "" ) ){
 			header( "Location: ../categories.php?agregar_categoria&success" );
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_GET["nsubcategoria"] ) ){
+		include( "bd.php" );
+		$idsc = agregarSubcategoria( $dbh, $_POST["nombre"], $_POST["idcategoria"] );
+		//echo "id: ".$idsc;
+		if( ( $idsc != 0 ) && ( $idsc != "" ) ){
+			header( "Location: ../subcategories.php?addsubcategory&success" );
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */

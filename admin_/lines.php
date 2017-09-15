@@ -88,9 +88,9 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Crear Línea</h2>
-                    <ul class="nav navbar-right panel_toolbox">
+                    <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
+                    </ul>-->
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -127,9 +127,9 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Lista de líneas</h2>
-                    <ul class="nav navbar-right panel_toolbox">
+                    <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
+                    </ul>-->
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">

@@ -131,7 +131,7 @@
               <div class="col-md-8 col-sm-5 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Subcategorías</h2>
+                    <h2>Subcategorías asociadas</h2>
                     <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>-->

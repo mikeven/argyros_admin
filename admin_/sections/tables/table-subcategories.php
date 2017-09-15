@@ -15,7 +15,7 @@
       <tr>
         <td><?php echo $sc["name"]; ?></td>
         <td><?php echo $sc["cname"]; ?></td>
-        <td><a href="#!">Editar</a></td>
+        <td><a href="subcategory-edit.php?id=<?php echo $sc["id"]; ?>">Editar</a></td>
         <td><a href="#!">Borrar</a></td>
       </tr>
     <?php } ?>
