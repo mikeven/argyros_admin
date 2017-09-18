@@ -3,6 +3,7 @@
     <tr>
       <th>Nombre</th>
       <th>Material</th>
+      <th> </th>
     </tr>
   </thead>
 
@@ -13,6 +14,7 @@
     <tr>
       <td><?php echo $b["name"]; ?></td>
       <td><?php echo $b["material"]; ?></td>
+      <td><a href="treatment-edit.php?id=<?php echo $b["id"]; ?>">Editar</a></td>
     </tr>
     <?php } ?>
   </tbody>

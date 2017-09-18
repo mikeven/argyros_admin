@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Baños
+     * Argyros Admin - Edición baño
      * 
      */
     session_start();
@@ -9,8 +9,14 @@
     include( "database/data-user.php" );
     include( "database/data-materials.php" );
     include( "database/data-treatments.php" );
+    include( "fn/common-functions.php" );
 
     checkSession( '' );
+
+    if( isset( $_GET["id"] ) ){
+        $idb = $_GET["id"];
+        $bano = obtenerBanoPorId( $dbh, $idb );
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +27,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Baños :: Argyros Admin</title>
+    <title>Editar baño :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -90,25 +96,30 @@
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear baño</h2>
+                    <h2>Editar baño</h2>
                     
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     <form id="frm_ntreatment" data-parsley-validate class="form-horizontal form-label-left" 
-                    action="database/data-treatments.php?ntreatment" method="post">
+                    action="database/data-treatments.php?mtreatment" method="post">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="nombre" type="text" class="form-control" placeholder="Nombre de baño">
+                          <input id="idbano" name="idbano" type="hidden" value="<?php echo $bano["id"] ?>">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre de baño" 
+                          value="<?php echo $bano["nombre"] ?>">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
                           <select name="material" class="form-control selectpicker">
+                            <option selected> </option>
                             <?php foreach ( $materiales as $m ) { ?>
-                              <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>
+                              <option value="<?php echo $m["id"] ?>" 
+                                <?php echo sop( $m["id"], $bano["idmaterial"] );?> > <?php echo $m["name"] ?>
+                              </option>
                             <?php } ?>
                           </select>
                         </div>
@@ -124,18 +135,11 @@
                   </div>
                 </div>
               </div>
+              
               <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lista de baños</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-treatments.php");?>
-                  </div>
-                </div>
+                
               </div>
+            
             </div>
           </div>
         </div>

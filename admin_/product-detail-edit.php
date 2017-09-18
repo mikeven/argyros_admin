@@ -132,6 +132,8 @@
     $producto = obtenerProductoPorId( $dbh, $datos_det["pid"] );
     $tallas = obtenerListaTallasCategoria( $dbh, $producto["cid"] );  // database/data-sizes.php
     $t0 = obtenerValoresTallaCero( $dbh );
+
+    $lnk_back = "product-data.php?p=".$producto["cid"];
     
   ?>
 
@@ -180,11 +182,14 @@
                   <div class="x_content">
                         <p class="text-muted font-13 m-b-30"> </p>
                         <div class="row">
-                          <div class="form-group">
-                            <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
-                            <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
-                            <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
-                          </div>
+                          
+                            <div class="form-group">
+                              <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
+                              <a href="<?php echo $lnk_back; ?>">
+                                <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
+                              </a>
+                              <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
+                            </div>
                           
                           <div class="form-group">
                             <label class="control-label">Categoría: </label> 

@@ -29,8 +29,8 @@ function editarProducto(){
         data:{ form_mp: fs },
         success: function( response ){
         	console.log( response );
-			//res = jQuery.parseJSON( response );
-			//enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.id );
+			res = jQuery.parseJSON( response );
+			enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.id );
         }
     });
 }

@@ -46,14 +46,19 @@
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
+	
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Líneas */
 	/* ----------------------------------------------------------------------------------- */
+	
 	//Registro de nueva línea
 	if( isset( $_GET["nline"] ) ){
 		
 		include( "bd.php" );
-		$idl = agregarLinea( $dbh, $_POST["nombre"], $_POST["descripcion"] );
+
+		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$descripcion = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$idl = agregarLinea( $dbh, $nombre, $descripcion );
 		
 		if( ( $idl != 0 ) && ( $idl != "" ) ){
 			header( "Location: ../lines.php?addline&success" );
@@ -66,8 +71,11 @@
 		include( "bd.php" );
 		$idl = $_POST["idlinea"];
 		
-		$r = modificarLinea( $dbh, $idl, $_POST["nombre"], $_POST["descripcion"] );
-		echo "R: ".$r;
+		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$descripcion = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+
+		$r = modificarLinea( $dbh, $idl, $nombre, $descripcion );
+		
 		if( ( $r != 0 ) && ( $r != "" ) ){
 			header( "Location: ../line-edit.php?id=".$idl."&edit&success" );
 		}

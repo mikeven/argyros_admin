@@ -9,6 +9,9 @@
     include( "database/data-user.php" );
     include( "fn/common-functions.php" );
     include( "database/data-products.php" );
+
+    include( "fn/fn-products.php" );
+
     checkSession( '' );
     
     if( isset( $_GET["p"] ) ){
@@ -73,6 +76,10 @@
     if( isset( $idp ) ) {
         $producto = obtenerProductoPorId( $dbh, $idp );
         $dproducto = obtenerDetalleProductoPorId( $dbh, $idp );
+        $trabajosp = obtenerTrabajosDeProductoPorId( $dbh, $idp );
+        $lineasp = obtenerLineasDeProductoPorId( $dbh, $idp );
+
+        //print_r( $lineasp );
     }
   ?>
 
@@ -130,6 +137,20 @@
                                 <div class="form-group">
                                     <label class="control-label">País: </label> <?php echo $producto["pais"]; ?>
                                 </div>
+                                
+                                <div class="ln_solid"></div>
+                                
+                                <div id="datos_línea">
+                                    <label class="control-label">Líneas: </label>
+                                    <?php echo mostrarLineasProducto( $lineasp ); ?>    
+                                </div>
+                                <div id="datos_trabajo">
+                                    <label class="control-label">Trabajos: </label>
+                                    <?php echo mostrarTrabajosProducto( $trabajosp ); ?>    
+                                </div>
+                                
+                                <div class="ln_solid"></div>
+                                
                                 <div>
                                     <a href="product-edit.php?id=<?php echo $idp; ?>">
                                         <button type="button" class="btn btn-info btn-xs">Editar</button>

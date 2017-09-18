@@ -60,7 +60,7 @@
 		//Edita los datos de subcategoría
 		$q = "update subcategories set name = '$nombre', category_id = $idcategoria, 
 				updated_at = NOW() where id = $idsubcategoria";
-		echo $q;
+		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
@@ -76,7 +76,7 @@
 		//Agrega un registro de subcategoría de producto
 		$q = "insert into subcategories ( name, category_id, created_at ) 
 				values ( '$nombre', $idcategoria, NOW() )";
-		echo $q;
+		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
@@ -94,8 +94,11 @@
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_GET["ncategoria"] ) ){
 		include( "bd.php" );
-		$idc = agregarCategoria( $dbh, $_POST["nombre"] );
-		//echo "id: ".$idc;
+
+
+		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$idc = agregarCategoria( $dbh, $nombre );
+		
 		if( ( $idc != 0 ) && ( $idc != "" ) ){
 			header( "Location: ../categories.php?agregar_categoria&success" );
 		}
@@ -103,8 +106,10 @@
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_GET["nsubcategoria"] ) ){
 		include( "bd.php" );
-		$idsc = agregarSubcategoria( $dbh, $_POST["nombre"], $_POST["idcategoria"] );
-		//echo "id: ".$idsc;
+		
+		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$idsc = agregarSubcategoria( $dbh, $nombre, $_POST["idcategoria"] );
+		
 		if( ( $idsc != 0 ) && ( $idsc != "" ) ){
 			header( "Location: ../subcategories.php?addsubcategory&success" );
 		}
@@ -114,20 +119,22 @@
 	if( isset( $_GET["category-edit"] ) ){
 		include( "bd.php" );
 		$idc = $_POST["idcategoria"];
-		$r = modificarCategoria( $dbh, $_POST["idcategoria"], $_POST["nombre"] );
-		echo "R: ".$r;
+		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$r = modificarCategoria( $dbh, $_POST["idcategoria"], $nombre );
+		
 		if( ( $r != 0 ) && ( $r != "" ) ){
 			header( "Location: ../category-edit.php?id=".$idc."&edit&success" );
 		}
 	}
-
+	/* ----------------------------------------------------------------------------------- */
 	//Editar datos de subcategoría
 	if( isset( $_GET["subcategory-edit"] ) ){
 		include( "bd.php" );
 		$idsc = $_POST["idsubcategoria"];
 		$idc = $_POST["idcategoria"];
-		$r = modificarSubCategoria( $dbh, $idsc, $_POST["nombre"], $idc );
-		echo "R: ".$r;
+		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$r = modificarSubCategoria( $dbh, $idsc, $nombre, $idc );
+		
 		if( ( $r != 0 ) && ( $r != "" ) ){
 			header( "Location: ../subcategory-edit.php?id=".$idsc."&edit&success" );
 		}

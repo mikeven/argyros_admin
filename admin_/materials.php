@@ -69,7 +69,7 @@
                 <h3>Materiales</h3>
               </div>
 
-              <div class="title_right">
+              <!--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -78,7 +78,7 @@
                     </span>
                   </div>
                 </div>
-              </div>
+              </div>-->
             
             </div>
 
@@ -89,38 +89,33 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Crear material</h2>
-                    <ul class="nav navbar-right panel_toolbox">
+                    <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
+                    </ul>-->
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    
+                    <form id="frm_nmaterial" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-materials.php?nmaterial" method="post">
+                      
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre del material">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre del material">
                         </div>
                       </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Baños </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="form-control">
-                            <option disabled>Seleccione</option>
-                            <?php foreach ( $materiales as $m ) { ?>
-                              <option><?php echo $m["name"] ?></option>
-                            <?php } ?>
-                          </select>
-                        </div>
-                      </div>
+                      
                       <div class="ln_solid"></div>
+
                       <div class="form-group">
                         <div align="center">
                           <button type="submit" class="btn btn-success">Guardar</button>
                         </div>
                       </div>
 
-                    </form>  
+                    </form>
+
                   </div>
                 </div>
               </div>
@@ -128,9 +123,9 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Lista de materiales</h2>
-                    <ul class="nav navbar-right panel_toolbox">
+                    <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
+                    </ul>-->
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">

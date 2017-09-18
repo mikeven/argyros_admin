@@ -27,7 +27,9 @@
 		and p.country_code = co.code and p.id = $idp";
 
 		$data = mysqli_query( $dbh, $q );
-		return mysqli_fetch_array( $data );		
+		if( $data )
+			return mysqli_fetch_array( $data );
+
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerLineasDeProductoPorId( $dbh, $idp ){
@@ -126,6 +128,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function agregarProducto( $dbh, $producto ){
 		//Guarda el registro de un producto
+		
 		$q = "insert into products ( code, name, description, country_code, category_id, 
 		subcategory_id, material_id ) values ( '$producto[codigo]', '$producto[nombre]', '$producto[descripcion]',
 		'$producto[pais]', $producto[categoria], $producto[subcategoria], $producto[material] )";
@@ -140,7 +143,7 @@
 		manufacture_value, weight_price_value, created_at ) values ( $detalle[idproducto], $detalle[color], 
 		$detalle[bano], '$detalle[tprecio]', $detalle[valor_pieza], $detalle[valor_mano_obra], $detalle[valor_gramo], NOW())";
 		
-		echo $q;
+		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
@@ -228,7 +231,7 @@
 		//Guarda el registro de tallas y pesos de un detalle de producto
 		$q = "insert into size_product_detail ( weight, size_id, product_detail_id ) 
 			   values ( $peso, $idtalla, $idd )";
-		echo $q;
+		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -357,28 +360,29 @@
 
 		echo json_encode( $res );
 	}
-
+	/* ----------------------------------------------------------------------------------- */
 	//Edición de datos de producto
 	if( isset( $_POST["form_mp"] ) ){
 		include( "bd.php" );	
 		parse_str( $_POST["form_mp"], $producto );
 
 		//print_r( $producto );
-		editarProducto( $dbh, $producto );
+		$r = editarProducto( $dbh, $producto );
 		eliminarAsociacionesTrabajosLineas( $dbh, $producto );
 		registrarAsociacionesTrabajosLineas( $dbh, $producto );
+		$producto["id"] = $producto["idproducto"];
 
-		/*if( ( $idp != 0 ) && ( $idp != "" ) ){
+		if( ( $r != 0 ) && ( $r != "" ) ) {
 			$res["exito"] = 1;
-			$res["mje"] = "Registro exitoso";
+			$res["mje"] = "Actualización exitoso";
 			$res["reg"] = $producto;
 		} else {
 			$res["exito"] = 0;
-			$res["mje"] = "Error al registrar producto";
+			$res["mje"] = "Error al modificar producto";
 			$res["reg"] = NULL;
 		}
 
-		echo json_encode( $res );*/
+		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Registro de nuevo detalle de producto

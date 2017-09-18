@@ -23,8 +23,10 @@
 	function obtenerListaRegistros( $data ){
 		//Devuelve un arreglo con los resultados de un resultset de BD
 		$lista_c = array();
-		while( $c = mysqli_fetch_array( $data ) ){
-			$lista_c[] = $c;	
+		if( $data ){
+			while( $c = mysqli_fetch_array( $data ) ){
+				$lista_c[] = $c;	
+			}
 		}
 		return $lista_c;
 	}

@@ -33,15 +33,40 @@
 		$lista_p = obtenerListaRegistros( $data );
 		return $lista_p;	
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerEstadoActualizablePaisProductor( $dbh, $idp ){
+		//Devuelve el estado opuesto al actual de país productor para tomar este valor.
+		//Si estado = 1, devuelve 0. Si estado = 0, devuelve 1 
+		$estado = 1;
+		$q = "select manufacture from countries where id = $idp";
+		
+		$data = mysqli_fetch_array( mysqli_query( $dbh, $q ) );
+		$status = $data["manufacture"];
+		if( $status == 1 ) $estado = 0;
+		
+		return $estado;	
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function actualizarPaisProductor( $dbh, $idp, $estado ){
+		$q = "update countries set manufacture = $estado, updated_at = NOW() where id = $idp";
+		//echo $q;
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
 
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Países */
 	/* ----------------------------------------------------------------------------------- */
 	
-	//I
-	if( isset( $_GET[""] ) ){
+	//Editar condición país productor
+	if( isset( $_POST["act_pprod"] ) ){
+		include( "bd.php" );
+		$idp = $_POST["act_pprod"];
 		
-	}else {};
+		$estado = obtenerEstadoActualizablePaisProductor( $dbh, $idp );
+		actualizarPaisProductor( $dbh, $idp, $estado );
+		echo $estado; 
+	}
 	/* ----------------------------------------------------------------------------------- */
 
 ?>

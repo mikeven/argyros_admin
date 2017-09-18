@@ -88,17 +88,15 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Crear trabajo</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="frm_ntrabajo" data-parsley-validate class="form-horizontal form-label-left" 
+                    action="database/data-makings.php?ntrabajo" method="post">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre del trabajo">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre del trabajo">
                         </div>
                       </div>
                       <div class="ln_solid"></div>
@@ -115,10 +113,7 @@
               <div class="col-md-8 col-sm-5 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Lista de trabajos</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
+                    <h2>Lista de trabajos</h2>                    
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">

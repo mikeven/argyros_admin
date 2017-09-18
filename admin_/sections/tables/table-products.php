@@ -8,7 +8,6 @@
       <th>Descripción</th>
       <th>Categoría</th>
       <th>Subcategoría</th>
-      <th>Detalle</th>
       <th>Editar</th>
       <th>Borrar</th>
     </tr>
@@ -23,12 +22,11 @@
         <td><a href="#!">Ocultar</a></td>
         <td><?php echo $p["id"]; ?></td>
         <td><?php echo $p["codigo"]; ?></td>
-        <td><a href="<?php echo $lnk_p; ?>"><?php echo $p["nombre"]; ?></a></td>
+        <th><a class="primary" href="<?php echo $lnk_p; ?>"><?php echo $p["nombre"]; ?></a></th>
         <td><?php echo $p["descripcion"]; ?></td>
         <td><?php echo $p["categoria"]; ?></td>
         <td><?php echo $p["subcategoria"]; ?></td>
-        <td><a href="#!">Detalle</a></td>
-        <td><a href="#!">Editar</a></td>
+        <td align="center"><a href="product-edit.php?id=<?php echo $p["id"]; ?>"><i class="fa fa-edit"></i></a></td>
         <td><a href="#!">Borrar</a></td>
       </tr>
     <?php } ?>

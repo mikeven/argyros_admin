@@ -5,10 +5,11 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDatosTallaRegistrada( $tid, $tallas_reg ){
 		$data = array();
+		$data["peso"] = "";
+		$data["ldsp"] = "";
+		$data["disp"] = "";
 		foreach ( $tallas_reg as $tr ) {
-			$data["peso"] = "";
-			$data["ldsp"] = "";
-			$data["disp"] = "";
+			
 			//echo $tid." = ".$tr["idtalla"];
 			
 			if( $tr["idtalla"] == $tid ){

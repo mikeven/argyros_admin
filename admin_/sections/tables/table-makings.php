@@ -12,7 +12,7 @@
       ?>
       <tr>
         <td><?php echo $t["name"]; ?></td>
-        <td><a href="#!">Editar</a></td>
+        <td><a href="making-edit.php?id=<?php echo $t["id"]; ?>">Editar</a></td>
         <td><a href="#!">Borrar</a></td>
       </tr>
     <?php } ?>

@@ -19,10 +19,12 @@
     include( "database/data-categories.php" );
 
     include( "fn/fn-prices.php" );
+    include( "fn/fn-products.php" );
     checkSession( '' );
     
     if( isset( $_GET["p"] ) ){
-        $idp = $_GET["p"];    
+        $idp = $_GET["p"];
+        $lnk_back = "product-data.php?p=$idp";    
     }
     
 ?>
@@ -145,11 +147,15 @@
                               <form id="frm_ndetproduct" data-parsley-validate class="form-horizontal form-label-left" 
                                 action="new-product.php?p=1" method="post">
                                 
+                                
                                 <div class="form-group">
                                   <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
-                                  <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
+                                  <a href="<?php echo $lnk_back; ?>">
+                                    <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
+                                  </a>
                                   <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
                                 </div>
+                                
                                 
                                 <div class="form-group">
                                   <label class="control-label">Categoría: </label> 

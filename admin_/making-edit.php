@@ -1,16 +1,19 @@
 <?php
     /*
-     * Argyros Admin - Baños
+     * Argyros Admin - Editar trabajo
      * 
      */
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
-    include( "database/data-materials.php" );
-    include( "database/data-treatments.php" );
-
+    include( "database/data-makings.php" );
     checkSession( '' );
+
+    if( isset( $_GET["id"] ) ){
+      $idt = $_GET["id"];
+      $trabajo = obtenerTrabajoPorId( $dbh, $idt );
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +24,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Baños :: Argyros Admin</title>
+    <title>Editar trabajo :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,8 +55,7 @@
   </head>
 
   <?php
-    $banos = obtenerListaBanos( $dbh );
-    $materiales = obtenerListaMateriales( $dbh );
+    $trabajos = obtenerListaTrabajos( $dbh );
   ?>
 
   <body class="nav-md">
@@ -68,7 +70,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Baños</h3>
+                <h3>Trabajos</h3>
               </div>
 
               <!--<div class="title_right">
@@ -90,27 +92,18 @@
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear baño</h2>
-                    
+                    <h2>Editar trabajo</h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="frm_ntreatment" data-parsley-validate class="form-horizontal form-label-left" 
-                    action="database/data-treatments.php?ntreatment" method="post">
+                    <form id="frm_mtrabajo" data-parsley-validate class="form-horizontal form-label-left" 
+                    action="database/data-makings.php?mtrabajo" method="post">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="nombre" type="text" class="form-control" placeholder="Nombre de baño">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select name="material" class="form-control selectpicker">
-                            <?php foreach ( $materiales as $m ) { ?>
-                              <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>
-                            <?php } ?>
-                          </select>
+                          <input id="idtrabajo" name="idtrabajo" type="hidden" value="<?php echo $trabajo["id"]; ?>">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre del trabajo" 
+                          value="<?php echo $trabajo["name"]; ?>">
                         </div>
                       </div>
                       <div class="ln_solid"></div>
@@ -124,18 +117,11 @@
                   </div>
                 </div>
               </div>
+              
               <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lista de baños</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-treatments.php");?>
-                  </div>
-                </div>
+                
               </div>
+            
             </div>
           </div>
         </div>
