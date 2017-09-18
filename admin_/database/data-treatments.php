@@ -41,7 +41,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function editarBano( $dbh, $idb, $nombre, $idmaterial ){
-		//Agrega un registro de baño
+		//Actualiza los datos de regristro de baño
 		$q = "update treatments set name = '$nombre', material_id = $idmaterial, 
 				updated_at = NOW() where id = $idb";
 		echo $q;
