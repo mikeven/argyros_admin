@@ -117,7 +117,7 @@
                         <div class="row">
                           
                           <form id="frm_nproduct" data-parsley-validate class="form-horizontal form-label-left" 
-                            action="product-detail.php?p=1" method="post">
+                            action="product-detail.php" method="post">
                             <div class="col-md-6 col-sm-6 col-xs-12">
                               
                               <div class="form-group">

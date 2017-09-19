@@ -17,7 +17,7 @@
         foreach ( $clientes as $c ) { 
       ?>
       <tr>
-        <td><?php echo $c["nombre"]; ?></td>
+        <td><a href="client-data.php?id=<?php echo $c["id"]; ?>"><?php echo $c["nombre"]; ?></a></td>
         <td><?php echo $c["apellido"]; ?></td>
         <td><?php echo $c["email"]; ?></td>
         <td><?php echo $c["phone"]; ?></td>

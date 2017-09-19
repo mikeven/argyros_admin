@@ -69,7 +69,7 @@
                 <h3>Tipos de clientes</h3>
               </div>
 
-              <div class="title_right">
+              <!--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -78,7 +78,7 @@
                     </span>
                   </div>
                 </div>
-              </div>
+              </div>-->
             
             </div>
 
@@ -89,53 +89,56 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Crear grupo</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
+                    
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="frm_ngrupocliente" data-parsley-validate class="form-horizontal form-label-left">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre grupo">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre grupo">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable A </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Variable A">
+                          <input name="var_a" type="text" class="form-control" placeholder="Variable A" 
+                          onkeypress="return isNumberKey(event)">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable B </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Variable B">
+                          <input name="var_b" type="text" class="form-control" placeholder="Variable B" 
+                          onkeypress="return isNumberKey(event)">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable C </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Variable C">
+                          <input name="var_c" type="text" class="form-control" placeholder="Variable C" 
+                          onkeypress="return isNumberKey(event)">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable D </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Variable D">
+                          <input name="var_d" type="text" class="form-control" placeholder="Variable D" 
+                          onkeypress="return isNumberKey(event)">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Material">
+                          <input name="material" type="text" class="form-control" placeholder="Material" 
+                          onkeypress="return isNumberKey(event)">
                         </div>
                       </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div align="center">
-                          <button type="submit" class="btn btn-success">Crear</button>
+                          <button id="bot_guardar_grupo" type="button" class="btn btn-success">Crear</button>
                         </div>
                       </div>
 
@@ -146,10 +149,7 @@
               <div class="col-md-8 col-sm-5 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Lista de subcategorías</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
+                    <h2>Lista de grupos de clientes</h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -227,6 +227,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
-	
+	  <script src="js/fn-client.js"></script>
+    <script src="js/fn-ui.js"></script>
   </body>
 </html>

@@ -9,7 +9,7 @@
       <th>Categoría</th>
       <th>Subcategoría</th>
       <th>Editar</th>
-      <th>Borrar</th>
+      <th>Acción</th>
     </tr>
   </thead>
   <tbody>
@@ -27,7 +27,7 @@
         <td><?php echo $p["categoria"]; ?></td>
         <td><?php echo $p["subcategoria"]; ?></td>
         <td align="center"><a href="product-edit.php?id=<?php echo $p["id"]; ?>"><i class="fa fa-edit"></i></a></td>
-        <td><a href="#!">Borrar</a></td>
+        <td><a href="#!">Desactivar</a></td>
       </tr>
     <?php } ?>
   </tbody>

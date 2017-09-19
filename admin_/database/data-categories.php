@@ -82,7 +82,7 @@
 	}
 
 	/* ----------------------------------------------------------------------------------- */
-	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
+	/* Solicitudes asíncronas al servidor para procesar información de Categorías */
 	/* ----------------------------------------------------------------------------------- */
 	//Obtener subcategorías de una categoría
 	if( isset( $_POST["m_subcategs"] ) ){

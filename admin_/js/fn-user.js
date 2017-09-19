@@ -140,50 +140,6 @@ function modificarDatosUsuario( param ){
         }
     });
 }
-/* --------------------------------------------------------- */
-function agregarCuentaBancaria(){
-	var idu = $( '#idu_sesion' ).val();
-	var vbanco = $( '#banco' ).val();
-	var vdesc = $( '#bdescripcion' ).val(); 
-
-	$.ajax({
-        type:"POST",
-        url:"bd/data-usuario.php",
-        data:{ banco: vbanco, desc: vdesc, id_u: idu },
-        success: function( response ){
-			res = jQuery.parseJSON(response);
-			if( res.exito == '1' ){
-				console.log(response);
-				actualizarTablaCtasBancarias( '+', res.registro );
-			}
-			if( res.exito == '0' ){
-				$("#mje_error").show(100);
-				$("#txerr").html(res.mje);
-			}
-        }
-    });
-}
-/* --------------------------------------------------------- */
-function elimRegCA( idc ){
-	//Invocación a eliminar registro de cuenta bancaria
-
-	$.ajax({
-        type:"POST",
-        url:"bd/data-usuario.php",
-        data:{ el_cuenta: idc },
-        success: function( response ){
-			res = jQuery.parseJSON(response);
-			if( res.exito == '1' ){
-				console.log(response);
-				actualizarTablaCtasBancarias( '-', idc );
-			}
-			if( res.exito == '0' ){
-				$("#mje_error").show(100);
-				$("#txerr").html(res.mje);
-			}
-        }
-    });
-}
 
 /* --------------------------------------------------------- */
 
