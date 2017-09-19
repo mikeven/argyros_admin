@@ -1,6 +1,6 @@
 <?php
 	/* ----------------------------------------------------------------------------------- */
-	/* Argyros - Funciones de líneas */
+	/* Argyros - Funciones de baños */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
@@ -44,7 +44,7 @@
 		//Actualiza los datos de regristro de baño
 		$q = "update treatments set name = '$nombre', material_id = $idmaterial, 
 				updated_at = NOW() where id = $idb";
-		echo $q;
+		
 		$data = mysqli_query( $dbh, $q );
 		return $data;	
 	}

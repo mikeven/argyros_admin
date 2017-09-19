@@ -1,16 +1,19 @@
 <?php
     /*
-     * Argyros Admin - Tallas
+     * Argyros Admin - Editar color
      * 
      */
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
-    include( "database/data-sizes.php" );
-    include( "database/data-categories.php" );
-
+    include( "database/data-colors.php" );
     checkSession( '' );
+
+    if( isset( $_GET["id"] ) ){
+        $idc = $_GET["id"];
+        $color = obtenerColorPorId( $dbh, $idc );
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +24,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Tallas :: Argyros Admin</title>
+    <title>Editar color :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -51,11 +54,6 @@
     <link href="build/css/custom.min.css" rel="stylesheet">
   </head>
 
-  <?php
-    $sizes = obtenerListaTallas( $dbh );
-    $categorias = obtenerListaCategorias( $dbh );
-  ?>
-
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
@@ -68,10 +66,10 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Tallas</h3>
+                <h3>Colores</h3>
               </div>
 
-              <!-- <div class="title_right">
+              <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -80,7 +78,7 @@
                     </span>
                   </div>
                 </div>
-              </div> -->
+              </div>
             
             </div>
 
@@ -90,41 +88,22 @@
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear talla</h2>
+                    <h2>Editar color</h2>
+                    
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="frm_ntalla" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="database/data-sizes.php?nsize" method="post">
-                      
+                    <form id="frm_mcolor" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-colors.php?mcolor" method="post">
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor </label>
+                        <input id="idcolor" name="idcolor" type="hidden" value="<?php echo $color["id"] ?>">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="talla" type="text" class="form-control" placeholder="Valor de talla">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre color" 
+                          value="<?php echo $color["name"] ?>">
                         </div>
                       </div>
-                      
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Unidad </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="unidad" type="text" class="form-control" placeholder="Unidad de medición">
-                        </div>
-                      </div>
-                      
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Categorías </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select name="categoria" class="form-control selectpicker">
-                            <option disabled>Seleccione</option>
-                            <?php foreach ( $categorias as $c ) { ?>
-                              <option><?php echo $c["name"] ?></option>
-                            <?php } ?>
-                          </select>
-                        </div>
-                      </div>
-                      
                       <div class="ln_solid"></div>
-                      
                       <div class="form-group">
                         <div align="center">
                           <button type="submit" class="btn btn-success">Guardar</button>
@@ -135,18 +114,11 @@
                   </div>
                 </div>
               </div>
+              
               <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lista de tallas</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-sizes.php");?>
-                  </div>
-                </div>
+                
               </div>
+            
             </div>
           </div>
         </div>
@@ -155,7 +127,6 @@
         <!-- footer content -->
         <?php include( "sections/footer.php" ); ?>
         <!-- /footer content -->
-
       </div>
     </div>
 

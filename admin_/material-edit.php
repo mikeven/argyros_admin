@@ -101,7 +101,7 @@
                   </div>
                   <div class="x_content">
                     
-                    <form id="frm_nmaterial" data-parsley-validate class="form-horizontal form-label-left" 
+                    <form id="frm_mmaterial" data-parsley-validate class="form-horizontal form-label-left" 
                       action="database/data-materials.php?mmaterial" method="post">
                       
                       <div class="form-group">
@@ -127,19 +127,7 @@
                 </div>
               </div>
               <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lista de materiales</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>-->
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-materials.php");?>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>

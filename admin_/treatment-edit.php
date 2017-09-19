@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Edición baño
+     * Argyros Admin - Editar baño
      * 
      */
     session_start();

@@ -2,8 +2,8 @@
   <thead>
     <tr>
       <th>Nombre</th>
-      <th>Editar</th>
-      <th>Borrar</th>
+      <th> </th>
+      <th> </th>
     </tr>
   </thead>
 
@@ -13,7 +13,7 @@
       ?>
       <tr>
         <td><?php echo $l["name"]; ?></td>
-        <td><a href="#!">Editar</a></td>
+        <td><a href="color-edit.php?id=<?php echo $l["id"]; ?>">Editar</a></td>
         <td><a href="#!">Borrar</a></td>
       </tr>
     <?php } ?>

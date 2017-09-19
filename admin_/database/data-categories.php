@@ -92,6 +92,7 @@
 		echo json_encode( $subcategorias );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	//Invoca crear nuevo registro de categoría principal
 	if( isset( $_GET["ncategoria"] ) ){
 		include( "bd.php" );
 
@@ -104,6 +105,7 @@
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */
+	//Invoca crear nuevo registro de subcategoría
 	if( isset( $_GET["nsubcategoria"] ) ){
 		include( "bd.php" );
 		
@@ -123,7 +125,7 @@
 		$r = modificarCategoria( $dbh, $_POST["idcategoria"], $nombre );
 		
 		if( ( $r != 0 ) && ( $r != "" ) ){
-			header( "Location: ../category-edit.php?id=".$idc."&edit&success" );
+			header( "Location: ../categories.php?id=".$idc."&edit&success" );
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */

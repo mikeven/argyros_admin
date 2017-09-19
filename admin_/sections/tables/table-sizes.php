@@ -4,8 +4,8 @@
       <th>Valor</th>
       <th>Unidad</th>
       <th>Categoría</th>
-      <th>Editar</th>
-      <th>Borrar</th>
+      <th> </th>
+      <th> </th>
     </tr>
   </thead>
 
@@ -15,9 +15,9 @@
       ?>
         <tr>
           <td><?php echo $s["name"]; ?></td>
-          <td> </td>
+          <td><?php echo $s["unidad"]; ?></td>
           <td><?php echo $s["cname"]; ?></td>
-          <td><a href="#!">Editar</a></td>
+          <td><a href="size-edit.php?id=<?php echo $s["id"]; ?>">Editar</a></td>
           <td><a href="#!">Borrar</a></td>
         </tr>
     <?php } ?>

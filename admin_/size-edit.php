@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Tallas
+     * Argyros Admin - Editar tallas
      * 
      */
     session_start();
@@ -9,8 +9,14 @@
     include( "database/data-user.php" );
     include( "database/data-sizes.php" );
     include( "database/data-categories.php" );
+    include( "fn/common-functions.php" );
 
     checkSession( '' );
+
+    if( isset( $_GET["id"] ) ){
+      $idt = $_GET["id"];
+      $talla = obtenerTallaPorId( $dbh, $idt );
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -90,24 +96,26 @@
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear talla</h2>
+                    <h2>Editar talla</h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="frm_ntalla" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="database/data-sizes.php?nsize" method="post">
-                      
+                    <form id="frm_mtalla" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-sizes.php?mtalla" method="post">
+                      <input id="idtalla" name="idtalla" type="hidden" value="<?php echo $talla["id"]; ?>">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="talla" type="text" class="form-control" placeholder="Valor de talla">
+                          <input name="talla" type="text" class="form-control" placeholder="Valor de talla" 
+                          value="<?php echo $talla["name"]; ?>">
                         </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Unidad </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="unidad" type="text" class="form-control" placeholder="Unidad de medición">
+                          <input name="unidad" type="text" class="form-control" placeholder="Unidad de medición" 
+                          value="<?php echo $talla["unidad"]; ?>">
                         </div>
                       </div>
                       
@@ -117,7 +125,9 @@
                           <select name="categoria" class="form-control selectpicker">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
-                              <option><?php echo $c["name"] ?></option>
+                              <option value="<?php echo $c["id"] ?>" 
+                                <?php echo sop( $c["id"], $talla["idcategoria"] );?> > <?php echo $c["name"] ?>
+                              </option>
                             <?php } ?>
                           </select>
                         </div>
@@ -135,18 +145,11 @@
                   </div>
                 </div>
               </div>
+              
               <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lista de tallas</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-sizes.php");?>
-                  </div>
-                </div>
+                
               </div>
+            
             </div>
           </div>
         </div>

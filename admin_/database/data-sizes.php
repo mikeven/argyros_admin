@@ -6,7 +6,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaTallas( $dbh ){
 		//Devuelve la lista de tallas de productos
-		$q = "Select s.id, s.name as name, c.name as cname from sizes s, categories c 
+		$q = "Select s.id, s.name as name, s.unit as unidad, c.name as cname from sizes s, categories c 
 		where s.category_id = c.id order by name ASC";
 		
 		$data = mysqli_query( $dbh, $q );
@@ -24,21 +24,68 @@
 		return $lista_c;	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerTallaPorId( $dbh, $idt ){
+		//Devuelve la lista de tallas de productos
+		$q = "Select s.id, s.name as name, s.unit as unidad, c.id as idcategoria, c.name as cname 
+		from sizes s, categories c where s.category_id = c.id and s.id = $idt";
+		
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_fetch_array( $data );	
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerValoresTallaCero( $dbh ){
 		//Devuelve los valores de la talla por defecto del sistema
 		$q = "Select id, name from sizes where name = '0'";
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );	
 	}
-
+	/* ----------------------------------------------------------------------------------- */
+	function agregarTalla( $dbh, $nombre, $unidad, $idcategoria ){
+		//Agrega un registro de talla
+		$q = "insert into sizes ( name, unit, category_id, created_at ) 
+				values ( '$nombre', '$unidad', $idcategoria, NOW() )";
+		
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_insert_id( $dbh );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function modificarTalla( $dbh, $idtalla, $nombre, $unidad ){
+		//Edita los datos de un registro de talla
+		$q = "update sizes set name = '$nombre', unit='$unidad', updated_at = NOW() where id = $idtalla";
+		
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
 	/* ----------------------------------------------------------------------------------- */
 	
-	//I
-	if( isset( $_GET[""] ) ){
+	//Invoca crear nuevo registro de talla
+	if( isset( $_GET["nsize"] ) ){
+		include( "bd.php" );
 		
-	}else {};
+		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$unidad = mysqli_real_escape_string( $dbh, $_POST["unidad"] );
+		$idt = agregarTalla( $dbh, $nombre, $unidad, $_POST["idcategoria"] );
+		
+		if( ( $idt != 0 ) && ( $idt != "" ) ){
+			header( "Location: ../subcategories.php?addsubcategory&success" );
+		}
+	}
+
+	/* ----------------------------------------------------------------------------------- */
+	
+	//Editar datos de talla
+	if( isset( $_GET["mtalla"] ) ){
+		include( "bd.php" );
+		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$unidad = mysqli_real_escape_string( $dbh, $_POST["unidad"] );
+		$r = modificarTalla( $dbh, $_POST["talla"], $nombre, $unidad );
+		
+		if( ( $r != 0 ) && ( $r != "" ) ){
+			header( "Location: ../sizes.php?sizeedit&success" );
+		}
+	}
 	/* ----------------------------------------------------------------------------------- */
 
 ?>

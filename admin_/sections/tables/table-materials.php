@@ -3,7 +3,8 @@
     <tr>
       <th>Nombre</th>
       <th>Baños</th>
-      <th>Borrar</th>
+      <th> </th>
+      <th> </th>
     </tr>
   </thead>
   <tbody>
@@ -20,6 +21,7 @@
             }
           ?>
         </td>
+        <td><a href="material-edit.php?id=<?php echo $m["id"]; ?>">Editar</a></td>
         <td><a href="#!">Borrar</a></td>
       </tr>
     <?php } ?>

@@ -28,8 +28,10 @@ function actualizarPaisProductor( enlace ){
 
 /* --------------------------------------------------------- */
 $( document ).ready( function() {
-    $(".epaisproductor").on( "click", function(){
-		actualizarPaisProductor( $(this) );
-    });
+
+    $('body').on('click', '.epaisproductor', function() {
+	    actualizarPaisProductor( $(this) );
+	});
+
 });
 /* --------------------------------------------------------- */

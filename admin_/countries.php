@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Inicio
+     * Argyros Admin - Países
      * 
      */
     session_start();
@@ -167,6 +167,14 @@
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
     <script src="js/fn-country.js"></script>
-	
+	<script>
+        $( document ).ready( function() {
+            var table = $('#datatable').DataTable();
+            $('#datatable').on( 'page.dt', function () {
+                actPaProd();        
+            } );
+        });
+    </script>
+
   </body>
 </html>
