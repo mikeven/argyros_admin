@@ -41,6 +41,27 @@
 		return $valido;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerListaUsuarios( $dbh ){
+		//Devuelve la lista de usuarios
+		$q = "Select u.id, u.first_name as nombre, u.last_name as apellido, u.email, u.phone, r.id as idrol,   
+		r.name as rol, r.display_name as nombre_rol, r.description as descripcion_rol, 
+		date_format(u.created_at,'%d/%m/%Y') as fcreacion from users u, role_user ru, roles r 
+		where ru.user_id = u.id and ru.role_id and ru.role_id = r.id and ru.role_id <> 4 order by nombre ASC";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista = obtenerListaRegistros( $data );
+		return $lista;	
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerListaRoles( $dbh ){
+		//Devuelve la lista de roles
+		$q = "Select id, name as nombre, description, display_name as nombre_rol from roles order by nombre ASC";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista = obtenerListaRegistros( $data );
+		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerUsuarioPorId( $idu, $dbh ){
 		$sql = "select * from usuario where idUsuario = $idu";
 		$data_user = mysql_fetch_array( mysql_query ( $sql, $dbh ) );

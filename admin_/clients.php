@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Trabajos
+     * Argyros Admin - Clientes
      * 
      */
     session_start();

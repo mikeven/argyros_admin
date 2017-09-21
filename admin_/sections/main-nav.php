@@ -59,15 +59,8 @@
       </li>
       <li><a href="#!"><i class="fa fa-file-text-o fa-fw"></i>Pedidos</a>
       </li>
-      <li><a><i class="fa fa-users fa-fw"></i>Usuarios <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-            <li>
-                <a href="#!">Roles<span class="fa arrow"></span></a>
-            </li>
-            <li>
-                <a href="users.php">Todos</a>
-            </li>
-        </ul>
+      <li>
+        <a href="users.php"><i class="fa fa-users fa-fw"></i>Usuarios</a>
       </li>
       <li>
         <a href="#"><i class="fa fa-gear"></i> Configuración</a>

@@ -2,7 +2,6 @@
   <thead>
     <tr>
       <th>Nombre</th>
-      <th>Apellido</th>
       <th>Email</th>
       <th>Teléfono</th>
       <th>País</th>
@@ -17,8 +16,7 @@
         foreach ( $clientes as $c ) { 
       ?>
       <tr>
-        <td><a href="client-data.php?id=<?php echo $c["id"]; ?>"><?php echo $c["nombre"]; ?></a></td>
-        <td><?php echo $c["apellido"]; ?></td>
+        <td><a href="client-data.php?id=<?php echo $c["id"]; ?>"><?php echo $c["nombre"]." ".$c["apellido"]; ?></a></td>
         <td><?php echo $c["email"]; ?></td>
         <td><?php echo $c["phone"]; ?></td>
         <td><?php echo $c["pais"]; ?></td>

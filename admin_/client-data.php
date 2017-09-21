@@ -7,11 +7,13 @@
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
+    include( "fn/common-functions.php" );
     include( "database/data-clients.php" );
 
     if( isset( $_GET["id"] ) ){
         $idc = $_GET["id"];
         $cliente = obtenerClientePorId( $dbh, $idc );
+        $grupos = obtenerListaGruposClientes( $dbh );
     }
     
     checkSession( '' );
@@ -126,7 +128,13 @@
                         <label class="control-label">País: </label> <?php echo $cliente["pais"]; ?>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Grupo cliente: </label> <?php echo $cliente["grupo"]; ?>
+                        <label class="control-label">Grupo cliente: </label>
+                        <select class="form-control">
+                            <option disabled>Seleccione</option>
+                            <?php foreach ( $grupos as $g ) { ?>
+                              <option <?php echo sop( $cliente["grupo"], $g["name"] ); ?> ><?php echo $g["name"] ?> </option>
+                            <?php } ?>
+                        </select>
                     </div>
                     
 

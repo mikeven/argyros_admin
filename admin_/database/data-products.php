@@ -202,7 +202,7 @@
 	function editarTallasDetalleProducto( $dbh, $iddet, $tallas ){
 		//Actualiza los datos de tallas en detalle de producto
 		foreach ( $tallas as  $reg ) {
-			$e = existeRegistroTallaDetalle( $dbh, $iddet,  $reg->idt );
+			$e = existeRegistroTallaDetalle( $dbh, $iddet, $reg->idt );
 			if( $e == true ){
 				actualizarTallasDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso );
 			} else {

@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Inicio
+     * Argyros Admin - Usuarios
      * 
      */
     session_start();
@@ -8,12 +8,12 @@
     include( "database/bd.php" );
     include( "database/data-user.php" );
     include( "fn/common-functions.php" );
-    include( "database/data-clients.php" );
     
     checkSession( '' );
 ?>
 <!DOCTYPE html>
 <html lang="en">
+  
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -21,7 +21,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Tipo de clientes :: Argyros Admin</title>
+    <title>Usuarios :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,8 +52,8 @@
   </head>
 
   <?php
-    $clientes = obtenerListaClientes( $dbh );
-    $grupos = obtenerListaGruposClientes( $dbh );
+    $usuarios = obtenerListaUsuarios( $dbh );
+    $roles = obtenerListaRoles( $dbh );
   ?>
 
   <body class="nav-md">
@@ -66,21 +66,12 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
+            
             <div class="page-title">
+              
               <div class="title_left">
-                <h3>Tipos de clientes</h3>
+                <h3>Usuarios</h3>
               </div>
-
-              <!--<div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>-->
             
             </div>
 
@@ -90,60 +81,57 @@
               <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear grupo</h2>
-                    
+                    <h2>Crear Usuario</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      
+                    </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="frm_ngrupocliente" data-parsley-validate class="form-horizontal form-label-left">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="nombre" type="text" class="form-control" placeholder="Nombre grupo">
+                    <form id="frm_nuser" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-users.php?nusuario" method="post">
+                      
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input name="nombre" type="text" class="form-control" placeholder="Nombre">
+                            </div>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable A </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="var_a" type="text" class="form-control" placeholder="Variable A" 
-                          onkeypress="return isNumberKey(event)">
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Apellido </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input name="nombre" type="text" class="form-control" placeholder="Apellido">
+                            </div>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable B </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="var_b" type="text" class="form-control" placeholder="Variable B" 
-                          onkeypress="return isNumberKey(event)">
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Email </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input name="nombre" type="text" class="form-control" placeholder="Email">
+                            </div>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable C </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="var_c" type="text" class="form-control" placeholder="Variable C" 
-                          onkeypress="return isNumberKey(event)">
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Rol </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select name="rol" class="form-control selectpicker">
+                                <option disabled>Seleccione</option>
+                                <?php foreach ( $roles as $r ) { ?>
+                                  <option value="<?php echo $r["id"] ?>"><?php echo $r["nombre_rol"] ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Variable D </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="var_d" type="text" class="form-control" placeholder="Variable D" 
-                          onkeypress="return isNumberKey(event)">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="material" type="text" class="form-control" placeholder="Material" 
-                          onkeypress="return isNumberKey(event)">
-                        </div>
-                      </div>
+                      
                       <div class="ln_solid"></div>
+
                       <div class="form-group">
                         <div align="center">
-                          <button id="bot_guardar_grupo" type="button" class="btn btn-success">Crear</button>
+                          <button type="submit" class="btn btn-success">Guardar</button>
                         </div>
                       </div>
-
+                    
                     </form>  
                   </div>
                 </div>
@@ -151,12 +139,12 @@
               <div class="col-md-8 col-sm-5 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Lista de grupos de clientes</h2>
+                    <h2>Lista de usuarios</h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-group-clients.php");?>
+                    <?php include("sections/tables/table-users.php");?>
                   </div>
                 </div>
               </div>
@@ -229,7 +217,6 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
-	  <script src="js/fn-client.js"></script>
-    <script src="js/fn-ui.js"></script>
+	
   </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Trabajos
+     * Argyros Admin - Nuevo cliente
      * 
      */
     session_start();
@@ -72,7 +72,7 @@
                 <h3>Nuevo cliente</h3>
               </div>
 
-              <div class="title_right">
+              <!--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -81,7 +81,7 @@
                     </span>
                   </div>
                 </div>
-              </div>
+              </div>-->
             
             </div>
 
@@ -125,7 +125,7 @@
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Países </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <select class="form-control">
+                              <select class="form-control selectpicker" data-live-search="true">
                                 <option disabled>Seleccione</option>
                                 <?php foreach ( $paises as $p ) { ?>
                                   <option><?php echo $p["name"] ?></option>
@@ -136,7 +136,7 @@
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Ciudad </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" placeholder="Variable D">
+                              <input type="text" class="form-control" placeholder="Ciudad">
                             </div>
                           </div>
                         </div>
@@ -147,25 +147,25 @@
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Dirección </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" placeholder="Material">
+                              <input type="text" class="form-control" placeholder="Dirección">
                             </div>
                           </div>
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Teléfono </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" placeholder="Material">
+                              <input type="text" class="form-control" placeholder="Teléfono">
                             </div>
                           </div>
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="password" class="form-control" placeholder="Material">
+                              <input type="password" class="form-control" placeholder="Contraseña">
                             </div>
                           </div>
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Confirmar contraseña </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="password" class="form-control" placeholder="Material">
+                              <input type="password" class="form-control" placeholder="Contraseña">
                             </div>
                           </div>
                             
