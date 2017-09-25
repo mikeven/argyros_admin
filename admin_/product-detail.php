@@ -395,6 +395,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-ui.js"></script>
     <script src="js/fn-product.js"></script>
     
 	

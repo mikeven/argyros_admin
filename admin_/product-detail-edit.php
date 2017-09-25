@@ -148,13 +148,13 @@
         <div class="right_col" role="main">
           <div class="">
             
-            <!--<div class="page-title">
+            <div class="page-title">
               
               <div class="title_left">
-                <h3>Nuevo producto</h3>
+                <h3>Editar detalle de producto</h3>
               </div>
 
-              <div class="title_right">
+              <!--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -163,8 +163,9 @@
                     </span>
                   </div>
                 </div>
-              </div>
-            </div> -->
+              </div>-->
+
+            </div> 
 
             <div class="clearfix"></div>
 
@@ -173,7 +174,10 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Editar detalle de producto</h2>
+                    <h2>
+                      <a href="product-data.php?p=<?php echo $idp; ?>">
+                      <i class="fa fa-arrow-left"></i> Volver a datos de producto</a>
+                    </h2>
                     <ul class="nav navbar-right panel_toolbox">
                      <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li> -->
                     </ul>

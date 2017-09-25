@@ -107,7 +107,7 @@ function obtenerValoresTallasSeleccionadas(){
 /* --------------------------------------------------------- */
 function agregarDetalleProducto(){
 	//Envía al servidor la petición de registro de detalle de producto. 
-
+	var idp = $("#idproducto").val();
 	var form = $("#frm_ndetproduct");
 	var form_det = form.serialize();
 	var tallas = obtenerValoresTallasSeleccionadas();
@@ -117,9 +117,9 @@ function agregarDetalleProducto(){
         url:"database/data-products.php",
         data:{ form_ndetp: form_det, vtallas: tallas },
         success: function( response ){
-			//res = jQuery.parseJSON(response);
-			console.log(response);
-			//window.location = "product-data.php?p=" + idp;
+        	console.log(response);
+			res = jQuery.parseJSON(response);
+			enviarRespuesta( res, "redireccion", "product-data.php?p=" + idp );
         }
     });
 }

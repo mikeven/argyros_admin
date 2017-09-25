@@ -393,7 +393,20 @@
 
 		$idd = agregarDetalleProducto( $dbh, $detalle );
 		registrarTallasDetalleProducto( $dbh, $idd, $tallas );
-		procesarImagenes( $dbh, $idd, $detalle );
+		
+		if( isset( $detalle["urlimgs"] ) )
+			procesarImagenes( $dbh, $idd, $detalle );
+
+		if( ( $idd != 0 ) && ( $idd != "" ) ) {
+			$res["exito"] = 1;
+			$res["mje"] = "Registro exitoso";
+			$res["reg"] = $detalle;
+		} else {
+			$res["exito"] = 0;
+			$res["mje"] = "Error al registrar detalle de producto";
+			$res["reg"] = NULL;
+		}
+		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Edición de datos de detalle de producto
