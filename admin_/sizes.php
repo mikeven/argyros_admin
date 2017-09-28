@@ -59,9 +59,9 @@
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
-        <?php include("sections/main-nav.php"); ?>
+        <?php include( "sections/main-nav.php" ); ?>
 
-        <?php include("sections/top-nav.php"); ?>
+        <?php include( "sections/top-nav.php" ); ?>
 
         <!-- page content -->
         <div class="right_col" role="main">
@@ -117,7 +117,7 @@
                           <select name="categoria" class="form-control selectpicker">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
-                              <option><?php echo $c["name"] ?></option>
+                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                             <?php } ?>
                           </select>
                         </div>

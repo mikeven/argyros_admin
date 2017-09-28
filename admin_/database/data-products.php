@@ -10,7 +10,7 @@
 		p.is_visible as visible, co.name as pais, ca.name as categoria, sc.name as subcategoria, 
 		m.name as material FROM products p, categories ca, subcategories sc, countries co, materials m 
 		where p.category_id = ca.id and p.subcategory_id = sc.id and p.material_id = m.id and p.country_code = co.code 
-		GROUP BY pais, categoria, subcategoria, material order by nombre ASC";
+		order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -133,6 +133,8 @@
 		subcategory_id, material_id ) values ( '$producto[codigo]', '$producto[nombre]', '$producto[descripcion]',
 		'$producto[pais]', $producto[categoria], $producto[subcategoria], $producto[material] )";
 		
+		echo $q;
+
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}

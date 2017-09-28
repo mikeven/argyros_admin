@@ -222,7 +222,7 @@
                             <button id="bot_guardar_nuevo_producto" type="button" class="btn btn-success">Guardar</button>
                           </div>
                           <div id="ghres"></div>
-                          <button type="button" class="btn btn-primary" data-toggle="modal" 
+                          <button type="button" class="btn btn-primary hidden" data-toggle="modal" 
                           data-target=".bs-example-modal-sm">Respuesta</button>
                           <?php include( "sections/modals/response_message.php" );?>
                         </div>

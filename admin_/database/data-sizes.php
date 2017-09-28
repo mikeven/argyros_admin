@@ -40,11 +40,11 @@
 		return mysqli_fetch_array( $data );	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function agregarTalla( $dbh, $nombre, $unidad, $idcategoria ){
+	function agregarTalla( $dbh, $valor, $unidad, $idcategoria ){
 		//Agrega un registro de talla
 		$q = "insert into sizes ( name, unit, category_id, created_at ) 
-				values ( '$nombre', '$unidad', $idcategoria, NOW() )";
-		
+				values ( '$valor', '$unidad', $idcategoria, NOW() )";
+		echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
@@ -64,12 +64,12 @@
 	if( isset( $_GET["nsize"] ) ){
 		include( "bd.php" );
 		
-		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$valor = mysqli_real_escape_string( $dbh, $_POST["talla"] );
 		$unidad = mysqli_real_escape_string( $dbh, $_POST["unidad"] );
-		$idt = agregarTalla( $dbh, $nombre, $unidad, $_POST["idcategoria"] );
-		
+		$idt = agregarTalla( $dbh, $valor, $unidad, $_POST["categoria"] );
+		echo "ID: ".$idt;
 		if( ( $idt != 0 ) && ( $idt != "" ) ){
-			header( "Location: ../subcategories.php?addsubcategory&success" );
+			header( "Location: ../sizes.php?addsize&success" );
 		}
 	}
 

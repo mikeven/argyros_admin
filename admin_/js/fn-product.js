@@ -15,7 +15,7 @@ function agregarProducto(){
         success: function( response ){
         	console.log( response );
 			res = jQuery.parseJSON( response );
-			enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.id );
+			enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.idproducto );
         }
     });
 }
