@@ -212,6 +212,31 @@ function agregarCamposOcultosImagenes(){
 	});
 }
 /* --------------------------------------------------------- */
+function chequearCodigoProducto( codigo ){
+	//Envía al servidor código de producto nuevo y devuelve si ya existe en BD. 
+	
+	$.ajax({
+        type:"POST",
+        url:"database/data-products.php",
+        data:{ chcodigo: codigo },
+        success: function( response ){
+        	
+        	console.log( response );
+        	if ( response == 0 ){
+        		window.Parsley.addValidator('available', {
+				  validateString: function(value) {  return false; },
+				  messages: { es: "Código de producto no disponible" }
+				});
+        	}
+        	if ( response == 1 ){
+        		window.Parsley.addValidator('available', {
+				  validateString: function(value) { return true; }
+				});
+        	}
+        }
+    });
+}
+/* --------------------------------------------------------- */
 function mostrarDatosValorPorTipoPrecio( tprecio ){
 	
 	if( tprecio == "g" ) $("#valor_gramo").fadeIn('slow');
@@ -219,9 +244,34 @@ function mostrarDatosValorPorTipoPrecio( tprecio ){
 	if( tprecio == "mo" ) $("#valor_mo").fadeIn('slow');
 }
 /* --------------------------------------------------------- */
-$( document ).ready(function() {
+function checkProducto(){
+	//Validación de formulario de nuevo producto previo a su registro
+	var error = 0;
+	var mensaje = "";
+
+	if( $("#pnombre").val() == "" ){
+		error = 1;
+		mensaje = "Debe indicar nombre de producto";
+	}
+
+	if( error == 1 ){
+		notificar( "Error", mensaje, "error" );
+	}
+	
+	return error;	
+}
+/* --------------------------------------------------------- */
+$( document ).ready(function() {	
+    // ============================================================================ //
     
-    $("#seltprecio").on( "change", function(){
+    /*new-product.php*/
+
+    /*new-product.php*/
+
+	// ============================================================================ //
+	/*product-detail.php*/
+	
+	$("#seltprecio").on( "change", function(){
 		$(".oprecio").hide("slow");
 		mostrarDatosValorPorTipoPrecio( $(this).val() );
     });
@@ -233,17 +283,7 @@ $( document ).ready(function() {
 		var idc = $(this).val();
 		mostrarSubcategorias( idc );
     });
-    // ============================================================================ //
-    /*new-product.php*/
-	$("#bot_guardar_nuevo_producto").on( "click", function(){
-		agregarProducto();	
-    });
 
-    /*new-product.php*/
-	
-
-	// ============================================================================ //
-	/*product-detail.php*/
 	$("#bot_guardar_det_producto").on( "click", function(){
 		agregarDetalleProducto();	
     });

@@ -17,6 +17,20 @@
 		return $lista;	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function codigoDisponible( $dbh, $codigo ){
+		//Devuelve si un código de producto ya está registrado
+		$disp = 1;
+		$q = "select * from products where code = '$codigo'";
+
+		$datap = mysqli_query ( $dbh, $q );
+		$nrows = mysqli_num_rows( $datap );
+		
+		if( $nrows > 0 ){
+			$disp = 0;
+		}
+		return $disp;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerProductoPorId( $dbh, $idp ){
 		//Devuelve los datos de un producto dado su id
 		$q = "select p.id, p.code as codigo, p.name as nombre, p.description as descripcion, p.category_id as cid, 
@@ -128,12 +142,9 @@
 	/* ----------------------------------------------------------------------------------- */
 	function agregarProducto( $dbh, $producto ){
 		//Guarda el registro de un producto
-		
 		$q = "insert into products ( code, name, description, country_code, category_id, 
 		subcategory_id, material_id ) values ( '$producto[codigo]', '$producto[nombre]', '$producto[descripcion]',
 		'$producto[pais]', $producto[categoria], $producto[subcategoria], $producto[material] )";
-		
-		echo $q;
 
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
@@ -162,7 +173,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function editarDatosDetalleProducto( $dbh, $detalle ){
 		//Actualiza los datos de detalle de producto
-		$q = "update product_details set color_id = $detalle[color], treatment_id = $detalle[bano], 
+		$q = "dbplus_update(relation, old, new) product_details set color_id = $detalle[color], treatment_id = $detalle[bano], 
 		price_type = '$detalle[tprecio]', piece_price_value = $detalle[valor_pieza], manufacture_value = $detalle[valor_mano_obra], 
 		weight_price_value = $detalle[valor_gramo], updated_at = NOW() where id = $detalle[iddetalle]";
 
@@ -337,6 +348,14 @@
 
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
+	/* ----------------------------------------------------------------------------------- */
+	
+	if( isset( $_POST["chcodigo"] ) ){
+		include( "bd.php" );
+		$r = codigoDisponible( $dbh, $_POST["chcodigo"] );
+		echo $r;
+	}
+
 	/* ----------------------------------------------------------------------------------- */
 	
 	//Registro de nuevo producto

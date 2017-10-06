@@ -17,6 +17,15 @@ function obtenerEnlaceDocumentoCreado( documento, frt ){
 	return e_enl;
 }
 /* ----------------------------------------------------------------------------------- */
+function notificar( titulo, mensaje, tipo ){
+	var notice = new PNotify({
+	  title: titulo,
+	  text: mensaje,
+	  type: tipo,
+	  styling: 'bootstrap3'
+	});
+}
+/* ----------------------------------------------------------------------------------- */
 function ventanaMensaje( exito, mensaje, enlace ){
 	var clase_m = ["modal-danger", "modal-success"];
 	if( exito == '1' )
