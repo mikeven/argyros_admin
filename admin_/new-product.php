@@ -314,7 +314,16 @@
     <script src="js/fn-ui.js"></script>
     <script src="js/fn-product.js"></script>
     <script src="js/fn-validators.js"></script>
-    
+    <script>
+      
+      $(document).ready(function() {
+        $('#frm_nproduct').parsley().on('form:success', function() {
+          agregarProducto(); 
+        });
+      });
+      
+    </script>
+
     <!-- PNotify -->
     <script src="vendors/pnotify/dist/pnotify.js"></script>
     <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>

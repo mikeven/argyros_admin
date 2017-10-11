@@ -173,10 +173,10 @@
 	/* ----------------------------------------------------------------------------------- */
 	function editarDatosDetalleProducto( $dbh, $detalle ){
 		//Actualiza los datos de detalle de producto
-		$q = "dbplus_update(relation, old, new) product_details set color_id = $detalle[color], treatment_id = $detalle[bano], 
+		$q = "update product_details set color_id = $detalle[color], treatment_id = $detalle[bano], 
 		price_type = '$detalle[tprecio]', piece_price_value = $detalle[valor_pieza], manufacture_value = $detalle[valor_mano_obra], 
 		weight_price_value = $detalle[valor_gramo], updated_at = NOW() where id = $detalle[iddetalle]";
-
+		
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
@@ -436,6 +436,19 @@
 		parse_str( $_POST["form_modif_detprod"], $detalle );
 
 		$idd = editarDatosDetalleProducto( $dbh, $detalle );
+
+		if ( ( $idd != 0 ) && ( $idd != "" ) ){
+			$res["exito"] = 1;
+			$res["mje"] = "Datos de producto actualizados con éxito";
+			$res["reg"] = $detalle;
+		} else {
+			$res["exito"] = 0;
+			$res["mje"] = "Error al actualizar producto";
+			$res["reg"] = $detalle;
+		}
+
+		echo json_encode( $res );
+
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Edición de tallas en detalle de producto

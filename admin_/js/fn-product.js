@@ -59,18 +59,16 @@ function mostrarSubcategorias( idc ){
 }
 
 /* --------------------------------------------------------- */
-
 function crearValorTallaPesoSeleccion( idt, t, p ){
 	
 	var elem = "<input class='vt_seleccionado' type='hidden' data-talla='" + t +"' data-peso='" + p + "' value='" + idt + "'>";
 	return elem;
 }
-
+/* --------------------------------------------------------- */
 function crearEtiquetaTallaPesoSeleccion( t, p ){
 	var elem = "<div> Talla: " + t + " - Peso: " + p + "<div>";
 	return elem;
 }
-
 /* --------------------------------------------------------- */
 function seleccionarTallas(){
 	var elem = "";
@@ -129,15 +127,19 @@ function editarDatosDetalleProducto(){
 
 	var form = $("#frm_mddetalle");
 	var form_det = form.serialize();
+	var tit_notif = "Detalle de producto"
 	
 	$.ajax({
         type:"POST",
         url:"database/data-products.php",
         data:{ form_modif_detprod: form_det },
         success: function( response ){
-			//res = jQuery.parseJSON(response);
-			console.log( response );
-			//window.location = "product-data.php?p=" + idp;
+			res = jQuery.parseJSON(response);
+			//console.log( response );
+			if( res.exito == 1 ) 
+				notificar( tit_notif, res.mje, "success" );
+			else
+				notificar( tit_notif, res.mje, "error" );
         }
     });
 }
@@ -239,9 +241,21 @@ function chequearCodigoProducto( codigo ){
 /* --------------------------------------------------------- */
 function mostrarDatosValorPorTipoPrecio( tprecio ){
 	
-	if( tprecio == "g" ) $("#valor_gramo").fadeIn('slow');
-	if( tprecio == "p" ) $("#valor_pieza").fadeIn('slow');
-	if( tprecio == "mo" ) $("#valor_mo").fadeIn('slow');
+	if( tprecio == "g" ) { 
+		$("#valor_gramo").fadeIn('slow'); 
+		$("#vgramo").attr("data-parsley-nocero", 0.00);
+
+	}
+
+	if( tprecio == "p" ) { 
+		$("#valor_pieza").fadeIn('slow'); 
+		$("#vpieza").attr("data-parsley-nocero", 0.00);
+	}
+
+	if( tprecio == "mo" ){ 
+		$("#valor_mo").fadeIn('slow'); 
+		$("#vmanoo").attr("data-parsley-nocero", 0.00); 
+	}
 }
 /* --------------------------------------------------------- */
 function checkProducto(){
@@ -271,11 +285,30 @@ $( document ).ready(function() {
 	// ============================================================================ //
 	/*product-detail.php*/
 	
-	$("#seltprecio").on( "change", function(){
+	function initNoCero(){
+		window.Parsley
+		  .addValidator('nocero', {
+		    requirementType: 'integer',
+		    validateNumber: function(value, requirement) {
+		    	return (value > requirement);
+		    },
+		    messages: {
+		      es: 'Este valor debe ser mayor a 0.00'
+		    }
+	  	});	
+	}
+
+	//initNoCero();
+	
+	$("#seltprecio").on( "change", function(){ 
+		// Evento durante la creación de nuevo detalle de producto
 		$(".oprecio").hide("slow");
+		$(".vtp").removeAttr( "data-parsley-nocero");
+		initNoCero();
 		mostrarDatosValorPorTipoPrecio( $(this).val() );
     });
 
+	// Evento durante la edición de detalle de producto
     mostrarDatosValorPorTipoPrecio( $("#seltprecio").val() );
 
     $("#selcateg").on( "change", function(){
@@ -285,17 +318,19 @@ $( document ).ready(function() {
     });
 
 	$("#bot_guardar_det_producto").on( "click", function(){
-		agregarDetalleProducto();	
+		//agregarDetalleProducto();	
     });
 
     /*Bloque peticiones para editar datos asociados a detalle de producto*/
 
     $("#bot_editar_detproducto").on( "click", function(){
-		editarDatosDetalleProducto();	
+		//editarDatosDetalleProducto();	
     });
 
     $("#bot_edit_tallasdetalle").on( "click", function(){
-		editarTallasDetalleProducto();	
+		if( checkDetalleProducto() == 0 ){ 
+			editarTallasDetalleProducto();
+		}	
     });
 
 	$(".lnk_elimimg_detprod").on( "click", function(){

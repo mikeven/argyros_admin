@@ -67,6 +67,11 @@
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
   </head>
@@ -139,15 +144,16 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                        <p class="text-muted font-13 m-b-30"> </p>
-                        
-                        <div class="row">
+                      
+                      <p class="text-muted font-13 m-b-30"> </p>
+                      
+                      <form id="frm_ndetproduct" data-parsley-validate 
+                      class="form-horizontal form-label-left" action="product-data.php?p=<?php echo $idp; ?>" method="post">
+                          
+                          <div class="row">
                           
                             <div class="col-md-5 col-sm-5 col-xs-12">
-                              <form id="frm_ndetproduct" data-parsley-validate class="form-horizontal form-label-left" 
-                                action="new-product.php?p=1" method="post">
-                                
-                                
+                              
                                 <div class="form-group">
                                   <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
                                   <a href="<?php echo $lnk_back; ?>">
@@ -155,7 +161,6 @@
                                   </a>
                                   <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
                                 </div>
-                                
                                 
                                 <div class="form-group">
                                   <label class="control-label">Categoría: </label> 
@@ -168,11 +173,12 @@
                                 </div>
                                 
                                 <div class="ln_solid"></div>
-                                
+
                                 <div class="form-group">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Baño </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select name="bano" class="form-control selectpicker">
+                                    <select name="bano" class="form-control" required="">
+                                      <option value>Seleccione</option>
                                       <?php foreach ( $banos as $b ) { ?>
                                         <option value="<?php echo $b["id"] ?>"><?php echo $b["name"] ?></option>
                                       <?php } ?>
@@ -183,7 +189,8 @@
                                 <div class="form-group">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Color </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select name="color" class="form-control selectpicker">
+                                    <select name="color" class="form-control" required="">
+                                      <option value>Seleccione</option>
                                       <?php foreach ( $colores as $c ) { ?>
                                         <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                                       <?php } ?>
@@ -194,8 +201,8 @@
                                 <div class="form-group">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo de precio </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select id="seltprecio" name="tprecio" class="form-control selectpicker">
-                                      <option value="">Seleccione</option>
+                                    <select id="seltprecio" name="tprecio" class="form-control" required="">
+                                      <option value>Seleccione</option>
                                       <?php foreach ( $tprecios as $tp ) { ?>
                                         <option value="<?php echo $tp["tipo"] ?>">
                                           <?php echo $tp["etiqueta"]; ?>
@@ -208,7 +215,7 @@
                                 <div id="valor_pieza" class="form-group oprecio">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de la pieza </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input name="valor_pieza" type="text" class="form-control" placeholder="Valor de pieza" 
+                                    <input id="vpieza" name="valor_pieza" type="text" class="form-control vtp" placeholder="Valor de pieza" 
                                     value="0.00">
                                   </div>
                                 </div>
@@ -216,15 +223,15 @@
                                 <div id="valor_mo" class="form-group oprecio">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de mano de obra </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input name="valor_mano_obra" type="text" class="form-control" placeholder="Valor Mano de obra" 
-                                    value="0.00">
+                                    <input id="vmanoo" name="valor_mano_obra" type="text" class="form-control vtp" 
+                                    placeholder="Valor Mano de obra" value="0.00">
                                   </div>
                                 </div>
 
                                 <div id="valor_gramo" class="form-group oprecio">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor del gramo </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input name="valor_gramo" type="text" class="form-control" 
+                                    <input id="vgramo" name="valor_gramo" type="text" class="form-control vtp" 
                                     placeholder="Valor del gramo" value="0.00">
                                   </div>
                                 </div>
@@ -245,7 +252,6 @@
 
                                 </div>
 
-                              </form> 
                             </div>
 
                             <!-- Columna derecha -->
@@ -260,16 +266,18 @@
                               </div>
                             </div>
                         
-                        </div>
-
-                        <div class="ln_solid"></div>
-                        <div class="form-group">
-                          <div align="center">
-                            <button id="bot_guardar_det_producto" type="button" class="btn btn-success">Guardar</button>
                           </div>
-                          <div id="ghres"></div>
-                        </div>
+                          
+                          <div class="ln_solid"></div>
+                          
+                          <div class="form-group">
+                            <div align="center">
+                              <button id="bot_guardar_det_producto" type="button" class="btn btn-success">Guardar</button>
+                            </div>
+                            <div id="ghres"></div>
+                          </div>
 
+                      </form>
                   </div>
                 </div>
               </div>
@@ -393,11 +401,35 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <script src="https://gist.github.com/askehansen/6809825.js"></script>
+
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
     <script src="js/fn-ui.js"></script>
     <script src="js/fn-product.js"></script>
-    
-	
+    <script src="js/fn-validators.js"></script>
+
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
+    <script>
+      
+      $(document).ready(function() {
+        $('#frm_ndetproduct').parsley().on('form:success', function() {
+          if( checkDetalleProducto() == 0 ){
+            agregarDetalleProducto();
+          };
+          //alert("EXITO");
+        });
+      });
+      
+    </script>
+
   </body>
 </html>

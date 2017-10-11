@@ -72,7 +72,13 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
   </head>
+  
   <style>
 
     #img_uploader{
@@ -220,7 +226,8 @@
                                 <div class="form-group">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Baño </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select name="bano" class="form-control selectpicker">
+                                    <select name="bano" class="form-control" required="">
+                                      <option value>Seleccione</option>
                                       <?php foreach ( $banos as $b ) { ?>
                                         <option value="<?php echo $b["id"] ?>" 
                                         <?php echo sop( $b["id"], $datos_det["bano"] );?> > <?php echo $b["name"] ?> </option>
@@ -232,7 +239,8 @@
                                 <div class="form-group">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Color </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select name="color" class="form-control selectpicker">
+                                    <select name="color" class="form-control" required="">
+                                      <option value>Seleccione</option>
                                       <?php foreach ( $colores as $c ) { ?>
                                         <option value="<?php echo $c["id"] ?>" 
                                         <?php echo sop( $c["id"], $datos_det["color"] ); ?>><?php echo $c["name"]; ?></option>
@@ -244,8 +252,8 @@
                                 <div class="form-group">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo de precio </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <select id="seltprecio" name="tprecio" class="form-control selectpicker">
-                                      <option value="">Seleccione</option>
+                                    <select id="seltprecio" name="tprecio" class="form-control" required="">
+                                      <option value>Seleccione</option>
                                       <?php foreach ( $tprecios as $tp ) { ?>
                                         <option value="<?php echo $tp["tipo"] ?>" <?php echo sop( $tp["tipo"], $datos_det["tipo_precio"] ); ?>>
                                           <?php echo $tp["etiqueta"]; ?>
@@ -258,7 +266,7 @@
                                 <div id="valor_pieza" class="form-group oprecio">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de la pieza </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input name="valor_pieza" type="text" class="form-control" 
+                                    <input id="vpieza" name="valor_pieza" type="text" class="form-control vtp" 
                                     placeholder="Valor de pieza" value="<?php echo $datos_det["precio_pieza"]; ?>">
                                   </div>
                                 </div>
@@ -266,7 +274,7 @@
                                 <div id="valor_mo" class="form-group oprecio">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de mano de obra </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input name="valor_mano_obra" type="text" class="form-control" 
+                                    <input id="vmanoo" name="valor_mano_obra" type="text" class="form-control vtp" 
                                     placeholder="Valor Mano de obra" value="<?php echo $datos_det["precio_mo"]; ?>">
                                   </div>
                                 </div>
@@ -274,7 +282,7 @@
                                 <div id="valor_gramo" class="form-group oprecio">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor del gramo </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input name="valor_gramo" type="text" class="form-control" 
+                                    <input id="vgramo" name="valor_gramo" type="text" class="form-control vtp" 
                                     placeholder="Valor del gramo" value="<?php echo $datos_det["precio_peso"]; ?>">
                                   </div>
                                 </div>
@@ -297,9 +305,13 @@
                               <form id="frm_mtalladetalle" data-parsley-validate class="form-horizontal form-label-left" 
                                 method="post">
                                 <div class="form-group">
+                                    
                                     <div align="center"><h5>Edición de tallas</h5></div>
+                                    
                                     <div class="ln_solid"></div>
+                                    
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla - Peso</label>
+                                    
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                       <button type="button" class="btn btn-primary" 
                                       data-toggle="modal" data-target="#size-table">Seleccionar</button>
@@ -493,9 +505,31 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-ui.js"></script>
     <script src="js/fn-product.js"></script>
+    <script src="js/fn-validators.js"></script>
+
+    <script>
+      
+      $(document).ready(function() {
+        $('#frm_mddetalle').parsley().on('form:success', function() {
+          editarDatosDetalleProducto();
+          //alert("EXITO");
+        });
+      });
+      
+    </script>
+
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
     
 	
   </body>
