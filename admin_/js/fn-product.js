@@ -127,7 +127,7 @@ function editarDatosDetalleProducto(){
 
 	var form = $("#frm_mddetalle");
 	var form_det = form.serialize();
-	var tit_notif = "Detalle de producto"
+	var tit_notif = "Detalle de producto";
 	
 	$.ajax({
         type:"POST",
@@ -148,15 +148,19 @@ function editarTallasDetalleProducto(){
 	//Envía al servidor la petición de edición de tallas de detalle de producto. 
 	var iddet = $("#iddetalle").val();
 	var tallas = obtenerValoresTallasSeleccionadas();
+	var tit_notif = "Tallas de producto"
 	
 	$.ajax({
         type:"POST",
         url:"database/data-products.php",
         data:{ modif_tallasdetprod: tallas, idt: iddet },
         success: function( response ){
-			//res = jQuery.parseJSON(response);
-			console.log( response );
-			//window.location = "product-data.php?p=" + idp;
+			res = jQuery.parseJSON(response);
+			//console.log( response );
+			if( res.exito == 1 ) 
+				notificar( tit_notif, res.mje, "success" );
+			else
+				notificar( tit_notif, res.mje, "error" );
         }
     });
 }
@@ -330,13 +334,13 @@ $( document ).ready(function() {
     $("#bot_edit_tallasdetalle").on( "click", function(){
 		if( checkDetalleProducto() == 0 ){ 
 			editarTallasDetalleProducto();
-		}	
+		}
     });
 
 	$(".lnk_elimimg_detprod").on( "click", function(){
 		var ec = $(this).attr( "data-target" ) ;
-		$(this).fadeOut(20);
-		$("#" + ec).fadeIn(50);
+		$(this).fadeOut(200);
+		$("#" + ec).fadeIn(300);
     });
 
     $(".lnk_cancelim_idetp").on( "click", function(){
@@ -344,8 +348,8 @@ $( document ).ready(function() {
 		var bloc = $(this).attr( "data-bloc" );
 
 		//alert(ecanc +" "+bloc);
-		$( "#" + bloc ).fadeOut( 20 );
-		$( "#" + ecanc ).fadeIn( 50 );
+		$( "#" + bloc ).fadeOut( 200 );
+		$( "#" + ecanc ).fadeIn( 300 );
     });
 
     $(".lnk_confelim_idet").on( "click", function(){

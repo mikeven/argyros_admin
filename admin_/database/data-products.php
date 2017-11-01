@@ -458,6 +458,13 @@
 		$iddet = $_POST["idt"];
 		$tallas = json_decode( $_POST["modif_tallasdetprod"] );
 		$idd = editarTallasDetalleProducto( $dbh, $iddet, $tallas );
+		
+		$res["exito"] = 1;
+		$res["mje"] = "Datos de tallas actualizados con éxito";
+		$res["reg"] = $tallas;
+
+		echo json_encode( $res );
+
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Eliminación de imagen de detalle de producto

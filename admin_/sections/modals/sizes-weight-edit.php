@@ -15,11 +15,12 @@
           <tbody>
             <tr style="background:#ccc;">
               <td>
-                <?php echo $t0["name"] ?>
+                <?php echo $t0["name"]; ?>
                 <input id="nt0" type="hidden" value="<?php echo $t0["name"] ?>" data-idt="<?php echo $t0["id"] ?>">
               </td>
               <td>
-                <input type="text" class="form-control valtallas_sel" placeholder="Peso (gr: 0.00)" value="" data-t="nt0">
+                <input type="text" class="form-control valtallas_sel" placeholder="Peso (gr: 0.00)" 
+                value="<?php echo $dtalla0["peso"]; ?>" data-t="nt0">
               </td>
             </tr>
             <?php

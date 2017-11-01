@@ -27,9 +27,10 @@
         $detalle = obtenerDatosDetalleProductoPorId( $dbh, $iddet );
         $datos_det = $detalle["datos"];
         $tallas_det = $detalle["tallas"];
+        $dtalla0 = obtenerValorTallaCeroDetalleProducto( $tallas_det );
         $imgs_det = $detalle["imagenes"];
-    }
-    
+
+    }  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -139,7 +140,7 @@
     $tallas = obtenerListaTallasCategoria( $dbh, $producto["cid"] );  // database/data-sizes.php
     $t0 = obtenerValoresTallaCero( $dbh );
 
-    $lnk_back = "product-data.php?p=".$producto["cid"];
+    $lnk_back = "product-data.php?p=".$idp;
     
   ?>
 
@@ -192,12 +193,10 @@
                   <div class="x_content">
                         <p class="text-muted font-13 m-b-30"> </p>
                         <div class="row">
-                          
+
                             <div class="form-group">
                               <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
-                              <a href="<?php echo $lnk_back; ?>">
-                                <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
-                              </a>
+                              <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
                               <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
                             </div>
                           
@@ -354,10 +353,10 @@
                         <div class="row">
                           <div align="center"><h5>Edición de imágenes</h5></div>
                           
-                          <div class="ln_solid"></div>
+                          
                           
                           <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div align="center"><h5>Imágenes del producto</h5></div>
+                            <div align="center"><h5>Imágenes del detalle de producto</h5></div>
                             <div class="ln_solid"></div>
                             <div id="galeria_detalle">
                               <?php include( "fn/fn-detail_product_gallery.php" ); ?>
@@ -483,7 +482,8 @@
         
         $("#images").on('filebatchuploadcomplete', function(event, data, previewId, index) {
           agregarCamposOcultosImagenes();
-          agregarImagenesDetalleProducto();            
+          agregarImagenesDetalleProducto();
+          notificar( "", "Imágenes de productos actualizadas", "success" );            
         });
 
     </script>
@@ -519,8 +519,13 @@
       
       $(document).ready(function() {
         $('#frm_mddetalle').parsley().on('form:success', function() {
-          editarDatosDetalleProducto();
-          //alert("EXITO");
+          //editarDatosDetalleProducto();
+          alert("EXITO_D");
+        });
+
+        $('#frm_mtalladetalle').parsley().on('form:success', function() {
+          //editarDatosDetalleProducto();
+          alert("EXITO_T");
         });
       });
       

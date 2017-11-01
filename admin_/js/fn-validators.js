@@ -10,6 +10,7 @@ function nElementosTalla(){
 /* --------------------------------------------------------- */
 function checkDetalleProducto(){
 	//Validación de formulario de nuevo detalle de producto previo a su registro
+	//Formulario edición de tallas de detalle
 	var error = 0;
 	var mensaje = "";
 
