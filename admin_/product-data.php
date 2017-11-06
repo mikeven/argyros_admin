@@ -198,9 +198,13 @@
                                                     foreach ( $tallas_detalle as $talla ) { 
                                                 ?>
                                                     <tr>
-                                                    <td><?php echo $talla["talla"]; ?></td>
-                                                    <td><?php echo $talla["peso"]; ?> </td>
-                                                    <td><i class="fa fa-trash"></i> Ocultar</td>
+                                                        <td><?php echo $talla["talla"]; ?></td>
+                                                        <td><?php echo $talla["peso"]; ?></td>
+                                                        <td>   
+                                                            <i class="fa fa-eye"></i> 
+                                                            <a id="id-dtp<?php echo $talla["iddtt"]; ?>" href="#!" 
+                                                            class="o-tdetp">Ocultar</a>
+                                                        </td>
                                                     </tr>
                                                 <?php } ?>
                                               </tbody>

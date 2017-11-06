@@ -125,7 +125,6 @@
     .lnk_confelim_idet{ color: #d43f3a; }
     .lnk_confelim_idet:hover{ color: #d43f3a; text-decoration: underline; }
     .lnk_elimimg_detprod:hover{ color: #d43f3a; }
-
   </style>
 
   <?php
@@ -141,7 +140,6 @@
     $t0 = obtenerValoresTallaCero( $dbh );
 
     $lnk_back = "product-data.php?p=".$idp;
-    
   ?>
 
   <body class="nav-md">

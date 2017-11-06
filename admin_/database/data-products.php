@@ -89,6 +89,17 @@
 		return mysqli_fetch_array( $data );		
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerImagenesProducto( $dbh, $id ){
+		//Devuelve los registros de imágenes de dado el id de producto
+		$q = "select i.path as image FROM images i, product_details d 
+		where i.product_detail_id = d.id and d.product_id = $id";
+		//echo $q;
+
+		$data = mysqli_query( $dbh, $q );
+		$lista = obtenerListaRegistros( $data );
+		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerImagenesDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de imágenes de detalle de producto
 		$q = "select id, path from images where product_detail_id = $idd";
@@ -108,7 +119,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerTallasDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de tallas de detalle de producto
-		$q = "select spd.size_id as idtalla, s.name as talla, spd.weight as peso, spd.visible as visible 
+		$q = "select spd.size_id as iddtt, s.name as talla, spd.weight as peso, spd.visible as visible 
 		from size_product_detail spd, sizes s where spd.size_id = s.id and spd.product_detail_id = $idd";
 		
 		$data = mysqli_query( $dbh, $q );

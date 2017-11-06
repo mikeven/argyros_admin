@@ -1,7 +1,7 @@
 <table id="datatable" class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th><i class="fa fa-eye"> </i></th>
+      <th><i class="fa fa-file-image-o"></i></th>
       <th>Id</th>
       <th>Código</th>
       <th>Nombre</th>
@@ -14,12 +14,18 @@
   </thead>
   <tbody>
       <?php 
+        
         foreach ( $productos as $p ) {
           $lnk_p = "product-data.php?p=$p[id]";
+          $imgs = obtenerImagenesProducto( $dbh, $p["id"]);
+          $url_img = "";
+          if( isset( $imgs[0] ) ){
+            $url_img = $imgs[0]["image"];
+          }
           //$lnk_d = "product-detail.php?p=$p[id]"; 
       ?>
       <tr>
-        <td><a href="#!">Ocultar</a></td>
+        <td><img src="<?php echo $url_img;?>" width="60px"></td>
         <td><?php echo $p["id"]; ?></td>
         <td><?php echo $p["codigo"]; ?></td>
         <th><a class="primary" href="<?php echo $lnk_p; ?>"><?php echo $p["nombre"]; ?></a></th>

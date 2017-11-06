@@ -107,7 +107,6 @@
                           <input name="nombre" type="text" class="form-control" placeholder="Nombre categoría">
                         </div>
                       </div>
-                      
                       <div class="ln_solid"></div>
 
                       <div class="form-group">

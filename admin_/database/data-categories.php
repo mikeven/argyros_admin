@@ -6,7 +6,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaCategorias( $dbh ){
 		//Devuelve la lista de categorías principales de productos
-		$q = "Select id, name from categories order by name ASC";
+		$q = "Select id, name, uname from categories order by name ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_c = obtenerListaRegistros( $data );
@@ -31,8 +31,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaSubCategorias( $dbh ){
 		//Devuelve la lista de categorías principales de productos
-		$q = "Select s.id, s.name as name, c.name as cname from subcategories s, categories c 
-		where s.category_id = c.id order by name ASC";
+		$q = "Select s.id, s.name as name, c.name as cname, s.uname as uname 
+		from subcategories s, categories c where s.category_id = c.id order by name ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_c = obtenerListaRegistros( $data );
@@ -65,22 +65,36 @@
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function agregarCategoria( $dbh, $nombre ){
+	function agregarCategoria( $dbh, $nombre, $uname ){
 		//Agrega un registro de categoría principal de producto
-		$q = "insert into categories ( name, created_at ) values ( '$nombre', NOW() )";
+
+		$q = "insert into categories ( name, uname, created_at ) values ( '$nombre', '$uname', NOW() )";
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function agregarSubcategoria( $dbh, $nombre, $idcategoria ){
+	function agregarSubcategoria( $dbh, $nombre, $uname, $idcategoria ){
 		//Agrega un registro de subcategoría de producto
-		$q = "insert into subcategories ( name, category_id, created_at ) 
-				values ( '$nombre', $idcategoria, NOW() )";
+		$q = "insert into subcategories ( name, uname, category_id, created_at ) 
+				values ( '$nombre', '$uname', $idcategoria, NOW() )";
 		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
-
+	/* ----------------------------------------------------------------------------------- */
+	function unameDisponible( $dbh, $table, $uname ){
+		//Devuelve si un uname está disponible
+		$disp = true;
+		$q = "select * from $table where uname = '$uname'";
+		$nrows = mysqli_num_rows( mysqli_query ( $dbh, $q ) );
+		
+		if( $nrows > 0 ) $disp = false;	
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerUname( $name ){
+		//Devuelve el uname de una categoría o subcategoría
+		return strtolower( str_replace( " ", "", $name) );
+	}
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Categorías */
 	/* ----------------------------------------------------------------------------------- */
@@ -96,9 +110,9 @@
 	if( isset( $_GET["ncategoria"] ) ){
 		include( "bd.php" );
 
-
+		$uname = obtenerUname( $_POST["nombre"] );
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
-		$idc = agregarCategoria( $dbh, $nombre );
+		$idc = agregarCategoria( $dbh, $nombre, $uname );
 		
 		if( ( $idc != 0 ) && ( $idc != "" ) ){
 			header( "Location: ../categories.php?agregar_categoria&success" );
@@ -109,8 +123,9 @@
 	if( isset( $_GET["nsubcategoria"] ) ){
 		include( "bd.php" );
 		
+		$uname = obtenerUname( $_POST["nombre"] );
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
-		$idsc = agregarSubcategoria( $dbh, $nombre, $_POST["idcategoria"] );
+		$idsc = agregarSubcategoria( $dbh, $nombre, $uname, $_POST["idcategoria"] );
 		
 		if( ( $idsc != 0 ) && ( $idsc != "" ) ){
 			header( "Location: ../subcategories.php?addsubcategory&success" );
