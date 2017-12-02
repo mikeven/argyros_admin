@@ -4,7 +4,7 @@
 	$servidor = "127.0.0.1";
 	$usuariobd = "root";
 	$passbd = "";
-	$basedatos = "dbargyros";
+	$basedatos = "mgideasn_argyros";
 	//require_once($_SERVER['DOCUMENT_ROOT'].'/lib/FirePHPCore/fb.php');
 	
 	$dbh = mysqli_connect ( $servidor, $usuariobd, $passbd ) or die('No se puede conectar a '.$servidor.": ". mysql_error());

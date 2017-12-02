@@ -89,7 +89,7 @@
 		$idresult = 0; 
 		$sql = "select * from users where email = '$email' and password='$pass'";
 		//echo $sql;
-		$data = mysqli_query ( $lnk, $sql );
+		$data = mysqli_query( $lnk, $sql );
 		$data_user = mysqli_fetch_array( $data );
 		$nrows = mysqli_num_rows( $data );
 		

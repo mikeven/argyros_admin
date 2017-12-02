@@ -119,7 +119,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerTallasDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de tallas de detalle de producto
-		$q = "select spd.size_id as iddtt, s.name as talla, spd.weight as peso, spd.visible as visible 
+		$q = "select spd.size_id as idtalla, s.name as talla, spd.weight as peso, spd.visible as visible 
 		from size_product_detail spd, sizes s where spd.size_id = s.id and spd.product_detail_id = $idd";
 		
 		$data = mysqli_query( $dbh, $q );
