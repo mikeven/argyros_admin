@@ -384,7 +384,7 @@
 			$res["exito"] = 1;
 			$res["mje"] = "Registro exitoso";
 			$res["reg"] = $producto;
-		}else{
+		} else {
 			$res["exito"] = 0;
 			$res["mje"] = "Error al registrar producto";
 			$res["reg"] = NULL;

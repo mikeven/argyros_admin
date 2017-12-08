@@ -57,7 +57,7 @@
             </li>
         </ul>
       </li>
-      <li><a href="#!"><i class="fa fa-file-text-o fa-fw"></i>Pedidos</a>
+      <li><a href="orders.php"><i class="fa fa-file-text-o fa-fw"></i>Pedidos</a>
       </li>
       <li>
         <a href="users.php"><i class="fa fa-users fa-fw"></i>Usuarios</a>
