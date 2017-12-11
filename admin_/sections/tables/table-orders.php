@@ -14,11 +14,11 @@
       foreach ( $pedidos as $p ) { 
     ?>
     <tr>
-      <td><a href="#!">#Pedido <?php echo $p["id"]; ?></a></td>
+      <td><a href="order-data.php?id=<?php echo $p["id"]; ?>">#Pedido <?php echo $p["id"]; ?></a></td>
       <td><a href="#!"><?php echo $p["nombre"]." ".$p["apellido"]; ?></a></td>
       <td><?php echo $p["fecha"]; ?></td>
       <td><?php echo $p["estado"]; ?></td>
-      <td><?php echo $p["total"]; ?></td>
+      <td>$ <?php echo $p["total"]; ?></td>
     </tr>
     <?php } ?>
   </tbody>

@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Órdenes
+     * Argyros Admin - Datos de pedido
      * 
      */
     session_start();
@@ -10,11 +10,18 @@
     include( "fn/common-functions.php" );
     include( "database/data-orders.php" );
 
+    if( isset( $_GET["id"] ) ){
+        $ido = $_GET["id"];
+        $data_o = obtenerOrdenPorId( $dbh, $ido );
+        $orden = $data_o["orden"];
+        $dorden = $data_o["detalle"];
+        
+    }
+    
     checkSession( '' );
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -22,7 +29,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Pedidos :: Argyros Admin</title>
+    <title>Pedido :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -48,17 +55,19 @@
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
   </head>
 
-  <?php
-    $pedidos = obtenerOrdenesUsuarios( $dbh );
-  ?>
-
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
+        
         <?php include("sections/main-nav.php"); ?>
 
         <?php include("sections/top-nav.php"); ?>
@@ -66,17 +75,19 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
+            
             <div class="page-title">
               <div class="title_left">
-                <h3>Pedidos</h3>
+                <h3>Cliente</h3>
               </div>
 
               <!--<div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
-                  <div class="input-group" style="float:right;">
-                    <a href="new-client.php" class="btn btn-app">
-                      <i class="fa fa-plus"></i> Agregar
-                    </a>
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
                   </div>
                 </div>
               </div>-->
@@ -86,21 +97,58 @@
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                
                 <div class="x_panel">
+                  
                   <div class="x_title">
-                    <h2>Lista de pedidos</h2>
+                    <h2>Datos del pedido</h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                      
                     </ul>
                     <div class="clearfix"></div>
                   </div>
+                  
                   <div class="x_content">
-                    <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-orders.php");?>
+                    
+                    <div class="form-group">
+                        <label class="control-label">Pedido: </label> <?php echo "#".$orden["id"]; ?>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Fecha: </label> <?php echo $orden["fecha"]; ?>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Total: </label> <?php echo "$ ".$orden["total"]; ?>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="control-label">Cliente: </label> 
+                        <?php echo $orden["nombre"]." ".$orden["apellido"]; ?>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Grupo cliente: </label> 
+                        <?php echo $orden["grupo_cliente"]; ?>
+                    </div>
+                  
                   </div>
+                
                 </div>
+
               </div>
+
+              <div class="col-md-8 col-sm-5 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Detalle de pedido</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <?php include( "sections/tables/table-order-details.php" );?> 
+                  </div>
+                </div> 
+              </div>
+
             </div>
           </div>
         </div>
@@ -109,6 +157,14 @@
         <!-- footer content -->
         <?php include( "sections/footer.php" ); ?>
         <!-- /footer content -->
+
+        <button type="button" class="btn btn-default source hidden" onclick="new PNotify({
+            title: '',
+            text: 'That thing that you were trying to do worked!',
+            type: 'success',
+            styling: 'bootstrap3'
+        });">Success</button>
+
       </div>
     </div>
 
@@ -167,6 +223,11 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
