@@ -137,10 +137,7 @@
                         </select>
                     </div>
                     
-
                     <div class="ln_solid"></div>
-
-                    
 
                     <div class="form-group">
                         <label class="control-label">Compañía: </label> <?php echo $cliente["ncompania"]; ?>
@@ -150,9 +147,7 @@
                     </div>                
                     
 
-
                     <div class="ln_solid"></div>
-
 
 
                     <div class="form-group">
@@ -168,13 +163,8 @@
                 
                 </div>
 
-
-                
-
               </div>
               
-              
-
               <div class="col-md-8 col-sm-5 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">

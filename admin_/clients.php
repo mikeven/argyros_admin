@@ -170,6 +170,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-client.js"></script>
 	
   </body>
 </html>

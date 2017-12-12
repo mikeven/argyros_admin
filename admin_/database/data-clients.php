@@ -26,6 +26,14 @@
 		return $lista_c;	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerIdGrupoClientePorNombre( $dbh, $nombre ){
+		//Devuelve el id del grupo de cliente dado su nombre
+		$q = "select id from user_group where name = '$nombre'";
+
+		$data = mysqli_fetch_array( mysqli_query( $dbh, $q ) );
+		return $data["id"];
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerClientePorId( $dbh, $idc ){
 		//Devuelve el registro de cliente dado por id
 		$q = "Select u.id, u.first_name as nombre, u.last_name as apellido, u.email, u.phone,
@@ -39,6 +47,12 @@
 
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );	
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function modificarGrupoUsuarioCliente( $dbh, $idu, $idgrupo ){
+		//Actualiza el grupo al que pertenece un cliente
+		$q = "update users set user_group_id = $idgrupo where id = $idu";
+		$data = mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function agregarGrupoCliente( $dbh, $grupo ){
@@ -76,6 +90,14 @@
 		}
 
 		echo json_encode( $res );
+	}
+
+	//Invocación para modificar el grupo al que pertenece un cliente
+	if( isset( $_POST["grupo_valor"] ) ){
+		include( "bd.php" );	
+		$idg = obtenerIdGrupoClientePorNombre( $dbh, $_POST["grupo_valor"] );
+		modificarGrupoUsuarioCliente( $dbh, $_POST["id_c"], $idg );
+		
 	}
 	/* ----------------------------------------------------------------------------------- */
 
