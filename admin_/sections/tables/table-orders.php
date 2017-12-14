@@ -1,4 +1,4 @@
-<table id="datatable" class="table table-striped table-bordered">
+<table id="datatable_o" class="table table-striped table-bordered">
   <thead>
     <tr>
       <th>Pedido</th>
@@ -11,13 +11,14 @@
 
   <tbody>
     <?php 
-      foreach ( $pedidos as $p ) { 
+      foreach ( $pedidos as $p ) {
+         $iconoe = obtenerIconoEstado( $p["estado"], "" );
     ?>
     <tr>
       <td><a href="order-data.php?id=<?php echo $p["id"]; ?>">#Pedido <?php echo $p["id"]; ?></a></td>
       <td><a href="#!"><?php echo $p["nombre"]." ".$p["apellido"]; ?></a></td>
       <td><?php echo $p["fecha"]; ?></td>
-      <td><?php echo $p["estado"]; ?></td>
+      <td><?php echo $iconoe." ".$p["estado"]; ?></td>
       <td>$ <?php echo $p["total"]; ?></td>
     </tr>
     <?php } ?>

@@ -2600,7 +2600,7 @@ if (typeof NProgress != 'undefined') {
 				var $datatable = $('#datatable-checkbox');
 
 				$datatable.dataTable({
-				  'order': [[ 1, 'asc' ]],
+				  /*'order': [[ 1, 'asc' ]],*/
 				  'columnDefs': [
 					{ orderable: false, targets: [0] }
 				  ]

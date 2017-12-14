@@ -6,6 +6,7 @@
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
+    include( "fn/fn-orders.php" );
     include( "database/data-user.php" );
     include( "fn/common-functions.php" );
     include( "database/data-orders.php" );
@@ -90,9 +91,9 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Lista de pedidos</h2>
-                    <ul class="nav navbar-right panel_toolbox">
+                    <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
+                    </ul>-->
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -170,6 +171,35 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#datatable_o').dataTable({
+            "paging": true,
+            "iDisplayLength": 10,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            'order': [[ 2, 'desc' ]],
+            "info": true,
+            "autoWidth": false,
+            "language": {
+            "lengthMenu": "Mostrar _MENU_ regs por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando pág _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros",
+            "infoFiltered": "(filtrados de _MAX_ regs)",
+            "search": "Buscar:",
+            "paginate": {
+              "first":      "Primero",
+              "last":       "Último",
+              "next":       "Próximo",
+              "previous":   "Anterior"
+            }
+          }
+        });
+
+      });
+    </script>
 	
   </body>
 </html>

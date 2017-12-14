@@ -100,9 +100,12 @@
 		return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerImagenesDetalleProducto( $dbh, $idd ){
+	function obtenerImagenesDetalleProducto( $dbh, $idd, $limite ){
 		//Devuelve los registros de imágenes de detalle de producto
-		$q = "select id, path from images where product_detail_id = $idd";
+		$l = "";
+		if( $limite != NULL ) $l = "LIMIT $limite";
+		
+		$q = "select id, path from images where product_detail_id = $idd $l";
 		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );

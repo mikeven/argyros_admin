@@ -9,14 +9,8 @@
     include( "database/data-user.php" );
     include( "fn/common-functions.php" );
     include( "database/data-orders.php" );
-
-    if( isset( $_GET["id"] ) ){
-        $ido = $_GET["id"];
-        $data_o = obtenerOrdenPorId( $dbh, $ido );
-        $orden = $data_o["orden"];
-        $dorden = $data_o["detalle"];
-        
-    }
+    include( "database/data-products.php" );
+    include( "fn/fn-orders.php" );
     
     checkSession( '' );
 ?>
@@ -62,6 +56,13 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+    <style type="text/css">
+        .qdisp_orden{ width: 100%; }    
+        .dcol{ display: none; }
+        #datatable_do .dcol .fa:hover{ cursor: pointer; }
+        .marked{ color: #5bc0de; }
+        .qdisp_orden{ text-align: center; }
+    </style>
   </head>
 
   <body class="nav-md">
@@ -78,7 +79,7 @@
             
             <div class="page-title">
               <div class="title_left">
-                <h3>Cliente</h3>
+                <h3>Pedido</h3>
               </div>
 
               <!--<div class="title_right">
@@ -105,7 +106,7 @@
                   <div class="x_title">
                     <h2>Datos del pedido</h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      
+                        <?php echo $iconoe; ?> 
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -121,6 +122,9 @@
                     <div class="form-group">
                         <label class="control-label">Total: </label> <?php echo "$ ".$orden["total"]; ?>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label">Estado: </label> <?php echo $orden["estado"]; ?>
+                    </div>
                     <hr>
                     <div class="form-group">
                         <label class="control-label">Cliente: </label> 
@@ -130,7 +134,14 @@
                         <label class="control-label">Grupo cliente: </label> 
                         <?php echo $orden["grupo_cliente"]; ?>
                     </div>
-                  
+                    <?php if ( $orden["estado"] == "pendiente" ) { ?>
+                    <hr>
+                    <div class="form-group">
+                        <a href="#!">
+                            <button id="r_pedido" type="button" class="btn btn-info btn-xs">Responder</button>
+                        </a> 
+                    </div>
+                    <?php } ?>
                   </div>
                 
                 </div>
@@ -231,6 +242,6 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
-	
+	<script src="js/fn-order.js"></script>
   </body>
 </html>

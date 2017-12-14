@@ -8,7 +8,7 @@
 		//Devuelve el registro de las órdenes asociadas a un usuario
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
 		date_format( o.created_at,'%d/%m/%Y') as fecha, u.id as cid, u.first_name nombre, 
-		u.last_name as apellido from orders o, users u where o.user_id = u.id order by fecha DESC";
+		u.last_name as apellido from orders o, users u where o.user_id = u.id order by o.created_at DESC";
 		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -39,10 +39,22 @@
 		return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerImagenesProductoOrden( $dbh, $detalle ){
+		//Devuelve las imágenes de los productos de una orden
+		$ndetalle = array();
+		foreach ( $detalle as $reg ) {
+			$data = obtenerImagenesDetalleProducto( $dbh, $reg["product_detail_id"], 1 );
+			$reg["imagen"] = $data[0]["path"];
+			$ndetalle[] = $reg;		
+		}
+		return $ndetalle;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerOrdenPorId( $dbh, $ido ){
 		//Devuelve el contenido de una orden, su detalle dado su id
 		$orden["orden"] = obtenerRegistroOrdenPorId( $dbh, $ido );
 		$orden["detalle"] = obtenerDetalleOrden( $dbh, $ido );
+		$orden["detalle"] = obtenerImagenesProductoOrden( $dbh, $orden["detalle"] );
 		
 		return $orden;
 	}

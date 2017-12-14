@@ -163,7 +163,7 @@
                                 <h4>Detalle de producto</h4>      
                                 <?php 
                                     foreach ( $dproducto as $dp ) {
-                                        $imagenes_detalle = obtenerImagenesDetalleProducto( $dbh, $dp["id"] );
+                                        $imagenes_detalle = obtenerImagenesDetalleProducto( $dbh, $dp["id"], NULL );
                                         $tallas_detalle = obtenerTallasDetalleProducto( $dbh, $dp["id"] ); 
 
                                 ?>
