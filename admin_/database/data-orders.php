@@ -59,9 +59,54 @@
 		return $orden;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function actualizarDetallePedidoRevision( $dbh, $id, $cant ){
+		//Modifica las cantidades del pedido en revisión ( administrador )
+		$q = "update order_details set available = $cant, updated_at = NOW() where id = $id";
+		
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function actualizarEstadoPedido( $dbh, $id, $estado ){
+		//Actualiza el estado de un pedido
+		$q = "update orders set order_status = '$estado', updated_at = NOW() where id = $id";
+		
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function registrarRevisionPedido( $dbh, $revision ){
+		//Recorre el vector de registros de detalle de pedido (id, cant) para enviar a BD
+		$res = 0;
+		foreach ( $revision as $r ) {
+			list( $id, $cant ) = explode( ',', $r );
+			$res += actualizarDetallePedidoRevision( $dbh, $id, $cant );
+		}
+		return $res;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Líneas */
 	/* ----------------------------------------------------------------------------------- */
 	
+	//Registrar revisión de pedido
+	if( isset( $_POST["rev_ped"] ) ){
+		include( "bd.php" );	
+		parse_str( $_POST["rev_ped"], $revision );
+		//print_r( $revision );
+		
+		$idr = registrarRevisionPedido( $dbh, $revision["regrev"] );
+		if ( ( $idr != 0 ) && ( $idr != "" ) ){
+			actualizarEstadoPedido( $dbh, $_POST["idp"], "revisado" );
+			$res["exito"] = 1;
+			$res["mje"] = "La respuesta del pedido ha sido enviada";
+		} else {
+			$res["exito"] = 0;
+			$res["mje"] = "Error al actualizar producto";
+		}
+
+		echo json_encode( $res );
+		//print_r( $revision );
+	}
 	
 	/* ----------------------------------------------------------------------------------- */
 

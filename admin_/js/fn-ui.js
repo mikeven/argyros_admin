@@ -18,6 +18,7 @@ function obtenerEnlaceDocumentoCreado( documento, frt ){
 }
 /* ----------------------------------------------------------------------------------- */
 function notificar( titulo, mensaje, tipo ){
+	//Muestra una notificación: 
 	var notice = new PNotify({
 	  title: titulo,
 	  text: mensaje,
