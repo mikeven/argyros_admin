@@ -120,7 +120,7 @@
                         <label class="control-label">Fecha: </label> <?php echo $orden["fecha"]; ?>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Total: </label> <?php echo "$ ".$orden["total"]; ?>
+                        <label class="control-label">Total: </label> <?php echo "$".$orden["total"]; ?>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Estado: </label> <?php echo $orden["estado"]; ?>

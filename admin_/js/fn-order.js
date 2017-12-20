@@ -4,12 +4,14 @@
  *
  */
 /* --------------------------------------------------------- */	
-function asignarValorRegistro( id ){
-	var idr = id.substring(2);
+function asignarValorRegistro( status_rev, id ){
+	//Asigna los valores para conformar un registro ( id_registro, cantidad, accion )
+	var idr = id.substring(2);				//cdxx substring(2):xx
 	var cant = $( "#" + id ).val();
-	$( "#rr" + id ).val( idr + "," + cant );
+	$( "#rr" + id ).val( idr + "," + cant + "," + status_rev );
+	//alert(idr + "," + cant + "," + status_rev);
 }
-
+/* --------------------------------------------------------- */
 function accionCantidad( accion, trg ){
 	//Acciones sobre la revisión de cantidades de un pedido
 
@@ -29,7 +31,11 @@ function accionCantidad( accion, trg ){
 		$( "#" + trg ).prop( "disabled", false );
 		$( "#" + trg ).focus();
 	}
-	asignarValorRegistro( trg );
+	var srev = $(accion).attr("data-sr");		//Status de revisión
+	
+	//if( $(accion).attr("data-c") != "*" )
+		asignarValorRegistro( srev, trg );
+
 }
 /* --------------------------------------------------------- */
 function validarRevisionPedido(){
@@ -72,20 +78,26 @@ $( document ).ready( function() {
 
     //Clic: Acción dada por los íconos de revisión de pedido
 	$('.i-rev').on('click', function() {
-	    var trg = $(this).attr("data-t");
+	    var trg = $(this).attr("data-t");		//cdxx
 	    $("." + trg ).removeClass("marked");
 	    accionCantidad( $(this), trg );
 	    $(this).addClass("marked");
 	});
 
-	//Clic: Revisión de revisión de pedido
+	//Blur: Acción dada por el campo cantidad disponible de revisión de pedido
+	$('.qdisp_orden').on('blur', function() {
+	    var id = $(this).attr("id");			//cdxx
+	    var status_rev = $( "#i" + id ).attr("data-sr");
+	    asignarValorRegistro( status_rev, id );
+	});
+
+	//Clic: Chequeo de la revisión de pedido
 	$('#resp_pedido').on('click', function() {
 		var r = validarRevisionPedido();
 		if( r == false ) notificar( "Error", "Debe chequear respuesta", "error" );
 		if( r == true ){
 			enviarRevisionPedido();
 		} 
-			    
 	});
 
 });

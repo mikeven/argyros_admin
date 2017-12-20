@@ -16,6 +16,13 @@
 		return $iconos[$estado];
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function activarIconoRevision( $estado_item, $estado_icono ){
+		$res = "marked";
+		if( $estado_item != $estado_icono ) 
+			$res = "";
+		return $res;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_GET["id"] ) ){
         $ido = $_GET["id"];
         $data_o = obtenerOrdenPorId( $dbh, $ido );

@@ -29,8 +29,9 @@
 	function obtenerDetalleOrden( $dbh, $ido ){
 		//Devuelve los registros correspondientes a un detalle de pedido dado su id
 		$q = "select od.id, od.order_id, od.product_id, od.product_detail_id, 
-		od.quantity, od.price, p.name as producto, p.description, s.name as talla, s.unit from orders o, 
-		order_details od, products p, sizes s, size_product_detail sd, product_details pd 
+		od.available as disponible, od.check_revision as revision, od.quantity, od.price, 
+		p.name as producto, p.description, s.name as talla, s.unit 
+		from orders o, order_details od, products p, sizes s, size_product_detail sd, product_details pd 
 		where od.order_id = o.id and od.product_id = p.id and od.product_detail_id = pd.id and 
 		od.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and o.id = $ido";
 
@@ -59,10 +60,11 @@
 		return $orden;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function actualizarDetallePedidoRevision( $dbh, $id, $cant ){
+	function actualizarDetallePedidoRevision( $dbh, $id, $cant, $rev ){
 		//Modifica las cantidades del pedido en revisión ( administrador )
-		$q = "update order_details set available = $cant, updated_at = NOW() where id = $id";
-		
+		$q = "update order_details set available = $cant, check_revision = '$rev', 
+		updated_at = NOW() where id = $id";
+		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
@@ -79,8 +81,8 @@
 		//Recorre el vector de registros de detalle de pedido (id, cant) para enviar a BD
 		$res = 0;
 		foreach ( $revision as $r ) {
-			list( $id, $cant ) = explode( ',', $r );
-			$res += actualizarDetallePedidoRevision( $dbh, $id, $cant );
+			list( $id, $cant, $srev ) = explode( ',', $r );
+			$res += actualizarDetallePedidoRevision( $dbh, $id, $cant, $srev );
 		}
 		return $res;
 	}
@@ -101,7 +103,7 @@
 			$res["mje"] = "La respuesta del pedido ha sido enviada";
 		} else {
 			$res["exito"] = 0;
-			$res["mje"] = "Error al actualizar producto";
+			$res["mje"] = "Error al actualizar pedido";
 		}
 
 		echo json_encode( $res );

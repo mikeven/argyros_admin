@@ -134,7 +134,7 @@
 		//
 		$detalle["datos"]		= obtenerRegistroDetalleProductoPorId( $dbh, $idd );
 		$detalle["tallas"] 		= obtenerTallasDetalleProducto( $dbh, $idd );
-		$detalle["imagenes"] 	= obtenerImagenesDetalleProducto( $dbh, $idd );
+		$detalle["imagenes"] 	= obtenerImagenesDetalleProducto( $dbh, $idd, "" );
 
 		return $detalle;
 		

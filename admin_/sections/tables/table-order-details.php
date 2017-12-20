@@ -33,7 +33,8 @@
         </td>
         
         <td class="dcol">
-          <input id="cd<?php echo $r["id"]; ?>" name="cant" class="qdisp_orden" type="text" disabled>
+          <input id="cd<?php echo $r["id"]; ?>" name="cant" class="qdisp_orden" type="text" disabled 
+          onKeyPress="return isIntegerKey(event);">
           <!--<input id="do<?php echo $r["id"]; ?>" name="iddo" type="hidden" value="<?php echo $r["id"]; ?>">-->
           <input id="vacd<?php echo $r["id"]; ?>" type="hidden" value="0">
           <input id="rrcd<?php echo $r["id"]; ?>" name="regrev[]" type="hidden" value="0">
@@ -43,30 +44,27 @@
         <td>$<?php echo $total_item; ?></td>
         
         <td align="center" class="dcol">
-          <i data-c="!0" data-t="cd<?php echo $r["id"]; ?>" 
+          <i data-c="!0" data-t="cd<?php echo $r["id"]; ?>" data-sr="disp" 
           class="fa fa-check i-rev cd<?php echo $r["id"]; ?>"></i>
         </td>
         <td align="center" class="dcol">
-          <i data-c="0" data-t="cd<?php echo $r["id"]; ?>" 
+          <i data-c="0" data-t="cd<?php echo $r["id"]; ?>" data-sr="nodisp" 
           class="fa fa-times i-rev cd<?php echo $r["id"]; ?>"></i>
         </td>
         <td align="center" class="dcol">
-          <i data-c="*" data-t="cd<?php echo $r["id"]; ?>" 
+          <i id="icd<?php echo $r["id"]; ?>" data-c="*" data-t="cd<?php echo $r["id"]; ?>" data-sr="modif"
           class="fa fa-exclamation i-rev cd<?php echo $r["id"]; ?>"></i>
         </td>
         
         <?php if ( $orden["estado"] == "revisado" ) { ?>
           <td align="center">
-            <i data-c="!0" data-t="cd<?php echo $r["id"]; ?>" 
-            class="fa fa-check cd<?php echo $r["id"]; ?>"></i>
+            <i class="fa fa-check <?php echo activarIconoRevision( $r["revision"], "disp" ); ?>"></i>
           </td>
           <td align="center">
-            <i data-c="0" data-t="cd<?php echo $r["id"]; ?>" 
-            class="fa fa-times cd<?php echo $r["id"]; ?>"></i>
+            <i class="fa fa-times <?php echo activarIconoRevision( $r["revision"], "nodisp" ); ?>"></i>
           </td>
           <td align="center">
-            <i data-c="*" data-t="cd<?php echo $r["id"]; ?>" 
-            class="fa fa-exclamation cd<?php echo $r["id"]; ?>"></i>
+            <i class="fa fa-exclamation <?php echo activarIconoRevision( $r["revision"], "modif" ); ?>"></i>
           </td>
         <?php } ?>
 
