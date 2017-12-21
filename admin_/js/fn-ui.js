@@ -126,6 +126,16 @@ function arrayMjes( modo ){
 
 	return amensajes[modo];
 }
+/* ----------------------------------------------------------------------------------- */
+/* Ventana modal */
+function iniciarVentanaModal( idok, idcanc, enc, enc2, texto, tx_btnok ){
+	$(".btn-ok").attr( "id", idok );
+	$(".btn-ok").html( tx_btnok );
+	$(".btn-canc").attr( "id", idcanc );
+    $("#titulo_modal").html( enc );
+    $("#confirmar-accion .modal-body h4").html( enc2 );
+    $("#confirmar-accion .modal-body p").html( texto );
+}
 /*=====================================================================================*/
 $( document ).ready(function() {
 	

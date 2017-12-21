@@ -10,7 +10,7 @@
 			"cancelado" 	=> "<i class='fa fa-ban $x' title='Cancelado'></i>",
 			"revisado"		=> "<i class='fa fa-eye $x' title='Revisado'></i>",
 			"confirmado"	=> "<i class='fa fa-bell $x' title='Confirmado'></i>",
-			"finalizado"	=> "<i class='fa fa-arrow-right $x' title='Entregado'></i>",
+			"entregado"		=> "<i class='fa fa-arrow-right $x' title='Entregado'></i>",
 		);
 
 		return $iconos[$estado];

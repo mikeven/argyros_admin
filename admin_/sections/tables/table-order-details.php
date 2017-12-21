@@ -33,15 +33,26 @@
         </td>
         
         <td class="dcol">
+
           <input id="cd<?php echo $r["id"]; ?>" name="cant" class="qdisp_orden" type="text" disabled 
           onKeyPress="return isIntegerKey(event);">
+
           <!--<input id="do<?php echo $r["id"]; ?>" name="iddo" type="hidden" value="<?php echo $r["id"]; ?>">-->
+          <input class="qini" id="qocd<?php echo $r["id"]; ?>" type="hidden" 
+          data-ti="ti<?php echo $r["id"]; ?>" value="<?php echo $r["quantity"]; ?>">
+          
           <input id="vacd<?php echo $r["id"]; ?>" type="hidden" value="0">
+
           <input id="rrcd<?php echo $r["id"]; ?>" name="regrev[]" type="hidden" value="0">
+
         </td>
         
-        <td>$<?php echo $r["price"]; ?></td>
-        <td>$<?php echo $total_item; ?></td>
+        <td>
+          $<span id="mntqocd<?php echo $r["id"]; ?>"> <?php echo $r["price"]; ?> </span>
+        </td>
+        <td>
+          $<span id="ti<?php echo $r["id"]; ?>"> <?php echo $total_item; ?> </span>
+        </td>
         
         <td align="center" class="dcol">
           <i data-c="!0" data-t="cd<?php echo $r["id"]; ?>" data-sr="disp" 

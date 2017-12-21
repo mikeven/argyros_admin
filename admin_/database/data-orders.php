@@ -109,6 +109,28 @@
 		echo json_encode( $res );
 		//print_r( $revision );
 	}
+	/* ----------------------------------------------------------------------------------- */
+	//Registrar confirmación de pedido
+	if( isset( $_POST["conf_ped"] ) ){
+		include( "bd.php" );
+		$estado = $_POST["status"];	
+		$idp = $_POST["conf_ped"];
+		$idr = actualizarEstadoPedido( $dbh, $idp, $estado );
+
+		if( $estado == "confirmado" ){ $m1 = "confirmado"; $m2 = "confirmar"; }
+		if( $estado == "entregado" ) { $m1 = "entregado";  $m2 = "entregar"; }
+
+		if ( ( $idr != 0 ) && ( $idr != "" ) ){
+			$res["exito"] = 1;
+			$res["mje"] = "El pedido ha sido $m1";
+		} else {
+			$res["exito"] = 0;
+			$res["mje"] = "Error al $m2 pedido";
+		}
+
+		echo json_encode( $res );
+		//print_r( $revision );
+	}
 	
 	/* ----------------------------------------------------------------------------------- */
 

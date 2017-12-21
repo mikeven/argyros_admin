@@ -52,7 +52,7 @@
     <!-- PNotify -->
     <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
     <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">    
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
@@ -62,6 +62,7 @@
         #datatable_do .dcol .fa:hover{ cursor: pointer; }
         .marked{ color: #5bc0de; }
         .qdisp_orden{ text-align: center; }
+        .btn_accion_pedido{ float: left; }
     </style>
   </head>
 
@@ -120,7 +121,9 @@
                         <label class="control-label">Fecha: </label> <?php echo $orden["fecha"]; ?>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Total: </label> <?php echo "$".$orden["total"]; ?>
+                        <label class="control-label">Total: </label> 
+                        $<span id="monto_total_orden"><?php echo $orden["total"]; ?></span>
+                        <input type="hidden" id="previo_total_orden" value="<?php echo $orden["total"]; ?>">
                     </div>
                     <div class="form-group">
                         <label class="control-label">Estado: </label> <?php echo $orden["estado"]; ?>
@@ -136,12 +139,35 @@
                     </div>
                     <?php if ( $orden["estado"] == "pendiente" ) { ?>
                     <hr>
-                    <div class="form-group">
+                    <div class="form-group btn_accion_pedido">
                         <a href="#!">
                             <button id="r_pedido" type="button" class="btn btn-info btn-xs">Responder</button>
                         </a> 
                     </div>
+
+                    <div class="form-group btn_accion_pedido" style="margin-left:20px;">
+                        <a href="#!">
+                            <button id="c_pedido" type="button" 
+                            class="btn btn-success btn-xs" data-toggle="modal" 
+                            data-target="#confirmar-accion">Confirmar</button>
+                        </a> 
+                    </div>
+                    
                     <?php } ?>
+                    
+                    <?php if ( $orden["estado"] == "confirmado" ) { ?>
+                        <hr>
+                        <div class="form-group btn_accion_pedido">
+                            <a href="#!">
+                                <button id="e_pedido" type="button" 
+                                class="btn btn-info btn-xs" data-toggle="modal" 
+                                data-target="#confirmar-accion">Marcar como entregado</button>
+                            </a> 
+                        </div>
+                    <?php } ?>
+                    <div id="res_serv"></div>
+                    <?php include( "sections/modals/confirm_action.php" ); ?>
+                  
                   </div>
                 
                 </div>
@@ -243,6 +269,13 @@
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
     <script src="js/fn-ui.js"></script>
-	<script src="js/fn-order.js"></script>
+    <script src="js/fn-order.js"></script>
+    <?php if ( $orden["estado"] == "pendiente" ) { ?>
+        <script>iniciarBotonConfirmacion();</script>                    
+    <?php } ?>
+    <?php if ( $orden["estado"] == "confirmado" ) { ?>
+        <script>iniciarBotonEntregado();</script>                    
+    <?php } ?>
+
   </body>
 </html>
