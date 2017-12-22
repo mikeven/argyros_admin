@@ -29,8 +29,8 @@
 	function obtenerDetalleOrden( $dbh, $ido ){
 		//Devuelve los registros correspondientes a un detalle de pedido dado su id
 		$q = "select od.id, od.order_id, od.product_id, od.product_detail_id, 
-		od.available as disponible, od.check_revision as revision, od.quantity, od.price, 
-		p.name as producto, p.description, s.name as talla, s.unit 
+		od.available as disponible, od.item_status as istatus, od.check_revision as revision, od.quantity, 
+		od.price, p.name as producto, p.description, s.name as talla, s.unit 
 		from orders o, order_details od, products p, sizes s, size_product_detail sd, product_details pd 
 		where od.order_id = o.id and od.product_id = p.id and od.product_detail_id = pd.id and 
 		od.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and o.id = $ido";
@@ -58,6 +58,14 @@
 		$orden["detalle"] = obtenerImagenesProductoOrden( $dbh, $orden["detalle"] );
 		
 		return $orden;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function actualizarDisponibilidadItems( $dbh, $ido ){
+		//Asigna el valor de las cantidades solicitadas a las cantidades disponibles del pedido
+		$detalle = obtenerDetalleOrden( $dbh, $ido );
+		foreach ( $detalle as $r ) {
+			actualizarDetallePedidoRevision( $dbh, $r["id"], $r["quantity"], "disp" );		
+		}
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function actualizarDetallePedidoRevision( $dbh, $id, $cant, $rev ){
@@ -116,6 +124,11 @@
 		$estado = $_POST["status"];	
 		$idp = $_POST["conf_ped"];
 		$idr = actualizarEstadoPedido( $dbh, $idp, $estado );
+		
+		if( $estado == "confirmado" ){
+			//Al confirmar un pedido desde el administrador se asignan disponibles todas las cantidades
+			actualizarDisponibilidadItems( $dbh, $idp );
+		}
 
 		if( $estado == "confirmado" ){ $m1 = "confirmado"; $m2 = "confirmar"; }
 		if( $estado == "entregado" ) { $m1 = "entregado";  $m2 = "entregar"; }

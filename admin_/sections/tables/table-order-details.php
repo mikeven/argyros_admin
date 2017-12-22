@@ -5,14 +5,17 @@
       <tr>
         <th> </th>
         <th>Producto</th>
-        <th>Cantidad</th>
+        <th class="tx_al_c">Cantidad</th>
         <th class="dcol" width="80">Disp</th>
-        <th>Precio unit</th>
-        <th>Total</th>
-        <th class="dcol"></th>
-        <th class="dcol"></th>
-        <th class="dcol"></th>
         <?php if ( $orden["estado"] == "revisado" ) { ?>
+        <th>Disp</th>
+        <?php } ?>
+        <th class="tx_al_c">Precio unit</th>
+        <th class="tx_al_c">Total</th>
+        <th class="dcol"></th>
+        <th class="dcol"></th>
+        <th class="dcol"></th>
+        <?php if ( $orden["procesada"] ) { ?>
           <th></th>
           <th></th>
           <th></th>
@@ -24,6 +27,8 @@
       <?php 
         foreach ( $dorden as $r ) {
           $total_item = $r["quantity"] * $r["price"];
+          if ( ( $orden["estado"] != "pendiente" ) && ( $orden["estado"] != "cancelado" ) )
+             $total_item = $r["disponible"] * $r["price"];
       ?>
       <tr>
         <td align="center"><img src="<?php echo $r["imagen"]; ?>" width="20"></td>
@@ -46,11 +51,14 @@
           <input id="rrcd<?php echo $r["id"]; ?>" name="regrev[]" type="hidden" value="0">
 
         </td>
-        
-        <td>
+        <?php if ( $orden["estado"] == "revisado" ) { ?>
+        <td align="center"> <b> <?php echo $r["disponible"]; ?> </b> </span>
+        </td>
+        <?php } ?>
+        <td align="right">
           $<span id="mntqocd<?php echo $r["id"]; ?>"> <?php echo $r["price"]; ?> </span>
         </td>
-        <td>
+        <td align="right">
           $<span id="ti<?php echo $r["id"]; ?>"> <?php echo $total_item; ?> </span>
         </td>
         
@@ -67,7 +75,7 @@
           class="fa fa-exclamation i-rev cd<?php echo $r["id"]; ?>"></i>
         </td>
         
-        <?php if ( $orden["estado"] == "revisado" ) { ?>
+        <?php if ( $orden["procesada"] ) { ?>
           <td align="center">
             <i class="fa fa-check <?php echo activarIconoRevision( $r["revision"], "disp" ); ?>"></i>
           </td>

@@ -56,6 +56,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+    <link href="css/custom-styles.css" rel="stylesheet">
     <style type="text/css">
         .qdisp_orden{ width: 100%; }    
         .dcol{ display: none; }
@@ -63,6 +64,7 @@
         .marked{ color: #5bc0de; }
         .qdisp_orden{ text-align: center; }
         .btn_accion_pedido{ float: left; }
+
     </style>
   </head>
 
@@ -120,14 +122,22 @@
                     <div class="form-group">
                         <label class="control-label">Fecha: </label> <?php echo $orden["fecha"]; ?>
                     </div>
+                    
                     <div class="form-group">
                         <label class="control-label">Total: </label> 
-                        $<span id="monto_total_orden"><?php echo $orden["total"]; ?></span>
+                        $<span id="monto_total_orden"><?php echo $orden["total_actualizado"]; ?></span>
                         <input type="hidden" id="previo_total_orden" value="<?php echo $orden["total"]; ?>">
                     </div>
+
                     <div class="form-group">
                         <label class="control-label">Estado: </label> <?php echo $orden["estado"]; ?>
                     </div>
+                    <?php if ( $orden["procesada"] ) {?>
+                        <div class="form-group">
+                            <span>Monto inicial: $<?php echo $orden["total"]; ?></span>   
+                        </div> 
+                    <?php } ?>
+                    
                     <hr>
                     <div class="form-group">
                         <label class="control-label">Cliente: </label> 
@@ -141,7 +151,7 @@
                     <hr>
                     <div class="form-group btn_accion_pedido">
                         <a href="#!">
-                            <button id="r_pedido" type="button" class="btn btn-info btn-xs">Responder</button>
+                            <button id="r_pedido" type="button" class="btn btn-info btn-xs">Revisar</button>
                         </a> 
                     </div>
 
