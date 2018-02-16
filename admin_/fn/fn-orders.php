@@ -9,7 +9,7 @@
 			"pendiente" 	=> "<i class='fa fa-clock-o $x'></i>",
 			"cancelado" 	=> "<i class='fa fa-ban $x' title='Cancelado'></i>",
 			"revisado"		=> "<i class='fa fa-eye $x' title='Revisado'></i>",
-			"confirmado"	=> "<i class='fa fa-bell $x' title='Confirmado'></i>",
+			"confirmado"	=> "<i class='fa fa-check $x' title='Confirmado'></i>",
 			"entregado"		=> "<i class='fa fa-arrow-right $x' title='Entregado'></i>",
 		);
 

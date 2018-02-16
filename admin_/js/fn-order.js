@@ -139,7 +139,7 @@ function iniciarBotonEntregado(){
 	iniciarVentanaModal( "btn_ped_entregado", "btn_canc", 
 						 "Entregar pedido", "", 
 						 "¿Confirma marcar este pedido como entregado?", 
-						 "Confimar" );	
+						 "Confirmar" );	
 }
 /* --------------------------------------------------------- */
 function iniciarBotonConfirmacion(){
