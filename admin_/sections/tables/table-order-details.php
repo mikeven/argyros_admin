@@ -7,7 +7,7 @@
         <th>Producto</th>
         <th class="tx_al_c">Cantidad</th>
         <th class="dcol" width="80">Disp</th>
-        <?php if ( $orden["estado"] == "revisado" ) { ?>
+        <?php if ( $orden["estado"] == "revisado" || $orden["estado"] == "confirmado" ) { ?>
         <th>Disp</th>
         <?php } ?>
         <th class="tx_al_c">Precio unit</th>
@@ -51,9 +51,9 @@
           <input id="rrcd<?php echo $r["id"]; ?>" name="regrev[]" type="hidden" value="0">
 
         </td>
-        <?php if ( $orden["estado"] == "revisado" ) { ?>
-        <td align="center"> <b> <?php echo $r["disponible"]; ?> </b> </span>
-        </td>
+        <?php if ( $orden["estado"] == "revisado" || $orden["estado"] == "confirmado" ) { ?>
+          <td align="center"> <b> <?php echo $r["disponible"]; ?> </b> </span>
+          </td>
         <?php } ?>
         <td align="right">
           $<span id="mntqocd<?php echo $r["id"]; ?>"> <?php echo $r["price"]; ?> </span>

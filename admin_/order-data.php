@@ -137,7 +137,17 @@
                             <span>Monto inicial: $<?php echo $orden["total"]; ?></span>   
                         </div> 
                     <?php } ?>
-                    
+                    <hr>
+
+                    <?php if( $orden["estado"] == "confirmado" || $orden["estado"] == "entregado" ) { ?>
+                        <div><b>Observaciones del cliente: </b></div>
+                        <div><?php echo $orden["client_note"]?> </div>
+                    <?php } ?>
+                    <?php if( $orden["estado"] == "entregado" ) { ?>
+                        <div><b>Observaciones del administrador: </b></div>
+                        <div><?php echo $orden["admin_note"]?> </div>
+                    <?php } ?>
+
                     <hr>
                     <div class="form-group">
                         <label class="control-label">Cliente: </label> 
@@ -173,6 +183,9 @@
                                 class="btn btn-info btn-xs" data-toggle="modal" 
                                 data-target="#confirmar-accion">Marcar como entregado</button>
                             </a> 
+                        </div>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <textarea class="form-control" rows="3" placeholder="Observaciones" name="descripcion"></textarea>
                         </div>
                     <?php } ?>
                     <div id="res_serv"></div>

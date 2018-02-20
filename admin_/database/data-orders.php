@@ -18,9 +18,9 @@
 	function obtenerRegistroOrdenPorId( $dbh, $ido ){
 		//Devuelve el registro de una orden dado su id
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
-		date_format( o.created_at,'%d/%m/%Y') as fecha, u.id as cid, u.first_name nombre, 
-		u.last_name as apellido, g.name as grupo_cliente from orders o, users u, user_group g 
-		where o.user_id = u.id and u.user_group_id = g.id and o.id = $ido";
+		o.client_note, o.admin_note, date_format( o.created_at,'%d/%m/%Y') as fecha, u.id as cid, 
+		u.first_name nombre, u.last_name as apellido, g.name as grupo_cliente 
+		from orders o, users u, user_group g where o.user_id = u.id and u.user_group_id = g.id and o.id = $ido";
 
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );
