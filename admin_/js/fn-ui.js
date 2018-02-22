@@ -129,12 +129,14 @@ function arrayMjes( modo ){
 /* ----------------------------------------------------------------------------------- */
 /* Ventana modal */
 function iniciarVentanaModal( idok, idcanc, enc, enc2, texto, tx_btnok ){
-	$(".btn-ok").attr( "id", idok );
-	$(".btn-ok").html( tx_btnok );
-	$(".btn-canc").attr( "id", idcanc );
-    $("#titulo_modal").html( enc );
-    $("#confirmar-accion .modal-body h4").html( enc2 );
-    $("#confirmar-accion .modal-body p").html( texto );
+	//Asigna valores a los elementos que conforman la ventana modal para mostrar mensaje de confirmación de acción
+
+	$(".btn-ok").attr( "id", idok );						//Asigna id al botón de confirmación
+	$(".btn-ok").html( tx_btnok );							//Texto botón confirmación de acción
+	$(".btn-canc").attr( "id", idcanc );					//Asigna id al botón de cancelar
+    $("#titulo_modal").html( enc );							//Título de la ventana
+    $("#confirmar-accion .modal-body h4").html( enc2 );		//Subtítulo
+    $("#confirmar-accion .modal-body p").html( texto );		//Cuerpo del mensaje
 }
 /*=====================================================================================*/
 $( document ).ready(function() {

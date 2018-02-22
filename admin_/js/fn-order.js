@@ -113,11 +113,12 @@ function confirmarPedido( estado ){
 	//Invoca al servidor para la confirmación de un pedido
 	var tit_notif = "Confirmación de pedido"
 	var ido = $("#idpedido").val();
+	var observacion = $("#admin_obs").val();
 
 	$.ajax({
         type:"POST",
         url:"database/data-orders.php",
-        data:{ conf_ped: ido, status: estado },
+        data:{ conf_ped: ido, status: estado, nota:observacion },
         beforeSend: function () {
             $("#res_serv").html("<img src='images/ajax-loader.gif' width='16' height='16'>");
         },
@@ -133,17 +134,24 @@ function confirmarPedido( estado ){
     });		
 }
 /* --------------------------------------------------------- */
-function iniciarBotonEntregado(){
-	//
-	//alert("entregado");
+function iniciarBotonCancelacionPedido(){	//order-data.php
+	//Asigna los textos de la ventana de confirmación para cancelar pedido
+	iniciarVentanaModal( "btn_cancel_ped", "btn_canc", 
+						 "Cancelar pedido", "", 
+						 "¿Confirma que desea cancelar pedido?", 
+						 "Confirmar acción" );	
+}
+/* --------------------------------------------------------- */
+function iniciarBotonEntregado(){			//order-data.php
+	//Asigna los textos de la ventana de confirmación para marcar pedido como entregado
 	iniciarVentanaModal( "btn_ped_entregado", "btn_canc", 
 						 "Entregar pedido", "", 
 						 "¿Confirma marcar este pedido como entregado?", 
 						 "Confirmar" );	
 }
 /* --------------------------------------------------------- */
-function iniciarBotonConfirmacion(){
-	//
+function iniciarBotonConfirmacion(){		//order-data.php
+	//Asigna los textos de la ventana de confirmación para marcar pedido como confirmado
 	iniciarVentanaModal( "btn_confirm_ped", "btn_canc", 
 						 "Confirmar pedido", "", 
 						 "¿Confirma la disponibilidad de todos los ítems para entregar en el pedido?", 
@@ -182,6 +190,11 @@ $( document ).ready( function() {
 		if( r == true ){
 			enviarRevisionPedido();
 		} 
+	});
+
+	//Clic: Cancelación de pedido
+	$('#btn_cancel_ped').on('click', function() {
+		confirmarPedido( "cancelado" ); 
 	});
 
 	//Clic: Confirmación de pedido

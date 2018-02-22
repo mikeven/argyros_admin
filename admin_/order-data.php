@@ -16,57 +16,57 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Pedido :: Argyros Admin</title>
+        <title>Pedido :: Argyros Admin</title>
 
-    <!-- Bootstrap -->
-    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-	
-    <!-- bootstrap-progressbar -->
-    <link href="vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+        <!-- Bootstrap -->
+        <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="vendors/bootstrap-select-1.12.4/dist/css/bootstrap-select.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <!-- NProgress -->
+        <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
+        <!-- iCheck -->
+        <link href="vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 
-    <!-- Datatables -->
-    <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-    <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+        <!-- bootstrap-progressbar -->
+        <link href="vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+        <!-- JQVMap -->
+        <link href="vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+        <!-- bootstrap-daterangepicker -->
+        <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
-    <!-- PNotify -->
-    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">    
+        <!-- Datatables -->
+        <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+        <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+        <link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+        <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+        <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom Theme Style -->
-    <link href="build/css/custom.min.css" rel="stylesheet">
-    <link href="css/custom-styles.css" rel="stylesheet">
-    <style type="text/css">
-        .qdisp_orden{ width: 100%; }    
-        .dcol{ display: none; }
-        #datatable_do .dcol .fa:hover{ cursor: pointer; }
-        .marked{ color: #5bc0de; }
-        .qdisp_orden{ text-align: center; }
-        .btn_accion_pedido{ float: left; }
+        <!-- PNotify -->
+        <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+        <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+        <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">    
 
-    </style>
-  </head>
+        <!-- Custom Theme Style -->
+        <link href="build/css/custom.min.css" rel="stylesheet">
+        <link href="css/custom-styles.css" rel="stylesheet">
+        <style type="text/css">
+            .qdisp_orden{ width: 100%; }    
+            .dcol{ display: none; }
+            #datatable_do .dcol .fa:hover{ cursor: pointer; }
+            .marked{ color: #5bc0de; }
+            .qdisp_orden{ text-align: center; }
+            .btn_accion_pedido{ float: left; }
+            .accion_observaciones{ margin-bottom: 20px; }
+        </style>
+    </head>
 
   <body class="nav-md">
     <div class="container body">
@@ -172,11 +172,24 @@
                             data-target="#confirmar-accion">Confirmar</button>
                         </a> 
                     </div>
+
+                    <div class="form-group btn_accion_pedido" style="margin-left:20px;">
+                        <a href="#!">
+                            <button id="ca_pedido" type="button" 
+                            class="btn btn-success btn-xs" data-toggle="modal" 
+                            data-target="#confirmar-accion">Cancelar</button>
+                        </a> 
+                    </div>
                     
                     <?php } ?>
                     
                     <?php if ( $orden["estado"] == "confirmado" ) { ?>
                         <hr>
+
+                        <div class="accion_observaciones">
+                          <textarea id="admin_obs" class="form-control" rows="3" placeholder="Observaciones" name="observaciones"></textarea>
+                        </div>
+
                         <div class="form-group btn_accion_pedido">
                             <a href="#!">
                                 <button id="e_pedido" type="button" 
@@ -184,9 +197,7 @@
                                 data-target="#confirmar-accion">Marcar como entregado</button>
                             </a> 
                         </div>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <textarea class="form-control" rows="3" placeholder="Observaciones" name="descripcion"></textarea>
-                        </div>
+                        
                     <?php } ?>
                     <div id="res_serv"></div>
                     <?php include( "sections/modals/confirm_action.php" ); ?>
@@ -294,7 +305,10 @@
     <script src="js/fn-ui.js"></script>
     <script src="js/fn-order.js"></script>
     <?php if ( $orden["estado"] == "pendiente" ) { ?>
-        <script>iniciarBotonConfirmacion();</script>                    
+        <script>
+            iniciarBotonConfirmacion();
+            iniciarBotonCancelacionPedido();
+        </script>                    
     <?php } ?>
     <?php if ( $orden["estado"] == "confirmado" ) { ?>
         <script>iniciarBotonEntregado();</script>                    

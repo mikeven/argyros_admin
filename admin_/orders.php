@@ -173,13 +173,13 @@
     <script src="js/custom.js"></script>
     <script>
       $(document).ready(function() {
-        $('#datatable_o').dataTable({
+        var table = $('#datatable_o').dataTable({
             "paging": true,
             "iDisplayLength": 10,
             "lengthChange": true,
             "searching": true,
             "ordering": true,
-            'order': [[ 2, 'desc' ]],
+            'order': [[ 5, 'desc' ]],
             "info": true,
             "autoWidth": false,
             "language": {
@@ -197,6 +197,8 @@
             }
           }
         });
+
+        table.columns( '.datesort' ).order( 'desc' ).draw();
 
       });
     </script>

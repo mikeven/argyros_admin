@@ -5,10 +5,11 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerOrdenesUsuarios( $dbh ){
-		//Devuelve el registro de las órdenes asociadas a un usuario
+		//Devuelve el registro de las órdenes registradas
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
-		date_format( o.created_at,'%d/%m/%Y') as fecha, u.id as cid, u.first_name nombre, 
-		u.last_name as apellido from orders o, users u where o.user_id = u.id order by o.created_at DESC";
+		date_format( o.created_at,'%d/%m/%Y') as fecha, date_format( o.created_at,'YYYYMMDD') as creada, 
+		u.id as cid, u.first_name nombre, u.last_name as apellido 
+		from orders o, users u where o.user_id = u.id order by o.created_at DESC";
 		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -95,6 +96,13 @@
 		return $res;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function ingresarObservacionesAdministrador( $dbh, $idpedido, $obs ){
+		//Guarda observaciones por parte del administrador al entregar pedido
+		$q = "update orders set admin_note = '$obs' where id = $idpedido";
+		//echo $q;
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Líneas */
 	/* ----------------------------------------------------------------------------------- */
 	
@@ -128,6 +136,10 @@
 		if( $estado == "confirmado" ){
 			//Al confirmar un pedido desde el administrador se asignan disponibles todas las cantidades
 			actualizarDisponibilidadItems( $dbh, $idp );
+		}
+		if( $estado == "entregado" ){
+			//Al confirmar un pedido desde el administrador se asignan disponibles todas las cantidades
+			ingresarObservacionesAdministrador( $dbh, $idp, $_POST["nota"] );
 		}
 
 		if( $estado == "confirmado" ){ $m1 = "confirmado"; $m2 = "confirmar"; }
