@@ -24,13 +24,15 @@
     </thead>
 
     <tbody>
-      <?php 
+      <?php
+        $clase_item = "item_orden";
         foreach ( $dorden as $r ) {
           $total_item = $r["quantity"] * $r["price"];
           if ( ( $orden["estado"] != "pendiente" ) && ( $orden["estado"] != "cancelado" ) )
              $total_item = $r["disponible"] * $r["price"];
+          if( $r["istatus"] == "retirado" ) $clase_item = "item_retirado";
       ?>
-      <tr>
+      <tr class="<?php echo $clase_item; ?>">
         <td align="center"><img src="<?php echo $r["imagen"]; ?>" width="20"></td>
         <td><a href="#!"><?php echo $r["producto"]." (".$r["description"].")"." | "."Talla: ".$r["talla"]; ?></a></td>
         <td id="qcd<?php echo $r["id"]; ?>" align="center">
@@ -77,13 +79,13 @@
         
         <?php if ( $orden["procesada"] ) { ?>
           <td align="center">
-            <i class="fa fa-check <?php echo activarIconoRevision( $r["revision"], "disp" ); ?>"></i>
+            <i class="fa fa-check <?php echo activarIconoRevision( $r["revision"], "disp" ); ?>" title="Disponible"></i>
           </td>
           <td align="center">
-            <i class="fa fa-times <?php echo activarIconoRevision( $r["revision"], "nodisp" ); ?>"></i>
+            <i class="fa fa-times <?php echo activarIconoRevision( $r["revision"], "nodisp" ); ?>" title="No disponible"></i>
           </td>
           <td align="center">
-            <i class="fa fa-exclamation <?php echo activarIconoRevision( $r["revision"], "modif" ); ?>"></i>
+            <i class="fa fa-exclamation <?php echo activarIconoRevision( $r["revision"], "modif" ); ?>" title="Cantidad modificada"></i>
           </td>
         <?php } ?>
 

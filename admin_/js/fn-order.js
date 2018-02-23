@@ -109,9 +109,9 @@ function enviarRevisionPedido(){
     });	
 }
 /* --------------------------------------------------------- */
-function confirmarPedido( estado ){
-	//Invoca al servidor para la confirmación de un pedido
-	var tit_notif = "Confirmación de pedido"
+function actualizarPedido( estado ){
+	//Invoca al servidor para actualizar un pedido: Cambio de estatus
+	var tit_notif = "Actualización de pedido"
 	var ido = $("#idpedido").val();
 	var observacion = $("#admin_obs").val();
 
@@ -194,17 +194,17 @@ $( document ).ready( function() {
 
 	//Clic: Cancelación de pedido
 	$('#btn_cancel_ped').on('click', function() {
-		confirmarPedido( "cancelado" ); 
+		actualizarPedido( "cancelado" ); 
 	});
 
 	//Clic: Confirmación de pedido
 	$('#btn_confirm_ped').on('click', function() {
-		confirmarPedido( "confirmado" ); 
+		actualizarPedido( "confirmado" ); 
 	});
 
 	//Clic: Marcar pedido como entregado
 	$('#btn_ped_entregado').on('click', function() {
-		confirmarPedido( "entregado" ); 
+		actualizarPedido( "entregado" ); 
 	});
 
 });

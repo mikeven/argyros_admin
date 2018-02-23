@@ -136,14 +136,15 @@
 		if( $estado == "confirmado" ){
 			//Al confirmar un pedido desde el administrador se asignan disponibles todas las cantidades
 			actualizarDisponibilidadItems( $dbh, $idp );
+			$m1 = "confirmado"; $m2 = "confirmar";
 		}
 		if( $estado == "entregado" ){
 			//Al confirmar un pedido desde el administrador se asignan disponibles todas las cantidades
 			ingresarObservacionesAdministrador( $dbh, $idp, $_POST["nota"] );
+			$m1 = "entregado";  $m2 = "entregar";
 		}
 
-		if( $estado == "confirmado" ){ $m1 = "confirmado"; $m2 = "confirmar"; }
-		if( $estado == "entregado" ) { $m1 = "entregado";  $m2 = "entregar"; }
+		if( $estado == "cancelado" ){ $m1 = "cancelado"; $m2 = "cancelar"; }
 
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
 			$res["exito"] = 1;
@@ -154,9 +155,7 @@
 		}
 
 		echo json_encode( $res );
-		//print_r( $revision );
-	}
-	
-	/* ----------------------------------------------------------------------------------- */
 
+	}
+	/* ----------------------------------------------------------------------------------- */
 ?>

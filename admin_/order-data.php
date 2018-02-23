@@ -62,6 +62,7 @@
             .dcol{ display: none; }
             #datatable_do .dcol .fa:hover{ cursor: pointer; }
             .marked{ color: #5bc0de; }
+            .item_retirado{ background: #f9c7c6; }
             .qdisp_orden{ text-align: center; }
             .btn_accion_pedido{ float: left; }
             .accion_observaciones{ margin-bottom: 20px; }
@@ -176,7 +177,7 @@
                     <div class="form-group btn_accion_pedido" style="margin-left:20px;">
                         <a href="#!">
                             <button id="ca_pedido" type="button" 
-                            class="btn btn-success btn-xs" data-toggle="modal" 
+                            class="btn btn-danger btn-xs" data-toggle="modal" 
                             data-target="#confirmar-accion">Cancelar</button>
                         </a> 
                     </div>
