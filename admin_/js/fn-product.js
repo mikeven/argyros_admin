@@ -322,7 +322,7 @@ $( document ).ready(function() {
     });
 
 	$("#bot_guardar_det_producto").on( "click", function(){
-		//agregarDetalleProducto();	
+		agregarDetalleProducto();	
     });
 
     /*Bloque peticiones para editar datos asociados a detalle de producto*/

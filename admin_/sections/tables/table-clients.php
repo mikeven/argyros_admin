@@ -24,7 +24,8 @@
           <select class="form-control selec_grupo_perfil" data-idc="<?php echo $c["id"]; ?>">
             <option disabled>Seleccione</option>
             <?php foreach ( $grupos as $g ) { ?>
-              <option <?php echo sop( $c["grupo"], $g["name"] ); ?>><?php echo $g["name"] ?> </option>
+              <option <?php echo sop( $c["grupo"], $g["name"] ); ?> 
+              class="cambio_perfil" data-trg="<?php echo $c["id"]; ?>"><?php echo $g["name"] ?> </option>
             <?php } ?>
           </select>    
         </td>

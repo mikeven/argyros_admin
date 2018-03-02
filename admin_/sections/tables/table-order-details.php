@@ -1,6 +1,6 @@
 <form id="revision_pedido" data-parsley-validate class="form-horizontal form-label-left" method="post">
   <input id="idpedido" type="hidden" value="<?php echo $orden["id"]; ?>">
-  <table id="datatable_do" class="table table-striped table-bordered">
+  <table id="datatable_do" class="table table-bordered">
     <thead>
       <tr>
         <th> </th>
@@ -25,8 +25,9 @@
 
     <tbody>
       <?php
-        $clase_item = "item_orden";
+        
         foreach ( $dorden as $r ) {
+          $clase_item = "item_orden";
           $total_item = $r["quantity"] * $r["price"];
           if ( ( $orden["estado"] != "pendiente" ) && ( $orden["estado"] != "cancelado" ) )
              $total_item = $r["disponible"] * $r["price"];
@@ -66,15 +67,15 @@
         
         <td align="center" class="dcol">
           <i data-c="!0" data-t="cd<?php echo $r["id"]; ?>" data-sr="disp" 
-          class="fa fa-check i-rev cd<?php echo $r["id"]; ?>"></i>
+          class="fa fa-check i-rev cd<?php echo $r["id"]; ?>" title="Disponible"></i>
         </td>
         <td align="center" class="dcol">
           <i data-c="0" data-t="cd<?php echo $r["id"]; ?>" data-sr="nodisp" 
-          class="fa fa-times i-rev cd<?php echo $r["id"]; ?>"></i>
+          class="fa fa-times i-rev cd<?php echo $r["id"]; ?>" title="No disponible"></i>
         </td>
         <td align="center" class="dcol">
           <i id="icd<?php echo $r["id"]; ?>" data-c="*" data-t="cd<?php echo $r["id"]; ?>" data-sr="modif"
-          class="fa fa-exclamation i-rev cd<?php echo $r["id"]; ?>"></i>
+          class="fa fa-exclamation i-rev cd<?php echo $r["id"]; ?>" title="Cambiar cantidad"></i>
         </td>
         
         <?php if ( $orden["procesada"] ) { ?>

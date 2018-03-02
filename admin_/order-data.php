@@ -123,9 +123,13 @@
                     <div class="form-group">
                         <label class="control-label">Fecha: </label> <?php echo $orden["fecha"]; ?>
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Ítems: </label> <?php echo $orden["ncant_items"]; ?>
+                    </div>
                     
                     <div class="form-group">
-                        <label class="control-label">Total: </label> 
+                        <label class="control-label">Total estimado: </label> 
                         $<span id="monto_total_orden"><?php echo $orden["total_actualizado"]; ?></span>
                         <input type="hidden" id="previo_total_orden" value="<?php echo $orden["total"]; ?>">
                     </div>

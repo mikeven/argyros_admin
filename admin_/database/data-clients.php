@@ -28,6 +28,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerIdGrupoClientePorNombre( $dbh, $nombre ){
 		//Devuelve el id del grupo de cliente dado su nombre
+		$nombre = addslashes( $nombre );
 		$q = "select id from user_group where name = '$nombre'";
 
 		$data = mysqli_fetch_array( mysqli_query( $dbh, $q ) );
@@ -52,6 +53,7 @@
 	function modificarGrupoUsuarioCliente( $dbh, $idu, $idgrupo ){
 		//Actualiza el grupo al que pertenece un cliente
 		$q = "update users set user_group_id = $idgrupo where id = $idu";
+		echo $q;
 		$data = mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -97,7 +99,6 @@
 		include( "bd.php" );	
 		$idg = obtenerIdGrupoClientePorNombre( $dbh, $_POST["grupo_valor"] );
 		modificarGrupoUsuarioCliente( $dbh, $_POST["id_c"], $idg );
-		
 	}
 	/* ----------------------------------------------------------------------------------- */
 

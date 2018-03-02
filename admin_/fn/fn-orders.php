@@ -26,6 +26,15 @@
 		return $monto;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerNumeroCantidadItems( $detalle ){
+		//Devuelve la suma total de cantidades de los ítems de un pedido después de confirmación
+		$nitems = 0;
+		foreach ( $detalle as $r ) {
+			$nitems += $r["disponible"];
+		}
+		return $nitems;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerOrdenActualizada( $orden, $detalle ){
 		//Devuelve los datos actualizados de una orden dependiendo del estado
 		$orden["procesada"] = false;
@@ -34,6 +43,10 @@
 			$orden["total_actualizado"] = calcularMontoPedido( $detalle, $orden["estado"] );
 		}else 
 			$orden["total_actualizado"] = $orden["total"];
+
+		if( ( $orden["estado"] == "revisado" ) || ( $orden["estado"] == "confirmado" ) || ( $orden["estado"] == "entregado" ) ){
+			$orden["ncant_items"] = obtenerNumeroCantidadItems( $detalle );	
+		}
 		
 		return $orden;
 	}
