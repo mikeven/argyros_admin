@@ -99,14 +99,21 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Datos de producto</h2>
-
                     <div class="title_right">
                         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
+
                           <div class="input-group" style="float:right;">
                             <a href="product-detail.php?p=<?php echo $idp;?>" class="btn btn-app">
                               <i class="fa fa-plus"></i> Agregar detalle
                             </a>
                           </div>
+
+                          <div class="input-group" style="float:right;">
+                            <a href="products.php" class="btn btn-app">
+                              <i class="fa fa-arrow-left"></i> Volver a productos
+                            </a>
+                          </div>
+                          
                         </div>
                     </div>
                     
