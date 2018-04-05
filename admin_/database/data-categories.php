@@ -93,6 +93,11 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerUname( $name ){
 		//Devuelve el uname de una categoría o subcategoría
+		$name = str_replace( "á", "a", $name );
+		$name = str_replace( "é", "e", $name );
+		$name = str_replace( "í", "i", $name );
+		$name = str_replace( "ó", "o", $name );
+		$name = str_replace( "ú", "u", $name );
 		return strtolower( str_replace( " ", "", $name) );
 	}
 	/* ----------------------------------------------------------------------------------- */
