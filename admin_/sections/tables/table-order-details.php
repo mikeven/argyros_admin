@@ -35,7 +35,7 @@
       ?>
       <tr class="<?php echo $clase_item; ?>">
         <td align="center"><img src="<?php echo $r["imagen"]; ?>" width="20"></td>
-        <td><a href="product-data.php?p=<?php echo $r["product_id"]; ?>"><?php echo $r["producto"]." (".$r["description"].")"." | "."Talla: ".$r["talla"]; ?></a></td>
+        <td><a target="_blank" href="product-data.php?p=<?php echo $r["product_id"]; ?>"><?php echo $r["producto"]." (".$r["description"].")"." | "."Talla: ".$r["talla"]; ?></a></td>
         <td id="qcd<?php echo $r["id"]; ?>" align="center">
           <?php echo $r["quantity"]; ?>
         </td>
