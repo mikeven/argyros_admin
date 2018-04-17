@@ -20,7 +20,7 @@
 		//Devuelve el registro de una orden dado su id
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
 		o.client_note, o.admin_note, date_format( o.created_at,'%d/%m/%Y') as fecha, u.id as cid, 
-		u.first_name nombre, u.last_name as apellido, g.name as grupo_cliente 
+		u.first_name nombre, u.last_name as apellido, u.email as email, g.name as grupo_cliente 
 		from orders o, users u, user_group g where o.user_id = u.id and u.user_group_id = g.id and o.id = $ido";
 
 		$data = mysqli_query( $dbh, $q );
@@ -52,11 +52,13 @@
 		return $ndetalle;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerOrdenPorId( $dbh, $ido ){
+	function obtenerOrdenPorId( $dbh, $ido, $param ){
 		//Devuelve el contenido de una orden, su detalle dado su id
 		$orden["orden"] = obtenerRegistroOrdenPorId( $dbh, $ido );
-		$orden["detalle"] = obtenerDetalleOrden( $dbh, $ido );
-		$orden["detalle"] = obtenerImagenesProductoOrden( $dbh, $orden["detalle"] );
+		if( $param == "full" ){
+			$orden["detalle"] = obtenerDetalleOrden( $dbh, $ido );
+			$orden["detalle"] = obtenerImagenesProductoOrden( $dbh, $orden["detalle"] );
+		}
 		
 		return $orden;
 	}
@@ -103,6 +105,18 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function notificarActualizacionPedido( $dbh, $paso_pedido, $ido, $total ){
+		//Prepara los datos necesarios para enviar notificación por email acerca de cambios en estados de pedido
+		include( "../fn/fn-mailing.php" );
+		
+		$orden = obtenerOrdenPorId( $dbh, $ido, "no-detalle" );
+		$orden["total_orden"] = $total;
+
+		if( $paso_pedido == "pedido_revisado" ){
+			enviarMensajeEmail( "pedido_revisado_usuario", $orden, $orden["orden"]["email"] );
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Líneas */
 	/* ----------------------------------------------------------------------------------- */
 	
@@ -110,11 +124,11 @@
 	if( isset( $_POST["rev_ped"] ) ){
 		include( "bd.php" );	
 		parse_str( $_POST["rev_ped"], $revision );
-		//print_r( $revision );
 		
 		$idr = registrarRevisionPedido( $dbh, $revision["regrev"] );
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
 			actualizarEstadoPedido( $dbh, $_POST["idp"], "revisado" );
+			notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], $_POST["monto_orden"] );
 			$res["exito"] = 1;
 			$res["mje"] = "La respuesta del pedido ha sido enviada";
 		} else {
@@ -123,7 +137,6 @@
 		}
 
 		echo json_encode( $res );
-		//print_r( $revision );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Registrar confirmación de pedido

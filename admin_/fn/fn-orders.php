@@ -26,11 +26,15 @@
 		return $monto;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerNumeroCantidadItems( $detalle ){
-		//Devuelve la suma total de cantidades de los ítems de un pedido después de confirmación
+	function obtenerNumeroCantidadItems( $detalle, $estado ){
+		//Devuelve la suma total de cantidades de los ítems de un pedido dependiendo del estatus
 		$nitems = 0;
 		foreach ( $detalle as $r ) {
-			$nitems += $r["disponible"];
+			if( $estado == "pendiente" || $estado == "cancelado" )
+				$nitems += $r["quantity"];
+			else{
+				$nitems += $r["disponible"];
+			}
 		}
 		return $nitems;
 	}
@@ -41,11 +45,13 @@
 		if ( ( $orden["estado"] != "pendiente" ) && ( $orden["estado"] != "cancelado" ) ){
 			$orden["procesada"] = true;
 			$orden["total_actualizado"] = calcularMontoPedido( $detalle, $orden["estado"] );
-		}else 
+		}else{
 			$orden["total_actualizado"] = $orden["total"];
+			$orden["ncant_items"] = obtenerNumeroCantidadItems( $detalle, $orden["estado"] );
+		}
 
 		if( ( $orden["estado"] == "revisado" ) || ( $orden["estado"] == "confirmado" ) || ( $orden["estado"] == "entregado" ) ){
-			$orden["ncant_items"] = obtenerNumeroCantidadItems( $detalle );	
+			$orden["ncant_items"] = obtenerNumeroCantidadItems( $detalle, $orden["estado"] );	
 		}
 		
 		return $orden;
@@ -61,7 +67,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_GET["order-id"] ) ){
         $ido = $_GET["order-id"];
-        $data_o = obtenerOrdenPorId( $dbh, $ido );
+        $data_o = obtenerOrdenPorId( $dbh, $ido, "full" );
         $dorden = $data_o["detalle"];
         $orden 	= obtenerOrdenActualizada( $data_o["orden"], $dorden );
         $iconoe = obtenerIconoEstado( $orden["estado"], "fa-2x" );

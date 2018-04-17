@@ -94,13 +94,15 @@ function enviarRevisionPedido(){
 	var tit_notif = "Revisión de pedido"
 	var form_rev = $("#revision_pedido").serialize();
 	var ido = $("#idpedido").val();
+	var monto = $("#previo_total_orden").val();
 	$.ajax({
         type:"POST",
         url:"database/data-orders.php",
-        data:{ rev_ped: form_rev, idp: ido },
+        data:{ rev_ped: form_rev, idp: ido, monto_orden:monto },
         success: function( response ){
+        	console.log(response);
 			res = jQuery.parseJSON(response);
-			console.log(response);
+			
 			if( res.exito == 1 ){ 
 				notificar( tit_notif, res.mje, "success" );
 				location.reload();

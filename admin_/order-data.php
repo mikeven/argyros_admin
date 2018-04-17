@@ -56,7 +56,7 @@
 
         <!-- Custom Theme Style -->
         <link href="build/css/custom.min.css" rel="stylesheet">
-        <link href="css/custom-styles.css" rel="stylesheet">
+
         <style type="text/css">
             .qdisp_orden{ width: 100%; }    
             .dcol{ display: none; }
