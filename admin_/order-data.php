@@ -172,15 +172,14 @@
 
                     <div class="form-group btn_accion_pedido" style="margin-left:20px;">
                         <a href="#!">
-                            <button id="c_pedido" type="button" 
+                            <button id="cnf_pedido" type="button" 
                             class="btn btn-success btn-xs" data-toggle="modal" 
                             data-target="#confirmar-accion">Confirmar</button>
                         </a> 
                     </div>
-
                     <div class="form-group btn_accion_pedido" style="margin-left:20px;">
                         <a href="#!">
-                            <button id="ca_pedido" type="button" 
+                            <button id="can_pedido" type="button" 
                             class="btn btn-danger btn-xs" data-toggle="modal" 
                             data-target="#confirmar-accion">Cancelar</button>
                         </a> 
@@ -311,8 +310,8 @@
     <script src="js/fn-order.js"></script>
     <?php if ( $orden["estado"] == "pendiente" ) { ?>
         <script>
-            iniciarBotonConfirmacion();
-            iniciarBotonCancelacionPedido();
+            
+            
         </script>                    
     <?php } ?>
     <?php if ( $orden["estado"] == "confirmado" ) { ?>

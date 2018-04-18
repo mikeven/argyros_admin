@@ -20,7 +20,9 @@
 			"recuperar_password" => "password_recovery.html",
 			"nuevo_pedido_usuario" => "new_order_user.html",
 			"nuevo_pedido_administrador" => "new_order_admin.html",
-			"pedido_revisado_usuario" => "checked_order_user.html"
+			"pedido_revisado_usuario" => "checked_order_user.html",
+			"pedido_confirmado_usuario" => "confirmed_order_user.html",
+			"pedido_entregado_usuario" => "delivered_order_user.html"
 		);
 
 		$archivo = $archivos[$accion];
@@ -70,6 +72,30 @@
 		return $plantilla;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function mensajePedidoConfirmado( $tmensaje, $plantilla, $datos ){
+		//Llenado de mensaje para plantilla de notificación pedido confirmado (status: entregado)
+		$cncy = "$"; 
+		$orden = $datos["orden"];
+
+		$plantilla = str_replace( "{user}", $orden["nombre"]." ".$orden["apellido"], $plantilla );
+		$plantilla = str_replace( "{npedido}", $orden["id"], $plantilla );
+		$plantilla = str_replace( "{monto_pedido}", $cncy.$datos["total_orden"], $plantilla );
+
+		return $plantilla;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function mensajePedidoEntregado( $tmensaje, $plantilla, $orden ){
+		//Llenado de mensaje para plantilla de notificación pedido entregado (status: entregado)
+		$cncy = "$"; 
+
+		$plantilla = str_replace( "{user}", $orden["nombre"]." ".$orden["apellido"], $plantilla );
+		$plantilla = str_replace( "{npedido}", $orden["id"], $plantilla );
+		$plantilla = str_replace( "{monto_pedido}", $cncy.$orden["total_orden"], $plantilla );
+		$plantilla = str_replace( "{observaciones}", $orden["admin_note"], $plantilla );
+
+		return $plantilla;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function escribirMensaje( $tmensaje, $plantilla, $datos ){
 		//Sustitución de elementos de la plantilla con los datos del mensaje
 		
@@ -92,6 +118,14 @@
 		if( $tmensaje == "pedido_revisado_usuario" ){
 			$sobre["asunto"] = "Pedido revisado";
 			$sobre["mensaje"] = mensajePedidoRevisado( $tmensaje, $plantilla, $datos );
+		}
+		if( $tmensaje == "pedido_confirmado_usuario" ){
+			$sobre["asunto"] = "Pedido confirmado";
+			$sobre["mensaje"] = mensajePedidoConfirmado( $tmensaje, $plantilla, $datos );
+		}
+		if( $tmensaje == "pedido_entregado_usuario" ){
+			$sobre["asunto"] = "Pedido entregado";
+			$sobre["mensaje"] = mensajePedidoEntregado( $tmensaje, $plantilla, $datos );
 		}
 
 		return $sobre; 

@@ -10,7 +10,7 @@
 		date_format( o.created_at,'%d/%m/%Y') as fecha, date_format( o.created_at,'YYYYMMDD') as creada, 
 		u.id as cid, u.first_name nombre, u.last_name as apellido 
 		from orders o, users u where o.user_id = u.id order by o.created_at DESC";
-		//echo $q;
+
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
 		return $lista;
@@ -35,10 +35,21 @@
 		from orders o, order_details od, products p, sizes s, size_product_detail sd, product_details pd 
 		where od.order_id = o.id and od.product_id = p.id and od.product_detail_id = pd.id and 
 		od.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and o.id = $ido";
-
+		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
 		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function calcularTotalOrdenConfirmada( $detalle ){
+		//Devuelve el total de una orden después de haber sido confirmado
+		$monto = 0;
+		foreach ( $detalle as $item ) {
+			if( $item["istatus"] != "retirado" ){
+				$monto += $item["disponible"] * $item["price"];
+			}
+		}
+		return $monto;		
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerImagenesProductoOrden( $dbh, $detalle ){
@@ -75,7 +86,7 @@
 		//Modifica las cantidades del pedido en revisión ( administrador )
 		$q = "update order_details set available = $cant, check_revision = '$rev', 
 		updated_at = NOW() where id = $id";
-		//echo $q;
+
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
@@ -101,7 +112,7 @@
 	function ingresarObservacionesAdministrador( $dbh, $idpedido, $obs ){
 		//Guarda observaciones por parte del administrador al entregar pedido
 		$q = "update orders set admin_note = '$obs' where id = $idpedido";
-		//echo $q;
+
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -109,11 +120,17 @@
 		//Prepara los datos necesarios para enviar notificación por email acerca de cambios en estados de pedido
 		include( "../fn/fn-mailing.php" );
 		
-		$orden = obtenerOrdenPorId( $dbh, $ido, "no-detalle" );
+		$orden = obtenerRegistroOrdenPorId( $dbh, $ido );
 		$orden["total_orden"] = $total;
 
 		if( $paso_pedido == "pedido_revisado" ){
 			enviarMensajeEmail( "pedido_revisado_usuario", $orden, $orden["orden"]["email"] );
+		}
+		if( $paso_pedido == "pedido_entregado" ){
+			enviarMensajeEmail( "pedido_entregado_usuario", $orden, $orden["email"] );
+		}
+		if( $paso_pedido == "pedido_confirmado_a" ){
+			enviarMensajeEmail( "pedido_confirmado_usuario", $orden, $orden["email"] );
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -139,21 +156,24 @@
 		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
-	//Registrar confirmación de pedido
+	//Registrar confirmación/entrega de pedido
 	if( isset( $_POST["conf_ped"] ) ){
 		include( "bd.php" );
 		$estado = $_POST["status"];	
 		$idp = $_POST["conf_ped"];
 		$idr = actualizarEstadoPedido( $dbh, $idp, $estado );
+		$monto_cnf = calcularTotalOrdenConfirmada( obtenerDetalleOrden( $dbh, $idp ) );
 		
 		if( $estado == "confirmado" ){
 			//Al confirmar un pedido desde el administrador se asignan disponibles todas las cantidades
 			actualizarDisponibilidadItems( $dbh, $idp );
+			notificarActualizacionPedido( $dbh, "pedido_confirmado_a", $idp, $monto_cnf );
 			$m1 = "confirmado"; $m2 = "confirmar";
 		}
 		if( $estado == "entregado" ){
-			//Al confirmar un pedido desde el administrador se asignan disponibles todas las cantidades
+			//Se actualiza el pedido con las observaciones del administrador y se notifica por email al cliente
 			ingresarObservacionesAdministrador( $dbh, $idp, $_POST["nota"] );
+			notificarActualizacionPedido( $dbh, "pedido_entregado", $idp, $monto_cnf );
 			$m1 = "entregado";  $m2 = "entregar";
 		}
 
@@ -161,14 +181,13 @@
 
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
 			$res["exito"] = 1;
-			$res["mje"] = "El pedido ha sido $m1";
+			$res["mje"] = "El pedido ha sido marcado como $m1";
 		} else {
 			$res["exito"] = 0;
 			$res["mje"] = "Error al $m2 pedido";
 		}
 
 		echo json_encode( $res );
-
 	}
 	/* ----------------------------------------------------------------------------------- */
 ?>

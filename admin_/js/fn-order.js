@@ -126,8 +126,9 @@ function actualizarPedido( estado ){
         },
         success: function( response ){
         	$("#btn_canc").click();
+        	console.log(response);
 			res = jQuery.parseJSON(response);
-			console.log(response);
+			
 			if( res.exito == 1 ){ 
 				notificar( tit_notif, res.mje, "success" );
 				setTimeout(function() { location.reload(); }, 5000 );
@@ -186,7 +187,7 @@ $( document ).ready( function() {
 	/*.......................................................*/
 
 	//Clic: Chequeo de la revisión de pedido
-	$('#resp_pedido').on('click', function() {
+	$('#resp_pedido').on('click', function(){
 		var r = validarRevisionPedido();
 		if( r == false ) notificar( "Error", "Debe chequear respuesta", "error" );
 		if( r == true ){
@@ -195,15 +196,23 @@ $( document ).ready( function() {
 	});
 
 	//Clic: Cancelación de pedido
+	$('#can_pedido').on('click', function() {
+		iniciarBotonCancelacionPedido();		//fn-ui.js 
+	});
 	$('#btn_cancel_ped').on('click', function() {
 		actualizarPedido( "cancelado" ); 
 	});
-
+	
+	/*.......................................................*/
 	//Clic: Confirmación de pedido
+	$('#cnf_pedido').on('click', function() {
+		iniciarBotonConfirmacion();				//fn-ui.js
+	});
 	$('#btn_confirm_ped').on('click', function() {
 		actualizarPedido( "confirmado" ); 
 	});
 
+	/*.......................................................*/
 	//Clic: Marcar pedido como entregado
 	$('#btn_ped_entregado').on('click', function() {
 		actualizarPedido( "entregado" ); 
