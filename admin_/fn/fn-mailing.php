@@ -72,14 +72,13 @@
 		return $plantilla;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function mensajePedidoConfirmado( $tmensaje, $plantilla, $datos ){
+	function mensajePedidoConfirmado( $tmensaje, $plantilla, $orden ){
 		//Llenado de mensaje para plantilla de notificación pedido confirmado (status: entregado)
-		$cncy = "$"; 
-		$orden = $datos["orden"];
+		$cncy = "$";
 
 		$plantilla = str_replace( "{user}", $orden["nombre"]." ".$orden["apellido"], $plantilla );
 		$plantilla = str_replace( "{npedido}", $orden["id"], $plantilla );
-		$plantilla = str_replace( "{monto_pedido}", $cncy.$datos["total_orden"], $plantilla );
+		$plantilla = str_replace( "{monto_pedido}", $cncy.$orden["total_orden"], $plantilla );
 
 		return $plantilla;
 	}

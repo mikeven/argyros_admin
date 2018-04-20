@@ -168,6 +168,7 @@ $( document ).ready( function() {
 	});	
 
     /*.......................................................*/
+
     //Clic: Acción dada por los íconos de revisión de pedido
 	$('.i-rev').on('click', function() {
 	    var trg = $(this).attr("data-t");		//cdxx
@@ -184,6 +185,7 @@ $( document ).ready( function() {
 	    asignarValorRegistro( status_rev, id );
 	    calcularTotalOrdenPrevio();
 	});
+
 	/*.......................................................*/
 
 	//Clic: Chequeo de la revisión de pedido
@@ -197,19 +199,19 @@ $( document ).ready( function() {
 
 	//Clic: Cancelación de pedido
 	$('#can_pedido').on('click', function() {
-		iniciarBotonCancelacionPedido();		//fn-ui.js 
+		iniciarBotonCancelacionPedido();		//fn-ui.js
+		$('#btn_cancel_ped').on('click', function() {
+			actualizarPedido( "cancelado" ); 
+		});
 	});
-	$('#btn_cancel_ped').on('click', function() {
-		actualizarPedido( "cancelado" ); 
-	});
-	
+
 	/*.......................................................*/
 	//Clic: Confirmación de pedido
 	$('#cnf_pedido').on('click', function() {
 		iniciarBotonConfirmacion();				//fn-ui.js
-	});
-	$('#btn_confirm_ped').on('click', function() {
-		actualizarPedido( "confirmado" ); 
+		$('#btn_confirm_ped').on('click', function() {
+			actualizarPedido( "confirmado" ); 
+		});
 	});
 
 	/*.......................................................*/

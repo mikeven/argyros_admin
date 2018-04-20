@@ -308,12 +308,7 @@
     <script src="js/custom.js"></script>
     <script src="js/fn-ui.js"></script>
     <script src="js/fn-order.js"></script>
-    <?php if ( $orden["estado"] == "pendiente" ) { ?>
-        <script>
-            
-            
-        </script>                    
-    <?php } ?>
+    
     <?php if ( $orden["estado"] == "confirmado" ) { ?>
         <script>iniciarBotonEntregado();</script>                    
     <?php } ?>
