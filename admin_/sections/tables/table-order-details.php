@@ -32,10 +32,18 @@
           if ( ( $orden["estado"] != "pendiente" ) && ( $orden["estado"] != "cancelado" ) )
              $total_item = $r["disponible"] * $r["price"];
           if( $r["istatus"] == "retirado" ) $clase_item = "item_retirado";
+          $lnk_p = "product-data.php?p=".$r["product_id"]."#".$r["product_detail_id"];
       ?>
       <tr class="<?php echo $clase_item; ?>">
+        
         <td align="center"><img src="<?php echo $r["imagen"]; ?>" width="20"></td>
-        <td><a target="_blank" href="product-data.php?p=<?php echo $r["product_id"]; ?>"><?php echo $r["producto"]." (".$r["description"].")"." | "."Talla: ".$r["talla"]; ?></a></td>
+
+        <td>
+          <a target="_blank" href="<?php echo $lnk_p; ?>">
+            <?php echo $r["product_detail_id"]." - ".$r["producto"]." (".$r["description"].")"." | "."Talla: ".$r["talla"]; ?>
+          </a>
+        </td>
+        
         <td id="qcd<?php echo $r["id"]; ?>" align="center">
           <?php echo $r["quantity"]; ?>
         </td>

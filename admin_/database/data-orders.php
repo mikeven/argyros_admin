@@ -91,10 +91,10 @@
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function actualizarEstadoPedido( $dbh, $id, $estado ){
-		//Actualiza el estado de un pedido
-		$q = "update orders set order_status = '$estado', updated_at = NOW() where id = $id";
-		
+	function actualizarEstadoPedido( $dbh, $id, $estado, $leido ){
+		//Actualiza el estado de un pedido, y asigna no leído por el cliente
+		$q = "update orders set order_status = '$estado', order_read = '$leido', updated_at = NOW() where id = $id";
+
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
@@ -102,7 +102,7 @@
 	function registrarRevisionPedido( $dbh, $revision ){
 		//Recorre el vector de registros de detalle de pedido (id, cant) para enviar a BD
 		$res = 0;
-		foreach ( $revision as $r ) {
+		foreach ( $revision as $r ){
 			list( $id, $cant, $srev ) = explode( ',', $r );
 			$res += actualizarDetallePedidoRevision( $dbh, $id, $cant, $srev );
 		}
@@ -144,8 +144,8 @@
 		
 		$idr = registrarRevisionPedido( $dbh, $revision["regrev"] );
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
-			actualizarEstadoPedido( $dbh, $_POST["idp"], "revisado" );
-			notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], $_POST["monto_orden"] );
+			actualizarEstadoPedido( $dbh, $_POST["idp"], "revisado", "no-leido" );
+			//notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], $_POST["monto_orden"] );
 			$res["exito"] = 1;
 			$res["mje"] = "La respuesta del pedido ha sido enviada";
 		} else {
@@ -161,7 +161,7 @@
 		include( "bd.php" );
 		$estado = $_POST["status"];	
 		$idp = $_POST["conf_ped"];
-		$idr = actualizarEstadoPedido( $dbh, $idp, $estado );
+		$idr = actualizarEstadoPedido( $dbh, $idp, $estado, "no-leido" );
 		$monto_cnf = calcularTotalOrdenConfirmada( obtenerDetalleOrden( $dbh, $idp ) );
 		
 		if( $estado == "confirmado" ){
@@ -173,7 +173,7 @@
 		if( $estado == "entregado" ){
 			//Se actualiza el pedido con las observaciones del administrador y se notifica por email al cliente
 			ingresarObservacionesAdministrador( $dbh, $idp, $_POST["nota"] );
-			notificarActualizacionPedido( $dbh, "pedido_entregado", $idp, $monto_cnf );
+			//notificarActualizacionPedido( $dbh, "pedido_entregado", $idp, $monto_cnf );
 			$m1 = "entregado";  $m2 = "entregar";
 		}
 

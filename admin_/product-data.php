@@ -12,7 +12,7 @@
 
     include( "fn/fn-products.php" );
 
-    checkSession( '' );
+    checkSession( '' );    
     
     if( isset( $_GET["p"] ) ){
         $idp = $_GET["p"];    
@@ -30,7 +30,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Productos :: Argyros Admin</title>
+        <title>Detalle de productos :: Argyros Admin</title>
 
         <!-- Bootstrap -->
         <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -175,7 +175,10 @@
 
                                 ?>
                                 <div class="row">
-                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div id="<?php echo $dp["id"]; ?>" class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="">
+                                            <label class="control-label">#: </label> <?php echo $dp["id"]; ?>
+                                        </div>
                                         <div class="">
                                             <label class="control-label">Color: </label> <?php echo $dp["color"]; ?>
                                         </div> 

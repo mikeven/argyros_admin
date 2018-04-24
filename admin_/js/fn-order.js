@@ -102,7 +102,6 @@ function enviarRevisionPedido(){
         success: function( response ){
         	console.log(response);
 			res = jQuery.parseJSON(response);
-			
 			if( res.exito == 1 ){ 
 				notificar( tit_notif, res.mje, "success" );
 				location.reload();
