@@ -90,7 +90,6 @@ function validarRevisionPedido(){
 /* --------------------------------------------------------- */
 function enviarRevisionPedido(){
 	//Invoca al servidor para enviar revisión de pedido
-	//notificar( "Revisión de pedido", "La revisión del pedido ha sido enviada al cliente", "success" );
 	var tit_notif = "Revisión de pedido"
 	var form_rev = $("#revision_pedido").serialize();
 	var ido = $("#idpedido").val();

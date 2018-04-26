@@ -122,8 +122,9 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerTallasDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de tallas de detalle de producto
-		$q = "select spd.size_id as idtalla, s.name as talla, spd.weight as peso, spd.visible as visible 
-		from size_product_detail spd, sizes s where spd.size_id = s.id and spd.product_detail_id = $idd";
+		$q = "select spd.size_id as idtalla, spd.product_detail_id as iddetprod, s.name as talla, 
+		spd.weight as peso, spd.visible as visible from size_product_detail spd, sizes s 
+		where spd.size_id = s.id and spd.product_detail_id = $idd order by s.name ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -359,6 +360,15 @@
 		$info["html_markups"] = $html_markups;
 		return $info;	
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function actualizarDisponibilidadTallaProducto( $dbh, $iddetprod, $idtalla, $estado ){
+		//Actualiza el valor talla-peso de un detalle de producto
+		$q = "update size_product_detail set visible = $estado where size_id = $idtalla and 
+		product_detail_id = $iddetprod";
+		
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
 
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
@@ -508,6 +518,26 @@
 		$idd = $_POST["idt"];
 		
 		procesarImagenes( $dbh, $idd, $detalle );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	//Ajuste de disponibilidad de producto dado el nivel 
+	if( isset( $_POST["ajuste_disp"] ) ){
+		include( "bd.php" );
+
+		if( $_POST["ajuste_disp"] == "talla" )
+			$idr = actualizarDisponibilidadTallaProducto( $dbh, $_POST["id_dp"], $_POST["id_dettalla"], $_POST["status"] );
+
+		if ( ( $idr != 0 ) && ( $idr != "" ) ){
+			$res["exito"] = 1;
+			$res["mje"] = "Disponibilidad actualizada";
+			$res["reg"] = NULL;
+		} else {
+			$res["exito"] = 0;
+			$res["mje"] = "Error al actualizar producto";
+			$res["reg"] = NULL;
+		}
+
+		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_POST["file_sending"] ) ){

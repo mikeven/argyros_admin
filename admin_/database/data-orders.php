@@ -41,6 +41,14 @@
 		return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerDataProductoIdDetalle( $dbh, $id_detalle ){
+		//Devuelve los datos correspondientes a un detalle de pedido dado el id del detalle
+		$q = "select product_detail_id, size_id from order_details where id = $id_detalle";
+		
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_fetch_array( $data );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function calcularTotalOrdenConfirmada( $detalle ){
 		//Devuelve el total de una orden después de haber sido confirmado
 		$monto = 0;
@@ -99,12 +107,23 @@
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function ajustarDisponibilidadProducto( $dbh, $cant_disponible, $id_detalle_orden ){
+		//Hace no visible un producto si no está disponible
+		if( $cant_disponible == 0 ){
+			$datap = obtenerDataProductoIdDetalle( $dbh, $id_detalle_orden );
+			actualizarDisponibilidadTallaProducto( $dbh, $datap["product_detail_id"], $datap["size_id"], 0 );
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function registrarRevisionPedido( $dbh, $revision ){
 		//Recorre el vector de registros de detalle de pedido (id, cant) para enviar a BD
 		$res = 0;
+		include( "data-products.php" );
+
 		foreach ( $revision as $r ){
 			list( $id, $cant, $srev ) = explode( ',', $r );
 			$res += actualizarDetallePedidoRevision( $dbh, $id, $cant, $srev );
+			ajustarDisponibilidadProducto( $dbh, $cant, $id );
 		}
 		return $res;
 	}
@@ -124,7 +143,7 @@
 		$orden["total_orden"] = $total;
 
 		if( $paso_pedido == "pedido_revisado" ){
-			enviarMensajeEmail( "pedido_revisado_usuario", $orden, $orden["orden"]["email"] );
+			enviarMensajeEmail( "pedido_revisado_usuario", $orden, $orden["email"] );
 		}
 		if( $paso_pedido == "pedido_entregado" ){
 			enviarMensajeEmail( "pedido_entregado_usuario", $orden, $orden["email"] );
@@ -145,7 +164,7 @@
 		$idr = registrarRevisionPedido( $dbh, $revision["regrev"] );
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
 			actualizarEstadoPedido( $dbh, $_POST["idp"], "revisado", "no-leido" );
-			//notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], $_POST["monto_orden"] );
+			notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], $_POST["monto_orden"] );
 			$res["exito"] = 1;
 			$res["mje"] = "La respuesta del pedido ha sido enviada";
 		} else {
@@ -173,7 +192,7 @@
 		if( $estado == "entregado" ){
 			//Se actualiza el pedido con las observaciones del administrador y se notifica por email al cliente
 			ingresarObservacionesAdministrador( $dbh, $idp, $_POST["nota"] );
-			//notificarActualizacionPedido( $dbh, "pedido_entregado", $idp, $monto_cnf );
+			notificarActualizacionPedido( $dbh, "pedido_entregado", $idp, $monto_cnf );
 			$m1 = "entregado";  $m2 = "entregar";
 		}
 

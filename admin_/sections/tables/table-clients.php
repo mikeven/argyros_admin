@@ -6,7 +6,7 @@
       <th>Teléfono</th>
       <th>País</th>
       <th>Grupo</th>
-      <th>Fecha creación</th>
+      <th>Fecha registro</th>
       <th>Editar</th>
       <th>Borrar</th>
     </tr>

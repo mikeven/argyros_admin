@@ -63,7 +63,7 @@
 	function mensajePedidoRevisado( $tmensaje, $plantilla, $datos ){
 		//Llenado de mensaje para plantilla de notificación pedido revisado (status: revisado)
 		$cncy = "$"; 
-		$orden = $datos["orden"];
+		$orden = $datos;
 
 		$plantilla = str_replace( "{user}", $orden["nombre"]." ".$orden["apellido"], $plantilla );
 		$plantilla = str_replace( "{npedido}", $orden["id"], $plantilla );
@@ -136,7 +136,7 @@
 		$sobre = escribirMensaje( $tipo_mensaje, $plantilla, $datos );
 		$sobre["cabeceras"] = obtenerCabecerasMensaje();
 
-		return mail( $email, $sobre["asunto"], $sobre["mensaje"], $sobre["cabeceras"] );
+		//return mail( $email, $sobre["asunto"], $sobre["mensaje"], $sobre["cabeceras"] );
 	}
 	/* ----------------------------------------------------------------------------------- */
 

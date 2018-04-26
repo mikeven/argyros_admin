@@ -201,6 +201,26 @@ function agregarImagenesDetalleProducto(){
     });
 }
 /* --------------------------------------------------------- */
+function actualizarDisponibilidadProducto( nivel, idp, iddp, iddettalla, estado ){
+	//Envía al servidor la petición de guardar las imágenes cargadas por el plugin. 
+	var tit_notif = "Actualización de producto";
+	$.ajax({
+        type:"POST",
+        url:"database/data-products.php",
+        data:{ ajuste_disp: nivel, id_p:idp, id_dp:iddp, id_dettalla:iddettalla, status:estado },
+        success: function( response ){
+			res = jQuery.parseJSON(response);
+			console.log(response);
+			if( res.exito == 1 ) 
+				notificar( tit_notif, res.mje, "success" );
+			else
+				notificar( tit_notif, res.mje, "error" );
+
+			setTimeout(function() { location.reload(); }, 3000 );
+        }
+    });
+}
+/* --------------------------------------------------------- */
 function addCampoImg( valor ){
 	
 	var fld = "<input type='hidden' name='urlimgs[]' value='" + valor + "'>";
@@ -365,6 +385,16 @@ $( document ).ready(function() {
 	/*product-edit.php*/
 	$("#bot_editar_producto").on( "click", function(){
 		editarProducto();	
+    });
+
+    /*product-data.php*/
+    $(".o-tdetp").on( "click", function(){
+		var idtalla 	= $(this).attr("data-idtalla");
+		var iddetprod 	= $(this).attr("data-idpdet");
+		var valestado	= $(this).attr("data-st");
+		$(this).fadeOut( 200 );
+
+		actualizarDisponibilidadProducto( "talla", "", iddetprod, idtalla, valestado );
     });
 
 

@@ -56,6 +56,11 @@
         <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
         <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
+        <!-- PNotify -->
+        <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+        <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+        <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
         <!-- Custom Theme Style -->
         <link href="build/css/custom.min.css" rel="stylesheet">
     </head>
@@ -70,6 +75,8 @@
         .data-talla-detalle{
             padding-top: 15px;
         }
+
+        .poculto{ background-color: #f9c7c6 !important; }
     </style>
 
   <?php
@@ -177,7 +184,7 @@
                                 <div class="row">
                                     <div id="<?php echo $dp["id"]; ?>" class="col-md-4 col-sm-4 col-xs-12">
                                         <div class="">
-                                            <label class="control-label">#: </label> <?php echo $dp["id"]; ?>
+                                            <label class="control-label">#Reg: </label> <?php echo $dp["id"]; ?>
                                         </div>
                                         <div class="">
                                             <label class="control-label">Color: </label> <?php echo $dp["color"]; ?>
@@ -186,7 +193,7 @@
                                             <label class="control-label">Baño: </label> <?php echo $dp["bano"]; ?>
                                         </div>
                                         <div class="">
-                                            <label class="control-label">Tipo de precio: </label> <?php echo $dp["tipo_precio"]; ?>
+                                            <label class="control-label">Tipo de precio: </label> <?php echo txTipoPeso( $dp["tipo_precio"] ); ?>
                                         </div>
                                         <div class="">
                                             <label class="control-label">Precio por pieza: </label> <?php echo $dp["precio_pieza"]; ?>
@@ -205,15 +212,25 @@
                                               </thead>
                                               <tbody>
                                                 <?php 
-                                                    foreach ( $tallas_detalle as $talla ) { 
+                                                    foreach ( $tallas_detalle as $talla ) {
+                                                        if( $talla["visible"] == 1 ) $ctble = ""; 
+                                                        else $ctble = "poculto"; 
                                                 ?>
-                                                    <tr>
-                                                        <td><?php echo $talla["talla"]; ?></td>
-                                                        <td><?php echo $talla["peso"]; ?></td>
-                                                        <td>   
-                                                            <i class="fa fa-eye"></i> 
-                                                            <a id="id-dtp<?php echo $talla["iddtt"]; ?>" href="#!" 
-                                                            class="o-tdetp">Ocultar</a>
+                                                    <tr class="<?php echo $ctble; ?>">
+                                                        <td align="center"><?php echo $talla["talla"]; ?></td>
+                                                        <td><?php echo $talla["peso"]; ?> gr</td>
+                                                        <td>
+                                                            <?php if( $talla["visible"] == 1 ) { ?>
+                                                                <i class="fa fa-eye-slash"></i> 
+                                                                <a id="id-dtp<?php echo $talla["idtalla"]; ?>" href="#!" 
+                                                                class="o-tdetp" data-idtalla="<?php echo $talla["idtalla"]; ?>" 
+                                                                data-idpdet="<?php echo $talla["iddetprod"]; ?>" data-st="0">Ocultar</a>
+                                                            <?php } else { ?>
+                                                                <i class="fa fa-eye"></i> 
+                                                                <a id="id-dtp<?php echo $talla["idtalla"]; ?>" href="#!" 
+                                                                class="o-tdetp" data-idtalla="<?php echo $talla["idtalla"]; ?>" 
+                                                                data-idpdet="<?php echo $talla["iddetprod"]; ?>" data-st="1">Mostrar</a>
+                                                            <?php } ?>
                                                         </td>
                                                     </tr>
                                                 <?php } ?>
@@ -319,8 +336,14 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
-	
+    <script src="js/fn-ui.js"></script>
+	<script src="js/fn-product.js"></script>
   </body>
 </html>

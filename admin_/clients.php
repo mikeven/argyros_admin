@@ -9,6 +9,7 @@
     include( "database/data-user.php" );
     include( "fn/common-functions.php" );
     include( "database/data-clients.php" );
+
     checkSession( '' );
 ?>
 <!DOCTYPE html>
@@ -59,9 +60,9 @@
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
-        <?php include("sections/main-nav.php"); ?>
+        <?php include( "sections/main-nav.php" ); ?>
 
-        <?php include("sections/top-nav.php"); ?>
+        <?php include( "sections/top-nav.php" ); ?>
 
         <!-- page content -->
         <div class="right_col" role="main">
