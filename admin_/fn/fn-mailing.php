@@ -136,7 +136,7 @@
 		$sobre = escribirMensaje( $tipo_mensaje, $plantilla, $datos );
 		$sobre["cabeceras"] = obtenerCabecerasMensaje();
 
-		//return mail( $email, $sobre["asunto"], $sobre["mensaje"], $sobre["cabeceras"] );
+		return mail( $email, $sobre["asunto"], $sobre["mensaje"], $sobre["cabeceras"] );
 	}
 	/* ----------------------------------------------------------------------------------- */
 

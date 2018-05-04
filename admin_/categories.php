@@ -117,6 +117,87 @@
                     </form>  
                   </div>
                 </div>
+
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Categorías destacadas</h2>
+                    <ul class="nav navbar-right panel_toolbox"></ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <form id="frm_ncategoria" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-categories.php?ncategoria" method="post">
+                       
+                       <!-- *** -->
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">#1 </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <select name="idcategoria" class="form-control selectpicker">
+                            <option disabled>Seleccione</option>
+                            <?php foreach ( $categorias as $c ) { ?>
+                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                            <?php } ?>
+                          </select>
+                        </div>
+                      </div>
+
+                      <!-- *** -->
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">#2 </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <select name="idcategoria" class="form-control selectpicker">
+                            <option disabled>Seleccione</option>
+                            <?php foreach ( $categorias as $c ) { ?>
+                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                            <?php } ?>
+                          </select>
+                        </div>
+                      </div>
+
+                       <!-- *** -->
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">#3 </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <select name="idcategoria" class="form-control selectpicker">
+                            <option disabled>Seleccione</option>
+                            <?php foreach ( $categorias as $c ) { ?>
+                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                            <?php } ?>
+                          </select>
+                        </div>
+                      </div>
+
+                       <!-- *** -->
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">#4 </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <select name="idcategoria" class="form-control selectpicker">
+                            <option disabled>Seleccione</option>
+                            <?php foreach ( $categorias as $c ) { ?>
+                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                            <?php } ?>
+                          </select>
+                        </div>
+                      </div>
+
+                       <!-- *** -->
+
+                      <div class="ln_solid"></div>
+
+                      <div class="form-group">
+                        <div align="center">
+                          <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                      </div>
+                    </form>  
+                  </div>
+                </div>
+
+
               </div>
               <div class="col-md-8 col-sm-5 col-xs-12">
                 <div class="x_panel">

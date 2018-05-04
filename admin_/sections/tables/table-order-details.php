@@ -40,7 +40,7 @@
 
         <td>
           <a target="_blank" href="<?php echo $lnk_p; ?>">
-            <?php echo $r["product_detail_id"]." - ".$r["producto"]." (".$r["description"].")"." | "."Talla: ".$r["talla"]; ?>
+            <?php echo "P:".$r["product_id"]." - ".$r["producto"]." (#".$r["product_detail_id"].")"." | "."Talla: ".$r["talla"]; ?>
           </a>
         </td>
         
