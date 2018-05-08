@@ -57,7 +57,6 @@ function mostrarSubcategorias( idc ){
         }
     });	
 }
-
 /* --------------------------------------------------------- */
 function crearValorTallaPesoSeleccion( idt, t, p ){
 	

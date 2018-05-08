@@ -193,7 +193,7 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="val_subc" name="subcategoria" class="form-control selectpicker">
+                                  <select id="val_subc" name="subcategoria" class="form-control">
                                     <?php foreach ( $subcategoriap as $sc ) { ?>
                                       <option value="<?php echo $sc["id"] ?>" <?php echo sop( $sc["id"], $producto["scid"] ); ?>>
                                         <?php echo $sc["name"] ?>
