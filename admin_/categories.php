@@ -125,15 +125,15 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="frm_ncategoria" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="database/data-categories.php?ncategoria" method="post">
+                    <form id="frm_cestacadas" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-categories.php?categorias_destacadas" method="post">
                        
                        <!-- *** -->
 
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">#1 </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select name="idcategoria" class="form-control selectpicker">
+                          <select name="c_orden1" class="form-control">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
                               <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
@@ -147,7 +147,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">#2 </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select name="idcategoria" class="form-control selectpicker">
+                          <select name="c_orden2" class="form-control">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
                               <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
@@ -161,7 +161,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">#3 </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select name="idcategoria" class="form-control selectpicker">
+                          <select name="c_orden3" class="form-control">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
                               <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
@@ -175,7 +175,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">#4 </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select name="idcategoria" class="form-control selectpicker">
+                          <select name="c_orden4" class="form-control">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
                               <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>

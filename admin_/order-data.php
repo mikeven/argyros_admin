@@ -67,6 +67,7 @@
             .qdisp_orden{ text-align: center; }
             .btn_accion_pedido{ float: left; }
             .accion_observaciones{ margin-bottom: 20px; }
+            .tx_al_c{ text-align: center;}
         </style>
     </head>
 

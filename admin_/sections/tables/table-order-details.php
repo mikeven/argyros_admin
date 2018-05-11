@@ -5,10 +5,14 @@
       <tr>
         <th> </th>
         <th>Producto</th>
-        <th class="tx_al_c">Cantidad</th>
+        <th class="tx_al_c">Cant. Solic.</th>
         <th class="dcol" width="80">Disp</th>
-        <?php if ( $orden["estado"] == "revisado" || $orden["estado"] == "confirmado" ) { ?>
-        <th>Disp</th>
+        <?php if ( 
+          $orden["estado"] == "revisado" 
+          || $orden["estado"] == "confirmado" 
+          || $orden["estado"] == "entregado" ) { 
+        ?>
+        <th>Cant. Disp</th>
         <?php } ?>
         <th class="tx_al_c">Precio unit</th>
         <th class="tx_al_c">Total</th>
@@ -62,7 +66,7 @@
           <input id="rrcd<?php echo $r["id"]; ?>" name="regrev[]" type="hidden" value="0">
 
         </td>
-        <?php if ( $orden["estado"] == "revisado" || $orden["estado"] == "confirmado" ) { ?>
+        <?php if ( $orden["estado"] == "revisado" || $orden["estado"] == "confirmado" || $orden["estado"] == "entregado" ) { ?>
           <td align="center"> <b> <?php echo $r["disponible"]; ?> </b> </span>
           </td>
         <?php } ?>

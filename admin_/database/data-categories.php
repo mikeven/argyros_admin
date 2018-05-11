@@ -13,6 +13,19 @@
 		return $lista_c;	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function guardarCategoriasDestacadas( $dbh, $orden ){
+		//Asigna el orden de las categorías destacadas
+		$q1 = "update categories set home_order=1 where id = $orden[1]";
+		$q2 = "update categories set home_order=2 where id = $orden[2]";
+		$q3 = "update categories set home_order=3 where id = $orden[3]";
+		$q4 = "update categories set home_order=4 where id = $orden[4]";
+
+		$data = mysqli_query( $dbh, $q1 );
+		$data = mysqli_query( $dbh, $q2 );
+		$data = mysqli_query( $dbh, $q3 );
+		$data = mysqli_query( $dbh, $q4 );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerCategoriaPorId( $dbh, $id ){
 		//Devuelve el registro de categoría por su id
 		$q = "Select id, name from categories where id = $id";
@@ -109,6 +122,18 @@
 		$idc = $_POST["m_subcategs"];
 		$subcategorias = obtenerListaSubCategoriasCategoria( $dbh, $idc );
 		echo json_encode( $subcategorias );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	//Obtener subcategorías de una categoría
+	if( isset( $_GET["categorias_destacadas"] ) ){
+		//include( "bd.php" );
+		$orden[1] = $_POST["c_orden1"];
+		$orden[2] = $_POST["c_orden2"];
+		$orden[3] = $_POST["c_orden3"];
+		$orden[4] = $_POST["c_orden4"];
+		
+		guardarCategoriasDestacadas( $dbh, $orden );
+		header( "Location: ../categories.php?categoriasdestacadas&success" );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Invoca crear nuevo registro de categoría principal
