@@ -8,6 +8,8 @@
     include( "database/bd.php" );
     include( "database/data-user.php" );
     include( "database/data-categories.php" );
+
+    include( "fn/common-functions.php" );
     checkSession( '' );
 ?>
 <!DOCTYPE html>
@@ -56,6 +58,10 @@
 
   <?php
     $categorias = obtenerListaCategorias( $dbh );
+    $cdestacadas[0] = obtenerCategoriasDestacadaPorOrden( $dbh, 1 );
+    $cdestacadas[1] = obtenerCategoriasDestacadaPorOrden( $dbh, 2 );
+    $cdestacadas[2] = obtenerCategoriasDestacadaPorOrden( $dbh, 3 );
+    $cdestacadas[3] = obtenerCategoriasDestacadaPorOrden( $dbh, 4 );
   ?>
 
   <body class="nav-md">
@@ -136,7 +142,7 @@
                           <select name="c_orden1" class="form-control">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
-                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                              <option value="<?php echo $c["id"] ?>" <?php echo sop( $c["id"], $cdestacadas[0]["id"] )?>><?php echo $c["name"] ?></option>
                             <?php } ?>
                           </select>
                         </div>
@@ -150,7 +156,7 @@
                           <select name="c_orden2" class="form-control">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
-                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                              <option value="<?php echo $c["id"] ?>" <?php echo sop( $c["id"], $cdestacadas[1]["id"] )?>><?php echo $c["name"] ?></option>
                             <?php } ?>
                           </select>
                         </div>
@@ -164,7 +170,9 @@
                           <select name="c_orden3" class="form-control">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
-                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                              <option value="<?php echo $c["id"] ?>" <?php echo sop( $c["id"], $cdestacadas[2]["id"] )?>>
+                                <?php echo $c["name"] ?>
+                              </option>
                             <?php } ?>
                           </select>
                         </div>
@@ -178,7 +186,7 @@
                           <select name="c_orden4" class="form-control">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
-                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                              <option value="<?php echo $c["id"] ?>" <?php echo sop( $c["id"], $cdestacadas[3]["id"] )?>><?php echo $c["name"] ?></option>
                             <?php } ?>
                           </select>
                         </div>
@@ -293,6 +301,9 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
-	
+    <script src="js/fn-ui.js"></script>
+	  <?php if( isset( $_GET["categoriasdestacadas"] ) ) { ?>
+      <script>notificar( "Categorías de productos", "Los cambios se hicieron con éxito", "success" );</script>
+    <?php } ?>
   </body>
 </html>

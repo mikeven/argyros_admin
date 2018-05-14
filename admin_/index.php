@@ -59,7 +59,7 @@
               <div class="clearfix"></div>
 
               <div class="separator">
-                <p class="change_link">¿Usuario nuevo?
+                <p class="change_link hidden">¿Usuario nuevo?
                   <a href="#signup" class="to_register"> Crear cuenta</a>
                 </p>
 
@@ -67,7 +67,7 @@
                 <br />
                 <div>
                   <h1><img dt> Argyros Admin</h1>
-                  <p>©2017 Administrador de contenido</p>
+                  <p>©2018 Administrador de contenido web</p>
                 </div>
                 <div id="response"></div>
               </div>
