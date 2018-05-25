@@ -53,6 +53,11 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
   </head>
 
   <body class="nav-md">
@@ -204,7 +209,17 @@
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
     <!-- Custom Theme Scripts -->
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/fn-ui.js"></script>
+    <script>
+      <?php if( isset( $_GET["edit"] ) && isset( $_GET["success"] ) ) { ?>
+        notificar( "Líneas", "Los datos de la línea fueron modificados", 'success' );
+      <?php } ?>
+    </script>
 	
   </body>
 </html>

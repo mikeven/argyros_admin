@@ -34,7 +34,7 @@
 		//Edita los datos de línea de producto
 		$q = "update plines set name = '$nombre', description = '$descripcion', 
 				updated_at = NOW() where id = $idl";
-		echo $q;
+				
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
