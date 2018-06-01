@@ -35,6 +35,25 @@
 		return $data["id"];
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function editarGrupoCliente( $dbh, $grupo ){
+		//Modifica los datos de un registro de grupo de cliente
+		$q = "update user_group set name = '$grupo[nombre]', variable_a = $grupo[var_a], 
+		variable_b = $grupo[var_b], variable_c = $grupo[var_c], variable_d = $grupo[var_d], 
+		material = $grupo[material] where id = $grupo[id]";
+
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerGrupoPorId( $dbh, $idg ){
+		//Devuelve el registro del grupo dado por
+		
+		$q = "select id, name, variable_a, variable_b, variable_c, variable_d, material 
+		from user_group where id = $idg";
+
+		$data = mysqli_fetch_array( mysqli_query( $dbh, $q ) );
+		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerClientePorId( $dbh, $idc ){
 		//Devuelve el registro de cliente dado por id
 		$q = "Select u.id, u.first_name as nombre, u.last_name as apellido, u.email, u.phone,
@@ -53,7 +72,7 @@
 	function modificarGrupoUsuarioCliente( $dbh, $idu, $idgrupo ){
 		//Actualiza el grupo al que pertenece un cliente
 		$q = "update users set user_group_id = $idgrupo where id = $idu";
-		echo $q;
+		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -67,6 +86,38 @@
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function clienteAsociado( $dbh, $idgrupo ){
+		//Determina si un perfil de cliente tiene registros asociados
+		$asociado = false;
+		$q = "select * from users where user_group_id = $idgrupo";
+		$nrows = mysqli_num_rows( mysqli_query ( $dbh, $q ) );
+		
+		if( $nrows > 0 ) $asociado = true;
+
+		return $asociado;
+	}
+
+	/* ----------------------------------------------------------------------------------- */
+	/* ----------------------------------------------------------------------------------- */
+
+	if( isset( $_GET["mclientgroup"] ) ){
+		include( "bd.php" );
+		$grupo["id"] = $_POST["idgrupocliente"];
+		$grupo["nombre"] = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$grupo["var_a"] = mysqli_real_escape_string( $dbh, $_POST["var_a"] );
+		$grupo["var_b"] = mysqli_real_escape_string( $dbh, $_POST["var_b"] );
+		$grupo["var_c"] = mysqli_real_escape_string( $dbh, $_POST["var_c"] );
+		$grupo["var_d"] = mysqli_real_escape_string( $dbh, $_POST["var_d"] );
+		$grupo["material"] = mysqli_real_escape_string( $dbh, $_POST["material"] );
+
+		$idg = editarGrupoCliente( $dbh, $grupo );
+		
+		if( ( $idg != 0 ) && ( $idg!= "" ) ) {
+			header( "Location: ../client-groups-edit.php?id=$grupo[id]&editgroupsuccess" );
+		}
+	}
+
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Clientes */
 	/* ----------------------------------------------------------------------------------- */
@@ -93,7 +144,7 @@
 
 		echo json_encode( $res );
 	}
-
+	/* ----------------------------------------------------------------------------------- */
 	//Invocación para modificar el grupo al que pertenece un cliente
 	if( isset( $_POST["grupo_valor"] ) ){
 		include( "bd.php" );	
@@ -101,5 +152,17 @@
 		modificarGrupoUsuarioCliente( $dbh, $_POST["id_c"], $idg );
 	}
 	/* ----------------------------------------------------------------------------------- */
-
+	//Invocación para eliminar un grupo de clientes, perfil de cliente
+	if( isset( $_POST["id_elimg"] ) ){
+		include( "bd.php" );	
+		if( clienteAsociado( $dbh, $_POST["id_elimg"] ) == true ){
+			$res["exito"] = -1;
+			$res["mje"] = "Debe eliminar clientes asociados al grupo primero";
+		}else{
+			$res["exito"] = 1;
+			$res["mje"] = "Perfil eliminado con éxito";
+		}
+		echo json_encode( $res );
+	}
+	/* ----------------------------------------------------------------------------------- */
 ?>

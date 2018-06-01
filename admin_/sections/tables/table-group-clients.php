@@ -22,8 +22,11 @@
         <td><?php echo $g["variable_c"]; ?></td>
         <td><?php echo $g["variable_d"]; ?></td>
         <td><?php echo $g["material"]; ?></td>
-        <td><a href="#!">Editar</a></td>
-        <td><a href="#!">Borrar</a></td>
+        <td><a href="client-groups-edit.php?id=<?php echo $g["id"]; ?>">Editar</a></td>
+        <td>
+          <a href="#!" class="elim-gcliente" data-toggle="modal" data-idg="<?php echo $g["id"]; ?>" 
+          data-target="#confirmar-accion">Borrar</a>
+        </td>
       </tr>
     <?php } ?>
   </tbody>

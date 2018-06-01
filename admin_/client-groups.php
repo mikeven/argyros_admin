@@ -49,6 +49,11 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
   </head>
 
   <?php
@@ -157,6 +162,8 @@
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
                     <?php include("sections/tables/table-group-clients.php");?>
+                    <?php include( "sections/modals/confirm_action.php" ); ?>
+                    <input id="ig-grupo-e" type="hidden">
                   </div>
                 </div>
               </div>
@@ -228,8 +235,14 @@
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
     <!-- Custom Theme Scripts -->
+    <script src="js/fn-ui.js"></script>
     <script src="js/custom.js"></script>
 	  <script src="js/fn-client.js"></script>
-    <script src="js/fn-ui.js"></script>
+
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+    
   </body>
 </html>
