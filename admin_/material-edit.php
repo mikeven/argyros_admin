@@ -97,6 +97,11 @@
                     <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>-->
+                    <div class="input-group" style="float:right;">
+                      <a href="materials.php" class="btn btn-app">
+                        <i class="fa fa-arrow-left"></i> Volver a materiales
+                      </a>
+                    </div>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">

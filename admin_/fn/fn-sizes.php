@@ -42,4 +42,11 @@
 			if( $t["talla"] == 0 ) return $t;	
 		}
 	}
+
+
 ?>
+	<?php if( isset( $_GET["size_edit_success"] ) ){ ?>
+	  <script>
+	    notificar( "Tallas", "Datos de talla modificados", "success" );
+	  </script>
+	<?php } ?>

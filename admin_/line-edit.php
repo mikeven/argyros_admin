@@ -95,6 +95,11 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Editar línea</h2>
+                    <div class="input-group" style="float:right;">
+                      <a href="lines.php" class="btn btn-app">
+                        <i class="fa fa-arrow-left"></i> Volver a líneas
+                      </a>
+                    </div>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -215,10 +220,10 @@
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/fn-ui.js"></script>
+
+    <?php include( "fn/fn-lines.php" ); ?>
     <script>
-      <?php if( isset( $_GET["edit"] ) && isset( $_GET["success"] ) ) { ?>
-        notificar( "Líneas", "Los datos de la línea fueron modificados", 'success' );
-      <?php } ?>
+      
     </script>
 	
   </body>

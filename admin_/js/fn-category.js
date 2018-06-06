@@ -16,14 +16,95 @@ function obtenerSubcategoriasCategoria( idc ){
         }
     });
 }
-
+/* --------------------------------------------------------- */
+function borrarCategoria( idc ){
+    //Invocación al servidor para eliminar una categoría
+    $.ajax({
+        type:"POST",
+        url:"database/data-categories.php",
+        data:{ id_elim_cat: idc },
+        success: function( response ){
+            console.log( response );
+            res = jQuery.parseJSON(response);
+            if( res.exito == 1 ){ 
+                notificar( "Categoría", res.mje, "success" );
+                setTimeout( function() { window.location = "categories.php"; }, 3000 );
+            }
+            if( res.exito == -1 ){ 
+                notificar( "Borrar categoría", res.mje, "error" );
+            }
+        }
+    });
+}
+/* --------------------------------------------------------- */
+function borrarSubcategoria( idsc ){
+    //Invocación al servidor para eliminar una subcategoría
+    $.ajax({
+        type:"POST",
+        url:"database/data-categories.php",
+        data:{ id_elim_subcat: idsc },
+        success: function( response ){
+            console.log( response );
+            res = jQuery.parseJSON(response);
+            if( res.exito == 1 ){ 
+                notificar( "Subcategoría", res.mje, "success" );
+                setTimeout( function() { window.location = "subcategories.php"; }, 3000 );
+            }
+            if( res.exito == -1 ){ 
+                notificar( "Borrar subcategoría", res.mje, "error" );
+            }
+        }
+    });
+}
+/* --------------------------------------------------------- */
+function iniciarBotonBorrarCategoria(){
+    //Asigna los textos de la ventana de confirmación para borrar una categoría
+    iniciarVentanaModal( "btn_borrar_categoria", "btn_canc", 
+                         "Borrar categoría", "", 
+                         "¿Confirma que desea borrar categoría?", 
+                         "Confirmar acción" );
+}
+/* --------------------------------------------------------- */
+function iniciarBotonBorrarSubcategoria(){
+    //Asigna los textos de la ventana de confirmación para borrar una subcategoría
+    iniciarVentanaModal( "btn_borrar_subcategoria", "btn_canc", 
+                         "Borrar subcategoría", "", 
+                         "¿Confirma que desea borrar subcategoría?", 
+                         "Confirmar acción" );
+}
 /* --------------------------------------------------------- */
 
 $( document ).ready(function() {
-	$("#selcateg").on( "click", function(){
+	
+    $("#selcateg").on( "click", function(){
 		var idc = $(this).val();
 		obtenerSubcategoriasCategoria( idc );
-    });   
+    });
+
+    $("#tabla_datos-categorias").on( "click", ".elim-categoria", function(){
+        $("#id-categ-e").val( $(this).attr( "data-idc" ) );
+        iniciarBotonBorrarCategoria();
+
+        $('#btn_borrar_categoria').on('click', function(){
+            var idc = $("#id-categ-e").val();
+            $("#btn_canc").click();
+            borrarCategoria( idc );
+        });
+    });
+    
+    /**/
+
+    $("#tabla_datos-subcategorias").on( "click", ".elim-subcategoria", function(){
+        $("#id-scateg-e").val( $(this).attr( "data-idsc" ) );
+        iniciarBotonBorrarSubcategoria();
+
+        $('#btn_borrar_subcategoria').on('click', function(){
+            var idsc = $("#id-scateg-e").val();
+            $("#btn_canc").click();
+            borrarSubcategoria( idsc );
+        });
+    });
+      
 });
 
 /* --------------------------------------------------------- */

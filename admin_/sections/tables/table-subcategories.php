@@ -13,10 +13,13 @@
         foreach ( $subcategorias as $sc ) { 
       ?>
       <tr>
-        <td><?php echo $sc["name"]." "."( $sc[uname] )";; ?></td>
+        <td><?php echo $sc["name"]." "."[ $sc[uname] ]";; ?></td>
         <td><?php echo $sc["cname"]; ?></td>
         <td><a href="subcategory-edit.php?id=<?php echo $sc["id"]; ?>">Editar</a></td>
-        <td><a href="#!">Borrar</a></td>
+        <td>
+            <a href="#!" class="elim-subcategoria" data-toggle="modal" data-idsc="<?php echo $sc["id"]; ?>" 
+            data-target="#confirmar-accion">Borrar</a>
+        </td>
       </tr>
     <?php } ?>
   </tbody>

@@ -84,7 +84,33 @@
 		return mysql_insert_id();	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function login( $email, $pass, $lnk ){
+	function modificarRolUsuario( $dbh, $usuario ){
+		//Modifica el rol de un usuario dado su id
+		$q = "update role_user set role_id = $usuario[idrol] where user_id = $usuario[id]";
+		
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerRolUsuario( $dbh, $idu ){
+		//Devuelve el rol de un usuario dado su id
+		$q = "select r.id as id, r.name nombre, r.display_name as rol, r.description as descripcion 
+		from roles r, role_user ru where ru.role_id = r.id and ru.user_id = $idu";
+		$data_user = mysqli_fetch_array( mysqli_query( $dbh, $q ) );
+
+		return $data_user;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function esAdministrador( $dbh, $idu ){
+		//Determina si un usuario, dado su id, es administrador
+		$admin = false;
+		$rol = obtenerRolUsuario( $dbh, $idu );
+		if ( $rol["id"] == 1 || $rol["id"] == 2 )
+			$admin = true;
+
+		return $admin;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function iniciarSesion( $email, $pass, $lnk ){
 		session_start();
 		$idresult = 0; 
 		$sql = "select * from users where email = '$email' and password='$pass'";
@@ -94,10 +120,14 @@
 		$nrows = mysqli_num_rows( $data );
 		
 		if( $nrows > 0 ){
-			$_SESSION["login"] = 1;
-			$_SESSION["user"] = $data_user;
-			//registrarInicioSesion( $data_user, $dbh );
-			$idresult = 1; 
+			if( esAdministrador ( $lnk, $data_user["id"] ) ){
+				$_SESSION["login"] = 1;
+				$_SESSION["user"] = $data_user;
+				//registrarInicioSesion( $data_user, $dbh );
+				$idresult = 1;
+			}else{
+				$idresult = -1;	
+			}
 		}
 		
 		return $idresult;
@@ -138,9 +168,24 @@
 		include( "bd.php" );
 		$usuario = $_POST["email"];
 		$pass = $_POST["password"];
-		$return = login( $usuario, $pass, $dbh );
-		
-		echo $return;
+
+		$return = iniciarSesion( $usuario, $pass, $dbh );
+
+		if( $return == 1 ){
+			$res["exito"] = $return;
+			$res["mje"] = "Registro exitoso";
+		}
+		if( $return == 0 ){
+			$res["exito"] = 0;
+			$res["mje"] = "Verifica usuario y contraseña";
+		}
+		if( $return == -1 ){
+			$res["exito"] = -1;
+			$res["mje"] = "Usuario no válido para ingreso";
+		}
+
+		echo json_encode( $res );
+
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Registro de nuevo usuario (asinc)
@@ -166,15 +211,6 @@
 
 		echo json_encode( $res );
 	}
-	/* ----------------------------------------------------------------------------------- */
-
-	function obtenerListaBancos(){
-		$bancos = array( "Banesco", "Mercantil", "Provincial", "BFC", "Venezuela", "BNC", 
-					"BOD", "Exterior", "Venezolano de Crédito", "Bancaribe", "Bicentenario", 
-					"Del Tesoro", "Caroní", "Banplus", "Bancrecer", "Plaza", "100% Banco", 
-					"Sofitasa");
-		return $bancos;
-	}
 
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
@@ -191,47 +227,6 @@
 		unset( $_SESSION["login"] );
 		echo "<script> window.location = 'index.php'</script>";		
 	}	
-	/* ----------------------------------------------------------------------------------- */
-	//Modificar datos de usuario. Bloque: empresa
-	if( isset( $_POST["mod_empresa"] ) ){
-		
-		include("bd.php");
-		$usuario["id"] 			= $_POST["idUsuario"];
-		$usuario["empresa"] 	= $_POST["empresa"];
-		$usuario["subtitulo"] 	= $_POST["subtitulo"];
-		$usuario["rif"] 		= $_POST["rif"];
-		$usuario["email"] 		= $_POST["email"];
-		$usuario["direccion1"] 	= $_POST["direccion1"];
-		$usuario["direccion2"] 	= $_POST["direccion2"];
-		$usuario["telefonos"] 	= $_POST["telefonos"];
-		$usuario["vendedor"] 	= $_POST["vendedor"];
-		
-		$res["exito"] = modificarDatosEmpresa( $usuario, $dbh );
-		
-		if( $res["exito"] == 1 )
-			$res["mje"] = "Datos de usuario modificados con éxito";
-		else
-			$res["mje"] = "Error al modificar datos de usuario";
-		
-		echo json_encode( $res );	
-	}
-	/* ----------------------------------------------------------------------------------- */
-	//Modificar datos de usuario. Bloque: datos personales
-	if( isset( $_POST["mod_usuario"] ) ){
-		include( "bd.php" );
-		$usuario["id"] 			= $_POST["idUsuario"];
-		$usuario["usuario"] 	= $_POST["usuario"];
-		$usuario["nombre"] 		= $_POST["nombre"];
-		
-		$res["exito"] = modificarDatosUsuario( $usuario, $dbh );
-		
-		if( $res["exito"] == 1 )
-			$res["mje"] = "Datos de usuario modificados con éxito";
-		else
-			$res["mje"] = "Error al modificar datos de usuario";
-		
-		echo json_encode( $res );
-	}
 	/* ----------------------------------------------------------------------------------- */
 	//Modificar datos de usuario. Bloque: contraseña (asinc)
 	if( isset( $_POST["mod_passw"] ) ){
@@ -250,25 +245,20 @@
 		echo json_encode( $res );	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	//Agregar cuenta bancaria (asinc)
-	if( isset( $_POST["el_cuenta"] ) ){
+	if( isset( $_POST["id_cambio_rol"] ) ){
 		
 		include("bd.php");
-		$idc = $_POST["el_cuenta"];
-		$rsl = eliminarCuentaBancaria( $dbh, $idc );
+		$usuario["id"] 		= $_POST["id_usuario"];
+		$usuario["idrol"] 	= $_POST["id_cambio_rol"];
 		
-		if( ( $rsl == 1 ) ){
-			$res["exito"] = 1;
-			$res["mje"] = "Cuenta eliminada";
-			$cuenta["id"] = $idc;
-			$res["registro"] = $cuenta;
-		}else{
-			$res["exito"] = 0;
-			$res["mje"] = "Error al eliminar cuenta";
-		}
+		$res["exito"] = modificarRolUsuario( $dbh, $usuario );
+		
+		if( $res["exito"] == 1 )
+			$res["mje"] = "Rol de usuario actualizado con éxito";
+		else
+			$res["mje"] = "Error al actualizar rol de usuario";
+		
 		echo json_encode( $res );	
 	}
-
-	/* ----------------------------------------------------------------------------------- */
 
 ?>

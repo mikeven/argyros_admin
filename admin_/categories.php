@@ -215,7 +215,11 @@
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-categories.php");?>
+                    <div id="tabla_datos-categorias">
+                      <?php include( "sections/tables/table-categories.php" );?>
+                    </div>
+                    <?php include( "sections/modals/confirm_action.php" ); ?>
+                    <input id="id-categ-e" type="hidden">
                   </div>
                 </div>
               </div>
@@ -301,9 +305,10 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-category.js"></script>
     <script src="js/fn-ui.js"></script>
-	  <?php if( isset( $_GET["categoriasdestacadas"] ) ) { ?>
-      <script>notificar( "Categorías de productos", "Los cambios se hicieron con éxito", "success" );</script>
-    <?php } ?>
+
+    <?php include( "fn/fn-categories.php" ); ?>
+	  
   </body>
 </html>

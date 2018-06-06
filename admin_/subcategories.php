@@ -45,6 +45,11 @@
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
   </head>
@@ -136,7 +141,11 @@
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-subcategories.php");?>
+                    <div id="tabla_datos-subcategorias">
+                      <?php include( "sections/tables/table-subcategories.php" );?>
+                    </div>
+                    <?php include( "sections/modals/confirm_action.php" ); ?>
+                    <input id="id-scateg-e" type="hidden">
                   </div>
                 </div>
               </div>
@@ -207,8 +216,17 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-category.js"></script>
+    <script src="js/fn-ui.js"></script>
+
+    <?php include( "fn/fn-categories.php" ); ?>
 	
   </body>
 </html>

@@ -38,6 +38,11 @@
     <!-- bootstrap-daterangepicker -->
     <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
     <!-- Datatables -->
     <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
@@ -132,9 +137,11 @@
                     </ul>-->
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
+                  <div id="tabla_datos-lineas" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-lines.php");?>
+                    <?php include( "sections/tables/table-lines.php" );?>
+                    <?php include( "sections/modals/confirm_action.php" ); ?>
+                    <input id="id-linea-e" type="hidden">
                   </div>
                 </div>
               </div>
@@ -205,8 +212,17 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-lines.js"></script>
+    <script src="js/fn-ui.js"></script>
+
+    <?php include( "fn/fn-lines.php" ); ?>
 	
   </body>
 </html>

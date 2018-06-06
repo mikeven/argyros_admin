@@ -97,6 +97,11 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Editar talla</h2>
+                    <div class="input-group" style="float:right;">
+                      <a href="sizes.php" class="btn btn-app">
+                        <i class="fa fa-arrow-left"></i> Volver a tallas
+                      </a>
+                    </div>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">

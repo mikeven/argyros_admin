@@ -44,6 +44,12 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function eliminarGrupoCliente( $dbh, $id ){
+		//Elimina un registro de grupo de cliente
+		$q = "delete from user_group where id = $id";
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerGrupoPorId( $dbh, $idg ){
 		//Devuelve el registro del grupo dado por
 		
@@ -159,6 +165,7 @@
 			$res["exito"] = -1;
 			$res["mje"] = "Debe eliminar clientes asociados al grupo primero";
 		}else{
+			eliminarGrupoCliente( $dbh, $_POST["id_elimg"] );
 			$res["exito"] = 1;
 			$res["mje"] = "Perfil eliminado con éxito";
 		}

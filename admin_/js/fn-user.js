@@ -6,18 +6,22 @@
 /* --------------------------------------------------------- */	
 /* --------------------------------------------------------- */
 function log_in(){
-	var error_m = "<div class='alert alert-warning' role='alert'>Verifica usuario y contraseña</div>";
+	//Invocación al servidor iniciar sesión
+	var error_m = "<div class='alert alert-warning' role='alert'></div>";
 	var form = $('#loginform');
+
 	$.ajax({
         type:"POST",
         url:"database/data-user.php",
         data:form.serialize(),
         success: function( response ){
 			$("#response").html( response );
-			if( response == 1 ){
+			res = jQuery.parseJSON(response);
+			if( res.exito == 1 ){
 				window.location = "home.php";
 			}
 			else {
+				error_m = "<div class='alert alert-warning' role='alert'>" + res.mje + "</div>";
 				$("#response").html( error_m );
 			}
         }
@@ -25,6 +29,7 @@ function log_in(){
 }
 /* --------------------------------------------------------- */
 function registroU(){
+	//Invocación al servidor ingresar nuevo usuario
 	var form = $('#regform');
 	$.ajax({
         type:"POST",
@@ -120,7 +125,7 @@ function initValid(){
 }
 /* --------------------------------------------------------- */
 function modificarDatosUsuario( param ){
-	
+//Invocación al servidor para modificar datos de usuario
 	$.ajax({
         type:"POST",
         url:"bd/data-usuario.php",
@@ -140,16 +145,42 @@ function modificarDatosUsuario( param ){
         }
     });
 }
+/* --------------------------------------------------------- */
+function modificarRolUsuario( idu, idr ){
+//Invocación al servidor para modificar el rol de un usuario
+	$.ajax({
+        type:"POST",
+        url:"database/data-user.php",
+        data: { id_cambio_rol: idr, id_usuario:idu },
+        success: function( response ){
+        	console.log( response );
+			res = jQuery.parseJSON(response);
+			if( res.exito == 1 ){ 
+                notificar( "Rol de usuario", res.mje, "success" );
+            }
+            if( res.exito == -1 ){ 
+                notificar( "Rol de usuario", res.mje, "error" );
+            }
+        }
+    });
+}
 
 /* --------------------------------------------------------- */
 
 $( document ).ready(function() {
+
     $("#bt_ag_ctab").on( "click", function(){
 		$("#closeModal").click();
 		if( checkCuentaBancaria() == 0 )
 			agregarCuentaBancaria();
 		else
 			$("#enl_vmsj").click();
+    });
+
+    $(".ctr_rol_usuario").on( "change", function(){
+		var idu = $(this).attr("id");
+		var idr = $(this).val();
+		modificarRolUsuario( idu, idr );
     });
 });
 

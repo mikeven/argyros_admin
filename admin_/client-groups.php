@@ -159,9 +159,9 @@
                     <h2>Lista de grupos de clientes</h2>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
+                  <div id="tabla_datos-gclientes" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-group-clients.php");?>
+                    <?php include( "sections/tables/table-group-clients.php" );?>
                     <?php include( "sections/modals/confirm_action.php" ); ?>
                     <input id="ig-grupo-e" type="hidden">
                   </div>
@@ -243,6 +243,8 @@
     <script src="vendors/pnotify/dist/pnotify.js"></script>
     <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
+    <?php include( "fn/fn-clients.php" ); ?>
     
   </body>
 </html>

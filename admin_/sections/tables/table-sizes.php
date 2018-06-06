@@ -12,14 +12,18 @@
   <tbody>
       <?php 
         foreach ( $sizes as $s ) { 
+          if( $s["cid"] != 0 ){
       ?>
         <tr>
           <td><?php echo $s["name"]; ?></td>
           <td><?php echo $s["unidad"]; ?></td>
           <td><?php echo $s["cname"]; ?></td>
           <td><a href="size-edit.php?id=<?php echo $s["id"]; ?>">Editar</a></td>
-          <td><a href="#!">Borrar</a></td>
+          <td>
+            <a href="#!" class="elim-rtalla" data-toggle="modal" data-idt="<?php echo $s["id"]; ?>" 
+            data-target="#confirmar-accion">Borrar</a>
+          </td>
         </tr>
-    <?php } ?>
+    <?php } } ?>
   </tbody>
 </table>

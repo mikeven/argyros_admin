@@ -101,7 +101,11 @@
                   <div class="x_title">
                     <h2>Editar nombre de categoría</h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      
+                      <div class="input-group" style="float:right;">
+                        <a href="categories.php" class="btn btn-app">
+                          <i class="fa fa-arrow-left"></i> Volver a categorías
+                        </a>
+                      </div>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -225,6 +229,9 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-ui.js"></script>
+
+    <?php include( "fn/fn-categories.php" ); ?>
 	
   </body>
 </html>

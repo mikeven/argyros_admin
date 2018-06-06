@@ -24,6 +24,7 @@ function notificar( titulo, mensaje, tipo ){
 	  text: mensaje,
 	  type: tipo,
 	  styling: 'bootstrap3'
+	  
 	});
 }
 /* ----------------------------------------------------------------------------------- */

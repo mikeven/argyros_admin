@@ -22,7 +22,10 @@
           ?>
         </td>
         <td><a href="material-edit.php?id=<?php echo $m["id"]; ?>">Editar</a></td>
-        <td><a href="#!">Borrar</a></td>
+        <td>
+            <a href="#!" class="elim-material" data-toggle="modal" data-idm="<?php echo $m["id"]; ?>" 
+            data-target="#confirmar-accion">Borrar</a>
+        </td>
       </tr>
     <?php } ?>
   </tbody>

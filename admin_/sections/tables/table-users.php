@@ -15,10 +15,12 @@
         <td><a href="user-data.php?id=<?php echo $u["id"]; ?>"><?php echo $u["nombre"]." ".$u["apellido"]; ?></a></td>
         <td><?php echo $u["email"]; ?></td>
         <td>
-          <select class="form-control">
+          <select id="<?php echo $u["id"]; ?>" class="form-control ctr_rol_usuario">
             <option disabled>Seleccione</option>
             <?php foreach ( $roles as $r ) { ?>
-              <option <?php echo sop( $r["id"], $u["idrol"] ); ?> ><?php echo $r["nombre"] ?> </option>
+              <option value="<?php echo $r["id"]; ?>" <?php echo sop( $r["id"], $u["idrol"] ); ?> >
+                <?php echo $r["nombre"] ?>
+              </option>
             <?php } ?>
           </select>    
         </td>
