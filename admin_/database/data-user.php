@@ -43,10 +43,11 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaUsuarios( $dbh ){
 		//Devuelve la lista de usuarios
-		$q = "Select u.id, u.first_name as nombre, u.last_name as apellido, u.email, u.phone, r.id as idrol,   
-		r.name as rol, r.display_name as nombre_rol, r.description as descripcion_rol, 
-		date_format(u.created_at,'%d/%m/%Y') as fcreacion from users u, role_user ru, roles r 
-		where ru.user_id = u.id and ru.role_id and ru.role_id = r.id and ru.role_id <> 4 order by nombre ASC";
+		$q = "Select u.id, u.first_name as nombre, u.last_name as apellido, u.email, 
+		u.phone, r.id as idrol, r.name as rol, r.display_name as nombre_rol, 
+		r.description as descripcion_rol, date_format(u.created_at,'%d/%m/%Y') as fcreacion 
+		from users u, role_user ru, roles r where ru.user_id = u.id and ru.role_id 
+		and ru.role_id = r.id and ru.role_id <> 4 order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -62,9 +63,9 @@
 		return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerUsuarioPorId( $idu, $dbh ){
-		$sql = "select * from usuario where idUsuario = $idu";
-		$data_user = mysql_fetch_array( mysql_query ( $sql, $dbh ) );
+	function obtenerUsuarioPorId( $dbh, $idu ){
+		$sql = "select * from users where id = $idu";
+		$data_user = mysqli_fetch_array( mysqli_query ( $dbh, $sql ) );
 		return $data_user;					
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -72,14 +73,14 @@
 		$adj_time = 96; // Tiempo para ajustar diferencia con hora de servidor ( minutos )
 		$adjsql = "NOW() + INTERVAL $adj_time MINUTE";
 		$query = "insert into ingreso values ('', $usuario[idUsuario], $adjsql )";
-		$Rs = mysql_query ( $query, $dbh );
-		return mysql_insert_id();	
+		$Rs = mysqli_query ( $dbh, $query );
+		return mysqli_insert_id( $dbh );	
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function registrarUsuario( $usuario, $pass, $dbh ){
 		$query = "insert into usuario (usuario, password) values ( '$usuario', '$pass' )";
 		//echo $query;
-		$Rs = mysql_query ( $query, $dbh );
+		$Rs = mysql_query ( $dbh, $query );
 		
 		return mysql_insert_id();	
 	}
@@ -133,15 +134,15 @@
 		return $idresult;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function modificarDatosUsuario( $usuario, $dbh ){
-		//Actualiza los datos de cuenta de usuario
+	function modificarDatosUsuario( $dbh, $usuario ){
+		//Actualiza los datos de usuario administrador
 		$actualizado = 1;
-		$q = "update usuario set usuario = '$usuario[usuario]', nombre = '$usuario[nombre]' 
-		where idUsuario = $usuario[id]";
-		//echo $q;
-		
-		mysql_query( $q, $dbh );
-		if( mysql_affected_rows() == -1 ) $actualizado = 0;
+		$q = "update users set first_name = '$usuario[nombre]', 
+		last_name = '$usuario[apellido]', email = '$usuario[email]' where id = $usuario[id]";
+		echo $q;
+
+		mysqli_query( $dbh, $q );
+		if( mysqli_affected_rows( $dbh ) == -1 ) $actualizado = 0;
 		
 		return $actualizado;
 	}
@@ -158,6 +159,29 @@
 			$actualizado = 0;
 		
 		return $actualizado;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function emailDisponible( $dbh, $table, $campo, $valor, $k1, $k2 ){
+		//Devuelve si un nombre está disponible especificando tabla y campo a consultar
+		//k1: indica id excluyente directo, usado para excluir resultado de búsqueda en la misma tabla
+		//k2: indica id excluyente indirecto, usado para excluir resultado de búsqueda
+		
+		$disp = true;
+		$param = "";
+
+		if( $k1 != "" ) $param = "and id <> $k1";
+
+		$q = "select * from $table where $campo = '$valor' $param";
+		
+		$resultado = mysqli_query ( $dbh, $q );
+		$nrows = mysqli_num_rows( $resultado );
+		
+		if( $nrows > 0 ) $disp = false;
+
+		if( $k2 != "" )
+			$disp = chequeoExclusionIndirecta( $dbh, $resultado, $table, $k2 );
+
+		return $disp;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
@@ -210,6 +234,34 @@
 		}
 
 		echo json_encode( $res );
+	}
+
+	/* ----------------------------------------------------------------------------------- */
+	/* Solicitudes POST al servidor para procesar información de Usuarios */
+	/* ----------------------------------------------------------------------------------- */
+
+	//Modificar datos de usuario
+	if( isset( $_GET["musuario"] ) ){
+		ini_set( 'display_errors', 1 );
+		include( "bd.php" );
+
+		$idu 					= $_POST["idusuario"];
+		$usuario["nombre"] 		= mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$usuario["apellido"] 	= mysqli_real_escape_string( $dbh, $_POST["apellido"] );
+		$usuario["email"] 		= mysqli_real_escape_string( $dbh, $_POST["email"] );		 
+
+		$usuario["id"] = $idu; $usuario["idrol"] = $_POST["rol"];
+
+		if( emailDisponible( $dbh, "users", "email", $usuario["email"], $idu, "" ) ){
+			$idr = modificarDatosUsuario( $dbh, $usuario );
+			modificarRolUsuario( $dbh, $usuario );
+		}else{
+			header( "Location: ../user-edit.php?id=$idu&editar_usuario-emailnodisponible" );
+		}
+		
+		if( ( $idr != 0 ) && ( $idr != "" ) && ( $idr != -1 ) ){
+			header( "Location: ../user-edit.php?id=$idu&edit_usuario-exito" );
+		}
 	}
 
 	/* ----------------------------------------------------------------------------------- */
