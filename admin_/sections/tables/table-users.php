@@ -25,7 +25,7 @@
           </select>    
         </td>
         <td><?php echo $u["fcreacion"]; ?></td>
-        <td><a href="#!">Editar</a></td>
+        <td><a href="user-edit.php?id=<?php echo $u["id"]; ?>">Editar</a></td>
       </tr>
     <?php } ?>
   </tbody>

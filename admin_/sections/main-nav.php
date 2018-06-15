@@ -72,7 +72,8 @@
 
 <!-- /menu footer buttons -->
 <div class="sidebar-footer hidden-small">
-  <a style="float:right;" data-toggle="tooltip" data-placement="top" title="Salir" href="login.html">
+  <a style="float:right;" data-toggle="tooltip" data-placement="top" 
+    title="Salir" href="home.php?logout">
     <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
   </a>
 </div>
