@@ -13,7 +13,10 @@
       <tr>
         <td><?php echo $t["name"]; ?></td>
         <td><a href="making-edit.php?id=<?php echo $t["id"]; ?>">Editar</a></td>
-        <td><a href="#!">Borrar</a></td>
+        <td>
+            <a href="#!" class="elim-trabajo" data-toggle="modal" data-idt="<?php echo $t["id"]; ?>" 
+            data-target="#confirmar-accion">Borrar</a>
+        </td>
       </tr>
     <?php } ?>
   </tbody>

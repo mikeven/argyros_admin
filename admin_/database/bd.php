@@ -13,6 +13,11 @@
 	mysqli_query( $dbh, "SET NAMES 'utf8'" );
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
+	function redireccionar( $url ){
+		//Redirecciona hacia la url indicada
+		echo "<script>window.location.href='$url'</script>";
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function cambiaf_a_mysql( $fecha ){
 		//Obtiene una fecha del formato dd/mm/YYYY al formato YYYY-mm-dd
 		list( $dia, $mes, $ano ) = explode( "/", $fecha );

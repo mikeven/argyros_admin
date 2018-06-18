@@ -46,53 +46,7 @@
 		echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function nombreDisponible( $dbh, $table, $campo, $valor, $k1, $k2 ){
-		//Devuelve si un nombre está disponible especificando tabla y campo a consultar
-		//k1: indica id excluyente directo, usado para excluir resultado de búsqueda en la misma tabla
-		//k2: indica id excluyente indirecto, usado para excluir resultado de búsqueda en tabla auxiliar
-		
-		$disp = true;
-		$param = "";
-
-		if( $k1 != "" ) $param = "and id <> $k1";
-
-		$q = "select * from $table where $campo = '$valor' $param";
-		
-		$resultado = mysqli_query ( $dbh, $q );
-		$nrows = mysqli_num_rows( $resultado );
-		
-		if( $nrows > 0 ) $disp = false;
-
-		if( $k2 != "" )
-			$disp = chequeoExclusionIndirecta( $dbh, $resultado, $table, $k2 );
-
-		return $disp;
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function obtenerUname( $name ){
-		//Devuelve el uname de nombre de registro
-		$name = str_replace( "á", "a", $name );
-		$name = str_replace( "é", "e", $name );
-		$name = str_replace( "í", "i", $name );
-		$name = str_replace( "ó", "o", $name );
-		$name = str_replace( "ú", "u", $name );
-		$name = str_replace( "ñ", "n", $name );
-
-		return strtolower( str_replace( " ", "", $name) );
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function registroAsociadoTabla( $dbh, $tabla, $campo, $valor ){
-		//Determina si existe un registro asociado a una tabla
-		$asociado = false;
-		$q = "select * from $tabla where $campo = $valor";
-		$nrows = mysqli_num_rows( mysqli_query ( $dbh, $q ) );
-		
-		if( $nrows > 0 ) $asociado = true;
-
-		return $asociado;
-	}
+	}	
 	/* ----------------------------------------------------------------------------------- */
 	function registrosAsociadosLinea( $dbh, $idsc ){
 		//Determina si existe un registro de alguna tabla asociada a una línea
@@ -114,6 +68,8 @@
 	if( isset( $_GET["nline"] ) ){
 		
 		include( "bd.php" );
+		include( "data-system.php" );
+
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
 
 		if( nombreDisponible( $dbh, "plines", "name", $nombre, "", "" ) ){
@@ -133,6 +89,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_GET["line-edit"] ) ){
 		include( "bd.php" );
+		include( "data-system.php" );
+
 		$idl = $_POST["idlinea"];
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
 		
@@ -151,6 +109,8 @@
 	//Eliminar línea
 	if( isset( $_POST["id_elimlinea"] ) ){
 		include( "bd.php" );	
+		include( "data-system.php" );
+		
 		if( registrosAsociadosLinea( $dbh, $_POST["id_elimlinea"] ) == true ){
 			$res["exito"] = -1;
 			$res["mje"] = "Debe eliminar productos asociados a la línea primero.";

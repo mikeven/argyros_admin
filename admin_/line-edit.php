@@ -9,11 +9,13 @@
     include( "database/data-user.php" );
     include( "database/data-lines.php" );
     checkSession( '' );
-
-    if( isset( $_GET["id"] ) ){
+  
+    if( isset( $_GET["id"] ) && $_GET["id"] != "" ){
       $idl = $_GET["id"];
       $linea = obtenerLineaPorId( $dbh, $idl );
       $productos = obtenerProductosLinea( $dbh, $idl );
+    }else{
+      redireccionar( "lines.php" );  
     }
 ?>
 <!DOCTYPE html>

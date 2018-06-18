@@ -7,6 +7,7 @@
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
+    include( "database/data-system.php" );
     include( "fn/common-functions.php" );
     include( "database/data-lines.php" );
     include( "database/data-sizes.php" );
@@ -18,6 +19,7 @@
     include( "database/data-treatments.php" );
     include( "database/data-categories.php" );
 
+    include( "fn/fn-products.php" );
     include( "fn/fn-prices.php" );
     include( "fn/fn-sizes.php" );
     checkSession( '' );
