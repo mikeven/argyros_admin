@@ -32,10 +32,10 @@
 		return mysqli_fetch_array( $data );		
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function agregarBano( $dbh, $nombre, $idmaterial ){
+	function agregarBano( $dbh, $nombre, $uname, $idmaterial ){
 		//Agrega un registro de baño
-		$q = "insert into treatments ( name, material_id, created_at ) 
-		values ( '$nombre', $idmaterial, NOW() )";
+		$q = "insert into treatments ( name, uname, material_id, created_at ) 
+		values ( '$nombre', '$uname', $idmaterial, NOW() )";
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );	
 	}
@@ -48,34 +48,76 @@
 		$data = mysqli_query( $dbh, $q );
 		return $data;	
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function eliminarBano( $dbh, $idb ){
+		//Elimina un registro de baño
+		$q = "delete from treatments where id = $idb";
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function registrosAsociadosBano( $dbh, $idb ){
+		//Determina si existe un registro de alguna tabla asociada a un baño
+		//Tablas relacionadas: product_details
 
+		return registroAsociadoTabla( $dbh, "product_details", "treatment_id", $idb );
+	}
 	/* ----------------------------------------------------------------------------------- */
-	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
-	/* ----------------------------------------------------------------------------------- */
-	
 	//Invoca a agregar un nuevo registro de baño
 	if( isset( $_GET["ntreatment"] ) ){
+		ini_set( 'display_errors', 1 );
 		include( "bd.php" );
+		include( "data-system.php" );
 
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
-		$idb = agregarBano( $dbh, $nombre, $_POST["material"] );
 
-		if( ( $idb != 0 ) && ( $idb != "" ) ){
-			header( "Location: ../treatments.php?addtreatment&success" );
-		}	
+		if( nombreDisponible( $dbh, "treatments", "name", $nombre, "", "" ) ){
+			$uname = obtenerUname( $nombre );
+			$idb = agregarBano( $dbh, $nombre, $uname, $_POST["material"] );
+			if( ( $idb != 0 ) && ( $idb != "" ) ){
+				header( "Location: ../treatments.php?agregar_bano-exito" );
+			}
+		}else{
+			header( "Location: ../treatments.php?agregar_bano-nodisponible" );
+		}
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Invoca a editar un registro de baño
 	if( isset( $_GET["mtreatment"] ) ){
 		include( "bd.php" );
+		include( "data-system.php" );
 
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
-		$idb = editarBano( $dbh, $_POST["idbano"], $nombre, $_POST["material"] );
+		$idb = $_POST["idbano"];
 
-		if( ( $idb != 0 ) && ( $idb != "" ) ){
-			header( "Location: ../treatments.php?addtreatment&success" );
+		if( nombreDisponible( $dbh, "treatments", "name", $nombre, $idb, "" ) ){
+			$uname = obtenerUname( $nombre );
+			$idr = editarBano( $dbh, $_POST["idbano"], $nombre, $_POST["material"] );
+			if( ( $idr != 0 ) && ( $idr != "" ) ){
+				header( "Location: ../treatments.php?editar_bano-exito" );
+			}
+		}
+		else{
+			header( "Location: ../treatments.php?editar_bano-nodisponible" );
 		}	
 	}
+	
 	/* ----------------------------------------------------------------------------------- */
+	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
+	/* ----------------------------------------------------------------------------------- */
+	//Eliminar trabajo
+	if( isset( $_POST["id_elim_bano"] ) ){
+		include( "bd.php" );
+		include( "data-system.php" );
+		$idb = $_POST["id_elim_bano"];
 
+		if( registrosAsociadosBano( $dbh, $idb ) == true ){
+			$res["exito"] = -1;
+			$res["mje"] = "Debe eliminar registros asociados al trabajo primero: detalle de producto";
+		}else{
+			$ret = eliminarBano( $dbh, $idb );
+			$res["exito"] = $ret;
+			$res["mje"] = "Baño eliminado con éxito";
+		}
+		echo json_encode( $res );
+	}
 ?>

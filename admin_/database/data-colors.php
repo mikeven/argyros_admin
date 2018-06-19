@@ -21,46 +21,89 @@
 		return mysqli_fetch_array( $data );	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function agregarColor( $dbh, $nombre ){
+	function agregarColor( $dbh, $nombre, $uname ){
 		//Agrega un registro de color
-		$q = "insert into colors ( name, created_at ) values ( '$nombre', NOW() )";
+		$q = "insert into colors ( name, uname, created_at ) values ( '$nombre', '$uname', NOW() )";
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function editarColor( $dbh, $idc, $nombre ){
+	function editarColor( $dbh, $idc, $nombre, $uname ){
 		//Actualiza los datos de regristro de color
-		$q = "update colors set name = '$nombre', updated_at = NOW() where id = $idc";
+		$q = "update colors set name = '$nombre', uname = '$uname', updated_at = NOW() where id = $idc";
 		$data = mysqli_query( $dbh, $q );
+
 		return $data;	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
+	function eliminarColor( $dbh, $idc ){
+		//Elimina un registro de color
+		$q = "delete from colors where id = $idc";
+		return mysqli_query( $dbh, $q );
+	}
 	/* ----------------------------------------------------------------------------------- */
-	
+	function registrosAsociadosColor( $dbh, $idc ){
+		//Determina si existe un registro de alguna tabla asociada a un color
+		//Tablas relacionadas: product_details
+
+		return registroAsociadoTabla( $dbh, "product_details", "color_id", $idc );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	//Invoca a agregar un nuevo registro de color
 	if( isset( $_GET["ncolor"] ) ){
 		include( "bd.php" );
+		include( "data-system.php" );
 
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
-		$idc = agregarColor( $dbh, $nombre );
 
-		if( ( $idc != 0 ) && ( $idc != "" ) ){
-			header( "Location: ../colors.php?addcolor&success" );
-		}	
+		if( nombreDisponible( $dbh, "colors", "name", $nombre, "", "" ) ){
+			$uname = obtenerUname( $nombre );
+			$idc = agregarColor( $dbh, $nombre, $uname );
+			if( ( $idc != 0 ) && ( $idc != "" ) ){
+				header( "Location: ../colors.php?agregar_color-exito" );
+			}
+		}else{
+			header( "Location: ../colors.php?agregar_color-nodisponible" );
+		}
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Invoca a editar un registro de color
 	if( isset( $_GET["mcolor"] ) ){
 		include( "bd.php" );
+		include( "data-system.php" );
 
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
-		$r = editarColor( $dbh, $_POST["idcolor"], $nombre );
+		$idc = $_POST["idcolor"];
 
-		if( ( $r != 0 ) && ( $r != "" ) ){
-			header( "Location: ../colors.php?editcolor&success" );
-		}	
+		if( nombreDisponible( $dbh, "colors", "name", $nombre, $idc, "" ) ){
+			$uname = obtenerUname( $nombre );
+			$idr = editarColor( $dbh, $idc, $nombre, $uname );
+			if( ( $idr != 0 ) && ( $idr != "" ) ){
+				header( "Location: ../colors.php?editar_color-exito" );
+			}
+		}
+		else{
+			header( "Location: ../colors.php?editar_color-nodisponible" );
+		}
 	}
 	/* ----------------------------------------------------------------------------------- */
+	/* Solicitudes asíncronas al servidor para procesar información de Colores */
+	/* ----------------------------------------------------------------------------------- */
 
+	//Eliminar color
+	if( isset( $_POST["id_elim_color"] ) ){
+		include( "bd.php" );
+		include( "data-system.php" );
+		$idc = $_POST["id_elim_color"];
+
+		if( registrosAsociadosColor( $dbh, $idc ) == true ){
+			$res["exito"] = -1;
+			$res["mje"] = "Debe eliminar registros asociados al color primero: detalle de producto";
+		}else{
+			$ret = eliminarColor( $dbh, $idc );
+			$res["exito"] = $ret;
+			$res["mje"] = "Color eliminado con éxito";
+		}
+		echo json_encode( $res );
+	}
 ?>
