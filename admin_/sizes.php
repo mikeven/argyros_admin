@@ -113,7 +113,8 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Unidad </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="unidad" type="text" class="form-control" placeholder="Unidad de medición">
+                          <input name="unidad" type="text" class="form-control" 
+                          placeholder="Unidad de medición" maxlength="2">
                         </div>
                       </div>
                       

@@ -19,7 +19,7 @@
             <option disabled>Seleccione</option>
             <?php foreach ( $roles as $r ) { ?>
               <option value="<?php echo $r["id"]; ?>" <?php echo sop( $r["id"], $u["idrol"] ); ?> >
-                <?php echo $r["nombre"] ?>
+                <?php echo $r["nombre_rol"] ?>
               </option>
             <?php } ?>
           </select>    

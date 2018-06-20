@@ -75,35 +75,66 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function validarTalla( $dbh, $valor, $unidad, $categoria, $k1 ){
+		//Chequea las condiciones para agregar/editar un registro de talla
+
+		$disp = true;
+		$param = "";
+
+		if( $k1 != "" ) $param = "and id <> $k1";
+
+		$q = "select * from sizes where name = '$valor' and unit = '$unidad' and 
+				category_id = $categoria $param";
+
+		echo $q;
+		
+		$resultado = mysqli_query( $dbh, $q );
+		$nrows = mysqli_num_rows( $resultado );
+
+		if( $nrows > 0 ) $disp = false;
+
+		return $disp;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	//Editar datos de talla
 	if( isset( $_GET["mtalla"] ) ){
 		include( "bd.php" );
-		$nombre = mysqli_real_escape_string( $dbh, $_POST["talla"] );
+		$talla = mysqli_real_escape_string( $dbh, $_POST["talla"] );
 		$unidad = mysqli_real_escape_string( $dbh, $_POST["unidad"] );
-	
-		$r = modificarTalla( $dbh, $_POST["idtalla"], $nombre, $unidad, $_POST["categoria"] );
-		
-		if( ( $r != 0 ) && ( $r != "" ) ){
-			header( "Location: ../sizes.php?size_edit_success" );
+		$idtalla = $_POST["idtalla"];
+		$categoria = $_POST["categoria"];
+
+		if( validarTalla( $dbh, $talla, $unidad, $categoria, $idtalla ) == true ){
+			$r = modificarTalla( $dbh, $idtalla, $nombre, $unidad, $categoria );
+			if( ( $r != 0 ) && ( $r != "" ) ){
+				header( "Location: ../sizes.php?editar_talla-exito" );
+			}
+		}else{
+			header( "Location: ../sizes.php?editar_talla-nodisponible" );
 		}
 	}
-
 	/* ----------------------------------------------------------------------------------- */
-	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
-	/* ----------------------------------------------------------------------------------- */
-	
 	//Invoca crear nuevo registro de talla
 	if( isset( $_GET["nsize"] ) ){
 		include( "bd.php" );
 		
 		$valor = mysqli_real_escape_string( $dbh, $_POST["talla"] );
 		$unidad = mysqli_real_escape_string( $dbh, $_POST["unidad"] );
-		$idt = agregarTalla( $dbh, $valor, $unidad, $_POST["categoria"] );
-		echo "ID: ".$idt;
-		if( ( $idt != 0 ) && ( $idt != "" ) ){
-			header( "Location: ../sizes.php?addsize&success" );
+		$categoria =  $_POST["categoria"];
+
+		if( validarTalla( $dbh, $valor, $unidad, $categoria, "" ) == true ){
+			$idt = agregarTalla( $dbh, $valor, $unidad, $categoria );
+			if( ( $idt != 0 ) && ( $idt != "" ) )
+				header( "Location: ../sizes.php?agregar_talla-exito" );
+		}else{
+			header( "Location: ../sizes.php?agregar_talla-nodisponible" );
 		}
 	}
+
+	/* ----------------------------------------------------------------------------------- */
+	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
+	/* ----------------------------------------------------------------------------------- */
+
 	/* ----------------------------------------------------------------------------------- */
 	//Invocación para eliminar talla
 	if( isset( $_POST["id_elimtalla"] ) ){

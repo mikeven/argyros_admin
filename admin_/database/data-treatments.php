@@ -55,6 +55,24 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function validarBano( $dbh, $nombre, $material, $k1 ){
+		//Chequea las condiciones para agregar/editar un registro de baño
+
+		$disp = true; $param = "";
+		
+		if( $k1 != "" ) $param = "and id <> $k1";
+
+		$q = "select * from treatments where name = '$nombre' and material_id = '$material' $param";
+
+		echo $q;
+		
+		$nrows = mysqli_num_rows( mysqli_query( $dbh, $q ) );
+
+		if( $nrows > 0 ) $disp = false;
+
+		return $disp;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function registrosAsociadosBano( $dbh, $idb ){
 		//Determina si existe un registro de alguna tabla asociada a un baño
 		//Tablas relacionadas: product_details
@@ -70,7 +88,7 @@
 
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
 
-		if( nombreDisponible( $dbh, "treatments", "name", $nombre, "", "" ) ){
+		if( validarBano( $dbh, $nombre, $_POST["material"], "" ) ){
 			$uname = obtenerUname( $nombre );
 			$idb = agregarBano( $dbh, $nombre, $uname, $_POST["material"] );
 			if( ( $idb != 0 ) && ( $idb != "" ) ){
@@ -89,7 +107,7 @@
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
 		$idb = $_POST["idbano"];
 
-		if( nombreDisponible( $dbh, "treatments", "name", $nombre, $idb, "" ) ){
+		if( validarBano( $dbh, $nombre, $_POST["material"], $idb ) ){
 			$uname = obtenerUname( $nombre );
 			$idr = editarBano( $dbh, $_POST["idbano"], $nombre, $_POST["material"] );
 			if( ( $idr != 0 ) && ( $idr != "" ) ){

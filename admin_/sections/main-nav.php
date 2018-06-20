@@ -6,7 +6,10 @@
 
 <div class="clearfix"></div>
 
-<?php include( "welcome-profile.php" ); ?>
+<?php 
+  $uargyros = $_SESSION["user"];
+  include( "welcome-profile.php" ); 
+?>
 
 <br/>
 

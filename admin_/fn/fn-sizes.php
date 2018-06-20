@@ -1,5 +1,5 @@
 <?php 
-	/* Argyros - Funciones comúnes */
+	/* Argyros - Funciones de tallas */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
@@ -42,11 +42,26 @@
 			if( $t["talla"] == 0 ) return $t;	
 		}
 	}
-
-
 ?>
-	<?php if( isset( $_GET["size_edit_success"] ) ){ ?>
+
+<?php 
+	if( isset( $_GET["agregar_talla-exito"] ) ){ ?>
 	  <script>
-	    notificar( "Tallas", "Datos de talla modificados", "success" );
+	    notificar( "Tallas", "Talla agregada con éxito", "success" );
 	  </script>
-	<?php } ?>
+<?php } ?>
+
+<?php 
+	if( isset( $_GET["agregar_talla-nodisponible"] ) 
+	  || isset( $_GET["editar_talla-nodisponible"] ) ){ ?>
+	<script>
+    	notificar( "Tallas", "Valores de talla ya existentes", "error" );
+  	</script>
+<?php } ?>
+
+<?php 
+	if( isset( $_GET["editar_talla-exito"] ) ) { ?>
+  	<script>
+    	notificar( "Tallas", "Los datos de la talla fueron modificados", 'success' );
+  	</script>
+<?php } ?>

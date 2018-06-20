@@ -56,7 +56,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaRoles( $dbh ){
 		//Devuelve la lista de roles
-		$q = "Select id, name as nombre, description, display_name as nombre_rol from roles order by nombre ASC";
+		$q = "Select id, name as nombre, description, display_name as nombre_rol 
+				from roles where id <> 4 order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -88,6 +89,7 @@
 	function modificarRolUsuario( $dbh, $usuario ){
 		//Modifica el rol de un usuario dado su id
 		$q = "update role_user set role_id = $usuario[idrol] where user_id = $usuario[id]";
+		echo $q;
 		
 		return mysqli_query( $dbh, $q );
 	}

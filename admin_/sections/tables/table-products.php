@@ -7,6 +7,7 @@
       <th>Nombre</th>
       <th>Descripción</th>
       <th>Categoría</th>
+      <th>Detalles</th>
       <th>Subcategoría</th>
       <th>Editar</th>
       <th>Acción</th>
@@ -18,6 +19,7 @@
         foreach ( $productos as $p ) {
           $lnk_p = "product-data.php?p=$p[id]";
           $imgs = obtenerImagenesProducto( $dbh, $p["id"]);
+          $drdet = obtenerDetalleProductoPorId( $dbh, $p["id"] );
           $url_img = "";
           if( isset( $imgs[0] ) ){
             $url_img = $imgs[0]["image"];
@@ -31,6 +33,17 @@
         <th><a class="primary" href="<?php echo $lnk_p; ?>"><?php echo $p["nombre"]; ?></a></th>
         <td><?php echo $p["descripcion"]; ?></td>
         <td><?php echo $p["categoria"]; ?></td>
+        <td>
+          <?php
+            foreach ( $drdet as $dp ) {
+              $lnk_dp = "product-data.php?p=$p[id]#$dp[id]"; 
+          ?>
+              <div>
+                <a href="<?php echo $lnk_dp;?>">#<?php echo $dp["id"];?></a>
+              </div> 
+          
+          <?php } ?>
+        </td>
         <td><?php echo $p["subcategoria"]; ?></td>
         <td align="center"><a href="product-edit.php?id=<?php echo $p["id"]; ?>"><i class="fa fa-edit"></i></a></td>
         <td><a href="#!">Desactivar</a></td>
