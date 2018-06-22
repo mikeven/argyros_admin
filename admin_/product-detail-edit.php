@@ -367,7 +367,7 @@
                             <div class="ln_solid"></div>
                             <div id="img_uploader" class="s">
                               <div id="panel_upload_photos">
-                                <input id="images" name="images[]" type="file" multiple class="file-loading">
+                              <input id="images" name="images[]" type="file" multiple class="file-loading">
                               </div>
                               <form id="frm_nimg_detprod" name="frm_agregar_nuevas_imagenes">
                                 <div id="image-response"></div>
@@ -454,6 +454,7 @@
     </script>
     <script>
         var server_url = "database/data-products.php";
+        var pilaf = "";
         $("#images").fileinput({
             uploadUrl: server_url, // server upload action
             uploadAsync: true,
@@ -470,19 +471,22 @@
             }
         }).on('filelock', function(event, filestack, extraData) {
           var fstack = filestack.filter(function(n){ return n != undefined });
-          console.log( 'Files selected - ' + fstack.length );
+          pilaf = fstack;
+          //console.log( 'Files selected: ' + fstack.length );
         });
 
         $("#images").on('fileuploaded', function(event, data, previewId, index) {
           var form = data.form, files = data.files, extra = data.extra, response = data.response, reader = data.reader;
-          console.log( response );
+          //console.log( response );
           agregarCamposOcultosImagenes();
         });
         
         $("#images").on('filebatchuploadcomplete', function(event, data, previewId, index) {
           agregarCamposOcultosImagenes();
           agregarImagenesDetalleProducto();
-          notificar( "", "Imágenes de productos actualizadas", "success" );            
+          console.log( previewId );
+          if( pilaf.length > 0 )
+            notificar( "", "Imágenes de productos actualizadas", "success" );           
         });
 
     </script>

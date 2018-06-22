@@ -47,7 +47,7 @@
 		u.phone, r.id as idrol, r.name as rol, r.display_name as nombre_rol, 
 		r.description as descripcion_rol, date_format(u.created_at,'%d/%m/%Y') as fcreacion 
 		from users u, role_user ru, roles r where ru.user_id = u.id and ru.role_id 
-		and ru.role_id = r.id and ru.role_id <> 4 order by nombre ASC";
+		and ru.role_id = r.id order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -57,7 +57,7 @@
 	function obtenerListaRoles( $dbh ){
 		//Devuelve la lista de roles
 		$q = "Select id, name as nombre, description, display_name as nombre_rol 
-				from roles where id <> 4 order by nombre ASC";
+				from roles order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -89,8 +89,6 @@
 	function modificarRolUsuario( $dbh, $usuario ){
 		//Modifica el rol de un usuario dado su id
 		$q = "update role_user set role_id = $usuario[idrol] where user_id = $usuario[id]";
-		echo $q;
-		
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -307,8 +305,10 @@
 		
 		$res["exito"] = modificarRolUsuario( $dbh, $usuario );
 		
-		if( $res["exito"] == 1 )
+		if( $res["exito"] == 1 ){
 			$res["mje"] = "Rol de usuario actualizado con éxito";
+			$res["idrol"] = $usuario["idrol"];
+		}
 		else
 			$res["mje"] = "Error al actualizar rol de usuario";
 		

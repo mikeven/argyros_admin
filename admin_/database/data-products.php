@@ -336,7 +336,7 @@
 		$url_dest = "../uploads/";			//Ubicación del archivo destino después de la carga
 		$url_dest_show = "uploads/";		//Ubicación de foto de previsualización después de la carga
 
-		$html_img = "<img src='{url}' class='file-preview-image' alt='Desert' title='Desert'>";
+		$html_img = "<img src='{url}' class='file-preview-image nouploaded' alt='Desert' title='Desert'>";
 		
 		for( $i = 0; $i < count( $filenames ); $i++ ){
 			$data_ext = explode( '.', basename( $filenames[$i] ) );
@@ -344,12 +344,15 @@
 			$md5 =  md5( uniqid() );
 			$target = $url_dest . $fname.$md5 . "." . $ext;
 			$target_show = $url_dest_show . $fname.$md5 . "." . $ext;
-			
+
+			/*echo "ARA: ".move_uploaded_file( $images['tmp_name'][$i], $target );
+			echo "CRA";*/
 			if( move_uploaded_file( $images['tmp_name'][$i], $target ) ) {
 				$success = true;
 				$paths[] = $target;
 				$html_markups[] = "<img src='".$target_show."' class='file-preview-image fpiup' alt='".
-									$filenames[$i]."' title='Desert' data-uimg='".$target."'>";
+									$filenames[$i]."' title='Desert' data-uimg='".$target."' 
+									data-check='server'>";
 			} else {
 				$success = false;
 				break;

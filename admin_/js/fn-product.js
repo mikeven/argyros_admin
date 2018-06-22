@@ -233,6 +233,8 @@ function agregarCamposOcultosImagenes(){
 	//usados posteriormente para procesar en la base de datos.
 	$("#image-response").html( "" );
 	$.each( $(".fpiup"), function() {
+		//.fpiup: imágenes en vista previa después de haberse subido al servidor
+		//.fpiup definido en database/data-products: uploadPictures( $dbh, $images, $idu )
 		addCampoImg( $(this).attr("data-uimg") );	
 	});
 }

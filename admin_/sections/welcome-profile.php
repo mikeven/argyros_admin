@@ -1,6 +1,6 @@
 <!-- menu profile quick info -->
 <div class="profile clearfix">
-  <div class="profile_pic">
+  <div class="profile_pic hidden">
     <img src="images/img.jpg" alt="..." class="img-circle profile_img">
   </div>
   <div class="profile_info">

@@ -8,8 +8,8 @@
 		//Devuelve el registro de las órdenes registradas
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
 		date_format( o.created_at,'%d/%m/%Y') as fecha, date_format( o.created_at,'YYYYMMDD') as creada, 
-		u.id as cid, u.first_name nombre, u.last_name as apellido 
-		from orders o, users u where o.user_id = u.id order by o.created_at DESC";
+		c.id as cid, c.first_name nombre, c.last_name as apellido 
+		from orders o, clients c where o.user_id = c.id order by o.created_at DESC";
 
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -19,9 +19,10 @@
 	function obtenerRegistroOrdenPorId( $dbh, $ido ){
 		//Devuelve el registro de una orden dado su id
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
-		o.client_note, o.admin_note, date_format( o.created_at,'%d/%m/%Y') as fecha, u.id as cid, 
-		u.first_name nombre, u.last_name as apellido, u.email as email, g.name as grupo_cliente 
-		from orders o, users u, user_group g where o.user_id = u.id and u.user_group_id = g.id and o.id = $ido";
+		o.client_note, o.admin_note, date_format( o.created_at,'%d/%m/%Y') as fecha, c.id as cid, 
+		c.first_name nombre, c.last_name as apellido, c.email as email, g.name as grupo_cliente 
+		from orders o, clients c, client_group g 
+		where o.user_id = c.id and c.client_group_id = g.id and o.id = $ido";
 
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );

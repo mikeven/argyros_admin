@@ -157,6 +157,9 @@ function modificarRolUsuario( idu, idr ){
 			res = jQuery.parseJSON(response);
 			if( res.exito == 1 ){ 
                 notificar( "Rol de usuario", res.mje, "success" );
+                if( res.idrol == 4 ){
+                	notificar( "Rol de usuario", "Este usuario no podrá ingresar al administrador", "info" );	
+                }
             }
             if( res.exito == -1 ){ 
                 notificar( "Rol de usuario", res.mje, "error" );

@@ -66,6 +66,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_GET["order-id"] ) ){
+		
         $ido = $_GET["order-id"];
         $data_o = obtenerOrdenPorId( $dbh, $ido, "full" );
         $dorden = $data_o["detalle"];
