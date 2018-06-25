@@ -107,7 +107,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="nombre" type="text" class="form-control" placeholder="Nombre de baño">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre de baño" required="">
                         </div>
                       </div>
                       <div class="form-group">
@@ -218,10 +218,15 @@
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
     <script src="vendors/pnotify/dist/pnotify.custom.min.js"></script>
 
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
     <script src="js/fn-treatments.js"></script>
     <script src="js/fn-ui.js"></script>
+    <script src="js/fn-validators.js"></script>
 
     <?php include( "fn/fn-treatments.php" ); ?>
 	

@@ -35,7 +35,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerValoresTallaCero( $dbh ){
 		//Devuelve los valores de la talla por defecto del sistema
-		$q = "Select id, name from sizes where name = '0'";
+		$q = "Select id, name from sizes where name = 'N/A'";
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );	
 	}

@@ -170,10 +170,10 @@
     <script src="js/fn-country.js"></script>
 	<script>
         $( document ).ready( function() {
-            var table = $('#datatable').DataTable();
+            /*var table = $('#datatable').DataTable();
             $('#datatable').on( 'page.dt', function () {
                 actPaProd();        
-            } );
+            } );*/
         });
     </script>
 

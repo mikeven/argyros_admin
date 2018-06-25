@@ -81,6 +81,10 @@ $( document ).ready(function() {
 		obtenerSubcategoriasCategoria( idc );
     });
 
+    $('#frm_ncategoria').parsley().on('form:success', function() {
+        //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+    });
+
     $("#tabla_datos-categorias").on( "click", ".elim-categoria", function(){
         $("#id-categ-e").val( $(this).attr( "data-idc" ) );
         iniciarBotonBorrarCategoria();
@@ -93,6 +97,10 @@ $( document ).ready(function() {
     });
     
     /**/
+
+    $('#frm_nsubcategoria').parsley().on('form:success', function() {
+        //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+    });
 
     $("#tabla_datos-subcategorias").on( "click", ".elim-subcategoria", function(){
         $("#id-scateg-e").val( $(this).attr( "data-idsc" ) );

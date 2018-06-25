@@ -158,8 +158,9 @@
 	function agregarProducto( $dbh, $producto ){
 		//Guarda el registro de un producto
 		$q = "insert into products ( code, name, description, country_code, category_id, 
-		subcategory_id, material_id ) values ( '$producto[codigo]', '$producto[nombre]', '$producto[descripcion]',
-		'$producto[pais]', $producto[categoria], $producto[subcategoria], $producto[material] )";
+		subcategory_id, material_id ) values ( '$producto[codigo]', '$producto[nombre]', 
+		'$producto[descripcion]', '$producto[pais]', $producto[categoria], $producto[subcategoria], 
+		$producto[material] )";
 
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
@@ -167,21 +168,23 @@
 	/* ----------------------------------------------------------------------------------- */
 	function agregarDetalleProducto( $dbh, $detalle ){
 		//Guarda el registro de detalle de un producto
-		$q = "insert into product_details ( product_id, color_id, treatment_id, price_type, piece_price_value, 
-		manufacture_value, weight_price_value, created_at ) values ( $detalle[idproducto], $detalle[color], 
-		$detalle[bano], '$detalle[tprecio]', $detalle[valor_pieza], $detalle[valor_mano_obra], $detalle[valor_gramo], NOW())";
+		$q = "insert into product_details ( product_id, color_id, treatment_id, price_type, 
+		piece_price_value, manufacture_value, weight_price_value, created_at ) 
+		values ( $detalle[idproducto], $detalle[color], $detalle[bano], '$detalle[tprecio]', 
+		$detalle[valor_pieza], $detalle[valor_mano_obra], $detalle[valor_gramo], NOW())";
 		
-		//echo $q;
+		echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function editarProducto( $dbh, $producto ){
 		//Actualiza los datos de producto
-		$q = "update products set code = '$producto[codigo]', name = '$producto[nombre]', description = '$producto[descripcion]', 
-		country_code = '$producto[pais]', category_id = $producto[categoria], subcategory_id = $producto[subcategoria], 
+		$q = "update products set code = '$producto[codigo]', name = '$producto[nombre]', 
+		description = '$producto[descripcion]', country_code = '$producto[pais]', 
+		category_id = $producto[categoria], subcategory_id = $producto[subcategoria], 
 		material_id = $producto[material], updated_at = NOW() where id = $producto[idproducto]";
-		//echo $q;
+		
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
@@ -227,12 +230,12 @@
 		return $existe;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function editarTallasDetalleProducto( $dbh, $iddet, $tallas ){
+	function editarTallasDetalleProducto( $dbh, $iddet, $tallas, $tajustable ){
 		//Actualiza los datos de tallas en detalle de producto
 		foreach ( $tallas as  $reg ) {
 			$e = existeRegistroTallaDetalle( $dbh, $iddet, $reg->idt );
 			if( $e == true ){
-				actualizarTallasDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso );
+				actualizarTallasDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso, $tajustable );
 			} else {
 				guardarTallaDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso );
 			}
@@ -255,28 +258,28 @@
 		print_r( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function guardarTallaDetalleProducto( $dbh, $idd, $idtalla, $peso ){
+	function guardarTallaDetalleProducto( $dbh, $idd, $idtalla, $peso, $tajustable ){
 		//Guarda el registro de tallas y pesos de un detalle de producto
-		$q = "insert into size_product_detail ( weight, size_id, product_detail_id ) 
-			   values ( $peso, $idtalla, $idd )";
+		$q = "insert into size_product_detail ( weight, size_id, adjustable, product_detail_id ) 
+			   values ( $peso, $idtalla, $tajustable, $idd )";
 		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function actualizarTallasDetalleProducto( $dbh, $iddet, $idtalla, $peso ){
+	function actualizarTallasDetalleProducto( $dbh, $iddet, $idtalla, $peso, $tajustable ){
 		//Actualiza el valor talla-peso de un detalle de producto
-		$q = "update size_product_detail set weight = $peso where size_id = $idtalla and 
-		product_detail_id = $iddet";
+		$q = "update size_product_detail set weight = $peso, adjustable = $tajustable 
+				where size_id = $idtalla and product_detail_id = $iddet";
 		
 		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function registrarTallasDetalleProducto( $dbh, $idd, $tallas ){
+	function registrarTallasDetalleProducto( $dbh, $idd, $tallas, $tajustable ){
 		//Procesa los datos de tallas-peso del detalle de producto para almacenar en la BD
 		foreach ( $tallas as $reg ) {
-			guardarTallaDetalleProducto( $dbh, $idd, $reg->idt, $reg->peso );
+			guardarTallaDetalleProducto( $dbh, $idd, $reg->idt, $reg->peso, $tajustable );
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -414,7 +417,6 @@
 		include( "bd.php" );	
 		parse_str( $_POST["form_mp"], $producto );
 
-		//print_r( $producto );
 		$r = editarProducto( $dbh, $producto );
 		eliminarAsociacionesTrabajosLineas( $dbh, $producto );
 		registrarAsociacionesTrabajosLineas( $dbh, $producto );
@@ -436,11 +438,15 @@
 	//Registro de nuevo detalle de producto
 	if( isset( $_POST["form_ndetp"] ) ){
 		include( "bd.php" );	
+
+		$tajustable = 0;
 		parse_str( $_POST["form_ndetp"], $detalle );
 		$tallas = json_decode( $_POST["vtallas"] );
 
+		if( isset( $detalle["talla-ajustable"] ) ) $tajustable = 1;
+		
 		$idd = agregarDetalleProducto( $dbh, $detalle );
-		registrarTallasDetalleProducto( $dbh, $idd, $tallas );
+		registrarTallasDetalleProducto( $dbh, $idd, $tallas, $tajustable );
 		
 		if( isset( $detalle["urlimgs"] ) )
 			procesarImagenes( $dbh, $idd, $detalle );
@@ -459,6 +465,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	//Edición de datos de detalle de producto
 	if( isset( $_POST["form_modif_detprod"] ) ){
+
 		include( "bd.php" );	
 		parse_str( $_POST["form_modif_detprod"], $detalle );
 
@@ -483,8 +490,12 @@
 		include( "bd.php" );	
 		
 		$iddet = $_POST["idt"];
+		$tajustable = 0;
+		parse_str( $_POST["frm_tallas"], $frm_tallas );
+		if( isset( $frm_tallas["talla-ajustable"] ) ) $tajustable = 1;
+
 		$tallas = json_decode( $_POST["modif_tallasdetprod"] );
-		$idd = editarTallasDetalleProducto( $dbh, $iddet, $tallas );
+		$idd = editarTallasDetalleProducto( $dbh, $iddet, $tallas, $tajustable );
 		
 		$res["exito"] = 1;
 		$res["mje"] = "Datos de tallas actualizados con éxito";

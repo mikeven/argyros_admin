@@ -102,7 +102,7 @@
 			header( "Location: ../line-edit.php?id=$idl&editar_linea-nodisponible" );
 		}
 		if( ( $r != 0 ) && ( $r != "" ) ){
-			header( "Location: ../line-edit.php?id=".$idl."&edit&success" );
+			header( "Location: ../line-edit.php?id=".$idl."&editar_linea-exito" );
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */

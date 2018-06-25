@@ -55,6 +55,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+    <link href="css/custom-styles.css" rel="stylesheet">
 
     <!-- PNotify -->
     <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">

@@ -12,7 +12,7 @@
   <tbody>
       <?php 
         foreach ( $sizes as $s ) { 
-          if( $s["cid"] != 0 ){
+          if( $s["cid"] != 0 ){   //Se filtra la talla N/A: categoría 0
       ?>
         <tr>
           <td><?php echo $s["name"]; ?></td>

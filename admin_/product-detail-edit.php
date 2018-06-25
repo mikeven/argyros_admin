@@ -31,7 +31,7 @@
         $tallas_det = $detalle["tallas"];
         $dtalla0 = obtenerValorTallaCeroDetalleProducto( $tallas_det );
         $imgs_det = $detalle["imagenes"];
-
+        $url_post_edit = "product-detail-edit.php?id=$iddet";
     }  
 ?>
 <!DOCTYPE html>
@@ -484,9 +484,14 @@
         $("#images").on('filebatchuploadcomplete', function(event, data, previewId, index) {
           agregarCamposOcultosImagenes();
           agregarImagenesDetalleProducto();
-          console.log( previewId );
-          if( pilaf.length > 0 )
-            notificar( "", "Imágenes de productos actualizadas", "success" );           
+          //console.log( previewId );
+          if( pilaf.length > 0 ){
+            notificar( "", "Imágenes de productos actualizadas", "success" );
+               
+            setTimeout( function() { 
+              window.location = "<?php echo $url_post_edit ?>"; 
+            }, 1000 ); 
+          }
         });
 
     </script>

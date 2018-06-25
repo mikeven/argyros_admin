@@ -47,6 +47,10 @@ function cargarListaTrabajosMaterial( idm ){
 
 /* --------------------------------------------------------- */
 $( document ).ready(function() {
+
+    $('#frm_ntrabajo').parsley().on('form:success', function() {
+        //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+    });
    
     $("#tabla_datos-trabajos").on( "click", ".elim-trabajo", function(){
         $("#id-trabajo-e").val( $(this).attr( "data-idt" ) );

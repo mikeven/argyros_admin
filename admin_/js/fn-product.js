@@ -93,7 +93,7 @@ function obtenerValoresTallasSeleccionadas(){
 	//
 	var tallas = new Array();
 	var dupla = new Object();
-	$.each( $(".vt_seleccionado"), function() {	// vt_seleccionado: valor_tallas_seleccionado
+	$.each( $(".vt_seleccionado"), function(){	// vt_seleccionado: valor_tallas_seleccionado
 		dupla["idt"] = $(this).val();
 		dupla["peso"] = $(this).attr("data-peso");
 		tallas.push( dupla );
@@ -144,7 +144,9 @@ function editarDatosDetalleProducto(){
 }
 /* --------------------------------------------------------- */
 function editarTallasDetalleProducto(){
-	//Envía al servidor la petición de edición de tallas de detalle de producto. 
+	//Envía al servidor la petición de edición de tallas de detalle de producto.
+
+	var form_tedit = $("#frm_mtalladetalle").serialize();
 	var iddet = $("#iddetalle").val();
 	var tallas = obtenerValoresTallasSeleccionadas();
 	var tit_notif = "Tallas de producto"
@@ -152,10 +154,11 @@ function editarTallasDetalleProducto(){
 	$.ajax({
         type:"POST",
         url:"database/data-products.php",
-        data:{ modif_tallasdetprod: tallas, idt: iddet },
+        data:{ idt: iddet, frm_tallas:form_tedit, modif_tallasdetprod: tallas },
         success: function( response ){
+        	console.log( response );
 			res = jQuery.parseJSON(response);
-			//console.log( response );
+			
 			if( res.exito == 1 ) 
 				notificar( tit_notif, res.mje, "success" );
 			else
@@ -176,7 +179,7 @@ function eliminarImagenDetalleProducto( cuadro, id_img ){
 			//res = jQuery.parseJSON(response);
 			console.log( response );
 			$(img_gal).hide("slow");
-			//window.location = "product-data.php?p=" + idp;
+			window.location = "product-data.php?p=" + idp;
         }
     });		
 }
@@ -195,7 +198,7 @@ function agregarImagenesDetalleProducto(){
         success: function( response ){
 			//res = jQuery.parseJSON(response);
 			console.log(response);
-			//window.location = "product-data.php?p=" + idp;
+			window.location = "product-data.php?p=" + idp;
         }
     });
 }
@@ -333,7 +336,7 @@ $( document ).ready(function() {
 		mostrarDatosValorPorTipoPrecio( $(this).val() );
     });
 
-	// Evento durante la edición de detalle de producto
+	//Evento durante la edición de detalle de producto
     mostrarDatosValorPorTipoPrecio( $("#seltprecio").val() );
 
     $("#selcateg").on( "change", function(){
@@ -342,9 +345,10 @@ $( document ).ready(function() {
 		mostrarSubcategorias( idc );
     });
 
-	$("#bot_guardar_det_producto").on( "click", function(){
-		agregarDetalleProducto();	
-    });
+	/*$("#bot_guardar_det_producto").on( "click", function(){
+		$(this).attr("disabled", true);
+		agregarDetalleProducto();
+    });*/
 
     /*Bloque peticiones para editar datos asociados a detalle de producto*/
 

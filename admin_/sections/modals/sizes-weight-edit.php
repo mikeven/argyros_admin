@@ -10,10 +10,20 @@
       <div id="sizestable" class="modal-body">
         <table class="table">
           <thead>
-            <tr><th>Talla</th><th>Peso</th><th>Disponibilidad</th><th>Acción</th></tr>
+            <tr>
+              <th width="20%"></th>
+              <th width="20%">Talla</th>
+              <th width="20%">Peso</th>
+              <th width="20%">Disponibilidad</th>
+              <th width="20%">Acción</th>
+            </tr>
           </thead>
           <tbody>
             <tr style="background:#ccc;">
+              <td>
+                <input type="checkbox" id="ajustable" name="talla-ajustable" value="ajustable">
+                Ajustable
+              </td>
               <td>
                 <?php echo $t0["name"]; ?>
                 <input id="nt0" type="hidden" value="<?php echo $t0["name"] ?>" data-idt="<?php echo $t0["id"] ?>">
@@ -36,6 +46,7 @@
                 $lnk = $data["ldsp"];  
             ?>
             <tr>
+              <td></td>
               <td><?php echo $t["name"] ?>
                 <input id="nt<?php echo $n; ?>" type="hidden" value="<?php echo $t["name"] ?>" data-idt="<?php echo $t["id"] ?>">
               </td>

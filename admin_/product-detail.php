@@ -180,7 +180,8 @@
                                     <select name="bano" class="form-control" required="">
                                       <option value>Seleccione</option>
                                       <?php foreach ( $banos as $b ) { ?>
-                                        <option value="<?php echo $b["id"] ?>"><?php echo $b["name"] ?></option>
+                                        <option value="<?php echo $b["id"] ?>">
+                                          <?php echo $b["name"] ?></option>
                                       <?php } ?>
                                     </select>
                                   </div>
@@ -192,7 +193,8 @@
                                     <select name="color" class="form-control" required="">
                                       <option value>Seleccione</option>
                                       <?php foreach ( $colores as $c ) { ?>
-                                        <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                                        <option value="<?php echo $c["id"] ?>">
+                                          <?php echo $c["name"] ?></option>
                                       <?php } ?>
                                     </select>
                                   </div>
@@ -297,8 +299,6 @@
     <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
-
-
 
     <!-- FastClick -->
     <script src="vendors/fastclick/lib/fastclick.js"></script>
@@ -423,9 +423,9 @@
       $(document).ready(function() {
         $('#frm_ndetproduct').parsley().on('form:success', function() {
           if( checkDetalleProducto() == 0 ){
+            $("#bot_guardar_det_producto").attr("disabled", true);
             agregarDetalleProducto();
           };
-          //alert("EXITO");
         });
       });
       
