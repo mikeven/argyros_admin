@@ -42,6 +42,17 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerProductosTrabajo( $dbh, $idt ){
+		//Devuelve lista de productos que tengan asociado el trabajo indicado en el id
+		$q = "select p.id, p.name as nombre, p.code, p.description 
+		from products p, makings t, making_product tp 
+		where tp.product_id = p.id and tp.making_id = t.id and t.id = $idt group by p.id";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista_l = obtenerListaRegistros( $data );
+		return $lista_l;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function registrosAsociadosTrabajo( $dbh, $idt ){
 		//Determina si existe un registro de alguna tabla asociada a un trabajo
 		//Tablas relacionadas: making_product

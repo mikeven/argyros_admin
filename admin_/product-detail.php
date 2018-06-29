@@ -168,7 +168,7 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                  <label class="control-label">Material: </label> 
+                                  <label class="control-label">Material::</label> 
                                   <?php echo $producto["material"]; ?>
                                 </div>
                                 
@@ -180,8 +180,7 @@
                                     <select name="bano" class="form-control" required="">
                                       <option value>Seleccione</option>
                                       <?php foreach ( $banos as $b ) { ?>
-                                        <option value="<?php echo $b["id"] ?>">
-                                          <?php echo $b["name"] ?></option>
+                                        <option value="<?php echo $b["id"] ?>"><?php echo $b["name"] ?></option>
                                       <?php } ?>
                                     </select>
                                   </div>
@@ -193,8 +192,7 @@
                                     <select name="color" class="form-control" required="">
                                       <option value>Seleccione</option>
                                       <?php foreach ( $colores as $c ) { ?>
-                                        <option value="<?php echo $c["id"] ?>">
-                                          <?php echo $c["name"] ?></option>
+                                        <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                                       <?php } ?>
                                     </select>
                                   </div>
@@ -400,12 +398,26 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
-
-    <script src="https://gist.github.com/askehansen/6809825.js"></script>
+    
+    <!--<script src="https://gist.github.com/askehansen/6809825.js"></script>-->
 
     <!-- Parsley -->
     <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
     <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
+    <script>
+      
+      $(document).ready(function() {
+        $('#frm_ndetproduct').parsley().on('form:success', function() {
+          alert("EXITO");
+          if( checkDetalleProducto() == 0 ){
+            agregarDetalleProducto();
+          };
+          
+        });
+      });
+      
+    </script>
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
@@ -417,19 +429,6 @@
     <script src="vendors/pnotify/dist/pnotify.js"></script>
     <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
-
-    <script>
-      
-      $(document).ready(function() {
-        $('#frm_ndetproduct').parsley().on('form:success', function() {
-          if( checkDetalleProducto() == 0 ){
-            $("#bot_guardar_det_producto").attr("disabled", true);
-            agregarDetalleProducto();
-          };
-        });
-      });
-      
-    </script>
 
   </body>
 </html>

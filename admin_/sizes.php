@@ -106,7 +106,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="talla" type="text" class="form-control" placeholder="Valor de talla">
+                          <input name="talla" type="text" class="form-control" placeholder="Valor de talla" required="">
                         </div>
                       </div>
                       
@@ -228,6 +228,10 @@
     <script src="vendors/pnotify/dist/pnotify.js"></script>
     <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>

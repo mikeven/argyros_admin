@@ -38,6 +38,16 @@
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerProductosMateriales( $dbh, $idm ){
+		//Devuelve la lista de productos pertenecientes a una línea dado su id
+		$q = "select p.id, p.name as nombre, p.code, p.description 
+		from products p where material_id = $idm";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista_l = obtenerListaRegistros( $data );
+		return $lista_l;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function registrosAsociadosMaterial( $dbh, $idm ){
 		//Determina si existe un registro de alguna tabla asociada a un material
 		//Tablas relacionadas: treatments, products

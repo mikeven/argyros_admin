@@ -11,15 +11,15 @@
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_c = obtenerListaRegistros( $data );
-		$lista_c = filtrarNone( $lista_c );
+		$lista_c = filtrarNone( $lista_c, "id" );
 		return $lista_c;	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function filtrarNone( $lista ){
+	function filtrarNone( $lista, $nid ){
 		//Filtrar la categoría neutra del listado obtenido de BD
 		$nlista = array();
 		foreach ( $lista as $reg ) {
-			if( $reg["id"] != 0 ) $nlista[] = $reg;
+			if( $reg[$nid] != 0 ) $nlista[] = $reg;
 		}
 
 		return $nlista;
@@ -68,12 +68,12 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaSubCategorias( $dbh ){
 		//Devuelve la lista de categorías principales de productos
-		$q = "Select s.id, s.name as name, c.name as cname, s.uname as uname 
+		$q = "Select s.id as idsc, s.name as name, c.id as idc, c.name as cname, s.uname as uname 
 		from subcategories s, categories c where s.category_id = c.id order by name ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_c = obtenerListaRegistros( $data );
-		$lista_c = filtrarNone( $lista_c );
+		$lista_c = filtrarNone( $lista_c, "idsc" );
 
 		return $lista_c;	
 	}
@@ -248,7 +248,7 @@
 		$idc = $_POST["idcategoria"];
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
 		
-		if( nombreDisponible( $dbh, "categories", "name", $nombre, $idsc, $idc ) ){
+		if( nombreDisponible( $dbh, "subcategories", "name", $nombre, $idsc, $idc ) ){
 			$uname = obtenerUname( $nombre );
 			$r = modificarSubCategoria( $dbh, $idsc, $nombre, $idc, $uname );
 		}else{

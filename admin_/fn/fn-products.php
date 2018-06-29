@@ -1,5 +1,5 @@
 <?php 
-	/* Argyros - Funciones comúnes */
+	/* Argyros - Funciones sobre productos */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
@@ -22,7 +22,7 @@
 
 		return $bloque;
 	}
-
+	/* ----------------------------------------------------------------------------------- */
 	function txEstado( $estado ){
 		//Devuelve la etiqueta asociada al estado de disponibilidad de un registro de talla de detalle de producto
 		$tx = array( 
@@ -32,10 +32,11 @@
 
 		return $tx[$estado];
 	}
-
+	/* ----------------------------------------------------------------------------------- */
 	function txTipoPeso( $tipo ){
-		//Devuelve la etiqueta asociada al estado de disponibilidad de un registro de talla de detalle de producto
+		//Devuelve la etiqueta asociada al tipo de precio dependiendo del valor del tipo precio
 		$tx = array( 
+			"" 		=> "No definido",
 			"p" 	=> "Por pieza",
 			"g" 	=> "Por peso",
 			"mo"	=> "Por mano de obra"

@@ -24,12 +24,18 @@
           if( isset( $imgs[0] ) ){
             $url_img = $imgs[0]["image"];
           }
+          if( $p["visible"] == 1 ) {
+            $clp = ""; $accion = "Ocultar"; $ccol = "pstat_";
+          }else{ $clp = "-slash"; $accion = "Mostrar"; $ccol = "pstat_o"; }
           //$lnk_d = "product-detail.php?p=$p[id]"; 
       ?>
       <tr>
         <td><img src="<?php echo $url_img;?>" width="60px"></td>
-        <td><?php echo $p["id"]; ?></td>
-        <td><?php echo $p["codigo"]; ?></td>
+        <td><?php echo $p["id"]; ?>
+        </td>
+        <td>
+          <?php echo $p["codigo"]; ?>
+        </td>
         <th><a class="primary" href="<?php echo $lnk_p; ?>"><?php echo $p["nombre"]; ?></a></th>
         <td><?php echo $p["descripcion"]; ?></td>
         <td><?php echo $p["categoria"]; ?></td>
@@ -38,15 +44,27 @@
             foreach ( $drdet as $dp ) {
               $lnk_dp = "product-data.php?p=$p[id]#$dp[id]"; 
           ?>
-              <div>
-                <a href="<?php echo $lnk_dp;?>">#<?php echo $dp["id"];?></a>
-              </div> 
-          
+            <div>
+              <a href="<?php echo $lnk_dp;?>">#<?php echo $dp["id"];?></a>
+            </div> 
           <?php } ?>
         </td>
         <td><?php echo $p["subcategoria"]; ?></td>
-        <td align="center"><a href="product-edit.php?id=<?php echo $p["id"]; ?>"><i class="fa fa-edit"></i></a></td>
-        <td><a href="#!">Desactivar</a></td>
+        <td align="center">
+          <a href="product-edit.php?id=<?php echo $p["id"]; ?>"><i class="fa fa-edit"></i></a>
+        </td>
+        <td>
+          <div align="center">
+            <i class="fa fa-eye<?php echo $clp; ?> fa-2x <?php echo $ccol; ?>"></i>
+          </div>
+          <hr>
+          <div align="center">
+            <a href="#!" class="bt-prod-act" data-idp="<?php echo $p["id"]; ?>" 
+              data-op="<?php echo $p["visible"]; ?>" data-toggle="modal" data-target="#confirmar-accion">
+              <?php echo $accion; ?>
+            </a>
+          </div>
+        </td>
       </tr>
     <?php } ?>
   </tbody>

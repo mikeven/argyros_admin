@@ -42,6 +42,17 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerProductosColor( $dbh, $idc ){
+		//Devuelve la lista de productos que tienen en su detalle registros con baños del id indicado
+		$q = "select p.id, p.name as nombre, p.code, p.description 
+		from products p where p.id in (select product_id from product_details where 
+		color_id = $idc) order by p.name ASC";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista_l = obtenerListaRegistros( $data );
+		return $lista_l;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function registrosAsociadosColor( $dbh, $idc ){
 		//Determina si existe un registro de alguna tabla asociada a un color
 		//Tablas relacionadas: product_details

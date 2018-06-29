@@ -113,8 +113,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
                           <input id="idlinea" name="idlinea" type="hidden" value="<?php echo $idl; ?>">
-                          <input type="text" class="form-control" placeholder="Nombre de línea" name="nombre" 
-                          value="<?php echo $linea["name"]; ?>">
+                          <input type="text" class="form-control" placeholder="Nombre de línea" name="nombre" value="<?php echo $linea["name"]; ?>" required="">
                         </div>
                       </div>
 
@@ -216,12 +215,18 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
-    <!-- Custom Theme Scripts -->
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- PNotify -->
     <script src="vendors/pnotify/dist/pnotify.js"></script>
     <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
+    <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-lines.js"></script>
     <script src="js/fn-ui.js"></script>
 
     <?php include( "fn/fn-lines.php" ); ?>

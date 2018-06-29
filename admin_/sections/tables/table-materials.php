@@ -3,6 +3,7 @@
     <tr>
       <th>Nombre</th>
       <th>Baños</th>
+      <th>Productos</th>
       <th> </th>
       <th> </th>
     </tr>
@@ -11,6 +12,7 @@
       <?php 
         foreach ( $materiales as $m ) { 
           $banos = obtenerListaBanosMaterial( $dbh, $m["id"] );
+          $prods = obtenerProductosMateriales( $dbh, $m["id"] );
       ?>
       <tr>
         <td><?php echo $m["name"]; ?></td>
@@ -20,6 +22,17 @@
               echo "<a href='#!'><div>$b[name]</div></a>";  
             }
           ?>
+        </td>
+        <td>
+          <div class="list-prod-reg">
+            <?php 
+              foreach ( $prods as $p ) { 
+                echo "<a href='product-data.php?p=$p[id]' target='_blank'>
+                  <div>$p[nombre]</div>
+                </a>";  
+              }
+            ?>
+          </div>
         </td>
         <td><a href="material-edit.php?id=<?php echo $m["id"]; ?>">Editar</a></td>
         <td>

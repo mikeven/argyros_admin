@@ -40,6 +40,18 @@
 		return mysqli_fetch_array( $data );	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerProductosTalla( $dbh, $idt ){
+		//Devuelve la lista de productos que tienen en su detalle registros con talla indicada en el id
+		$q = "select p.id, p.name as nombre, p.code, p.description from products p 
+		where p.id in (select product_id from product_details where id in 
+			(select product_detail_id from size_product_detail where size_id = $idt ) 
+		) order by p.name ASC";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista_l = obtenerListaRegistros( $data );
+		return $lista_l;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function productoAsociado( $dbh, $idtalla ){
 		//Determina si existe un producto asociada a una talla
 		$asociado = false;

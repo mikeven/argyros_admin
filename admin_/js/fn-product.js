@@ -88,7 +88,6 @@ function seleccionarTallas(){
 	});			
 }
 /* --------------------------------------------------------- */
-
 function obtenerValoresTallasSeleccionadas(){
 	//
 	var tallas = new Array();
@@ -117,6 +116,24 @@ function agregarDetalleProducto(){
         	console.log(response);
 			res = jQuery.parseJSON(response);
 			enviarRespuesta( res, "redireccion", "product-data.php?p=" + idp );
+        }
+    });
+}
+/* --------------------------------------------------------- */
+function activarProducto( idp, edo ){
+	//Envía al servidor la petición para activar/desactivar producto 
+	//dependiendo de su estado actual
+	$.ajax({
+        type:"POST",
+        url:"database/data-products.php",
+        data:{ activar_prod: idp, visible: edo },
+        success: function( response ){
+        	console.log( idp + " " + edo );
+        	res = jQuery.parseJSON( response );
+			if( res.exito == 1 ){
+				notificar( "Productos", res.mje, "success" );
+                setTimeout( function() { window.location = "products.php"; }, 4000 );
+			}
         }
     });
 }
@@ -303,6 +320,29 @@ function checkProducto(){
 	return error;	
 }
 /* --------------------------------------------------------- */
+function iniciarBotonActivarProducto( titulo, accion, mje ){
+    //Asigna los textos de la ventana de confirmación para borrar una línea
+    iniciarVentanaModal( "btn_accion_producto", "btn_canc", 
+                         titulo + " producto", "", 
+                         "¿Confirma que desea " + accion + " producto?" +
+                         "<div>" + mje + "</div>", 
+                         "Confirmar acción" );
+}
+/* --------------------------------------------------------- */
+function etiqAccionActivarProd( op ){
+	//Devuelve la etiqueta del botón confirmación de acción al mostrar/ocultar producto
+	var etiq = new Object();
+	etiq.t = "Mostrar"; etiq.a = "mostrar"; 
+	etiq.m = "Esto hará disponible al producto en el catálogo";
+
+	if( op == 1 ){ 
+		etiq.t = "Ocultar"; 
+		etiq.a = "ocultar"; etiq.m = "Esto hará que no se muestre en el catálogo";
+	}
+
+	return etiq;
+}
+/* --------------------------------------------------------- */
 $( document ).ready(function() {	
     // ============================================================================ //
     
@@ -317,8 +357,8 @@ $( document ).ready(function() {
 		window.Parsley
 		  .addValidator('nocero', {
 		    requirementType: 'integer',
-		    validateNumber: function(value, requirement) {
-		    	return (value > requirement);
+		    validateNumber: function( value, requirement ) {
+		    	return ( value > requirement );
 		    },
 		    messages: {
 		      es: 'Este valor debe ser mayor a 0.00'
@@ -326,6 +366,25 @@ $( document ).ready(function() {
 	  	});	
 	}
 
+	/* ---------------------------------------------------------------- */
+	//Acción para invocar el mostrar/ocultar un producto
+    $("#lista_general_productos").on( "click", ".bt-prod-act", function(){
+
+    	var edo = $(this).attr("data-op");		//operación: 1:esta visible -> acción: ocultar
+    											//operación: 0:esta oculto 	-> acción: mostrar
+		var idp = $(this).attr("data-idp");
+        
+        mensaje_conf = etiqAccionActivarProd( edo );
+        iniciarBotonActivarProducto( mensaje_conf.t, mensaje_conf.a, mensaje_conf.m );
+
+        $('#btn_accion_producto').on('click', function(){
+            
+            $("#btn_canc").click();
+            activarProducto( idp, edo );
+        });
+    });
+	
+	/* ---------------------------------------------------------------- */
 	//initNoCero();
 	
 	$("#seltprecio").on( "change", function(){ 
@@ -335,6 +394,8 @@ $( document ).ready(function() {
 		initNoCero();
 		mostrarDatosValorPorTipoPrecio( $(this).val() );
     });
+
+    /* ---------------------------------------------------------------- */
 
 	//Evento durante la edición de detalle de producto
     mostrarDatosValorPorTipoPrecio( $("#seltprecio").val() );

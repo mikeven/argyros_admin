@@ -9,3 +9,15 @@
 #datatable_filter{
 	width: 100% !important;
 }
+
+.list-prod-reg{
+	height: 100px;
+	overflow-y: scroll;
+}
+
+.pstat_{
+	color: #1abb9c;
+}
+.pstat_o{
+	color: rgba(231,76,60,1);
+}

@@ -22,7 +22,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerProductosLinea( $dbh, $idl ){
 		//Devuelve la lista de productos pertenecientes a una línea dado su id
-		$q = "select p.id, p.code, p.description from products p, plines l, line_product lp 
+		$q = "select p.id, p.name as nombre, p.code, p.description 
+		from products p, plines l, line_product lp 
 		where lp.product_id = p.id and lp.line_id = $idl group by p.id";
 		
 		$data = mysqli_query( $dbh, $q );

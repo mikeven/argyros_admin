@@ -81,9 +81,17 @@ $( document ).ready(function() {
 		obtenerSubcategoriasCategoria( idc );
     });
 
-    $('#frm_ncategoria').parsley().on('form:success', function() {
-        //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
-    });
+    if ( $("#frm_mcategoria").length > 0 ){
+        $('#frm_mcategoria').parsley().on('form:success', function() {
+            //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+        });
+    }
+
+    if ( $("#frm_ncategoria").length > 0 ){
+        $('#frm_ncategoria').parsley().on('form:success', function() {
+            //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+        });
+    }
 
     $("#tabla_datos-categorias").on( "click", ".elim-categoria", function(){
         $("#id-categ-e").val( $(this).attr( "data-idc" ) );
@@ -96,11 +104,19 @@ $( document ).ready(function() {
         });
     });
     
-    /**/
+    /* ================= SUBCATEGORÍAS ============== */
 
-    $('#frm_nsubcategoria').parsley().on('form:success', function() {
-        //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
-    });
+    if ( $("#frm_nsubcategoria").length > 0 ){
+        $('#frm_nsubcategoria').parsley().on('form:success', function() {
+            //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+        });
+    }
+
+    if ( $("#frm_msubcategoria").length > 0 ){
+        $('#frm_msubcategoria').parsley().on('form:success', function() {
+            //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+        });
+    }
 
     $("#tabla_datos-subcategorias").on( "click", ".elim-subcategoria", function(){
         $("#id-scateg-e").val( $(this).attr( "data-idsc" ) );

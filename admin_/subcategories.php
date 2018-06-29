@@ -7,6 +7,7 @@
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
+    include( "database/data-products.php" );
     include( "database/data-categories.php" );
     checkSession( '' );
 ?>
@@ -144,8 +145,8 @@
                     <p class="text-muted font-13 m-b-30"> </p>
                     <div id="tabla_datos-subcategorias">
                       <?php include( "sections/tables/table-subcategories.php" );?>
+                      <?php include( "sections/modals/confirm_action.php" ); ?>
                     </div>
-                    <?php include( "sections/modals/confirm_action.php" ); ?>
                     <input id="id-scateg-e" type="hidden">
                   </div>
                 </div>
