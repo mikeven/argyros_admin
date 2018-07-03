@@ -69,7 +69,7 @@
                 <h3>Colores</h3>
               </div>
 
-              <div class="title_right">
+              <!--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -78,7 +78,7 @@
                     </span>
                   </div>
                 </div>
-              </div>
+              </div>-->
             
             </div>
 
@@ -89,7 +89,11 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Editar color</h2>
-                    
+                    <div class="input-group" style="float:right;">
+                      <a href="colors.php" class="btn btn-app">
+                        <i class="fa fa-arrow-left"></i> Volver a colores
+                      </a>
+                    </div>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -99,8 +103,8 @@
                         <input id="idcolor" name="idcolor" type="hidden" value="<?php echo $color["id"] ?>">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="nombre" type="text" class="form-control" placeholder="Nombre color" 
-                          value="<?php echo $color["name"] ?>">
+                          <input name="nombre" type="text" class="form-control" 
+                          placeholder="Nombre color" value="<?php echo $color["name"] ?>" required="">
                         </div>
                       </div>
                       <div class="ln_solid"></div>
@@ -186,8 +190,14 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-colors.js"></script>
+    <script src="js/fn-ui.js"></script>
 	
   </body>
 </html>

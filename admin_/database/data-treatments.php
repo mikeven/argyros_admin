@@ -70,12 +70,8 @@
 		//Chequea las condiciones para agregar/editar un registro de baño
 
 		$disp = true; $param = "";
-		
 		if( $k1 != "" ) $param = "and id <> $k1";
-
 		$q = "select * from treatments where name = '$nombre' and material_id = '$material' $param";
-
-		echo $q;
 		
 		$nrows = mysqli_num_rows( mysqli_query( $dbh, $q ) );
 

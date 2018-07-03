@@ -144,7 +144,7 @@
                                   <select name="pais" class="form-control selectpicker">
                                     <option disabled>Seleccione</option>
                                     <?php foreach ( $paises as $p ) { ?>
-                                      <option value="<?php echo $p["code"] ?>"><?php echo $p["name"] ?></option>
+                                      <option value="<?php echo $p["id"] ?>"><?php echo $p["name"] ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>

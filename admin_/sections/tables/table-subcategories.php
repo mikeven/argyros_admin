@@ -28,7 +28,7 @@
           <?php } ?>
           </div>
         </td>
-        <td><a href="subcategory-edit.php?id=<?php echo $sc["scid"]; ?>">Editar</a></td>
+        <td><a href="subcategory-edit.php?id=<?php echo $sc["idsc"]; ?>">Editar</a></td>
         <td>
             <a href="#!" class="elim-subcategoria" data-toggle="modal" 
             data-idsc="<?php echo $sc["idsc"]; ?>" data-target="#confirmar-accion">Borrar</a>

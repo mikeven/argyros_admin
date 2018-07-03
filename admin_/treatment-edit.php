@@ -97,25 +97,27 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Editar baño</h2>
-                    
+                    <div class="input-group" style="float:right;">
+                      <a href="treatments.php" class="btn btn-app">
+                        <i class="fa fa-arrow-left"></i> Volver a baños
+                      </a>
+                    </div>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="frm_ntreatment" data-parsley-validate class="form-horizontal form-label-left" 
-                    action="database/data-treatments.php?mtreatment" method="post">
+                    <form id="frm_ntreatment" data-parsley-validate class="form-horizontal form-label-left" action="database/data-treatments.php?mtreatment" method="post">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
                           <input id="idbano" name="idbano" type="hidden" value="<?php echo $bano["id"] ?>">
-                          <input name="nombre" type="text" class="form-control" placeholder="Nombre de baño" 
-                          value="<?php echo $bano["nombre"] ?>">
+                          <input name="nombre" type="text" class="form-control" placeholder="Nombre de baño" value="<?php echo $bano["nombre"] ?>" required="">
                         </div>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
                           <select name="material" class="form-control selectpicker">
-                            <option selected> </option>
+                            <option value="" selected> Seleccione</option>
                             <?php foreach ( $materiales as $m ) { ?>
                               <option value="<?php echo $m["id"] ?>" 
                                 <?php echo sop( $m["id"], $bano["idmaterial"] );?> > <?php echo $m["name"] ?>
@@ -207,8 +209,14 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-treatments.js"></script>
+    <script src="js/fn-ui.js"></script>
 	
   </body>
 </html>

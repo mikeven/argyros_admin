@@ -119,8 +119,8 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Categorías </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select class="form-control selectpicker" name="idcategoria">
-                            <option disabled>Seleccione</option>
+                          <select class="form-control selectpicker" name="idcategoria" required="">
+                            <option value="" selected> Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
                               <option value="<?php echo $c["id"] ?>" 
                                 <?php echo sop( $c["id"], $subcategoria["idcategoria"] );?> > <?php echo $c["name"] ?>

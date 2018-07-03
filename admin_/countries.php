@@ -45,8 +45,15 @@
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.custom.min.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+    <link href="css/custom-styles.css" rel="stylesheet">
   </head>
 
   <?php
@@ -84,17 +91,62 @@
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Lista de países</h2>
+                    <h2>Crear país</h2>
+                    <!--<ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>-->
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <p class="text-muted font-13 m-b-30">
-                      
-                    </p>
-                    <?php include("sections/tables/table-countries.php");?>
+                    <form id="frm_npais" data-parsley-validate class="form-horizontal form-label-left" 
+                    action="database/data-countries.php?npais" method="post">
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input name="nombre" type="text" class="form-control" 
+                          placeholder="Nombre país" required="">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Productor </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <select name="productor" class="form-control selectpicker" required="">
+                            <option value="" selected> Seleccione</option>
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div align="center">
+                          <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                      </div>
+
+                    </form>  
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8 col-sm-5 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Lista de países</h2>
+                    <!--<ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    </ul>-->
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <p class="text-muted font-13 m-b-30"> </p>
+                    <div id="tabla_datos-paises">
+                      <?php include("sections/tables/table-countries.php");?>
+                      <?php include( "sections/modals/confirm_action.php" ); ?>
+                    </div>
+                    <input id="id-pais-e" type="hidden">
                   </div>
                 </div>
               </div>
@@ -165,17 +217,22 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.custom.min.js"></script>
+
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
     <script src="js/fn-country.js"></script>
-	<script>
-        $( document ).ready( function() {
-            /*var table = $('#datatable').DataTable();
-            $('#datatable').on( 'page.dt', function () {
-                actPaProd();        
-            } );*/
-        });
-    </script>
+    <script src="js/fn-ui.js"></script>
+
+    <?php include( "fn/fn-countries.php" ); ?>
 
   </body>
 </html>

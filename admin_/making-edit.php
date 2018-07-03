@@ -102,7 +102,8 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
                           <input id="idtrabajo" name="idtrabajo" type="hidden" value="<?php echo $trabajo["id"]; ?>">
-                          <input name="nombre" type="text" class="form-control" placeholder="Nombre del trabajo" 
+                          <input name="nombre" type="text" class="form-control" 
+                          placeholder="Nombre del trabajo" required="" 
                           value="<?php echo $trabajo["name"]; ?>">
                         </div>
                       </div>
@@ -189,8 +190,14 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-making.js"></script>
+    <script src="js/fn-ui.js"></script>
 	
   </body>
 </html>

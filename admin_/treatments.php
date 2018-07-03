@@ -113,7 +113,8 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select name="material" class="form-control selectpicker">
+                          <select name="material" class="form-control selectpicker" required="">
+                            <option value="" selected> Seleccione</option>
                             <?php foreach ( $materiales as $m ) { ?>
                               <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>
                             <?php } ?>

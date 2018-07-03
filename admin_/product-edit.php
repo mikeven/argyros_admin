@@ -142,7 +142,7 @@
                                   <select name="pais" class="form-control selectpicker">
                                     <option disabled>Seleccione</option>
                                     <?php foreach ( $paises as $p ) { ?>
-                                      <option value="<?php echo $p["code"] ?>" <?php echo sop( $p["code"], $producto["codpais"] ); ?>>
+                                      <option value="<?php echo $p["id"] ?>" <?php echo sop( $p["id"], $producto["idpais"] ); ?>>
                                         <?php echo $p["name"] ?>
                                       </option>
                                     <?php } ?>

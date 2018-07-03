@@ -27,7 +27,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Tallas :: Argyros Admin</title>
+    <title>Editar talla:: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -111,8 +111,7 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input name="talla" type="text" class="form-control" placeholder="Valor de talla" 
-                          value="<?php echo $talla["name"]; ?>">
+                          <input name="talla" type="text" class="form-control" placeholder="Valor de talla" value="<?php echo $talla["name"]; ?>" required="">
                         </div>
                       </div>
                       
@@ -127,8 +126,8 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Categorías </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select name="categoria" class="form-control selectpicker">
-                            <option disabled>Seleccione</option>
+                          <select name="categoria" class="form-control selectpicker" required="">
+                            <option value="" selected> Seleccione</option>
                             <?php foreach ( $categorias as $c ) { ?>
                               <option value="<?php echo $c["id"] ?>" 
                                 <?php echo sop( $c["id"], $talla["idcategoria"] );?> > <?php echo $c["name"] ?>
@@ -223,8 +222,14 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
+    <script src="js/fn-sizes.js"></script>
+    <script src="js/fn-ui.js"></script>
 	
   </body>
 </html>

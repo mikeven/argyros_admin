@@ -117,7 +117,7 @@
 		$categoria = $_POST["categoria"];
 
 		if( validarTalla( $dbh, $talla, $unidad, $categoria, $idtalla ) == true ){
-			$r = modificarTalla( $dbh, $idtalla, $nombre, $unidad, $categoria );
+			$r = modificarTalla( $dbh, $idtalla, $talla, $unidad, $categoria );
 			if( ( $r != 0 ) && ( $r != "" ) ){
 				header( "Location: ../sizes.php?editar_talla-exito" );
 			}

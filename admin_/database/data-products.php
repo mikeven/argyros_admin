@@ -47,12 +47,13 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerProductoPorId( $dbh, $idp ){
 		//Devuelve los datos de un producto dado su id
-		$q = "select p.id, p.code as codigo, p.name as nombre, p.description as descripcion, p.category_id as cid, 
-		p.subcategory_id as scid, p.is_visible as visible, co.code as codpais, co.name as pais, ca.name as categoria, 
-		sc.name as subcategoria, m.id as idmaterial, m.name as material FROM products p, categories ca, 
-		subcategories sc, countries co, materials m 
+		$q = "select p.id, p.code as codigo, p.name as nombre, p.description as descripcion, 
+		p.category_id as cid, p.subcategory_id as scid, p.visible as visible, 
+		co.id as idpais, co.name as pais, ca.name as categoria, sc.name as subcategoria, 
+		m.id as idmaterial, m.name as material 
+		FROM products p, categories ca, subcategories sc, countries co, materials m 
 		where p.category_id = ca.id and p.subcategory_id = sc.id and p.material_id = m.id 
-		and p.country_code = co.code and p.id = $idp";
+		and p.country_id = co.id and p.id = $idp";
 
 		$data = mysqli_query( $dbh, $q );
 		if( $data )
@@ -63,7 +64,8 @@
 	function obtenerLineasDeProductoPorId( $dbh, $idp ){
 		//Devuelve los datos de las líneas a las que pertenece un producto
 		$q = "select l.id as idlinea, l.name as nombre, l.description as descripcion 
-		from plines l, line_product lp where lp.line_id = l.id and lp.product_id = $idp order by nombre ASC";
+		from plines l, line_product lp where lp.line_id = l.id and lp.product_id = $idp 
+		order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -73,7 +75,8 @@
 	function obtenerTrabajosDeProductoPorId( $dbh, $idp ){
 		//Devuelve los datos de las líneas a las que pertenece un producto
 		$q = "select t.id as idtrabajo, t.name as nombre 
-		from makings t, making_product tp where tp.making_id = t.id and tp.product_id = $idp order by nombre ASC";
+		from makings t, making_product tp where tp.making_id = t.id and tp.product_id = $idp 
+		order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -96,9 +99,10 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerRegistroDetalleProductoPorId( $dbh, $idd ){
 		//Devuelve un registro de detalle de producto dado su id
-		$q = "select dp.id as id, c.id as color, t.id as bano, dp.price_type as tipo_precio, dp.weight as peso, 
-		dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, dp.product_id as pid, 
-		dp.weight_price_value as precio_peso FROM product_details dp, treatments t, colors c 
+		$q = "select dp.id as id, c.id as color, t.id as bano, dp.price_type as tipo_precio, 
+		dp.weight as peso, dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
+		dp.product_id as pid, dp.weight_price_value as precio_peso 
+		FROM product_details dp, treatments t, colors c 
 		where dp.color_id = c.id and dp.treatment_id = t.id and dp.id = $idd";
 		
 		$data = mysqli_query( $dbh, $q );
@@ -141,7 +145,7 @@
 		$q = "select spd.size_id as idtalla, spd.product_detail_id as iddetprod, 
 		s.name as talla, spd.weight as peso, spd.visible as visible 
 		from size_product_detail spd, sizes s where spd.size_id = s.id 
-		and spd.product_detail_id = $idd order by s.name ASC";
+		and spd.product_detail_id = $idd order by CAST(s.name AS unsigned) ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -174,7 +178,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function agregarProducto( $dbh, $producto ){
 		//Guarda el registro de un producto
-		$q = "insert into products ( code, name, description, country_code, category_id, 
+		$q = "insert into products ( code, name, description, country_id, category_id, 
 		subcategory_id, material_id ) values ( '$producto[codigo]', '$producto[nombre]', 
 		'$producto[descripcion]', '$producto[pais]', $producto[categoria], $producto[subcategoria], 
 		$producto[material] )";
@@ -197,7 +201,7 @@
 	function editarProducto( $dbh, $producto ){
 		//Actualiza los datos de producto
 		$q = "update products set code = '$producto[codigo]', name = '$producto[nombre]', 
-		description = '$producto[descripcion]', country_code = '$producto[pais]', 
+		description = '$producto[descripcion]', country_id = '$producto[pais]', 
 		category_id = $producto[categoria], subcategory_id = $producto[subcategoria], 
 		material_id = $producto[material], updated_at = NOW() where id = $producto[idproducto]";
 		
@@ -256,9 +260,10 @@
 			if( $e == true ){
 				actualizarTallasDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso, $tajustable );
 			} else {
-				guardarTallaDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso );
+				guardarTallaDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso, $tajustable );
 			}
 		}
+		
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function eliminarRegistroImagenDetalleProducto( $dbh, $id_img ){
@@ -281,7 +286,7 @@
 		//Guarda el registro de tallas y pesos de un detalle de producto
 		$q = "insert into size_product_detail ( weight, size_id, adjustable, product_detail_id ) 
 			   values ( $peso, $idtalla, $tajustable, $idd )";
-		//echo $q;
+		
 		$data = mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */

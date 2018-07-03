@@ -14,7 +14,7 @@
           $subcategories = obtenerListaSubCategoriasCategoria( $dbh, $c["id"] )
       ?>
         <tr>
-          <td><?php echo $c["name"]." "."[ $c[uname] ]"; ?></td>
+          <td><?php echo $c["name"]; ?></td>
           <td>
             <?php 
               foreach ( $subcategories as $sc ) { 

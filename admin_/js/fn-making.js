@@ -48,9 +48,17 @@ function cargarListaTrabajosMaterial( idm ){
 /* --------------------------------------------------------- */
 $( document ).ready(function() {
 
-    $('#frm_ntrabajo').parsley().on('form:success', function() {
-        //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
-    });
+    if ( $("#frm_ntrabajo").length > 0 ){
+        $('#frm_ntrabajo').parsley().on('form:success', function() {
+            //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+        });
+    }
+    
+    if ( $("#frm_mtrabajo").length > 0 ){
+        $('#frm_mtrabajo').parsley().on('form:success', function() {
+            //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+        });
+    }
    
     $("#tabla_datos-trabajos").on( "click", ".elim-trabajo", function(){
         $("#id-trabajo-e").val( $(this).attr( "data-idt" ) );
