@@ -326,13 +326,20 @@
                                     </div>
 
                                     <div id="valor_tseleccion" class="col-md-5 col-sm-5 col-xs-12">
-                                      <?php 
-                                        foreach ( $tallas_det as $rt ) { 
-                                          echo "<input class='vt_seleccionado' type='hidden' 
-                                          data-talla='". $rt["talla"]."' data-peso='".$rt["peso"]."' value='".$rt["idtalla"]."'>"; 
-                                        } 
-                                      ?>
+                                      <div id="valor_tseleccion">  
+                                        <?php 
+                                          foreach ( $tallas_det as $rt ) { 
+                                            echo "<input class='vt_seleccionado' type='hidden' 
+                                            data-talla='". $rt["talla"]."' data-peso='".$rt["peso"]."' value='".$rt["idtalla"]."'>"; 
+                                          } 
+                                        ?>
+                                      </div>
+                                      <div id="tallas_aelim">
+                                        
+                                      </div>
                                     </div>
+
+
                                     
                                     <div class="form-group">
                                       <div align="center">

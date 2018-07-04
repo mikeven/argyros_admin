@@ -19,8 +19,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerProductosC_S( $dbh, $idc, $idsc ){
 		//Devuelve la lista de productos pertenecientes a una categoría y subcategoría
-		$q = "select p.id, p.code, p.name, p.description, p.is_visible as visible, co.name as pais, 
-		ca.name as category, sc.name as subcategory, m.name as material 
+		$q = "select p.id, p.code, p.name, p.description, p.is_visible as visible, 
+		co.name as pais, ca.name as category, sc.name as subcategory, m.name as material 
 		FROM products p, categories ca, subcategories sc, countries co, materials m 
 		where p.visible = 1 and p.category_id = ca.id and p.subcategory_id = sc.id and 
 		p.material_id = m.id and p.country_code = co.code and p.category_id = $idc 
@@ -253,8 +253,31 @@
 		return $existe;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerTallasEliminar( $dbh, $tallas_selec, $iddet ){
+		//Devuelve la lista de tallas que se van a eliminar de un detalle de producto
+		//Compara las tallas existentes con la selección de tallas a modificar, las tallas 
+		//que no estén seleccionadas serán eliminadas
+
+		$tallas_elim = array();
+
+		$tallas_regs = obtenerTallasDetalleProducto( $dbh, $iddet );
+		foreach ( $tallas_regs as $texist ) {
+			$contenida = false;
+			foreach ( $tallas_selec as $sel ) {
+
+				if( $sel->idt == $texist["idtalla"] ) 
+					$contenida = true;	
+			}
+			if( $contenida == false )
+				$tallas_elim[] = $texist;
+		}
+
+		return $tallas_elim;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function editarTallasDetalleProducto( $dbh, $iddet, $tallas, $tajustable ){
 		//Actualiza los datos de tallas en detalle de producto
+
 		foreach ( $tallas as  $reg ) {
 			$e = existeRegistroTallaDetalle( $dbh, $iddet, $reg->idt );
 			if( $e == true ){
@@ -263,7 +286,19 @@
 				guardarTallaDetalleProducto( $dbh, $iddet, $reg->idt, $reg->peso, $tajustable );
 			}
 		}
-		
+
+		$tallas_elim = obtenerTallasEliminar( $dbh, $tallas, $iddet );
+
+
+		if( count( $tallas_elim ) > 0 ){
+			$res["exito"] = 2;
+			$res["tallas_e"] = $tallas_elim;
+		}else{
+			$res["exito"] = 1;
+			$res["tallas_e"] = NULL;
+		}
+
+		return $res;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function eliminarRegistroImagenDetalleProducto( $dbh, $id_img ){
@@ -549,11 +584,18 @@
 		if( isset( $frm_tallas["talla-ajustable"] ) ) $tajustable = 1;
 
 		$tallas = json_decode( $_POST["modif_tallasdetprod"] );
-		$idd = editarTallasDetalleProducto( $dbh, $iddet, $tallas, $tajustable );
+		$data_r = editarTallasDetalleProducto( $dbh, $iddet, $tallas, $tajustable );
 		
-		$res["exito"] = 1;
-		$res["mje"] = "Datos de tallas actualizados con éxito";
-		$res["reg"] = $tallas;
+		if( $data_r["exito"] == 1 ){
+			$res["exito"] = 1;
+			$res["mje"] = "Datos de tallas actualizados con éxito";
+			$res["reg"] = $tallas;
+		}
+		if( $data_r["exito"] == 2 ){
+			$res["exito"] = 2;
+			$res["mje"] = "Se eliminarán registros de tallas";
+			$res["reg"] = $data_r["tallas_e"];
+		}
 
 		echo json_encode( $res );
 

@@ -178,8 +178,8 @@ function editarTallasDetalleProducto(){
 			
 			if( res.exito == 1 ) 
 				notificar( tit_notif, res.mje, "success" );
-			else
-				notificar( tit_notif, res.mje, "error" );
+			if( res.exito == 2 )
+				notificar( tit_notif, res.mje, "info" );
         }
     });
 }

@@ -27,7 +27,8 @@
                 <?php echo $t0["name"] ?>
                 <input id="nt0" type="hidden" value="<?php echo $t0["name"] ?>" data-idt="<?php echo $t0["id"] ?>"></td>
               <td>
-                <input type="text" class="form-control valtallas_sel" placeholder="Peso (gr: 0.00)" value="" data-t="nt0">
+                <input type="text" class="form-control valtallas_sel" 
+                placeholder="gr: 0.00" value="" data-t="nt0">
               </td>
             </tr>
             <?php
@@ -40,8 +41,8 @@
                   <input id="nt<?php echo $n; ?>" type="hidden" value="<?php echo $t["name"] ?>" data-idt="<?php echo $t["id"] ?>">
                 </td>
                 <td>
-                  <input type="text" class="form-control valtallas_sel" placeholder="Peso (gr: 0.00)" 
-                  value="" data-t="nt<?php echo $n; ?>">
+                  <input type="text" class="form-control valtallas_sel" 
+                  placeholder="gr: 0.00" value="" data-t="nt<?php echo $n; ?>">
                 </td>
               </tr>
 
