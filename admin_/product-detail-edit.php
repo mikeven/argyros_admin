@@ -193,21 +193,16 @@
                         <p class="text-muted font-13 m-b-30"> </p>
                         <div class="row">
 
-                            <div class="form-group">
-                              <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
-                              <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
-                              <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
-                            </div>
+                          <div class="form-group">
+                            <input id="idproducto" type="hidden" name="idproducto" value="<?php echo $idp; ?>">
+                            <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
+                            <label class="control-label">( <?php echo $producto["codigo"]; ?> )</label>
+                          </div>
                           
                           <div class="form-group">
                             <label class="control-label">Categoría: </label> 
                             <?php echo $producto["categoria"]." > ".$producto["subcategoria"]; ?>
                           </div>
-                          
-                          <div class="form-group">
-                            <label class="control-label">Material: </label> 
-                            <?php echo $producto["material"]; ?>
-                          </div>  
                         
                         </div>
 
@@ -228,7 +223,7 @@
                                       <option value>Seleccione</option>
                                       <?php foreach ( $banos as $b ) { ?>
                                         <option value="<?php echo $b["id"] ?>" 
-                                        <?php echo sop( $b["id"], $datos_det["bano"] );?> > <?php echo $b["name"] ?> </option>
+                                        <?php echo sop( $b["id"], $datos_det["bano"] );?> > <?php echo $b["name"] ?></option>
                                       <?php } ?>
                                     </select>
                                   </div>
@@ -319,7 +314,7 @@
                                     <div id="tallas_seleccion" class="col-md-5 col-sm-5 col-xs-12"> 
                                       <?php 
                                         foreach ( $tallas_det as $rt ) { 
-                                          echo "Talla: ".$rt["talla"]." - Peso: ".$rt["peso"];
+                                          echo "Talla: ".$rt["talla"].$etiq_aj." - Peso: ".$rt["peso"];
                                           echo "<br>"; 
                                         } 
                                       ?>
@@ -339,8 +334,6 @@
                                       </div>
                                     </div>
 
-
-                                    
                                     <div class="form-group">
                                       <div align="center">
                                         <button id="bot_edit_tallasdetalle" type="button" class="btn btn-success">Guardar</button>
@@ -358,8 +351,6 @@
 
                         <div class="row">
                           <div align="center"><h5>Edición de imágenes</h5></div>
-                          
-                          
                           
                           <div class="col-md-6 col-sm-6 col-xs-12">
                             <div align="center"><h5>Imágenes del detalle de producto</h5></div>

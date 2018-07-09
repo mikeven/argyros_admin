@@ -64,22 +64,29 @@ function crearValorTallaPesoSeleccion( idt, t, p ){
 	return elem;
 }
 /* --------------------------------------------------------- */
-function crearEtiquetaTallaPesoSeleccion( t, p ){
-	var elem = "<div> Talla: " + t + " - Peso: " + p + "<div>";
+function crearEtiquetaTallaPesoSeleccion( t, p, aj ){
+	var elem = "<div> Talla: " + t + aj + " - Peso: " + p + "<div>";
 	return elem;
 }
 /* --------------------------------------------------------- */
 function seleccionarTallas(){
 	var elem = "";
 	var etiq = ""; 
+	
 	$.each( $(".valtallas_sel"), function() {
 		var peso = $(this).val();
+		var etiq_aj = "";
+		
 		if ( peso != "" ){
 			var idvt = $(this).attr("data-t");
 			var talla = $("#" + idvt ).val();
 			var idtalla = $("#" + idvt ).attr("data-idt");
+			if( $('#ajustable').prop('checked') && ( talla == 'N/A' ) ) {
+				etiq_aj = "(ajustable)"; 
+			}
+
 			elem += crearValorTallaPesoSeleccion( idtalla, talla, peso );
-			etiq += crearEtiquetaTallaPesoSeleccion( talla, peso );
+			etiq += crearEtiquetaTallaPesoSeleccion( talla, peso, etiq_aj );
 		}
 		
 		$( "#valor_tseleccion" ).html( $( elem ) );
@@ -94,6 +101,7 @@ function obtenerValoresTallasSeleccionadas(){
 	var dupla = new Object();
 	$.each( $(".vt_seleccionado"), function(){	// vt_seleccionado: valor_tallas_seleccionado
 		dupla["idt"] = $(this).val();
+		dupla["talla"] = $(this).attr("data-talla");
 		dupla["peso"] = $(this).attr("data-peso");
 		tallas.push( dupla );
 		dupla = new Object();		
@@ -178,8 +186,8 @@ function editarTallasDetalleProducto(){
 			
 			if( res.exito == 1 ) 
 				notificar( tit_notif, res.mje, "success" );
-			if( res.exito == 2 )
-				notificar( tit_notif, res.mje, "info" );
+			if( res.exito == -2 )
+				notificar( tit_notif, res.mje, "error" );
         }
     });
 }

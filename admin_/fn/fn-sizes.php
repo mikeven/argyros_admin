@@ -39,9 +39,10 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerValorTallaCeroDetalleProducto( $tallas ){
 		foreach ( $tallas as $t ) {
-			if( $t["talla"] == 0 ) return $t;	
+			if( $t["talla"] == 'N/A' ) return $t;	
 		}
 	}
+	/* ----------------------------------------------------------------------------------- */
 ?>
 
 <?php 

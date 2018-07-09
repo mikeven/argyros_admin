@@ -143,7 +143,7 @@
 	function obtenerTallasDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de tallas de detalle de producto
 		$q = "select spd.size_id as idtalla, spd.product_detail_id as iddetprod, 
-		s.name as talla, spd.weight as peso, spd.visible as visible 
+		s.name as talla, spd.weight as peso, spd.visible as visible, spd.adjustable as ajustable 
 		from size_product_detail spd, sizes s where spd.size_id = s.id 
 		and spd.product_detail_id = $idd order by CAST(s.name AS unsigned) ASC";
 		
@@ -264,9 +264,9 @@
 		foreach ( $tallas_regs as $texist ) {
 			$contenida = false;
 			foreach ( $tallas_selec as $sel ) {
-
-				if( $sel->idt == $texist["idtalla"] ) 
+				if( $sel->idt == $texist["idtalla"] ){ 
 					$contenida = true;	
+				}
 			}
 			if( $contenida == false )
 				$tallas_elim[] = $texist;
@@ -289,7 +289,6 @@
 
 		$tallas_elim = obtenerTallasEliminar( $dbh, $tallas, $iddet );
 
-
 		if( count( $tallas_elim ) > 0 ){
 			$res["exito"] = 2;
 			$res["tallas_e"] = $tallas_elim;
@@ -299,6 +298,44 @@
 		}
 
 		return $res;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function registrosAsociadosTallaDetalle( $dbh, $iddet, $idtalla ){
+		//Determina si existe un registro de alguna tabla asociada a una talla de detalle producto
+		//Tablas relacionadas: order_details
+		include( "data-system.php" );
+
+		return registroAsociadoTabla2P( $dbh, "order_details", "product_detail_id", $iddet, 
+															   "size_id", $idtalla );
+	} 
+	/* ----------------------------------------------------------------------------------- */
+	function eliminarTallaDetalleProducto( $dbh, $iddet, $idtalla ){
+		//Elimina el registro de talla de un detalle de producto
+		$q = "delete from size_product_detail where product_detail_id = $iddet and size_id = $idtalla";
+		$data = mysqli_query( $dbh, $q );
+
+		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function eliminarRegistrosTallasDetalleProducto( $dbh, $iddet, $tallas_elim ){
+		//Evalúa la eliminación de una talla de un detalle de producto
+		$talladet_asoc = "";
+		$asociada = false;
+		$res_e["exito"] = 1;
+
+		foreach ( $tallas_elim as $talla ){
+			if( registrosAsociadosTallaDetalle( $dbh, $iddet, $talla["idtalla"] ) == true ){
+				$asociada = true;
+				$talladet_asoc .= $talla["talla"]." ";
+			}else
+				eliminarTallaDetalleProducto( $dbh, $iddet, $talla["idtalla"] );
+		}
+		if( $asociada == true ){
+			$res_e["exito"] = -2;
+			$res_e["t_asoc"] = $talladet_asoc;
+		}
+
+		return $res_e;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function eliminarRegistroImagenDetalleProducto( $dbh, $id_img ){
@@ -314,7 +351,7 @@
 		$img = obtenerImagenDetalleProductoPorId( $dbh, $id_img );
 		$res["archivo"] = unlink( $prefijo_url.$img["path"] );
 		$res["databas"] = eliminarRegistroImagenDetalleProducto( $dbh, $img["id"] );
-		print_r( $res );
+		
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function guardarTallaDetalleProducto( $dbh, $idd, $idtalla, $peso, $tajustable ){
@@ -482,7 +519,6 @@
 		include( "bd.php" );	
 		parse_str( $_POST["form_np"], $producto );
 
-		//print_r( $producto );
 		$idp = agregarProducto( $dbh, $producto );
 		$producto["idproducto"] = $idp;
 		
@@ -577,7 +613,8 @@
 	//Edición de tallas en detalle de producto
 	if( isset( $_POST["modif_tallasdetprod"] ) ){
 		include( "bd.php" );	
-		
+		ini_set( 'display_errors', 1 );
+
 		$iddet = $_POST["idt"];
 		$tajustable = 0;
 		parse_str( $_POST["frm_tallas"], $frm_tallas );
@@ -589,12 +626,18 @@
 		if( $data_r["exito"] == 1 ){
 			$res["exito"] = 1;
 			$res["mje"] = "Datos de tallas actualizados con éxito";
-			$res["reg"] = $tallas;
 		}
 		if( $data_r["exito"] == 2 ){
-			$res["exito"] = 2;
-			$res["mje"] = "Se eliminarán registros de tallas";
-			$res["reg"] = $data_r["tallas_e"];
+			$tallas_elim = $data_r["tallas_e"];
+			$data_e = eliminarRegistrosTallasDetalleProducto( $dbh, $iddet, $tallas_elim );
+			if( $data_e["exito"] == 1 ){
+				$res["exito"] = 1;
+				$res["mje"] = "Datos de tallas actualizados con éxito";
+			}
+			if( $data_e["exito"] == -2 ){
+				$res["exito"] = $data_e["exito"];
+				$res["mje"] = "Existen tallas asociadas a pedidos: ".$data_e["t_asoc"];
+			}
 		}
 
 		echo json_encode( $res );

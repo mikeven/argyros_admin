@@ -1,3 +1,9 @@
+<?php 
+  $aj_ch = ""; $etiq_aj = "";
+  if( $dtalla0["ajustable"] == 1 ){
+    $aj_ch = "checked"; $etiq_aj = "(ajustable)";
+  }
+?>
 <div id="size-table" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-md">
     <div class="modal-content">
@@ -23,7 +29,7 @@
           <tbody>
             <tr style="background:#ccc;">
               <td>
-                <input type="checkbox" id="ajustable" name="talla-ajustable" value="ajustable">
+                <input type="checkbox" id="ajustable" name="talla-ajustable" value="ajustable" <?php echo $aj_ch; ?>>
                 Ajustable
               </td>
               <td>
