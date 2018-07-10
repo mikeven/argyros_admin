@@ -28,7 +28,7 @@
         $iddet = $_GET["id"];
         $detalle = obtenerDatosDetalleProductoPorId( $dbh, $iddet );
         $datos_det = $detalle["datos"];
-        $tallas_det = $detalle["tallas"];
+        $tallas_det = $detalle["tallas"];        
         $dtalla0 = obtenerValorTallaCeroDetalleProducto( $tallas_det );
         $imgs_det = $detalle["imagenes"];
         $url_post_edit = "product-detail-edit.php?id=$iddet";

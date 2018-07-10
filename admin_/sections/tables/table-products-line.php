@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th>Nombre</th>
+      <th>Descripción</th>
       <th>Código</th>
       <th> </th>
     </tr>
@@ -13,9 +14,13 @@
           $lnk = "product-data.php?p=$p[id]"; 
       ?>
       <tr>
-        <td><a href="<?php echo $lnk; ?>"><?php echo $p["description"]; ?></a></td>
+        <td><a href="<?php echo $lnk; ?>" target="_blank"><?php echo $p["nombre"]; ?></a></td>
+        <td><a href="<?php echo $lnk; ?>" target="_blank"><?php echo $p["descripcion"]; ?></a></td>
         <td><?php echo $p["code"]; ?></td>
-        <td><a href="#!">Desvincular de esta línea</a></td>
+        <td>
+          <a href="#!" class="desv-prod" data-toggle="modal" data-idp="<?php echo $p["id"]; ?>" 
+          data-target="#confirmar-accion">Desvincular</a>
+        </td>
       </tr>
       <?php } ?>
   </tbody>

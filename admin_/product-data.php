@@ -195,15 +195,26 @@
                                         <div class="">
                                             <label class="control-label">Tipo de precio: </label> <?php echo txTipoPeso( $dp["tipo_precio"] ); ?>
                                         </div>
+
+
+                                        <?php if( $dp["tipo_precio"] == "p" ) { ?>
                                         <div class="">
                                             <label class="control-label">Precio por pieza: </label> <?php echo $dp["precio_pieza"]; ?>
                                         </div>
+                                        <?php } ?>
+
+                                        <?php if( $dp["tipo_precio"] == "mo" ) { ?>
                                         <div class="">
                                             <label class="control-label">Precio mano de obra: </label> <?php echo $dp["precio_mo"]; ?>
                                         </div>
+                                        <?php } ?>
+                                        
+                                        <?php if( $dp["tipo_precio"] == "g" ) { ?>
                                         <div class="">
                                             <label class="control-label">Precio por peso: </label> <?php echo $dp["precio_peso"]; ?>
                                         </div>
+                                        <?php } ?>
+                                        
                                         
                                         <div class="data-talla-detalle">
                                             <table class="table table-striped table-bordered">

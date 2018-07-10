@@ -140,12 +140,15 @@
               <div class="col-md-8 col-sm-5 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Productos de la línea</h2>
+                    <h2>Productos asociados a la línea</h2>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
+                  <div id="tabla_datos-lineas" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
                     <?php include( "sections/tables/table-products-line.php" );?>
+                    <?php include( "sections/modals/confirm_action.php" ); ?>
+                    <input id="id-linea-d" type="hidden" value="<?php echo $idl; ?>">
+                    <input id="id-producto-d" type="hidden" value="">
                   </div>
                 </div>
               </div>

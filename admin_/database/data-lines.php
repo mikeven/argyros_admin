@@ -22,7 +22,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerProductosLinea( $dbh, $idl ){
 		//Devuelve la lista de productos pertenecientes a una línea dado su id
-		$q = "select p.id, p.name as nombre, p.code, p.description 
+		$q = "select p.id, p.name as nombre, p.code, p.description as descripcion 
 		from products p, plines l, line_product lp 
 		where lp.product_id = p.id and lp.line_id = $idl group by p.id";
 		
@@ -62,7 +62,13 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
-	/* Solicitudes asíncronas al servidor para procesar información de Líneas */
+	function desvincularProductoLinea( $dbh, $idp, $idl ){
+		//Elimina el registro vínculo producto-línea
+		$q = "delete from line_product where product_id = $idp and line_id = $idl";
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	/* Solicitudes vía POST al servidor para procesar información de Líneas */
 	/* ----------------------------------------------------------------------------------- */
 	
 	//Registro de nueva línea
@@ -107,6 +113,9 @@
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */
+	/* ----------------------------------------------------------------------------------- */
+	/* Solicitudes asíncronas al servidor para procesar información de Líneas */
+	/* ----------------------------------------------------------------------------------- */
 	//Eliminar línea
 	if( isset( $_POST["id_elimlinea"] ) ){
 		include( "bd.php" );	
@@ -120,6 +129,22 @@
 			$res["exito"] = 1;
 			$res["mje"] = "Línea eliminada con éxito";
 		}
+		echo json_encode( $res );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	//Desvincular Producto-línea
+	if( isset( $_POST["id_desvprod"] ) ){
+		include( "bd.php" );
+		
+		$data_r = desvincularProductoLinea( $dbh, $_POST["id_desvprod"], $_POST["id_desvlinea"] );
+		if( $data_r == 1 ){
+			$res["exito"] = 1;
+			$res["mje"] = "Producto desvinculado con éxito";
+		}else{
+			$res["exito"] = -1;
+			$res["mje"] = "Error al desvincular producto de línea";
+		}
+
 		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */

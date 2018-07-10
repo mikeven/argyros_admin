@@ -21,9 +21,8 @@
               <th width="10%"></th>
               <th width="20%">Talla</th>
               <th width="20%">Peso</th>
-              <th width="20%">Disponibilidad</th>
+              <th width="20%">Visibilidad</th>
               <th width="20%">Acción</th>
-              <th width="10%"></th>
             </tr>
           </thead>
           <tbody>
@@ -41,6 +40,8 @@
                 placeholder="gr: 0.00" 
                 value="<?php echo $dtalla0["peso"]; ?>" data-t="nt0">
               </td>
+              <td></td>
+              <td></td>
             </tr>
             <?php
               $n = 1;
@@ -51,22 +52,21 @@
                 //$tallas_det: tallas registradas en detalle prod
                 
                 $vpeso = $data["peso"]; 
-                $disponibilidad = $data["disp"];
                 $lnk = $data["ldsp"];  
             ?>
             <tr>
               <td></td>
               <td><?php echo $t["name"] ?>
-                <input id="nt<?php echo $n; ?>" type="hidden" value="<?php echo $t["name"] ?>" data-idt="<?php echo $t["id"] ?>">
+                <input id="nt<?php echo $n; ?>" type="hidden" value="<?php echo $t["name"] ?>" 
+                data-idt="<?php echo $t["id"] ?>">
               </td>
               <td>
                 <input type="text" class="form-control valtallas_sel" 
                 placeholder="gr: 0.00" 
                 value="<?php echo $vpeso ?>" data-t="nt<?php echo $n; ?>">
               </td>
-              <td><?php echo $disponibilidad; ?></td>
+              <td><?php echo $data["disp"]; ?></td>
               <td><?php echo $lnk; ?></td>
-              <td></td>
             </tr>
 
             <?php $n++; } ?>  

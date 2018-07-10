@@ -8,9 +8,12 @@
 		$data["peso"] = "";
 		$data["ldsp"] = "";
 		$data["disp"] = "";
-		foreach ( $tallas_reg as $tr ) {
+
+		//print_r($tallas_reg);
+
+		foreach ( $tallas_reg as $tr ){
 			
-			//echo $tid." = ".$tr["idtalla"];
+			echo $tid." = ".$tr["idtalla"];
 			
 			if( $tr["idtalla"] == $tid ){
 				$data["peso"] = $tr["peso"];
