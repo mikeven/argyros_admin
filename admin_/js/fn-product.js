@@ -15,7 +15,10 @@ function agregarProducto(){
         success: function( response ){
         	console.log( response );
 			res = jQuery.parseJSON( response );
-			enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.idproducto );
+			if( res.exito == 1 )
+				enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.idproducto );
+			else
+				notificar( "Nuevo producto", res.mje, "error" );
         }
     });
 }
@@ -243,7 +246,7 @@ function actualizarDisponibilidadProducto( nivel, idp, iddp, iddettalla, estado 
 			else
 				notificar( tit_notif, res.mje, "error" );
 
-			setTimeout(function() { location.reload(); }, 3000 );
+			//setTimeout(function() { location.reload(); }, 3000 );
         }
     });
 }

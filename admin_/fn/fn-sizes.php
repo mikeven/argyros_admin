@@ -3,7 +3,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerDatosTallaRegistrada( $tid, $tallas_reg ){
+	function obtenerDatosTallaRegistrada( $iddet, $tid, $tallas_reg ){
 		$data = array();
 		$data["peso"] = "";
 		$data["ldsp"] = "";
@@ -13,11 +13,10 @@
 
 		foreach ( $tallas_reg as $tr ){
 			
-			echo $tid." = ".$tr["idtalla"];
-			
 			if( $tr["idtalla"] == $tid ){
+
 				$data["peso"] = $tr["peso"];
-				$data["ldsp"] = obtenerEnlaceDisponibilidadTalla( $tr["visible"] );
+				$data["ldsp"] = obtenerEnlaceDisponibilidadTalla( $iddet, $tr["idtalla"], $tr["visible"] );
 				$data["disp"] = obtenerEtiquetaDisponibilidadTalla( $tr["visible"] );
 				break; 
 			}
@@ -26,9 +25,13 @@
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerEnlaceDisponibilidadTalla( $visible ){
-		$lnk[1] = "<a href='#!'><i class='fa fa-eye-slash'></i> Ocultar</a>";
-		$lnk[0] = "<a href='#!'><i class='fa fa-eye'></i> Mostrar</a>";
+	function obtenerEnlaceDisponibilidadTalla( $iddet, $idtalla, $visible ){
+		$lnk[1] = "<a href='#!' class='o-tdetp' data-idtalla='$idtalla' 
+					data-idpdet='$iddet' data-st='0'><i class='fa fa-eye-slash'></i> Ocultar</a>";
+
+
+		$lnk[0] = "<a href='#!' class='o-tdetp' data-idtalla='$idtalla' 
+					data-idpdet='$iddet' data-st='1'><i class='fa fa-eye'></i> Mostrar</a>";
 
 		return $lnk[$visible];
 	}

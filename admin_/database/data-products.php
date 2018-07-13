@@ -10,7 +10,7 @@
 		p.visible as visible, co.name as pais, ca.name as categoria, sc.name as subcategoria, 
 		m.name as material FROM products p, categories ca, subcategories sc, countries co, 
 		materials m where p.category_id = ca.id and p.subcategory_id = sc.id 
-		and p.material_id = m.id and p.country_code = co.code order by p.id DESC";
+		and p.material_id = m.id and p.country_id = co.id order by p.id DESC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -180,7 +180,7 @@
 		//Guarda el registro de un producto
 		$q = "insert into products ( code, name, description, country_id, category_id, 
 		subcategory_id, material_id ) values ( '$producto[codigo]', '$producto[nombre]', 
-		'$producto[descripcion]', '$producto[pais]', $producto[categoria], $producto[subcategoria], 
+		'$producto[descripcion]', $producto[pais], $producto[categoria], $producto[subcategoria], 
 		$producto[material] )";
 
 		$data = mysqli_query( $dbh, $q );

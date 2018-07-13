@@ -1,6 +1,7 @@
 <?php 
   $aj_ch = ""; $etiq_aj = "";
   if( $dtalla0["ajustable"] == 1 ){
+    //$dtalla0, $t0 : product-detail-edit.php:
     $aj_ch = "checked"; $etiq_aj = "(ajustable)";
   }
 ?>
@@ -28,27 +29,36 @@
           <tbody>
             <tr style="background:#ccc;">
               <td>
-                <input type="checkbox" id="ajustable" name="talla-ajustable" value="ajustable" <?php echo $aj_ch; ?>>
+                <input type="checkbox" id="ajustable" name="talla-ajustable" 
+                value="ajustable" <?php echo $aj_ch; ?>>
                 Ajustable
               </td>
               <td>
                 <?php echo $t0["name"]; ?>
-                <input id="nt0" type="hidden" value="<?php echo $t0["name"] ?>" data-idt="<?php echo $t0["id"] ?>">
+                <input id="nt0" type="hidden" value="<?php echo $t0["name"] ?>" 
+                data-idt="<?php echo $t0["id"] ?>">
               </td>
               <td>
                 <input type="text" class="form-control valtallas_sel" 
-                placeholder="gr: 0.00" 
-                value="<?php echo $dtalla0["peso"]; ?>" data-t="nt0">
+                placeholder="gr: 0.00" value="<?php echo $dtalla0["peso"]; ?>" data-t="nt0">
               </td>
-              <td></td>
-              <td></td>
+              <td>
+                <?php if ( $dtalla0["peso"] ) 
+                echo obtenerEtiquetaDisponibilidadTalla( $dtalla0["visible"] ); ?>
+              </td>
+              <td>
+                <?php if ( $dtalla0["peso"] ) 
+                echo obtenerEnlaceDisponibilidadTalla( $iddet, $t0["id"], $dtalla0["visible"] ); ?>
+              </td>
             </tr>
             <?php
               $n = 1;
               
               //$tallas: registro general de tallas registradas en la categoría
               foreach ( $tallas as $t ) {
-                $data = obtenerDatosTallaRegistrada( $t["id"], $tallas_det );
+
+                $data = obtenerDatosTallaRegistrada( $iddet, $t["id"], $tallas_det );
+                //fn/fn-sizes.php
                 //$tallas_det: tallas registradas en detalle prod
                 
                 $vpeso = $data["peso"]; 
