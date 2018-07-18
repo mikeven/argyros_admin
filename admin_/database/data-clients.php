@@ -7,9 +7,10 @@
 	function obtenerListaClientes( $dbh ){
 		//Devuelve la lista de clientes
 		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, c.phone,  
-		ug.name as grupo, p.name as pais, date_format(c.created_at,'%d/%m/%Y') as fcreacion  
+		ug.name as grupo, p.name as pais, c.city as ciudad, c.verified as verificado, 
+		date_format(c.created_at,'%d/%m/%Y') as fcreacion 
 		from clients c, client_group ug, countries p 
-		where c.client_group_id = ug.id and c.country_code = p.code order by nombre ASC";
+		where c.client_group_id = ug.id and c.country_id = p.id order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_c = obtenerListaRegistros( $data );
@@ -61,24 +62,34 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerClientePorId( $dbh, $idc ){
 		//Devuelve el registro de cliente dado por id
-		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, c.phone,
-		c.address as direccion, ug.name as grupo, c.name as pais, 
+		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, 
+		c.phone as telefono, c.address as direccion, cg.name as grupo, p.name as pais, p.id as idpais, 
 		date_format(c.created_at,'%d/%m/%Y') as fcreacion, 
 		date_format(c.updated_at,'%d/%m/%Y') as fmodificacion, c.company as escompania, 
 		c.company_name as ncompania, c.company_type as tcompania, c.city as ciudad, 
-		c.reference as referencia from clients c, client_group ug, role_user ru, countries p 
-		where c.client_group_id = ug.id and ru.user_id = c.id and ru.role_id = 4 
-		and p.country_code = c.code and c.id = $idc";
+		c.reference as referencia from clients c, client_group cg, countries p 
+		where c.client_group_id = cg.id and c.country_id = p.id and c.id = $idc";
 
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function editarCliente( $dbh, $cliente ){
+		//Modifica los datos de un cliente
+
+		$q = "update clients set first_name = '$cliente[nombre]', last_name = '$cliente[apellido]', 
+		email = '$cliente[email]', address='$cliente[direccion]', phone='$cliente[telefono]', 
+		country_id = $cliente[pais], city = '$cliente[ciudad]', client_group_id = $cliente[grupo] 
+		where id = $cliente[id]";
+
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function modificarGrupoUsuarioCliente( $dbh, $idu, $idgrupo ){
 		//Actualiza el grupo al que pertenece un cliente
-		$q = "update users set client_group_id = $idgrupo where id = $idu";
-		//echo $q;
-		$data = mysqli_query( $dbh, $q );
+		$q = "update clients set client_group_id = $idgrupo where id = $idu";
+
+		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function agregarGrupoCliente( $dbh, $grupo ){
@@ -104,6 +115,7 @@
 	}
 
 	/* ----------------------------------------------------------------------------------- */
+	/* Solicitudes POST al servidor para procesar información de Clientes */
 	/* ----------------------------------------------------------------------------------- */
 
 	if( isset( $_GET["mclientgroup"] ) ){
@@ -121,6 +133,28 @@
 		if( ( $idg != 0 ) && ( $idg!= "" ) ) {
 			header( "Location: ../client-groups-edit.php?id=$grupo[id]&editgroupsuccess" );
 		}
+	}
+	/* ----------------------------------------------------------------------------------- */
+	//Modificar datos de cliente
+	if( isset( $_GET["mcliente"] ) ){
+
+		include( "bd.php" );
+
+		$cliente["id"] 			= $_POST["idcliente"];
+		$cliente["nombre"] 		= mysqli_real_escape_string( $dbh, $_POST["nombre"] );
+		$cliente["apellido"] 	= mysqli_real_escape_string( $dbh, $_POST["apellido"] );
+		$cliente["email"] 		= mysqli_real_escape_string( $dbh, $_POST["email"] );
+		$cliente["direccion"] 	= mysqli_real_escape_string( $dbh, $_POST["direccion"] );
+		$cliente["telefono"] 	= mysqli_real_escape_string( $dbh, $_POST["telefono"] );
+		$cliente["pais"] 		= $_POST["pais"];
+		$cliente["ciudad"] 		= mysqli_real_escape_string( $dbh, $_POST["ciudad"] );
+		$cliente["grupo"] 		= mysqli_real_escape_string( $dbh, $_POST["grupo"] );
+
+		$idc = editarCliente( $dbh, $cliente );
+		if( ( $idc != 0 ) && ( $idc != "" ) ){
+			header( "Location: ../client-edit.php?id=$cliente[id]&editar_usuario-exito" );
+		}		
+		
 	}
 
 	/* ----------------------------------------------------------------------------------- */
@@ -153,8 +187,17 @@
 	//Invocación para modificar el grupo al que pertenece un cliente
 	if( isset( $_POST["grupo_valor"] ) ){
 		include( "bd.php" );	
-		$idg = obtenerIdGrupoClientePorNombre( $dbh, $_POST["grupo_valor"] );
-		modificarGrupoUsuarioCliente( $dbh, $_POST["id_c"], $idg );
+	
+		$idg = modificarGrupoUsuarioCliente( $dbh, $_POST["id_c"], $_POST["grupo_valor"] );
+		if( ( $idg != 0 ) && ( $idg != "" ) ){
+			$res["exito"] = 1;
+			$res["mje"] = "Cambio de grupo de cliente con éxito";
+		}else{
+			$res["exito"] = 0;
+			$res["mje"] = "Error al editar grupo de usuario";
+		}
+		
+		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Invocación para eliminar un grupo de clientes, perfil de cliente

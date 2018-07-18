@@ -8,6 +8,7 @@
     include( "database/bd.php" );
     include( "database/data-user.php" );
     include( "fn/common-functions.php" );
+    include( "fn/fn-clients.php" );
     include( "database/data-clients.php" );
 
     checkSession( '' );
@@ -48,6 +49,11 @@
         <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
         <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
+        <!-- PNotify -->
+        <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+        <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+        <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
         <!-- Custom Theme Style -->
         <link href="build/css/custom.min.css" rel="stylesheet">
   </head>
@@ -72,7 +78,7 @@
                 <h3>Clientes</h3>
               </div>
 
-              <div class="title_right">
+              <div class="title_right hidden">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
                   <div class="input-group" style="float:right;">
                     <a href="new-client.php" class="btn btn-app">
@@ -169,9 +175,15 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
     <script src="js/fn-client.js"></script>
+    <script src="js/fn-ui.js"></script>
 	
   </body>
 </html>

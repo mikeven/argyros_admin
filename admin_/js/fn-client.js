@@ -33,6 +33,10 @@ function cambiarGrupoCliente( idc, valor ){
         data:{ id_c: idc, grupo_valor: valor },
         success: function( response ){
 			console.log( response );
+            res = jQuery.parseJSON(response);
+            if( res.exito == 1 ){ 
+               notificar( "Clientes", res.mje, "success" );
+            }
         }
     });
 }

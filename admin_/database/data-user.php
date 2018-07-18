@@ -44,10 +44,9 @@
 	function obtenerListaUsuarios( $dbh ){
 		//Devuelve la lista de usuarios
 		$q = "Select u.id, u.first_name as nombre, u.last_name as apellido, u.email, 
-		u.phone, r.id as idrol, r.name as rol, r.display_name as nombre_rol, 
-		r.description as descripcion_rol, date_format(u.created_at,'%d/%m/%Y') as fcreacion 
-		from users u, role_user ru, roles r where ru.user_id = u.id and ru.role_id 
-		and ru.role_id = r.id order by nombre ASC";
+		r.id as idrol, r.name as rol, r.display_name as nombre_rol, r.description as descripcion_rol, 
+		date_format(u.created_at,'%d/%m/%Y') as fcreacion from users u, roles r 
+		where u.role_id = r.id order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -78,24 +77,26 @@
 		return mysqli_insert_id( $dbh );	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function registrarUsuario( $usuario, $pass, $dbh ){
-		$query = "insert into usuario (usuario, password) values ( '$usuario', '$pass' )";
-		//echo $query;
-		$Rs = mysql_query ( $dbh, $query );
+	function agregarUsuario( $dbh, $usuario ){
+		//
+		$query = "insert into users (first_name, last_name, email, role_id) 
+		values ( '$usuario[nombre]', '$usuario[apellido]', '$usuario[email]', $usuario[rol] )";
+		echo $query;
 		
-		return mysql_insert_id();	
+		$Rs = mysqli_query ( $dbh, $query );
+		return mysqli_insert_id( $dbh );	
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function modificarRolUsuario( $dbh, $usuario ){
 		//Modifica el rol de un usuario dado su id
-		$q = "update role_user set role_id = $usuario[idrol] where user_id = $usuario[id]";
+		$q = "update users set role_id = $usuario[idrol] where id = $usuario[id]";
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerRolUsuario( $dbh, $idu ){
 		//Devuelve el rol de un usuario dado su id
 		$q = "select r.id as id, r.name nombre, r.display_name as rol, r.description as descripcion 
-		from roles r, role_user ru where ru.role_id = r.id and ru.user_id = $idu";
+		from roles r, users u where u.role_id = r.id and u.id = $idu";
 		$data_user = mysqli_fetch_array( mysqli_query( $dbh, $q ) );
 
 		return $data_user;
@@ -265,8 +266,9 @@
 	}
 
 	/* ----------------------------------------------------------------------------------- */
-	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
+	/* Solicitudes POST al servidor para procesar información de Usuarios */
 	/* ----------------------------------------------------------------------------------- */
+
 	//Inicio de sesión
 	if( isset( $_SESSION["login"] ) ){
 		$idu = $_SESSION["user"]["id"];
@@ -278,7 +280,38 @@
 		//include( "bd.php" );
 		unset( $_SESSION["login"] );
 		echo "<script> window.location = 'index.php'</script>";		
-	}	
+	}
+
+	/* ----------------------------------------------------------------------------------- */
+	//Creación de nuevo usuario administrador
+	if( isset( $_GET["nusuario"] ) ){
+
+		include ("bd.php");
+
+		$usuario["nombre"] 		= $_POST["nombre"];
+		$usuario["apellido"] 	= $_POST["apellido"];
+		$usuario["email"] 		= $_POST["email"];
+		$usuario["rol"] 		= $_POST["rol"];
+
+		if( emailDisponible( $dbh, "users", "email", $usuario["email"], "", "" ) ){
+
+			$idu = agregarUsuario( $dbh, $usuario );
+
+			if( ( $idu != 0 ) && ( $idu != -1 ) ){
+				echo "<script> window.location = '../users.php?agregar_usuario-exito'</script>";
+			}else $y=1;
+				echo "<script> window.location = '../users.php?agregar_usuario-exito'</script>";
+			
+		}else{
+			echo "<script> window.location = '../users.php?agregar_usuario-emailnodisponible'</script>";
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
+
+	/* ----------------------------------------------------------------------------------- */
+	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
+	/* ----------------------------------------------------------------------------------- */
+	
 	/* ----------------------------------------------------------------------------------- */
 	//Modificar datos de usuario. Bloque: contraseña (asinc)
 	if( isset( $_POST["mod_passw"] ) ){

@@ -69,8 +69,10 @@
 		
         $ido = $_GET["order-id"];
         $data_o = obtenerOrdenPorId( $dbh, $ido, "full" );
-        $dorden = $data_o["detalle"];
-        $orden 	= obtenerOrdenActualizada( $data_o["orden"], $dorden );
-        $iconoe = obtenerIconoEstado( $orden["estado"], "fa-2x" );
+        if( $data_o["orden"] ){
+	        $dorden = $data_o["detalle"];
+	        $orden 	= obtenerOrdenActualizada( $data_o["orden"], $dorden );
+	        $iconoe = obtenerIconoEstado( $orden["estado"], "fa-2x" );
+    	}
     }
 ?>

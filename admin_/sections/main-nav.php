@@ -55,9 +55,6 @@
             <li>
                 <a href="client-groups.php"></i>Grupos</a>
             </li>
-            <li>
-                <a href="new-client.php">Agregar clientes</a>
-            </li>
         </ul>
       </li>
       <li><a href="orders.php"><i class="fa fa-file-text-o fa-fw"></i>Pedidos</a>

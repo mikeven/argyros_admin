@@ -12,7 +12,6 @@
     include( "database/data-products.php" );
     include( "fn/fn-orders.php" );
    
-    
     checkSession( '' );
 ?>
 <!DOCTYPE html>
@@ -73,176 +72,192 @@
 
   <body class="nav-md">
     <div class="container body">
-      <div class="main_container">
+        <div class="main_container">
         
-        <?php include("sections/main-nav.php"); ?>
+            <?php include("sections/main-nav.php"); ?>
 
-        <?php include("sections/top-nav.php"); ?>
+            <?php include("sections/top-nav.php"); ?>
 
-        <!-- page content -->
-        <div class="right_col" role="main">
-          <div class="">
-            
-            <div class="page-title">
-              <div class="title_left">
-                <h3>Pedido</h3>
-              </div>
-
-              <!--<div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>-->
-            
-            </div>
-
-            <div class="clearfix"></div>
-
-            <div class="row">
-              
-              <div class="col-md-4 col-sm-6 col-xs-12">
+            <!-- page content -->
+            <div class="right_col" role="main">
                 
-                <div class="x_panel">
-                  
-                  <div class="x_title">
-                    <h2>Datos del pedido</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <?php echo $iconoe; ?> 
-                    </ul>
+                <div class="">
+                
+                    <div class="page-title">
+                      <div class="title_left">
+                        <h3>Pedido</h3>
+                      </div>
+
+                      <!--<div class="title_right">
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                          <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                              <button class="btn btn-default" type="button">Go!</button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>-->
+                    
+                    </div>
+
                     <div class="clearfix"></div>
-                  </div>
-                  
-                  <div class="x_content">
-                    
-                    <div class="form-group">
-                        <label class="control-label">Pedido: </label> <?php echo "#".$orden["id"]; ?>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Fecha: </label> <?php echo $orden["fecha"]; ?>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label">Ítems: </label> <?php echo $orden["ncant_items"]; ?>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="control-label">Total estimado: </label> 
-                        $<span id="monto_total_orden"><?php echo $orden["total_actualizado"]; ?></span>
-                        <input type="hidden" id="previo_total_orden" value="<?php echo $orden["total"]; ?>">
-                    </div>
+                    <div class="row">
+                      
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            
+                            <div class="x_panel">
+                                <?php if( isset( $orden ) ) { ?>
+                                    <div class="x_title">
+                                        <h2>Datos del pedido</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <?php echo $iconoe; ?> 
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                  
+                                    <div class="x_content">
+                                        
+                                        <div class="form-group">
+                                            <label class="control-label">Pedido: </label> <?php echo "#".$orden["id"]; ?>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Fecha: </label> <?php echo $orden["fecha"]; ?>
+                                        </div>
 
-                    <div class="form-group">
-                        <label class="control-label">Estado: </label> <?php echo $orden["estado"]; ?>
-                    </div>
-                    <?php if ( $orden["procesada"] ) {?>
-                        <div class="form-group">
-                            <span>Monto inicial: $<?php echo $orden["total"]; ?></span>   
-                        </div> 
-                    <?php } ?>
-                    <hr>
+                                        <div class="form-group">
+                                            <label class="control-label">Ítems: </label> <?php echo $orden["ncant_items"]; ?>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="control-label">Total estimado: </label> 
+                                            $<span id="monto_total_orden"><?php echo $orden["total_actualizado"]; ?></span>
+                                            <input type="hidden" id="previo_total_orden" value="<?php echo $orden["total"]; ?>">
+                                        </div>
 
-                    <?php if( $orden["estado"] == "confirmado" || $orden["estado"] == "entregado" ) { ?>
-                        <div><b>Observaciones del cliente: </b></div>
-                        <div><?php echo $orden["client_note"]?> </div>
-                    <?php } ?>
-                    <?php if( $orden["estado"] == "entregado" ) { ?>
-                        <div><b>Observaciones del administrador: </b></div>
-                        <div><?php echo $orden["admin_note"]?> </div>
-                    <?php } ?>
+                                        <div class="form-group">
+                                            <label class="control-label">Estado: </label> <?php echo $orden["estado"]; ?>
+                                        </div>
+                                        <?php if ( $orden["procesada"] ) {?>
+                                            <div class="form-group">
+                                                <span>Monto inicial: $<?php echo $orden["total"]; ?></span>   
+                                            </div> 
+                                        <?php } ?>
+                                        <hr>
 
-                    <hr>
-                    <div class="form-group">
-                        <label class="control-label">Cliente: </label> 
-                        <?php echo $orden["nombre"]." ".$orden["apellido"]; ?>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Grupo cliente: </label> 
-                        <?php echo $orden["grupo_cliente"]; ?>
-                    </div>
-                    <?php if ( $orden["estado"] == "pendiente" ) { ?>
-                    <hr>
-                    <div class="form-group btn_accion_pedido">
-                        <a href="#!">
-                            <button id="r_pedido" type="button" class="btn btn-info btn-xs">Revisar</button>
-                        </a> 
-                    </div>
+                                        <?php if( $orden["estado"] == "confirmado" || $orden["estado"] == "entregado" ) { ?>
+                                            <div><b>Observaciones del cliente: </b></div>
+                                            <div><?php echo $orden["client_note"]?> </div>
+                                        <?php } ?>
+                                        <?php if( $orden["estado"] == "entregado" ) { ?>
+                                            <div><b>Observaciones del administrador: </b></div>
+                                            <div><?php echo $orden["admin_note"]?> </div>
+                                        <?php } ?>
 
-                    <div class="form-group btn_accion_pedido" style="margin-left:20px;">
-                        <a href="#!">
-                            <button id="cnf_pedido" type="button" 
-                            class="btn btn-success btn-xs" data-toggle="modal" 
-                            data-target="#confirmar-accion">Confirmar</button>
-                        </a> 
-                    </div>
-                    <div class="form-group btn_accion_pedido" style="margin-left:20px;">
-                        <a href="#!">
-                            <button id="can_pedido" type="button" 
-                            class="btn btn-danger btn-xs" data-toggle="modal" 
-                            data-target="#confirmar-accion">Cancelar</button>
-                        </a> 
-                    </div>
-                    
-                    <?php } ?>
-                    
-                    <?php if ( $orden["estado"] == "confirmado" ) { ?>
-                        <hr>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label class="control-label">Cliente: </label> 
+                                            <?php echo $orden["nombre"]." ".$orden["apellido"]; ?>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Grupo cliente: </label> 
+                                            <?php echo $orden["grupo_cliente"]; ?>
+                                        </div>
+                                        <?php if ( $orden["estado"] == "pendiente" ) { ?>
+                                        <hr>
+                                        <div class="form-group btn_accion_pedido">
+                                            <a href="#!">
+                                                <button id="r_pedido" type="button" class="btn btn-info btn-xs">Revisar</button>
+                                            </a> 
+                                        </div>
 
-                        <div class="accion_observaciones">
-                          <textarea id="admin_obs" class="form-control" rows="3" placeholder="Observaciones" name="observaciones"></textarea>
-                        </div>
+                                        <div class="form-group btn_accion_pedido" style="margin-left:20px;">
+                                            <a href="#!">
+                                                <button id="cnf_pedido" type="button" 
+                                                class="btn btn-success btn-xs" data-toggle="modal" 
+                                                data-target="#confirmar-accion">Confirmar</button>
+                                            </a> 
+                                        </div>
+                                        <div class="form-group btn_accion_pedido" style="margin-left:20px;">
+                                            <a href="#!">
+                                                <button id="can_pedido" type="button" 
+                                                class="btn btn-danger btn-xs" data-toggle="modal" 
+                                                data-target="#confirmar-accion">Cancelar</button>
+                                            </a> 
+                                        </div>
+                                        
+                                        <?php } ?>
+                                        
+                                        <?php if ( $orden["estado"] == "confirmado" ) { ?>
+                                            <hr>
 
-                        <div class="form-group btn_accion_pedido">
-                            <a href="#!">
-                                <button id="e_pedido" type="button" 
-                                class="btn btn-info btn-xs" data-toggle="modal" 
-                                data-target="#confirmar-accion">Marcar como entregado</button>
-                            </a> 
-                        </div>
+                                            <div class="accion_observaciones">
+                                              <textarea id="admin_obs" class="form-control" rows="3" placeholder="Observaciones" name="observaciones"></textarea>
+                                            </div>
+
+                                            <div class="form-group btn_accion_pedido">
+                                                <a href="#!">
+                                                    <button id="e_pedido" type="button" 
+                                                    class="btn btn-info btn-xs" data-toggle="modal" 
+                                                    data-target="#confirmar-accion">Marcar como entregado</button>
+                                                </a> 
+                                            </div>
+                                            
+                                        <?php } ?>
+
+                                        <div id="res_serv"></div>
+                                        <?php include( "sections/modals/confirm_action.php" ); ?>
+                                      
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="x_title">Registro no encontrado</div>
+                                <?php } ?>   
+                            </div>
                         
-                    <?php } ?>
-                    <div id="res_serv"></div>
-                    <?php include( "sections/modals/confirm_action.php" ); ?>
-                  
-                  </div>
-                
+                        </div>
+
+                        <div class="col-md-8 col-sm-5 col-xs-12">
+                            
+                            <?php if( isset( $orden ) ) { ?>
+                                
+                                <div class="x_panel">
+
+                                  <div class="x_title">
+                                    <h2>Detalle de pedido</h2>
+                                    <div class="clearfix"></div>
+                                  </div>
+                                  <div class="x_content">
+                                    <?php include( "sections/tables/table-order-details.php" );?> 
+                                  </div>                                  
+                                
+                                </div>
+
+                            <?php } ?>
+                          
+                        </div>
+
+                    </div>
+
                 </div>
 
-              </div>
-
-              <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Detalle de pedido</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <?php include( "sections/tables/table-order-details.php" );?> 
-                  </div>
-                </div> 
-              </div>
-
             </div>
-          </div>
+
+            <!-- /page content -->
+
+            <!-- footer content -->
+            <?php include( "sections/footer.php" ); ?>
+            <!-- /footer content -->
+
+            <button type="button" class="btn btn-default source hidden" onclick="new PNotify({
+                title: '',
+                text: 'That thing that you were trying to do worked!',
+                type: 'success',
+                styling: 'bootstrap3'
+            });">Success</button>
+
         </div>
-        <!-- /page content -->
 
-        <!-- footer content -->
-        <?php include( "sections/footer.php" ); ?>
-        <!-- /footer content -->
-
-        <button type="button" class="btn btn-default source hidden" onclick="new PNotify({
-            title: '',
-            text: 'That thing that you were trying to do worked!',
-            type: 'success',
-            styling: 'bootstrap3'
-        });">Success</button>
-
-      </div>
     </div>
 
     <!-- jQuery -->

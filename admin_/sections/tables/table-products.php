@@ -31,7 +31,8 @@
       ?>
       <tr>
         <td><img src="<?php echo $url_img;?>" width="60px"></td>
-        <td><?php echo $p["id"]; ?>
+        <td>
+          <a class="primary" href="<?php echo $lnk_p; ?>"><?php echo $p["id"]; ?></a>
         </td>
         <td>
           <?php echo $p["codigo"]; ?>

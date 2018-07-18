@@ -94,34 +94,36 @@
                   </div>
                   <div class="x_content">
                     <form id="frm_nuser" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="database/data-users.php?nusuario" method="post">
+                      action="database/data-user.php?nusuario" method="post">
                       
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input name="nombre" type="text" class="form-control" placeholder="Nombre">
+                              <input name="nombre" type="text" class="form-control" 
+                              placeholder="Nombre" required="">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Apellido </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input name="nombre" type="text" class="form-control" placeholder="Apellido">
+                              <input name="apellido" type="text" class="form-control" 
+                              placeholder="Apellido">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Email </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input name="nombre" type="text" class="form-control" placeholder="Email">
+                                <input name="email" type="text" class="form-control" 
+                                placeholder="Email" required="">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Rol </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <select name="rol" class="form-control selectpicker">
-                                <option disabled>Seleccione</option>
+                              <select name="rol" class="form-control selectpicker" required title="Seleccione">
                                 <?php foreach ( $roles as $r ) { ?>
                                   <option value="<?php echo $r["id"] ?>"><?php echo $r["nombre_rol"] ?></option>
                                 <?php } ?>
@@ -220,14 +222,21 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
+
     <!-- PNotify -->
     <script src="vendors/pnotify/dist/pnotify.js"></script>
     <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="js/fn-ui.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/fn-user.js"></script>
+    <script src="js/fn-ui.js"></script>
+
+    <?php include( "fn/fn-users.php" ); ?>
+
   </body>
 </html>

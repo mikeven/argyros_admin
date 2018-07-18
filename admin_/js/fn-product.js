@@ -40,10 +40,11 @@ function editarProducto(){
 
 /* --------------------------------------------------------- */
 function cargarSubcategorias( regs ){
-	var lista = "";
+	var lista = "<option value=''>Seleccione</option>";
 	$.each( regs, function( i, v ) {
 		lista += "<option value=" + v.id + ">" + v.name + "</option>"; 
 	});
+
 	$( lista ).appendTo("#val_subc");
 	//alert(lista);
 }

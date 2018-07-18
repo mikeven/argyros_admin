@@ -18,6 +18,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerRegistroOrdenPorId( $dbh, $ido ){
 		//Devuelve el registro de una orden dado su id
+		$data_orden = NULL;
+		
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
 		o.client_note, o.admin_note, date_format( o.created_at,'%d/%m/%Y') as fecha, c.id as cid, 
 		c.first_name nombre, c.last_name as apellido, c.email as email, g.name as grupo_cliente 
@@ -25,7 +27,10 @@
 		where o.user_id = c.id and c.client_group_id = g.id and o.id = $ido";
 
 		$data = mysqli_query( $dbh, $q );
-		return mysqli_fetch_array( $data );
+		if( $data ) 
+			$data_orden = mysqli_fetch_array( $data );
+
+		return $data_orden;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDetalleOrden( $dbh, $ido ){
@@ -75,7 +80,7 @@
 	function obtenerOrdenPorId( $dbh, $ido, $param ){
 		//Devuelve el contenido de una orden, su detalle dado su id
 		$orden["orden"] = obtenerRegistroOrdenPorId( $dbh, $ido );
-		if( $param == "full" ){
+		if( $param == "full" && $orden["orden"] ){
 			$orden["detalle"] = obtenerDetalleOrden( $dbh, $ido );
 			$orden["detalle"] = obtenerImagenesProductoOrden( $dbh, $orden["detalle"] );
 		}

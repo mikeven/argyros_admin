@@ -131,6 +131,7 @@
                                   placeholder="Código de producto" required="" data-parsley-available="">
                                 </div>
                               </div>
+
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
@@ -138,11 +139,11 @@
                                   placeholder="Nombre de producto" required="">
                                 </div>
                               </div>
+
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">País de origen </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="pais" class="form-control selectpicker">
-                                    <option disabled>Seleccione</option>
+                                  <select name="pais" class="form-control selectpicker" title="Seleccione">
                                     <?php foreach ( $paises as $p ) { ?>
                                       <option value="<?php echo $p["id"] ?>"><?php echo $p["name"] ?></option>
                                     <?php } ?>
@@ -176,8 +177,9 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoría </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="selcateg" name="categoria" class="form-control selectpicker" required="">
-                                    <option disabled>Seleccione</option>
+                                  <select id="selcateg" name="categoria" class="form-control selectpicker" 
+                                  required title="Seleccione">
+                                    
                                     <?php foreach ( $categorias as $c ) { ?>
                                       <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                                     <?php } ?>
@@ -188,7 +190,9 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="val_subc" name="subcategoria" class="form-control" required="">
+                                  <select id="val_subc" name="subcategoria" class="form-control" 
+                                  title="Seleccione" required>
+                                  <option value="">Seleccione</option>
                                     
                                   </select>
                                 </div>
@@ -197,7 +201,8 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="smaterial" name="material" class="form-control selectpicker" required="">
+                                  <select id="smaterial" name="material" class="form-control selectpicker" title="Seleccione" required>
+                                    <option></option>
                                     <?php foreach ( $materiales as $m ) { ?>
                                       <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>
                                     <?php } ?>
