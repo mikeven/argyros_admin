@@ -198,7 +198,7 @@
           }
         });
 
-        table.columns( '.datesort' ).order( 'desc' ).draw();
+        //table.columns( '.datesort' ).order( 'desc' ).draw();
 
       });
     </script>

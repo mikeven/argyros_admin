@@ -25,7 +25,7 @@
         <td><?php echo $c["pais"]; ?></td>
         <td><?php echo $c["ciudad"]; ?></td>
         <td>
-          <select class="form-control selec_grupo_perfil" data-idc="<?php echo $c["id"]; ?>">
+          <select class="form-control selec_grupo_perfil selectpicker" data-idc="<?php echo $c["id"]; ?>">
             <option disabled>Seleccione</option>
             <?php foreach ( $grupos as $g ) { ?>
               <option <?php echo sop( $c["grupo"], $g["name"] ); ?> 

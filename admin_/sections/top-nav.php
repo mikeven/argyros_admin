@@ -9,17 +9,19 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="">
           <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <img src="images/img.jpg" alt="">Alejandro Orvieto
+            <img src="images/img.jpg" alt="">
+            <?php echo $uargyros["first_name"]." ".$uargyros["last_name"]; ?>
             <span class=" fa fa-angle-down"></span>
           </a>
           <ul class="dropdown-menu dropdown-usermenu pull-right">
-            <li><a href="javascript:;"> Perfil</a></li>
+            <!-- <li><a href="javascript:;"> Perfil</a></li> -->
             <li><a href="home.php?logout"><i class="fa fa-sign-out pull-right"></i> Salir</a></li>
           </ul>
         </li>
 
-        <li role="presentation" class="dropdown">
-          <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+        <li role="presentation" class="dropdown hidden">
+          <a href="javascript:;" class="dropdown-toggle info-number" 
+          data-toggle="dropdown" aria-expanded="false">
             <i class="fa fa-envelope-o"></i>
             <span class="badge bg-green">1</span>
           </a>
@@ -28,7 +30,7 @@
               <a>
                 <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                 <span>
-                  <span>Alejandro Orvieto</span>
+                  <span><?php echo $uargyros["first_name"]." ".$uargyros["last_name"]; ?></span>
                   <span class="time">3 mins ago</span>
                 </span>
                 <span class="message">

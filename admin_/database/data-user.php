@@ -22,7 +22,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function checkSession( $page ){
-		if( isset( $_SESSION["login"] ) ){
+		if( isset( $_SESSION["login-adm"] ) ){
 			if( $page == "index" ) 
 				echo "<script> window.location = 'home.php'</script>";
 		}else{
@@ -123,8 +123,8 @@
 		
 		if( $nrows > 0 ){
 			if( esAdministrador ( $lnk, $data_user["id"] ) ){
-				$_SESSION["login"] = 1;
-				$_SESSION["user"] = $data_user;
+				$_SESSION["login-adm"] = 1;
+				$_SESSION["user-adm"] = $data_user;
 				//registrarInicioSesion( $data_user, $dbh );
 				$idresult = 1;
 			}else{
@@ -270,15 +270,15 @@
 	/* ----------------------------------------------------------------------------------- */
 
 	//Inicio de sesión
-	if( isset( $_SESSION["login"] ) ){
-		$idu = $_SESSION["user"]["id"];
+	if( isset( $_SESSION["login-adm"] ) ){
+		$idu = $_SESSION["user-adm"]["id"];
 	}else $idu = NULL;
 	
 	/* ----------------------------------------------------------------------------------- */
 	//Cierre de sesión
 	if( isset( $_GET["logout"] ) ){
 		//include( "bd.php" );
-		unset( $_SESSION["login"] );
+		unset( $_SESSION["login-adm"] );
 		echo "<script> window.location = 'index.php'</script>";		
 	}
 

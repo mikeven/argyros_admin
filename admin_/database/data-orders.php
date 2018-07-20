@@ -63,6 +63,7 @@
 				$monto += $item["disponible"] * $item["price"];
 			}
 		}
+
 		return $monto;		
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -144,19 +145,22 @@
 	function notificarActualizacionPedido( $dbh, $paso_pedido, $ido, $total ){
 		//Prepara los datos necesarios para enviar notificación por email acerca de cambios en estados de pedido
 		include( "../fn/fn-mailing.php" );
+		ini_set( 'display_errors', 1 );
 		
 		$orden = obtenerRegistroOrdenPorId( $dbh, $ido );
 		$orden["total_orden"] = $total;
 
 		if( $paso_pedido == "pedido_revisado" ){
-			enviarMensajeEmail( "pedido_revisado_usuario", $orden, $orden["email"] );
+			$res = enviarMensajeEmail( "pedido_revisado_usuario", $orden, $orden["email"] );
 		}
 		if( $paso_pedido == "pedido_entregado" ){
-			enviarMensajeEmail( "pedido_entregado_usuario", $orden, $orden["email"] );
+			$res = enviarMensajeEmail( "pedido_entregado_usuario", $orden, $orden["email"] );
 		}
 		if( $paso_pedido == "pedido_confirmado_a" ){
-			enviarMensajeEmail( "pedido_confirmado_usuario", $orden, $orden["email"] );
+			$res = enviarMensajeEmail( "pedido_confirmado_usuario", $orden, $orden["email"] );
 		}
+
+		return $res;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Líneas */
@@ -164,17 +168,24 @@
 	
 	//Registrar revisión de pedido
 	if( isset( $_POST["rev_ped"] ) ){
-		include( "bd.php" );	
+		include( "bd.php" );
+		ini_set( 'display_errors', 1 );
 		parse_str( $_POST["rev_ped"], $revision );
 		
 		$idr = registrarRevisionPedido( $dbh, $revision["regrev"] );
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
 			actualizarEstadoPedido( $dbh, $_POST["idp"], "revisado", "no-leido" );
-			notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], $_POST["monto_orden"] );
-			$res["exito"] = 1;
-			$res["mje"] = "La respuesta del pedido ha sido enviada";
+			$renvio = notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], 
+													$_POST["monto_orden"] );
+			if( $renvio["exito"] == 1 ){
+				$res["exito"] = 1;
+				$res["mje"] = "La respuesta del pedido ha sido enviada";
+			}else{
+				$res["exito"] = -2;
+				$res["mje"] = "Error al enviar notificación por email: $res[msg]";
+			}
 		} else {
-			$res["exito"] = 0;
+			$res["exito"] = -2;
 			$res["mje"] = "Error al actualizar pedido";
 		}
 
@@ -187,17 +198,19 @@
 		$estado = $_POST["status"];	
 		$idp = $_POST["conf_ped"];
 		$idr = actualizarEstadoPedido( $dbh, $idp, $estado, "no-leido" );
-		$monto_cnf = calcularTotalOrdenConfirmada( obtenerDetalleOrden( $dbh, $idp ) );
 		
 		if( $estado == "confirmado" ){
 			//Al confirmar un pedido desde el administrador se asignan disponibles todas las cantidades
 			actualizarDisponibilidadItems( $dbh, $idp );
+			$monto_cnf = calcularTotalOrdenConfirmada( obtenerDetalleOrden( $dbh, $idp ) );
 			notificarActualizacionPedido( $dbh, "pedido_confirmado_a", $idp, $monto_cnf );
 			$m1 = "confirmado"; $m2 = "confirmar";
 		}
 		if( $estado == "entregado" ){
-			//Se actualiza el pedido con las observaciones del administrador y se notifica por email al cliente
+			//Se actualiza el pedido con las observaciones del administrador y 
+			//se notifica por email al cliente
 			ingresarObservacionesAdministrador( $dbh, $idp, $_POST["nota"] );
+			$monto_cnf = calcularTotalOrdenConfirmada( obtenerDetalleOrden( $dbh, $idp ) );
 			notificarActualizacionPedido( $dbh, "pedido_entregado", $idp, $monto_cnf );
 			$m1 = "entregado";  $m2 = "entregar";
 		}

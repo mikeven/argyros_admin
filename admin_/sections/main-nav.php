@@ -7,7 +7,7 @@
 <div class="clearfix"></div>
 
 <?php 
-  $uargyros = $_SESSION["user"];
+  $uargyros = $_SESSION["user-adm"];
   include( "welcome-profile.php" ); 
 ?>
 
