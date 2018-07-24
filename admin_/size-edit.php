@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Editar tallas
+     * Argyros Admin - Edición de datos de tallas
      * 
      */
     session_start();

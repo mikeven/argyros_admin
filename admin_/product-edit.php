@@ -1,6 +1,6 @@
 <?php
     /*
-    * Argyros Admin - Edición producto
+    * Argyros Admin - Edición de datos de producto
     * 
     */
     session_start();

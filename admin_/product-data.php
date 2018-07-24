@@ -135,21 +135,26 @@
                           
                             <div class="col-md-4 col-sm-4 col-xs-12">
                               
-                                <div class="form-group">
-                                    <label class="control-label">Producto: </label> <?php echo $producto["nombre"]; ?>
+                                <div class="data-product-label">
+                                    <label class="control-label">
+                                        Producto: </label> <?php echo $producto["nombre"]; ?>
                                 </div>
-                                <div class="form-group">
+                                <div class="data-product-label">
                                     <label class="control-label">Descripción: </label> <?php echo $producto["descripcion"]; ?>
                                 </div>
-                                <div class="form-group">
+                                <div class="data-product-label">
                                     <label class="control-label">Categoría: 
                                     </label> <?php echo $producto["categoria"]." > ".$producto["subcategoria"]; ?>
                                 </div>
-                                <div class="form-group">
+                                <div class="data-product-label">
                                     <label class="control-label">Material: </label> <?php echo $producto["material"]; ?>
                                 </div>
-                                <div class="form-group">
+                                <div class="data-product-label">
                                     <label class="control-label">País: </label> <?php echo $producto["pais"]; ?>
+                                </div>
+                                <div class="data-product-label">
+                                    <label class="control-label">Fecha de creación: </label> 
+                                    <?php echo $producto["fcreacion"]; ?>
                                 </div>
                                 
                                 <div class="ln_solid"></div>

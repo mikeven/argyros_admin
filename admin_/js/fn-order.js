@@ -113,7 +113,7 @@ function enviarRevisionPedido(){
 /* --------------------------------------------------------- */
 function actualizarPedido( estado ){
 	//Invoca al servidor para actualizar un pedido: Cambio de estatus
-	var tit_notif = "Actualización de pedido"
+	var tit_notif = "Actualización de pedido";
 	var ido = $("#idpedido").val();
 	var observacion = $("#admin_obs").val();
 

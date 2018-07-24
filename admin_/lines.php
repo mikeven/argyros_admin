@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Lines
+     * Argyros Admin - Líneas
      * 
      */
     session_start();

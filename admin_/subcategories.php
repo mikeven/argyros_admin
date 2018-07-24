@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Inicio
+     * Argyros Admin - Subcategorías
      * 
      */
     session_start();

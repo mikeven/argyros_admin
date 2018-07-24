@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Órdenes
+     * Argyros Admin - Pedidos
      * 
      */
     session_start();

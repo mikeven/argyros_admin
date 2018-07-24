@@ -50,7 +50,7 @@
 		$q = "select p.id, p.code as codigo, p.name as nombre, p.description as descripcion, 
 		p.category_id as cid, p.subcategory_id as scid, p.visible as visible, 
 		co.id as idpais, co.name as pais, ca.name as categoria, sc.name as subcategoria, 
-		m.id as idmaterial, m.name as material 
+		m.id as idmaterial, m.name as material, date_format(p.created_at,'%d/%m/%Y') as fcreacion 
 		FROM products p, categories ca, subcategories sc, countries co, materials m 
 		where p.category_id = ca.id and p.subcategory_id = sc.id and p.material_id = m.id 
 		and p.country_id = co.id and p.id = $idp";
@@ -179,9 +179,9 @@
 	function agregarProducto( $dbh, $producto ){
 		//Guarda el registro de un producto
 		$q = "insert into products ( code, name, description, country_id, category_id, 
-		subcategory_id, material_id ) values ( '$producto[codigo]', '$producto[nombre]', 
+		subcategory_id, material_id, created_at ) values ( '$producto[codigo]', '$producto[nombre]', 
 		'$producto[descripcion]', $producto[pais], $producto[categoria], $producto[subcategoria], 
-		$producto[material] )";
+		$producto[material], NOW() )";
 
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );

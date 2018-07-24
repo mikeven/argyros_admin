@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Editar color
+     * Argyros Admin - Edición de datos de color
      * 
      */
     session_start();

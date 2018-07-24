@@ -63,7 +63,7 @@
         <a href="users.php"><i class="fa fa-users fa-fw"></i>Usuarios</a>
       </li>
       <li>
-        <a href="#"><i class="fa fa-gear"></i> Configuración</a>
+        <a href="settings.php"><i class="fa fa-gear"></i> Configuración</a>
       </li>
     </ul>
   </div>  

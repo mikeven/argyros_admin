@@ -1,6 +1,6 @@
 <?php
   /*
-   * Argyros Admin - Detalle del producto
+   * Argyros Admin - Detalle de producto
    * 
    */
     session_start();
@@ -409,7 +409,7 @@
       
       $(document).ready(function() {
         $('#frm_ndetproduct').parsley().on('form:success', function() {
-          alert("EXITO");
+          
           if( checkDetalleProducto() == 0 ){
             agregarDetalleProducto();
           };

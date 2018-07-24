@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Editar trabajo
+     * Argyros Admin - Edición de datos de trabajo
      * 
      */
     session_start();

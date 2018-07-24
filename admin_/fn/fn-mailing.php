@@ -26,6 +26,7 @@
 		$mail->Password = "sendargyros";
 		$mail->SetFrom('envios@argyros.com.pa', 'Argyros');
 		$mail->Subject = $asunto;
+		$mail->CharSet = 'UTF-8';
 		$mail->MsgHTML( $mensaje );
 		$mail->AddAddress( $to );
 
