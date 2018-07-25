@@ -59,7 +59,26 @@ function borrarGrupoCliente( idg ){
             }
         }
     });
-
+}
+/* --------------------------------------------------------- */
+function borrarCliente( idc ){
+    //Invocación al servidor para eliminar un grupo de clientes
+    $.ajax({
+        type:"POST",
+        url:"database/data-clients.php",
+        data:{ id_elim_cl: idc },
+        success: function( response ){
+            console.log( response );
+            res = jQuery.parseJSON(response);
+            if( res.exito == 1 ){ 
+                notificar( "Cliente", res.mje, "success" );
+                setTimeout( function() { window.location = "clients.php"; }, 3000 );
+            }
+            if( res.exito == -1 ){ 
+                notificar( "Borrar cliente", res.mje, "error" );
+            }
+        }
+    });
 }
 /* --------------------------------------------------------- */
 function iniciarBotonBorrarGrupoCliente(){
@@ -67,6 +86,14 @@ function iniciarBotonBorrarGrupoCliente(){
     iniciarVentanaModal( "btn_borrar_grupo_cliente", "btn_canc", 
                          "Borrar grupo de cliente", "", 
                          "¿Confirma que desea borrar grupo?", 
+                         "Confirmar acción" );
+}
+/* --------------------------------------------------------- */
+function iniciarBotonBorrarCliente(){
+    //Asigna los textos de la ventana de confirmación para borrar un cliente
+    iniciarVentanaModal( "btn_borrar_cliente", "btn_canc", 
+                         "Borrar cliente", "", 
+                         "¿Confirma que desea borrar cliente?", 
                          "Confirmar acción" );
 }
 /* --------------------------------------------------------- */
@@ -81,7 +108,7 @@ $( document ).ready(function() {
         var idc = $(this).attr("data-idc");
         cambiarGrupoCliente( idc, valor );
     });
-
+    /* ................................................................ */
     $("#tabla_datos-gclientes").on( "click", ".elim-gcliente", function(){
         $("#ig-grupo-e").val( $(this).attr( "data-idg" ) );
         iniciarBotonBorrarGrupoCliente();
@@ -92,7 +119,18 @@ $( document ).ready(function() {
             borrarGrupoCliente( idg );
         });
     });
+    /* ................................................................ */
+    $("#tabla_datos-clientes").on( "click", ".elim-cliente", function(){
+        $("#id-cliente-e").val( $(this).attr( "data-idc" ) );
+        iniciarBotonBorrarCliente();
 
+        $('#btn_borrar_cliente').on('click', function(){
+            var idc = $("#id-cliente-e").val();
+            $("#btn_canc").click();
+            borrarCliente( idc );
+        });
+    });
+    /* ................................................................ */
     
 });
 

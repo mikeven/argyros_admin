@@ -91,7 +91,7 @@
 		FROM product_details dp, treatments t, colors c 
 		where dp.color_id = c.id and dp.treatment_id = t.id and dp.product_id = $idp 
 		order by dp.id desc";
-		//echo $q;
+		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
 		return $lista;		
@@ -99,9 +99,9 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerRegistroDetalleProductoPorId( $dbh, $idd ){
 		//Devuelve un registro de detalle de producto dado su id
-		$q = "select dp.id as id, c.id as color, t.id as bano, dp.price_type as tipo_precio, 
-		dp.weight as peso, dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
-		dp.product_id as pid, dp.weight_price_value as precio_peso 
+		$q = "select dp.id as id, dp.product_id as idp, c.id as color, t.id as bano, 
+		dp.price_type as tipo_precio, dp.weight as peso, dp.piece_price_value as precio_pieza, 
+		dp.manufacture_value as precio_mo, dp.product_id as pid, dp.weight_price_value as precio_peso 
 		FROM product_details dp, treatments t, colors c 
 		where dp.color_id = c.id and dp.treatment_id = t.id and dp.id = $idd";
 		
@@ -113,7 +113,6 @@
 		//Devuelve los registros de imágenes de dado el id de producto
 		$q = "select i.path as image FROM images i, product_details d 
 		where i.product_detail_id = d.id and d.product_id = $id";
-		//echo $q;
 
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -126,7 +125,7 @@
 		if( $limite != NULL ) $l = "LIMIT $limite";
 		
 		$q = "select id, path from images where product_detail_id = $idd $l";
-		//echo $q;
+		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
 		return $lista;
@@ -135,7 +134,7 @@
 	function obtenerImagenDetalleProductoPorId( $dbh, $id_img ){
 		//Devuelve el registro de imagen de detalle de producto
 		$q = "select id, path from images where id = $id_img";
-		//echo $q;
+		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );
 	}
@@ -367,7 +366,6 @@
 		$q = "update size_product_detail set weight = $peso, adjustable = $tajustable 
 				where size_id = $idtalla and product_detail_id = $iddet";
 		
-		//echo $q;
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
@@ -467,6 +465,31 @@
 		$info["paths"] = $paths;
 		$info["html_markups"] = $html_markups;
 		return $info;	
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function tieneTallasDisponiblesProducto( $dbh, $idp ){
+		//Devuelve verdadero si hay registros de tallas disponibles en todos los detalles de un producto
+		$disponible = false;
+
+		$detalle = obtenerDetalleProductoPorId( $dbh, $idp );
+		foreach ( $detalle as $reg_det ) {
+			$tallas_det = obtenerTallasDetalleProducto( $dbh, $reg_det["id"] );
+			foreach ( $tallas_det as $t ) {
+				if( $t["visible"] == 1 ) $disponible = true;
+			}
+		}
+		return $disponible;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function actualizarDisponibilidadProductoPorAjuste( $dbh, $idp ){
+		//Chequea si todas las tallas de un producto están disponibles, marca como no diponible
+		//si no hay alguna talla disponible.
+		
+		if( tieneTallasDisponiblesProducto( $dbh, $idp ) == false ){
+			actualizarVisibilidadProducto( $dbh, $idp, 0 );
+		}else{
+			actualizarVisibilidadProducto( $dbh, $idp, 1 );
+		}
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function actualizarDisponibilidadTallaProducto( $dbh, $iddetprod, $idtalla, $estado ){
@@ -674,12 +697,17 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	//Ajuste de disponibilidad de producto dado el nivel 
-	if( isset( $_POST["ajuste_disp"] ) ){
+	if( isset( $_POST["ajuste_disp"] ) ){ 
+		//invoca: fn-product.js (actualizarDisponibilidadProducto)
 		include( "bd.php" );
 
-		if( $_POST["ajuste_disp"] == "talla" )
+		$detalle_p = obtenerRegistroDetalleProductoPorId( $dbh, $_POST["id_dp"] );
+
+		if( $_POST["ajuste_disp"] == "talla" ){
 			$idr = actualizarDisponibilidadTallaProducto( 
 				$dbh, $_POST["id_dp"], $_POST["id_dettalla"], $_POST["status"] );
+			actualizarDisponibilidadProductoPorAjuste( $dbh, $detalle_p["idp"] );
+		}
 
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
 			$res["exito"] = 1;

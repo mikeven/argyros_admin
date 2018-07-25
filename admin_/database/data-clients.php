@@ -50,6 +50,12 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function eliminarCliente( $dbh, $id ){
+		//Elimina un registro de cliente
+		$q = "delete from clients where id = $id";
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerGrupoPorId( $dbh, $idg ){
 		//Devuelve el registro del grupo dado por
 		
@@ -211,6 +217,20 @@
 			$res["exito"] = 1;
 			$res["mje"] = "Perfil eliminado con éxito";
 		}
+		echo json_encode( $res );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_POST["id_elim_cl"] ) ){
+		include( "bd.php" );	
+		
+		$res["exito"] = eliminarCliente( $dbh, $_POST["id_elim_cl"] );
+		
+		if( $res["exito"] == 1 ){			
+			$res["mje"] = "Cliente eliminado con éxito";
+		}else{
+			$res["mje"] = "Error al eliminar cliente";
+		}
+
 		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */

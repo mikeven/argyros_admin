@@ -94,6 +94,7 @@ function enviarRevisionPedido(){
 	var form_rev = $("#revision_pedido").serialize();
 	var ido = $("#idpedido").val();
 	var monto = $("#previo_total_orden").val();
+	
 	$.ajax({
         type:"POST",
         url:"database/data-orders.php",

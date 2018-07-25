@@ -49,7 +49,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDataProductoIdDetalle( $dbh, $id_detalle ){
 		//Devuelve los datos correspondientes a un detalle de pedido dado el id del detalle
-		$q = "select product_detail_id, size_id from order_details where id = $id_detalle";
+		$q = "select product_id, product_detail_id, size_id from order_details where id = $id_detalle";
 		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );
@@ -116,9 +116,11 @@
 	/* ----------------------------------------------------------------------------------- */
 	function ajustarDisponibilidadProducto( $dbh, $cant_disponible, $id_detalle_orden ){
 		//Hace no visible un producto si no está disponible
+
 		if( $cant_disponible == 0 ){
 			$datap = obtenerDataProductoIdDetalle( $dbh, $id_detalle_orden );
 			actualizarDisponibilidadTallaProducto( $dbh, $datap["product_detail_id"], $datap["size_id"], 0 );
+			actualizarDisponibilidadProductoPorAjuste( $dbh, $datap["product_id"] );
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */

@@ -235,13 +235,16 @@ function agregarImagenesDetalleProducto(){
 function actualizarDisponibilidadProducto( nivel, idp, iddp, iddettalla, estado ){
 	//Envía al servidor la petición de guardar las imágenes cargadas por el plugin. 
 	var tit_notif = "Actualización de producto";
+	
 	$.ajax({
         type:"POST",
         url:"database/data-products.php",
         data:{ ajuste_disp: nivel, id_p:idp, id_dp:iddp, id_dettalla:iddettalla, status:estado },
         success: function( response ){
-			res = jQuery.parseJSON(response);
 			console.log(response);
+
+			res = jQuery.parseJSON(response);
+			
 			if( res.exito == 1 ) 
 				notificar( tit_notif, res.mje, "success" );
 			else

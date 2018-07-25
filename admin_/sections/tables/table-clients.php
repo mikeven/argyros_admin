@@ -37,7 +37,12 @@
         <td><?php echo $c["fcreacion"]; ?></td>
         <td> <?php echo etiquetaEstadoCliente( $c["verificado"] ); ?> </td>
         <td><a href="<?php echo $lnk_e; ?>">Editar</a></td>
-        <td><a href="#!">Borrar</a></td>
+        <td>
+            <?php if( $c["verificado"] != 1 ) { ?>
+              <a href="#!" class="elim-cliente" data-toggle="modal" 
+              data-idc="<?php echo $c["id"]; ?>" data-target="#confirmar-accion">Borrar</a>
+            <?php } ?>
+        </td>
       </tr>
     <?php } ?>
   </tbody>
