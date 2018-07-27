@@ -81,6 +81,26 @@ function borrarCliente( idc ){
     });
 }
 /* --------------------------------------------------------- */
+function bloquearCliente( idc, bloqueo ){
+    //Invocación al servidor para bloquear/desbloquear clientes
+    $.ajax({
+        type:"POST",
+        url:"database/data-clients.php",
+        data:{ id_bloq_c: idc, accion_b: bloqueo },
+        success: function( response ){
+            console.log( response );
+            res = jQuery.parseJSON( response );
+            if( res.exito == 1 ){ 
+                notificar( "Cliente", res.mje, "success" );
+                setTimeout( function() { window.location = "clients.php"; }, 3000 );
+            }
+            if( res.exito == -1 ){ 
+                notificar( "Bloquear cliente", res.mje, "error" );
+            }
+        }
+    });
+}
+/* --------------------------------------------------------- */
 function iniciarBotonBorrarGrupoCliente(){
     //Asigna los textos de la ventana de confirmación para borrar un grupo de clientes
     iniciarVentanaModal( "btn_borrar_grupo_cliente", "btn_canc", 
@@ -94,6 +114,21 @@ function iniciarBotonBorrarCliente(){
     iniciarVentanaModal( "btn_borrar_cliente", "btn_canc", 
                          "Borrar cliente", "", 
                          "¿Confirma que desea borrar cliente?", 
+                         "Confirmar acción" );
+}
+/* --------------------------------------------------------- */
+function iniciarBotonBloquearCliente( accion ){
+    //Asigna los textos de la ventana de confirmación para bloquear/desbloquear un cliente
+
+    if( accion == 0 ){
+        tit = "Desbloquear "; txa = " desbloquear ";
+    }else{
+        tit = "Bloquear "; txa = " bloquear ";
+    }
+
+    iniciarVentanaModal( "btn_bloquear_cliente", "btn_canc", 
+                         tit + "cliente", "", 
+                         "¿Confirma que desea" + txa + "cliente?", 
                          "Confirmar acción" );
 }
 /* --------------------------------------------------------- */
@@ -131,7 +166,43 @@ $( document ).ready(function() {
         });
     });
     /* ................................................................ */
-    
+    $("#tabla_datos-clientes").on( "click", ".bloq-cliente", function(){
+        $("#id-cliente-b").val( $(this).attr( "data-idc" ) );
+        var accion = $(this).attr( "data-bl" );
+        iniciarBotonBloquearCliente( accion );
+
+        $('#btn_bloquear_cliente').on('click', function(){
+            var idc = $("#id-cliente-b").val();
+            $("#btn_canc").click();
+            bloquearCliente( idc, accion );
+        });
+    });
+    /* ................................................................ */
+    $('#datatable-clients').dataTable({
+          "paging": true,
+          "iDisplayLength": 10,
+          "lengthChange": true,
+          "searching": true,
+          "ordering": true,
+          "info": true,
+          "autoWidth": false,
+          "order": [ 1, "desc" ],
+          "columnDefs": [ { "searchable": false, "targets": 6 } ],
+          "language": {
+            "lengthMenu": "Mostrar _MENU_ regs por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando pág _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros",
+            "infoFiltered": "(filtrados de _MAX_ regs)",
+            "search": "Buscar:",
+            "paginate": {
+                "first":      "Primero",
+                "last":       "Último",
+                "next":       "Próximo",
+                "previous":   "Anterior"
+            }
+        }
+    });
 });
 
 /* --------------------------------------------------------- */

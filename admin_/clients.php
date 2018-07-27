@@ -56,6 +56,9 @@
 
         <!-- Custom Theme Style -->
         <link href="build/css/custom.min.css" rel="stylesheet">
+        <style>
+            .blocked_user{ color: rgba( 231, 76, 60, 1 ); }
+        </style>
   </head>
 
   <?php
@@ -107,6 +110,7 @@
                     <?php include("sections/tables/table-clients.php");?>
                     <?php include( "sections/modals/confirm_action.php" ); ?>
                     <input id="id-cliente-e" type="hidden">
+                    <input id="id-cliente-b" type="hidden">
                   </div>
                 </div>
               </div>

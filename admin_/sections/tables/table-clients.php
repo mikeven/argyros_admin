@@ -1,23 +1,30 @@
-<table id="datatable" class="table table-striped table-bordered">
+<table id="datatable-clients" class="table table-striped table-bordered">
   <thead>
     <tr>
       <th>Nombre</th>
       <th>Email</th>
       <th>Teléfono</th>
       <th>País</th>
-      <th>Ciudad</th>
+      <th>Ciudad</th>      
       <th>Grupo</th>
       <th>Fecha registro</th>
       <th>Estado</th>
       <th>Editar</th>
-      <th>Borrar</th>
+      <th>Acción</th>
     </tr>
   </thead>
   <tbody>
-      <?php 
-        foreach ( $clientes as $c ) {
-          $lnk_e = "client-edit.php?id=".$c["id"]; 
-      ?>
+    <?php 
+      foreach ( $clientes as $c ) {
+        $lnk_e = "client-edit.php?id=".$c["id"];
+        if( $c["bloqueado"] == 1 ) {
+          $data_bl = 0; $cll = "blocked_user";
+          $blq_tx = "Desbloquear";
+        }else{
+          $data_bl = 1; $cll = "";
+          $blq_tx = "Bloquear";
+        } 
+    ?>
       <tr>
         <td><a href="client-data.php?id=<?php echo $c["id"]; ?>"><?php echo $c["nombre"]." ".$c["apellido"]; ?></a></td>
         <td><?php echo $c["email"]; ?></td>
@@ -38,10 +45,16 @@
         <td> <?php echo etiquetaEstadoCliente( $c["verificado"] ); ?> </td>
         <td><a href="<?php echo $lnk_e; ?>">Editar</a></td>
         <td>
-            <?php if( $c["verificado"] != 1 ) { ?>
-              <a href="#!" class="elim-cliente" data-toggle="modal" 
-              data-idc="<?php echo $c["id"]; ?>" data-target="#confirmar-accion">Borrar</a>
-            <?php } ?>
+          <?php if( $c["verificado"] != 1 ) { ?>
+            <a href="#!" class="elim-cliente" data-toggle="modal" 
+            data-idc="<?php echo $c["id"]; ?>" data-target="#confirmar-accion">Borrar</a>
+          <?php } else { ?>
+            <a href="#!" class="bloq-cliente <?php echo $cll; ?>" data-toggle="modal" 
+              data-bl="<?php echo $data_bl; ?>" data-idc="<?php echo $c["id"]; ?>" 
+              data-target="#confirmar-accion">
+              <?php echo $blq_tx; ?>
+            </a>
+          <?php } ?>
         </td>
       </tr>
     <?php } ?>

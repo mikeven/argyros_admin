@@ -8,7 +8,7 @@
 		//Devuelve la lista de clientes
 		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, c.phone,  
 		ug.name as grupo, p.name as pais, c.city as ciudad, c.verified as verificado, 
-		date_format(c.created_at,'%d/%m/%Y') as fcreacion 
+		date_format(c.created_at,'%d/%m/%Y') as fcreacion, blocked as bloqueado 
 		from clients c, client_group ug, countries p 
 		where c.client_group_id = ug.id and c.country_id = p.id order by nombre ASC";
 		
@@ -56,6 +56,12 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function bloquearCliente( $dbh, $idc, $accion ){
+		//Elimina un registro de cliente
+		$q = "update clients set blocked = $accion where id = $idc";
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerGrupoPorId( $dbh, $idg ){
 		//Devuelve el registro del grupo dado por
 		
@@ -73,7 +79,7 @@
 		date_format(c.created_at,'%d/%m/%Y') as fcreacion, 
 		date_format(c.updated_at,'%d/%m/%Y') as fmodificacion, c.company as escompania, 
 		c.company_name as ncompania, c.company_type as tcompania, c.city as ciudad, 
-		c.reference as referencia from clients c, client_group cg, countries p 
+		c.blocked as bloqueado from clients c, client_group cg, countries p 
 		where c.client_group_id = cg.id and c.country_id = p.id and c.id = $idc";
 
 		$data = mysqli_query( $dbh, $q );
@@ -229,6 +235,20 @@
 			$res["mje"] = "Cliente eliminado con éxito";
 		}else{
 			$res["mje"] = "Error al eliminar cliente";
+		}
+
+		echo json_encode( $res );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_POST["id_bloq_c"] ) ){
+		include( "bd.php" );	
+		
+		$res["exito"] = bloquearCliente( $dbh, $_POST["id_bloq_c"], $_POST["accion_b"] );
+		
+		if( $res["exito"] == 1 ){			
+			$res["mje"] = "Cambios realizados con éxito";
+		} else {
+			$res["mje"] = "Error al modificar datos de cliente";
 		}
 
 		echo json_encode( $res );

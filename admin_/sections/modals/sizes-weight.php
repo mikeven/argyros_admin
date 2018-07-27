@@ -37,7 +37,7 @@
             ?>
               <tr>
                 <td></td>
-                <td><?php echo $t["name"] ?>
+                <td><?php echo $t["name"]." "."($t[unidad])"; ?>
                   <input id="nt<?php echo $n; ?>" type="hidden" value="<?php echo $t["name"] ?>" data-idt="<?php echo $t["id"] ?>">
                 </td>
                 <td>
