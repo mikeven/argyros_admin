@@ -142,7 +142,8 @@
 	function obtenerTallasDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de tallas de detalle de producto
 		$q = "select spd.size_id as idtalla, spd.product_detail_id as iddetprod, 
-		s.name as talla, spd.weight as peso, spd.visible as visible, spd.adjustable as ajustable 
+		s.name as talla, s.unit as unidad, spd.weight as peso, spd.visible as visible, 
+		spd.adjustable as ajustable 
 		from size_product_detail spd, sizes s where spd.size_id = s.id 
 		and spd.product_detail_id = $idd order by CAST(s.name AS unsigned) ASC";
 		

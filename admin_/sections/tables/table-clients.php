@@ -3,10 +3,9 @@
     <tr>
       <th>Nombre</th>
       <th>Email</th>
-      <th>Teléfono</th>
       <th>País</th>
-      <th>Ciudad</th>      
       <th>Grupo</th>
+      <th>Tipo</th>
       <th>Fecha registro</th>
       <th>Estado</th>
       <th>Editar</th>
@@ -28,9 +27,9 @@
       <tr>
         <td><a href="client-data.php?id=<?php echo $c["id"]; ?>"><?php echo $c["nombre"]." ".$c["apellido"]; ?></a></td>
         <td><?php echo $c["email"]; ?></td>
-        <td><?php echo $c["phone"]; ?></td>
+        
         <td><?php echo $c["pais"]; ?></td>
-        <td><?php echo $c["ciudad"]; ?></td>
+        
         <td>
           <select class="form-control selec_grupo_perfil selectpicker" data-idc="<?php echo $c["id"]; ?>">
             <option disabled>Seleccione</option>
@@ -41,6 +40,7 @@
             <?php } ?>
           </select>    
         </td>
+        <td><?php echo $c["tipo"]; ?></td>
         <td><?php echo $c["fcreacion"]; ?></td>
         <td> <?php echo etiquetaEstadoCliente( $c["verificado"] ); ?> </td>
         <td><a href="<?php echo $lnk_e; ?>">Editar</a></td>

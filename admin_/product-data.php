@@ -233,7 +233,12 @@
                                                         else $ctble = "poculto"; 
                                                 ?>
                                                     <tr class="<?php echo $ctble; ?>">
-                                                        <td align="center"><?php echo $talla["talla"]; ?></td>
+                                                        <td align="center">
+                                                            <?php echo $talla["talla"]; ?>
+                                                            <?php if ($talla["unidad"]) 
+                                                                echo "(".$talla["unidad"].")"; 
+                                                            ?>
+                                                        </td>
                                                         <td><?php echo $talla["peso"]; ?> gr</td>
                                                         <td>
                                                             <?php if( $talla["visible"] == 1 ) { ?>

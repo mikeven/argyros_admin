@@ -115,8 +115,24 @@
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Email </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input name="email" type="text" class="form-control" 
-                                placeholder="Email" required="">
+                                <input name="email" type="email" data-parsley-type="email" 
+                                class="form-control" placeholder="Email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Contraseña </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input id="password1" name="password" type="password" class="form-control" 
+                                placeholder="Password" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Confirmar contraseña </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input id="password2" name="password2" type="password" class="form-control" 
+                                placeholder="Password" data-parsley-equalto="#password1" required>
                             </div>
                         </div>
 

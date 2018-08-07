@@ -162,11 +162,31 @@ function iniciarBotonConfirmacion(){		//order-data.php
 						 "Confimar" );	
 }
 /* --------------------------------------------------------- */
+function chequearRevisionConfirmacion(){
+	//Chequea todos los ítems de un pedido en revisión para mostrar el botón de confirmación
+	//Si todos los ítems están disponibles, se habilita la posibilidad de confirmar el pedido
+	//desde el administrador
+	var confirmable = true;
+	$( ".i-rev" ).each(function() {
+		
+		if( ( $(this).attr("data-sr") != "disp" ) && ( $(this).hasClass( "marked" ) )  ||
+			( $(this).attr("data-sr") == "disp" ) && ( $(this).hasClass( "marked" ) == false ) ) 
+			confirmable = false; 
+	});
+
+	if ( confirmable == true )
+		$("#cnf_pedido").fadeIn(600);
+	else
+		$("#cnf_pedido").fadeOut(600);
+}
+/* --------------------------------------------------------- */
 $( document ).ready( function() {
     //Clic: Inicia la tabla de revisión de pedido
     $('#r_pedido').on('click', function() {
 	    $(".dcol").fadeToggle( "slow", "linear" );
 	});	
+
+	$("#cnf_pedido").hide();
 
     /*.......................................................*/
 
@@ -177,6 +197,7 @@ $( document ).ready( function() {
 	    accionCantidad( $(this), trg );
 	    $(this).addClass("marked");
 	    calcularTotalOrdenPrevio();
+	    chequearRevisionConfirmacion();
 	});
 
 	//Blur: Acción dada por el campo 'cantidad disponible' de revisión de pedido

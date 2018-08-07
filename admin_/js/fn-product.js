@@ -250,7 +250,7 @@ function actualizarDisponibilidadProducto( nivel, idp, iddp, iddettalla, estado 
 			else
 				notificar( tit_notif, res.mje, "error" );
 
-			//setTimeout(function() { location.reload(); }, 3000 );
+			setTimeout(function() { location.reload(); }, 3000 );
         }
     });
 }
@@ -361,9 +361,12 @@ function etiqAccionActivarProd( op ){
 $( document ).ready(function() {	
     // ============================================================================ //
     
-    /*new-product.php*/
-
-    /*new-product.php*/
+    /*Pop image list products*/
+    $("#datatable").on( "click", ".pop-img-p", function(){
+    	var img = $(this).attr("data-src");
+    	$("#img-preview").attr( "src", img );
+    });
+    /*Pop image */
 
 	// ============================================================================ //
 	/*product-detail.php*/

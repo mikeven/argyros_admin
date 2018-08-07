@@ -90,8 +90,8 @@ function initValid(){
 		    }
 		},
 		onSuccess: function(e, data) {
-		  e.preventDefault();
-		  modificarDatosUsuario( "#frm_musuario" );
+			e.preventDefault();
+			modificarDatosUsuario( "#frm_musuario" );
 		}
 	});
 

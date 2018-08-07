@@ -8,8 +8,8 @@
 		//Devuelve la lista de clientes
 		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, c.phone,  
 		ug.name as grupo, p.name as pais, c.city as ciudad, c.verified as verificado, 
-		date_format(c.created_at,'%d/%m/%Y') as fcreacion, blocked as bloqueado 
-		from clients c, client_group ug, countries p 
+		c.company_type as tipo, date_format(c.created_at,'%d/%m/%Y') as fcreacion, 
+		c.blocked as bloqueado from clients c, client_group ug, countries p 
 		where c.client_group_id = ug.id and c.country_id = p.id order by nombre ASC";
 		
 		$data = mysqli_query( $dbh, $q );
@@ -91,8 +91,8 @@
 
 		$q = "update clients set first_name = '$cliente[nombre]', last_name = '$cliente[apellido]', 
 		email = '$cliente[email]', address='$cliente[direccion]', phone='$cliente[telefono]', 
-		country_id = $cliente[pais], city = '$cliente[ciudad]', client_group_id = $cliente[grupo] 
-		where id = $cliente[id]";
+		country_id = $cliente[pais], city = '$cliente[ciudad]', client_group_id = $cliente[grupo], 
+		company_type = '$cliente[tipo]' where id = $cliente[id]";
 
 		return mysqli_query( $dbh, $q );
 	}
@@ -161,6 +161,7 @@
 		$cliente["pais"] 		= $_POST["pais"];
 		$cliente["ciudad"] 		= mysqli_real_escape_string( $dbh, $_POST["ciudad"] );
 		$cliente["grupo"] 		= mysqli_real_escape_string( $dbh, $_POST["grupo"] );
+		$cliente["tipo"] 		= mysqli_real_escape_string( $dbh, $_POST["tcliente"] );
 
 		$idc = editarCliente( $dbh, $cliente );
 		if( ( $idc != 0 ) && ( $idc != "" ) ){

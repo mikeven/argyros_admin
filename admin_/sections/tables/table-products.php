@@ -30,7 +30,11 @@
           //$lnk_d = "product-detail.php?p=$p[id]"; 
       ?>
       <tr>
-        <td><img src="<?php echo $url_img;?>" width="60px"></td>
+        <td>
+          <a href="#!" class="pop-img-p" data-toggle="modal" data-src="<?php echo $url_img;?>" 
+          data-target="#img-product-pop"><img src="<?php echo $url_img;?>" width="60px">
+          </a>
+        </td>
         <td>
           <a class="primary" href="<?php echo $lnk_p; ?>"><?php echo $p["id"]; ?></a>
         </td>
@@ -70,3 +74,4 @@
     <?php } ?>
   </tbody>
 </table>
+<?php include( "sections/modals/product-image.php" ); ?>

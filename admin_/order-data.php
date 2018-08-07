@@ -57,13 +57,12 @@
         <!-- Custom Theme Style -->
         <link href="build/css/custom.min.css" rel="stylesheet">
 
-        <style type="text/css">
-            .qdisp_orden{ width: 100%; }    
+        <style type="text/css">  
             .dcol{ display: none; }
             #datatable_do .dcol .fa:hover{ cursor: pointer; }
             .marked{ color: #5bc0de; }
             .item_retirado{ background: #f9c7c6; }
-            .qdisp_orden{ text-align: center; }
+            .qdisp_orden{ width: 100%; text-align: center; }
             .btn_accion_pedido{ float: left; }
             .accion_observaciones{ margin-bottom: 20px; }
             .tx_al_c{ text-align: center;}
@@ -164,6 +163,7 @@
                                             <label class="control-label">Grupo cliente: </label> 
                                             <?php echo $orden["grupo_cliente"]; ?>
                                         </div>
+
                                         <?php if ( $orden["estado"] == "pendiente" ) { ?>
                                         <hr>
                                         <div class="form-group btn_accion_pedido">

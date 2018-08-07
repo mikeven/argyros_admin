@@ -78,10 +78,11 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function agregarUsuario( $dbh, $usuario ){
-		//
-		$query = "insert into users (first_name, last_name, email, role_id) 
-		values ( '$usuario[nombre]', '$usuario[apellido]', '$usuario[email]', $usuario[rol] )";
-		echo $query;
+		//Agrega un nuevo usuario del sistema administrador
+		$query = "insert into users (first_name, last_name, email, password, role_id, created_at ) 
+		values ( '$usuario[nombre]', '$usuario[apellido]', '$usuario[email]', '$usuario[password]', 
+		$usuario[rol], NOW() )";
+		//echo $query;
 		
 		$Rs = mysqli_query ( $dbh, $query );
 		return mysqli_insert_id( $dbh );	
@@ -138,9 +139,8 @@
 	function modificarDatosUsuario( $dbh, $usuario ){
 		//Actualiza los datos de usuario administrador
 		$actualizado = 1;
-		$q = "update users set first_name = '$usuario[nombre]', 
-		last_name = '$usuario[apellido]', email = '$usuario[email]' where id = $usuario[id]";
-		echo $q;
+		$q = "update users set first_name = '$usuario[nombre]', last_name = '$usuario[apellido]', 
+		email = '$usuario[email]' where id = $usuario[id]";
 
 		mysqli_query( $dbh, $q );
 		if( mysqli_affected_rows( $dbh ) == -1 ) $actualizado = 0;
@@ -148,16 +148,13 @@
 		return $actualizado;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function modificarPassword( $usuario, $dbh ){
+	function modificarPassword( $dbh, $usuario ){
 		//Actualiza el valor de contraseña de usuario
 		$actualizado = 1;
-		$q = "update usuario set password = '$usuario[password]' where idUsuario = $usuario[id]";
-		//echo $q;
-		
-		$data = mysql_query( $q, $dbh );
-		
-		if( mysql_affected_rows() != 1 )
-			$actualizado = 0;
+		$q = "update users set password = '$usuario[password]' where id = $usuario[id]";
+		echo $q;
+		mysqli_query( $dbh, $q );
+		if( mysqli_affected_rows( $dbh ) == -1 ) $actualizado = 0;
 		
 		return $actualizado;
 	}
@@ -240,7 +237,34 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes POST al servidor para procesar información de Usuarios */
 	/* ----------------------------------------------------------------------------------- */
+	
+	/* ----------------------------------------------------------------------------------- */
+	//Creación de nuevo usuario administrador
+	if( isset( $_GET["nusuario"] ) ){
 
+		include ("bd.php");
+
+		$usuario["nombre"] 		= $_POST["nombre"];
+		$usuario["apellido"] 	= $_POST["apellido"];
+		$usuario["email"] 		= $_POST["email"];
+		$usuario["password"] 	= $_POST["password"];
+		$usuario["rol"] 		= $_POST["rol"];
+
+		if( emailDisponible( $dbh, "users", "email", $usuario["email"], "", "" ) ){
+
+			$idu = agregarUsuario( $dbh, $usuario );
+
+			if( ( $idu != 0 ) && ( $idu != -1 ) ){
+				echo "<script> window.location = '../users.php?agregar_usuario-exito'</script>";
+			}else
+				echo "<script> window.location = '../users.php?agregar_usuario-exito'</script>";
+			
+		}else{
+			echo "<script> window.location = '../users.php?agregar_usuario-emailnodisponible'</script>";
+		}
+	}
+
+	/* ----------------------------------------------------------------------------------- */
 	//Modificar datos de usuario
 	if( isset( $_GET["musuario"] ) ){
 		ini_set( 'display_errors', 1 );
@@ -249,7 +273,8 @@
 		$idu 					= $_POST["idusuario"];
 		$usuario["nombre"] 		= mysqli_real_escape_string( $dbh, $_POST["nombre"] );
 		$usuario["apellido"] 	= mysqli_real_escape_string( $dbh, $_POST["apellido"] );
-		$usuario["email"] 		= mysqli_real_escape_string( $dbh, $_POST["email"] );		 
+		$usuario["email"] 		= mysqli_real_escape_string( $dbh, $_POST["email"] );
+		$usuario["password"]	= mysqli_real_escape_string( $dbh, $_POST["password"] );		 
 
 		$usuario["id"] = $idu; $usuario["idrol"] = $_POST["rol"];
 
@@ -264,11 +289,24 @@
 			header( "Location: ../user-edit.php?id=$idu&edit_usuario-exito" );
 		}
 	}
-
+	
 	/* ----------------------------------------------------------------------------------- */
-	/* Solicitudes POST al servidor para procesar información de Usuarios */
-	/* ----------------------------------------------------------------------------------- */
+	
+	//Modificar contraseña
+	if( isset( $_GET["musuariopw"] ) ){
+		ini_set( 'display_errors', 1 );
+		include( "bd.php" );
 
+		$usuario["id"]			= $_POST["idusuario"];
+		$usuario["password"]	= mysqli_real_escape_string( $dbh, $_POST["password"] );		 
+
+		$idr = modificarPassword( $dbh, $usuario);
+		
+		if( ( $idr != 0 ) && ( $idr != "" ) && ( $idr != -1 ) ){
+			header( "Location: ../user-edit.php?id=$usuario[id]&edit_usuario-exito" );
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
 	//Inicio de sesión
 	if( isset( $_SESSION["login-adm"] ) ){
 		$idu = $_SESSION["user-adm"]["id"];
@@ -283,52 +321,9 @@
 	}
 
 	/* ----------------------------------------------------------------------------------- */
-	//Creación de nuevo usuario administrador
-	if( isset( $_GET["nusuario"] ) ){
-
-		include ("bd.php");
-
-		$usuario["nombre"] 		= $_POST["nombre"];
-		$usuario["apellido"] 	= $_POST["apellido"];
-		$usuario["email"] 		= $_POST["email"];
-		$usuario["rol"] 		= $_POST["rol"];
-
-		if( emailDisponible( $dbh, "users", "email", $usuario["email"], "", "" ) ){
-
-			$idu = agregarUsuario( $dbh, $usuario );
-
-			if( ( $idu != 0 ) && ( $idu != -1 ) ){
-				echo "<script> window.location = '../users.php?agregar_usuario-exito'</script>";
-			}else $y=1;
-				echo "<script> window.location = '../users.php?agregar_usuario-exito'</script>";
-			
-		}else{
-			echo "<script> window.location = '../users.php?agregar_usuario-emailnodisponible'</script>";
-		}
-	}
-	/* ----------------------------------------------------------------------------------- */
-
-	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Usuarios */
 	/* ----------------------------------------------------------------------------------- */
 	
-	/* ----------------------------------------------------------------------------------- */
-	//Modificar datos de usuario. Bloque: contraseña (asinc)
-	if( isset( $_POST["mod_passw"] ) ){
-		
-		include("bd.php");
-		$usuario["id"] 		= $_POST["idUsuario"];
-		$usuario["password"] 	= $_POST["password1"];
-		
-		$res["exito"] = modificarPassword( $usuario, $dbh );
-		
-		if( $res["exito"] == 1 )
-			$res["mje"] = "Contraseña actualizada con éxito";
-		else
-			$res["mje"] = "Error al actualizar contraseña";
-		
-		echo json_encode( $res );	
-	}
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_POST["id_cambio_rol"] ) ){
 		
