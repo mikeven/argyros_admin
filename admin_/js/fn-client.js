@@ -186,8 +186,9 @@ $( document ).ready(function() {
           "ordering": true,
           "info": true,
           "autoWidth": false,
-          "order": [ 1, "desc" ],
-          "columnDefs": [ { "searchable": false, "targets": 6 } ],
+          "columnDefs": [ { "searchable": false, "targets": 6 }, 
+                          { type: 'date-uk', targets: 6 } ],
+          "order": [ 6, "desc" ],
           "language": {
             "lengthMenu": "Mostrar _MENU_ regs por página",
             "zeroRecords": "No se encontraron resultados",

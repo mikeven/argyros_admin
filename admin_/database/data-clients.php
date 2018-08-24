@@ -10,7 +10,7 @@
 		ug.name as grupo, p.name as pais, c.city as ciudad, c.verified as verificado, 
 		c.company_type as tipo, date_format(c.created_at,'%d/%m/%Y') as fcreacion, 
 		c.blocked as bloqueado from clients c, client_group ug, countries p 
-		where c.client_group_id = ug.id and c.country_id = p.id order by nombre ASC";
+		where c.client_group_id = ug.id and c.country_id = p.id order by c.id DESC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_c = obtenerListaRegistros( $data );

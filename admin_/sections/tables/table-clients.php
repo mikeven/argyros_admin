@@ -1,6 +1,7 @@
 <table id="datatable-clients" class="table table-striped table-bordered">
   <thead>
     <tr>
+      <th>Id</th>
       <th>Nombre</th>
       <th>Email</th>
       <th>País</th>
@@ -25,6 +26,7 @@
         } 
     ?>
       <tr>
+        <td><?php echo $c["id"]; ?></td>
         <td><a href="client-data.php?id=<?php echo $c["id"]; ?>"><?php echo $c["nombre"]." ".$c["apellido"]; ?></a></td>
         <td><?php echo $c["email"]; ?></td>
         

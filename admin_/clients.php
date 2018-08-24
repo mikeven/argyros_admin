@@ -180,6 +180,7 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.19/sorting/date-uk.js"></script>
 
     <!-- PNotify -->
     <script src="vendors/pnotify/dist/pnotify.js"></script>

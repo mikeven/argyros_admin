@@ -117,7 +117,7 @@
       padding: 3px 1px; 
     }
 
-    .oprecio{ display: none; }
+    .oprecio, .kv-file-upload{ display: none; }
 
     .opt_confelimimg_detprod{
       display: none;
@@ -127,6 +127,7 @@
     .lnk_confelim_idet{ color: #d43f3a; }
     .lnk_confelim_idet:hover{ color: #d43f3a; text-decoration: underline; }
     .lnk_elimimg_detprod:hover{ color: #d43f3a; }
+
   </style>
 
   <?php
@@ -488,7 +489,7 @@
                
             setTimeout( function() { 
               window.location = "<?php echo $url_post_edit ?>"; 
-            }, 1000 ); 
+            }, 3000 ); 
           }
         });
 

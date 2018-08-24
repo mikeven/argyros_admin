@@ -1,5 +1,5 @@
-<div id="size-table" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
+<div id="size-table" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
 
       <div class="modal-header">
@@ -12,8 +12,8 @@
           <thead>
             <tr>
               <th width="20%"></th>
-              <th width="10%">Talla</th>
-              <th width="70%">Peso</th>
+              <th width="20%">Talla</th>
+              <th width="60%">Peso</th>
             </tr>
           </thead>
           <tbody>
