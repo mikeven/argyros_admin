@@ -119,7 +119,7 @@
                         <label class="control-label">Email: </label> <?php echo $cliente["email"]; ?>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">phone: </label> <?php echo $cliente["phone"]; ?>
+                        <label class="control-label">phone: </label> <?php echo $cliente["telefono"]; ?>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Dirección: </label> <?php echo $cliente["direccion"]; ?>
