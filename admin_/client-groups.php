@@ -21,7 +21,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Tipo de clientes :: Argyros Admin</title>
+    <title>Grupo de clientes :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -73,7 +73,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Tipos de clientes</h3>
+                <h3>Grupo de clientes</h3>
               </div>
 
               <!--<div class="title_right">
