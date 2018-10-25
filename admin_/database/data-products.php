@@ -23,8 +23,19 @@
 		co.name as pais, ca.name as category, sc.name as subcategory, m.name as material 
 		FROM products p, categories ca, subcategories sc, countries co, materials m 
 		where p.visible = 1 and p.category_id = ca.id and p.subcategory_id = sc.id and 
-		p.material_id = m.id and p.country_code = co.code and p.category_id = $idc 
-		and p.subcategory_id = $idsc order by p.name ASC";
+		p.category_id = $idc and p.subcategory_id = $idsc order by p.name ASC";
+	
+		$data = mysqli_query( $dbh, $q );
+		$lista = obtenerListaRegistros( $data );
+		return $lista;	
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerProductosC_S_Basico( $dbh, $idc, $idsc ){
+		//Devuelve la lista de productos pertenecientes a una categoría y subcategoría
+		$q = "select p.id, p.code, p.name, p.description, p.is_visible as visible 
+		FROM products p, categories ca, subcategories sc 
+		where p.visible = 1 and p.category_id = ca.id and p.subcategory_id = sc.id and 
+		p.category_id = $idc and p.subcategory_id = $idsc order by p.name ASC";
 	
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -54,7 +65,7 @@
 		FROM products p, categories ca, subcategories sc, countries co, materials m 
 		where p.category_id = ca.id and p.subcategory_id = sc.id and p.material_id = m.id 
 		and p.country_id = co.id and p.id = $idp";
-
+		
 		$data = mysqli_query( $dbh, $q );
 		if( $data )
 			return mysqli_fetch_array( $data );
@@ -86,11 +97,17 @@
 	function obtenerDetalleProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
 		$q = "select dp.id as id, c.name as color, t.name as bano, dp.price_type as tipo_precio, 
-		dp.weight as peso, dp.piece_price_value as precio_pieza, 
-		dp.manufacture_value as precio_mo, dp.weight_price_value as precio_peso 
+		dp.weight as peso, dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
+		dp.weight_price_value as precio_peso FROM product_details dp
+		LEFT JOIN treatments t ON t.id = dp.treatment_id LEFT JOIN colors c ON dp.color_id = c.id 
+		WHERE dp.product_id = $idp ORDER BY dp.id DESC";
+
+		/*SELECT dp.id AS id, c.name AS color, t.name AS bano, dp.price_type AS tipo_precio, 
+		dp.weight AS peso, dp.piece_price_value AS precio_pieza, 
+		dp.manufacture_value AS precio_mo, dp.weight_price_value AS precio_peso 
 		FROM product_details dp, treatments t, colors c 
-		where dp.color_id = c.id and dp.treatment_id = t.id and dp.product_id = $idp 
-		order by dp.id desc";
+		WHERE dp.color_id = c.id AND dp.treatment_id = t.id AND dp.product_id = 2
+		ORDER BY dp.id DESC*/
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -98,15 +115,34 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerRegistroDetalleProductoPorId( $dbh, $idd ){
-		//Devuelve un registro de detalle de producto dado su id
+		//Devuelve un registro de detalle de producto dado id de detalle
 		$q = "select dp.id as id, dp.product_id as idp, c.id as color, t.id as bano, 
 		dp.price_type as tipo_precio, dp.weight as peso, dp.piece_price_value as precio_pieza, 
 		dp.manufacture_value as precio_mo, dp.product_id as pid, dp.weight_price_value as precio_peso 
-		FROM product_details dp, treatments t, colors c 
-		where dp.color_id = c.id and dp.treatment_id = t.id and dp.id = $idd";
+		FROM product_details dp LEFT JOIN treatments t ON t.id = dp.treatment_id 
+		LEFT JOIN colors c ON dp.color_id = c.id where dp.id = $idd";
 		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );		
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerProductoPorImagen( $dbh, $archivo ){
+		$q = "select p.id, p.name as nombre FROM products p, product_details dp, images i
+		where p.id = dp.product_id and dp.id = i.product_detail_id and i.path = '$archivo'";
+
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function imagenAsignada( $dbh, $archivo ){
+		//Devuelve verdadero si el archivo está asignado a un producto
+		$asignada = false;
+		$data = obtenerProductoPorImagen( $dbh, $archivo );
+		$nregs = mysqli_num_rows( $data );
+		
+		if( $nregs > 0 )
+			$asignada = true;
+		
+		return $asignada;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerImagenesProducto( $dbh, $id ){
@@ -153,7 +189,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDatosDetalleProductoPorId( $dbh, $idd ){
-		//
+		//Devuelve los datos de un detalle de producto dado su id
 		$detalle["datos"]		= obtenerRegistroDetalleProductoPorId( $dbh, $idd );
 		$detalle["tallas"] 		= obtenerTallasDetalleProducto( $dbh, $idd );
 		$detalle["imagenes"] 	= obtenerImagenesDetalleProducto( $dbh, $idd, "" );
@@ -501,7 +537,31 @@
 		$data = mysqli_query( $dbh, $q );
 		return $data;
 	}
-
+	/* ----------------------------------------------------------------------------------- */
+	function actualizarBañoDetalleProducto( $dbh, $idd, $valor ){
+		//Actualiza el valor de un baño de detalle de producto
+		$q = "update product_details set treatment_id = $valor where id = $idd";
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function eliminarBañoRegistrosProducto( $dbh, $idproducto ){
+		//Anula los valores de baño asociado a todos los detalles de un producto
+		$detalle = obtenerDetalleProductoPorId( $dbh, $idproducto );
+		foreach ( $detalle as $r ) {
+			actualizarBañoDetalleProducto( $dbh, $r["id"], "NULL" );	
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function ajusteRegistroBanos( $dbh, $producto ){
+		//Elimina los registros de baños si hay un cambio de material al editar producto
+		$cambio = 0;
+		if( $producto["material"] != $producto["idmat_actual"] ){
+			$cambio = 1;
+			eliminarBañoRegistrosProducto( $dbh, $producto["idproducto"] );
+		}
+		return $cambio;
+	}
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
@@ -567,14 +627,21 @@
 		parse_str( $_POST["form_mp"], $producto );
 
 		$r = editarProducto( $dbh, $producto );
+		$cambio_mat = ajusteRegistroBanos( $dbh, $producto );
 		eliminarAsociacionesTrabajosLineas( $dbh, $producto );
 		registrarAsociacionesTrabajosLineas( $dbh, $producto );
 		$producto["id"] = $producto["idproducto"];
 
 		if( ( $r != 0 ) && ( $r != "" ) ) {
-			$res["exito"] = 1;
-			$res["mje"] = "Actualización exitoso";
-			$res["reg"] = $producto;
+			if( $cambio_mat != 1 ){
+				$res["exito"] = 1;
+				$res["mje"] = "Datos de productos actualizados";
+				$res["reg"] = $producto;
+			}else{
+				$res["exito"] = 2;
+				$res["mje"] = "Datos de productos actualizados. Debe reasignar valores de baños en los detalles de producto";
+				$res["reg"] = $producto;
+			}
 		} else {
 			$res["exito"] = 0;
 			$res["mje"] = "Error al modificar producto";

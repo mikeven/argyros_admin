@@ -33,7 +33,14 @@ function editarProducto(){
         success: function( response ){
         	console.log( response );
 			res = jQuery.parseJSON( response );
-			enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.id );
+			if( res.exito == 1 )
+				notificar( "Productos", res.mje, "success" );
+			if( res.exito == 2 )
+				notificar( "Productos", res.mje, "info" );
+			setTimeout( function() { 
+				enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.id ); 
+				}, 5000 
+			);
         }
     });
 }
@@ -366,6 +373,11 @@ $( document ).ready(function() {
     	var img = $(this).attr("data-src");
     	$("#img-preview").attr( "src", img );
     });
+
+    $(".pop-img-p").on( "click", function(){
+    	var img = $(this).attr("data-src");
+    	$("#img-preview").attr( "src", img );
+    });
     /*Pop image */
 
 	// ============================================================================ //
@@ -424,6 +436,19 @@ $( document ).ready(function() {
 		mostrarSubcategorias( idc );
     });
 
+    $("#smaterial_e").on( "change", function(){
+		var m_nvo = $(this).val();
+		var m_act = $("#idmat_actual").val();
+		if( m_nvo != m_act ){
+			/*notificar( "Cambio de material", 
+			"Si se cambia el material del producto, se deben reasignar los valores de baño para cada detalle de este producto", 
+			"error" );*/
+			$("#cambio_mm").show(500);
+		}else{
+			$("#cambio_mm").hide(500);
+		}
+    });
+
 	/*$("#bot_guardar_det_producto").on( "click", function(){
 		$(this).attr("disabled", true);
 		agregarDetalleProducto();
@@ -431,14 +456,18 @@ $( document ).ready(function() {
 
     /*Bloque peticiones para editar datos asociados a detalle de producto*/
 
+    
+
     $("#bot_editar_detproducto").on( "click", function(){
 		//editarDatosDetalleProducto();	
     });
 
     $("#bot_edit_tallasdetalle").on( "click", function(){
-		if( checkDetalleProducto() == 0 ){ 
+		
+		if( checkDetalleProducto( "edicion" ) == 0 ){ 
 			editarTallasDetalleProducto();
 		}
+		
     });
 
 	$(".lnk_elimimg_detprod").on( "click", function(){
@@ -480,7 +509,6 @@ $( document ).ready(function() {
 
 		actualizarDisponibilidadProducto( "talla", "", iddetprod, idtalla, valestado );
     });
-
 
 });
 

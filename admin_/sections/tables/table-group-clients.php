@@ -24,8 +24,10 @@
         <td><?php echo $g["material"]; ?></td>
         <td><a href="client-groups-edit.php?id=<?php echo $g["id"]; ?>">Editar</a></td>
         <td>
+          <?php if( $g["id"] != 1 ) { ?>
           <a href="#!" class="elim-gcliente" data-toggle="modal" data-idg="<?php echo $g["id"]; ?>" 
           data-target="#confirmar-accion">Borrar</a>
+          <?php } ?>
         </td>
       </tr>
     <?php } ?>

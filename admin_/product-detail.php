@@ -90,13 +90,14 @@
   </style>
 
   <?php
-    $banos = obtenerListaBanos( $dbh );                               // database/data-treatments.php
+    $producto = obtenerProductoPorId( $dbh, $idp );
+    $banos = obtenerListaBanosMaterial( $dbh, $producto["idmaterial"] );         
+                                                                      // database/data-treatments.php
     $lineas = obtenerListaLineas( $dbh );                             // database/data-lines.php
     $colores = obtenerListaColores( $dbh );                           // database/data-colors.php
     $trabajos = obtenerListaTrabajos( $dbh );                         // database/data-makings.php
     $tprecios = obtenerOpcionesPrecios();                             // fn/fn-prices.php
     
-    $producto = obtenerProductoPorId( $dbh, $idp );
     $tallas = obtenerListaTallasCategoria( $dbh, $producto["cid"] );  // database/data-sizes.php
     $t0 = obtenerValoresTallaCero( $dbh );
     
@@ -148,7 +149,8 @@
                       <p class="text-muted font-13 m-b-30"> </p>
                       
                       <form id="frm_ndetproduct" data-parsley-validate 
-                      class="form-horizontal form-label-left" action="product-data.php?p=<?php echo $idp; ?>" method="post">
+                      class="form-horizontal form-label-left" 
+                      action="product-data.php?p=<?php echo $idp; ?>" method="post">
                           
                           <div class="row">
                           
@@ -168,7 +170,7 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                  <label class="control-label">Material::</label> 
+                                  <label class="control-label">Material:</label> 
                                   <?php echo $producto["material"]; ?>
                                 </div>
                                 
@@ -410,7 +412,7 @@
       $(document).ready(function() {
         $('#frm_ndetproduct').parsley().on('form:success', function() {
           
-          if( checkDetalleProducto() == 0 ){
+          if( checkDetalleProducto( "nuevo" ) == 0 ){
             agregarDetalleProducto();
           };
           

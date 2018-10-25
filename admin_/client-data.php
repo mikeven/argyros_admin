@@ -132,7 +132,8 @@
                         <select class="form-control">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $grupos as $g ) { ?>
-                              <option <?php echo sop( $cliente["grupo"], $g["name"] ); ?> ><?php echo $g["name"] ?> </option>
+                            <option <?php echo sop( $cliente["grupo"], $g["name"] ); ?> ><?php echo $g["name"] ?> 
+                            </option>
                             <?php } ?>
                         </select>
                     </div>
@@ -166,7 +167,7 @@
               </div>
               
               <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
+                <div class="x_panel hidden">
                   <div class="x_title">
                     <h2>Actividad</h2>
                     <div class="clearfix"></div>

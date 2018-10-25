@@ -97,6 +97,7 @@
     }
 
     #tallas_seleccion{
+      margin-top: 20px;
       margin-bottom: 50px;
     }
 
@@ -127,20 +128,21 @@
     .lnk_confelim_idet{ color: #d43f3a; }
     .lnk_confelim_idet:hover{ color: #d43f3a; text-decoration: underline; }
     .lnk_elimimg_detprod:hover{ color: #d43f3a; }
-
   </style>
 
   <?php
-    $banos = obtenerListaBanos( $dbh );                               // database/data-treatments.php
-    $lineas = obtenerListaLineas( $dbh );                             // database/data-lines.php
-    $colores = obtenerListaColores( $dbh );                           // database/data-colors.php
-    $trabajos = obtenerListaTrabajos( $dbh );                         // database/data-makings.php
-    $tprecios = obtenerOpcionesPrecios();                             // fn/fn-prices.php
     
     $idp = $datos_det["pid"];
     $producto = obtenerProductoPorId( $dbh, $datos_det["pid"] );
     $tallas = obtenerListaTallasCategoria( $dbh, $producto["cid"] );  // database/data-sizes.php
     $t0 = obtenerValoresTallaCero( $dbh );
+
+    $banos = obtenerListaBanosMaterial( $dbh, $producto["idmaterial"] ); 
+    // database/data-treatments.php
+    $lineas = obtenerListaLineas( $dbh );               // database/data-lines.php
+    $colores = obtenerListaColores( $dbh );             // database/data-colors.php
+    $trabajos = obtenerListaTrabajos( $dbh );           // database/data-makings.php
+    $tprecios = obtenerOpcionesPrecios();               // fn/fn-prices.php
 
     $lnk_back = "product-data.php?p=".$idp;
   ?>

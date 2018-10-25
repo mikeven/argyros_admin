@@ -15,7 +15,6 @@
   </thead>
   <tbody>
       <?php 
-        
         foreach ( $productos as $p ) {
           $lnk_p = "product-data.php?p=$p[id]";
           $imgs = obtenerImagenesProducto( $dbh, $p["id"]);

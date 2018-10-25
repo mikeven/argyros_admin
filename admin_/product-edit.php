@@ -53,6 +53,11 @@
     <!-- bootstrap-daterangepicker -->
     <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
     <!-- Datatables -->
     <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
@@ -62,6 +67,9 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+    <style type="text/css">
+      #cambio_mm{ padding: 8px; margin: 8px; }
+    </style>
   </head>
 
   <?php
@@ -173,7 +181,6 @@
                               
                             </div>
                           
-
                             <div class="col-md-6 col-sm-6 col-xs-12">
                               
                               <div class="form-group">
@@ -206,13 +213,20 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="material" class="form-control selectpicker">
+                                  <input id="idmat_actual" type="hidden" name="idmat_actual" 
+                                  value="<?php echo $producto["idmaterial"]; ?>">
+                                  <select id="smaterial_e" 
+                                  name="material" class="form-control selectpicker">
                                     <?php foreach ( $materiales as $m ) { ?>
-                                      <option value="<?php echo $m["id"] ?>" <?php echo sop( $m["id"], $producto["idmaterial"] ); ?>>
+                                      <option value="<?php echo $m["id"] ?>" 
+                                        <?php echo sop( $m["id"], $producto["idmaterial"] ); ?>>
                                         <?php echo $m["name"] ?>
                                       </option>
                                     <?php } ?>
                                   </select>
+                                  <div id="cambio_mm" class="alert-danger" style="display: none;">
+                                    Si se cambia el material del producto, se deben reasignar los valores de baño para cada detalle de este producto
+                                  </div>
                                 </div>
                               </div>
 
@@ -315,6 +329,11 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>

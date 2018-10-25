@@ -12,7 +12,7 @@
   <tbody>
       <?php 
         foreach ( $subcategorias as $sc ) {
-          $prods = obtenerProductosC_S( $dbh, $sc["idc"], $sc["idsc"] );
+          $prods = obtenerProductosC_S_Basico( $dbh, $sc["idc"], $sc["idsc"] );
       ?>
       <tr>
         <td><?php echo $sc["name"]; ?></td>

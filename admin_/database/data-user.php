@@ -107,7 +107,7 @@
 		//Determina si un usuario, dado su id, es administrador
 		$admin = false;
 		$rol = obtenerRolUsuario( $dbh, $idu );
-		if ( $rol["id"] == 1 || $rol["id"] == 2 )
+		if ( $rol["id"] == 1 || $rol["id"] == 2 || $rol["id"] == 3 )
 			$admin = true;
 
 		return $admin;

@@ -134,7 +134,10 @@
                         <div class="row">
                           
                             <div class="col-md-4 col-sm-4 col-xs-12">
-                              
+                                <div class="data-product-label">
+                                    <label class="control-label">
+                                        Código: </label> <?php echo $producto["codigo"]; ?>
+                                </div>
                                 <div class="data-product-label">
                                     <label class="control-label">
                                         Producto: </label> <?php echo $producto["nombre"]; ?>
@@ -201,7 +204,6 @@
                                             <label class="control-label">Tipo de precio: </label> <?php echo txTipoPeso( $dp["tipo_precio"] ); ?>
                                         </div>
 
-
                                         <?php if( $dp["tipo_precio"] == "p" ) { ?>
                                         <div class="">
                                             <label class="control-label">Precio por pieza: </label> <?php echo $dp["precio_pieza"]; ?>
@@ -220,52 +222,16 @@
                                         </div>
                                         <?php } ?>
                                         
-                                        
-                                        <div class="data-talla-detalle">
-                                            <table class="table table-striped table-bordered">
-                                              <thead>
-                                                <tr><th>Talla</th><th>Peso</th><th>Acción</th></tr>
-                                              </thead>
-                                              <tbody>
-                                                <?php 
-                                                    foreach ( $tallas_detalle as $talla ) {
-                                                        if( $talla["visible"] == 1 ) $ctble = ""; 
-                                                        else $ctble = "poculto"; 
-                                                ?>
-                                                    <tr class="<?php echo $ctble; ?>">
-                                                        <td align="center">
-                                                            <?php echo $talla["talla"]; ?>
-                                                            <?php if ($talla["unidad"]) 
-                                                                echo "(".$talla["unidad"].")"; 
-                                                            ?>
-                                                        </td>
-                                                        <td><?php echo $talla["peso"]; ?> gr</td>
-                                                        <td>
-                                                            <?php if( $talla["visible"] == 1 ) { ?>
-                                                                <i class="fa fa-eye-slash"></i> 
-                                                                <a id="id-dtp<?php echo $talla["idtalla"]; ?>" href="#!" 
-                                                                class="o-tdetp" data-idtalla="<?php echo $talla["idtalla"]; ?>" 
-                                                                data-idpdet="<?php echo $talla["iddetprod"]; ?>" data-st="0">Ocultar</a>
-                                                            <?php } else { ?>
-                                                                <i class="fa fa-eye"></i> 
-                                                                <a id="id-dtp<?php echo $talla["idtalla"]; ?>" href="#!" 
-                                                                class="o-tdetp" data-idtalla="<?php echo $talla["idtalla"]; ?>" 
-                                                                data-idpdet="<?php echo $talla["iddetprod"]; ?>" data-st="1">Mostrar</a>
-                                                            <?php } ?>
-                                                        </td>
-                                                    </tr>
-                                                <?php } ?>
-                                              </tbody>
-                                            </table>
-                                        </div> 
-                                        
                                     </div>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
                                         <?php 
                                             foreach ( $imagenes_detalle as $img ) { 
                                         ?>
                                             <div class="thumb_detailproduct">
-                                                <img src="<?php echo $img["path"]; ?>" width="60px">
+                                                <a href="#!" class="pop-img-p" data-toggle="modal" data-src="<?php echo $img["path"];?>" 
+                                                data-target="#img-product-pop">
+                                                    <img src="<?php echo $img["path"]; ?>" width="60px">
+                                                </a>
                                             </div> 
                                         <?php 
                                             }
@@ -276,9 +242,54 @@
                                             </a>
                                         </div>
                                     </div>
+                                    <?php include( "sections/modals/product-image.php" ); ?>
 
+                                </div> <!-- Row -->
+                                
+                                <div class="row"><!-- Tallas de detalle de producto -->
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="data-talla-detalle">
+                                        <table class="table table-striped table-bordered">
+                                      <thead>
+                                        <tr><th>Talla</th><th>Peso</th><th>Acción</th></tr>
+                                      </thead>
+                                      <tbody>
+                                        <?php 
+                                            foreach ( $tallas_detalle as $talla ) {
+                                                if( $talla["visible"] == 1 ) $ctble = ""; 
+                                                else $ctble = "poculto"; 
+                                        ?>
+                                            <tr class="<?php echo $ctble; ?>">
+                                                <td align="center">
+                                                    <?php echo $talla["talla"]; ?>
+                                                    <?php if ($talla["unidad"]) 
+                                                        echo "(".$talla["unidad"].")"; 
+                                                    ?>
+                                                </td>
+                                                <td><?php echo $talla["peso"]; ?> gr</td>
+                                                <td>
+                                                    <?php if( $talla["visible"] == 1 ) { ?>
+                                                        <i class="fa fa-eye-slash"></i> 
+                                                        <a id="id-dtp<?php echo $talla["idtalla"]; ?>" href="#!" 
+                                                        class="o-tdetp" data-idtalla="<?php echo $talla["idtalla"]; ?>" 
+                                                        data-idpdet="<?php echo $talla["iddetprod"]; ?>" data-st="0">Ocultar</a>
+                                                    <?php } else { ?>
+                                                        <i class="fa fa-eye"></i> 
+                                                        <a id="id-dtp<?php echo $talla["idtalla"]; ?>" href="#!" 
+                                                        class="o-tdetp" data-idtalla="<?php echo $talla["idtalla"]; ?>" 
+                                                        data-idpdet="<?php echo $talla["iddetprod"]; ?>" data-st="1">Mostrar</a>
+                                                    <?php } ?>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                      </tbody>
+                                        </table>
+                                    </div> 
+                                    </div>
                                 </div>
+                                
                                 <div class="ln_solid"></div>
+                                
                                 <?php 
                                     } 
                                 ?>                      
