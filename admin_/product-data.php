@@ -136,6 +136,10 @@
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="data-product-label">
                                     <label class="control-label">
+                                        ID: </label> <?php echo $producto["id"]; ?>
+                                </div>
+                                <div class="data-product-label">
+                                    <label class="control-label">
                                         Código: </label> <?php echo $producto["codigo"]; ?>
                                 </div>
                                 <div class="data-product-label">
