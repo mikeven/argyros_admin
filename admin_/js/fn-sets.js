@@ -114,10 +114,8 @@ $( document ).ready(function() {
 
 	// ============================================================================ //
 	/*product-detail.php*/
-	
 	function initNoCero(){
-		window.Parsley
-		  .addValidator('nocero', {
+		window.Parsley.addValidator('nocero', {
 		    requirementType: 'integer',
 		    validateNumber: function( value, requirement ) {
 		    	return ( value > requirement );
@@ -127,11 +125,8 @@ $( document ).ready(function() {
 		    }
 	  	});	
 	}
-
 	/* ---------------------------------------------------------------- */
 	//Acción para invocar el mostrar/ocultar un producto
-
-	$("#bot_ag_juego").prop("disabled", "true");
 
 	if ( $("#frm_njuego").length > 0 ){
         $('#frm_njuego').parsley().on('form:success', function() {

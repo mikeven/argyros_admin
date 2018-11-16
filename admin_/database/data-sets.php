@@ -43,7 +43,7 @@
 		return mysqli_insert_id( $dbh );
 	}	
 	/* ----------------------------------------------------------------------------------- */
-	function agregarProductosJuego( $dbh, $idj, $iddet ){
+	function agregarProductoJuego( $dbh, $idj, $iddet ){
 		//Agrega un registro de detalle de producto asociado a un juego
 		$q = "insert into set_product_details( set_id, product_detail_id ) values ( $idj, $iddet )";
 
@@ -80,18 +80,39 @@
 		return mysqli_query( $dbh, $q2 );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function eliminarProductosJuego( $dbh, $idj ){
+		//Elimina todas los registros de productos asociados a un juego dado por id 
+		$q = "delete from set_product_details where set_id = $idj";
+		
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	ini_set( 'display_errors', 1 );
 	//Agregar nuevo juego de productos
 	if( isset( $_GET["nset"] ) ){
 		include( "bd.php" );
 
-		$iddetalles = $_POST["iddp"];
+		$iddetalles = $_POST["iddp"];	//Conjunto de campos ocultos generados dinámicamente
 		$idj = agregarJuego( $dbh );
 		foreach ( $iddetalles as $id ) {
-			echo agregarProductosJuego( $dbh, $idj, $id );
+			echo agregarProductoJuego( $dbh, $idj, $id );
 		}
 		if( ( $idj != 0 ) && ( $idj != "" ) ){
 			header( "Location: ../sets.php?agregar_juego-exito" );
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
+	// Modificar juego de productos
+	if( isset( $_GET["mset"] ) ){
+		include( "bd.php" );
+		$idj = $_POST["idjuego"];
+		$iddetalles = $_POST["iddp"]; //Conjunto de campos ocultos generados dinámicamente
+		eliminarProductosJuego( $dbh, $idj );
+		foreach ( $iddetalles as $id ) {
+			echo agregarProductoJuego( $dbh, $idj, $id );
+		}
+		if( ( $idj != 0 ) && ( $idj != "" ) ){
+			header( "Location: ../sets.php?editar_juego-exito" );
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */

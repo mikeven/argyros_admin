@@ -562,6 +562,7 @@
 		}
 		return $cambio;
 	}
+	
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
@@ -791,8 +792,9 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_POST["file_sending"] ) ){
-		include( "bd.php" );
 		//Maneja los datos de las imágenes recibidas para detalle de productos
+		
+		include( "bd.php" );
 		if ( empty( $_FILES['images'] ) ) {
 			$output = array('error' => 'No hay imágenes para cargar');
 			echo json_encode( $output );
@@ -802,5 +804,15 @@
 			$output = array('initialPreview' => $info["html_markups"] );
 			echo json_encode( $output );
 		}
+	}
+	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_POST["tallas_cat"] ) ){
+		//Solicita las tallas de una categoría: reporte de imágenes de catálogo
+		
+		include( "bd.php" );
+		include( "data-sizes.php" );
+
+		$tallas = obtenerListaTallasCategoria( $dbh, $_POST["tallas_cat"] );
+		echo json_encode( $tallas );
 	}
 ?>

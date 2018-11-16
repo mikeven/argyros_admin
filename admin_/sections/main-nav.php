@@ -34,6 +34,9 @@
                 <a href="lines.php">Líneas</a>
             </li>
             <li>
+                <a href="sets.php">Juegos</a>
+            </li>
+            <li>
                 <a href="countries.php">Países</a>
             </li>
             <li><a href="#">Propiedades <span class="fa fa-chevron-down"></span></a>

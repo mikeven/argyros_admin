@@ -145,4 +145,14 @@
 		}
 		echo json_encode( $res );
 	}
+	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_POST["banos_mat"] ) ){
+		//Solicita los baños de un material: reporte de imágenes de catálogo
+		
+		include( "bd.php" );
+
+		$banos = obtenerListaBanosMaterial( $dbh, $_POST["banos_mat"] );
+		echo json_encode( $banos );
+	}
+	/* ----------------------------------------------------------------------------------- */
 ?>

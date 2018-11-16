@@ -63,7 +63,6 @@ function mostrarSubcategorias( idc ){
         data:{ m_subcategs: idc },
         success: function( response ){
         	res = jQuery.parseJSON( response );
-			console.log(res);
 			cargarSubcategorias( res );						
         }
     });	
