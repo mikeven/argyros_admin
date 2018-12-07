@@ -75,6 +75,7 @@
   </style>
 
   <?php
+
     $banos = obtenerListaBanos( $dbh );
     $lineas = obtenerListaLineas( $dbh );
     $colores = obtenerListaColores( $dbh );
@@ -148,7 +149,7 @@
                       <div class="form-group"><!-- Tallas -->
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Tallas </label>
                         <div class="col-md-8 col-sm-8 col-xs-12">
-                          <select id="tallas_fc" name="tallas" class="form-control" 
+                          <select id="tallas_fc" name="tallas[]" class="form-control" 
                           title="Seleccione" multiple>                            
                             
                           </select>    
@@ -158,11 +159,11 @@
                       <div class="form-group"><!-- Peso -->
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Peso </label>
                         <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín gr." name="f_ppeso_min" value="" 
+                          <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín gr." name="peso_min" value="" 
                           onkeypress="return isNumberKey(event)">
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pes_max" class="form-control input_flt" placeholder="Máx gr." name="f_ppeso_max" value="" 
+                          <input type="text" id="flt_pre_pes_max" class="form-control input_flt" placeholder="Máx gr." name="peso_max" value="" 
                           onkeypress="return isNumberKey(event)">
                         </div>
                       </div>
@@ -170,11 +171,11 @@
                       <div class="form-group"><!-- Precio por pieza -->
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por pieza </label>
                         <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pro_min" class="form-control input_flt" placeholder="Mín $" name="f_pprod_min" value="" 
+                          <input type="text" id="flt_pre_pro_min" class="form-control input_flt" placeholder="Mín $" name="prepza_min" value="" 
                           onkeypress="return isNumberKey(event)">
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pro_max" class="form-control input_flt" placeholder="Máx $" name="f_pprod_max" value="" 
+                          <input type="text" id="flt_pre_pro_max" class="form-control input_flt" placeholder="Máx $" name="prepza_max" value="" 
                           onkeypress="return isNumberKey(event)">  
                         </div>
                       </div>
@@ -182,11 +183,11 @@
                       <div class="form-group"><!-- Precio por peso -->
                         <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por peso </label>
                         <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín $" name="f_ppeso_min" value="" 
+                          <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín $" name="prepes_min" value="" 
                           onkeypress="return isNumberKey(event)">
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pes_max" class="form-control input_flt" placeholder="Máx $" name="f_ppeso_max" value="" 
+                          <input type="text" id="flt_pre_pes_max" class="form-control input_flt" placeholder="Máx $" name="prepes_max" value="" 
                           onkeypress="return isNumberKey(event)">
                         </div>
                       </div>
@@ -219,7 +220,7 @@
                       <div class="form-group"><!-- Materiales -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Materiales </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="rmaterial" name="material[]" class="form-control selectpicker" 
+                          <select id="rmaterial" name="material" class="form-control selectpicker" 
                           title="Seleccione">
                             <?php foreach ( $materiales as $m ) { ?>
                               <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>
@@ -231,7 +232,7 @@
                       <div class="form-group"><!-- Baños -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Baños </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="banos_fc" name="bano[]" class="form-control" 
+                          <select id="banos_fc" name="bano[]" class="form-control" multiple 
                           title="Seleccione">
                             
                           </select>
@@ -241,7 +242,7 @@
                       <div class="form-group"><!-- Colores -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Colores </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="rmaterial" name="material[]" class="form-control selectpicker" 
+                          <select id="rcolor" name="color[]" class="form-control selectpicker" 
                           title="Seleccione" multiple>
                             <?php foreach ( $colores as $c ) { ?>
                               <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
@@ -267,10 +268,18 @@
                       <div class="form-group"><!-- Trabajos -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Mostrar </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <div><input type="checkbox" class="flat" checked disabled> Peso</div>
-                          <div><input type="checkbox" class="flat"> #ID del producto</div>
-                          <div><input type="checkbox" class="flat"> Nombre del producto</div>
-                          <div><input type="checkbox" class="flat"> Precio </div>
+                          <div>
+                            <input type="checkbox" name="p_pep" class="flat" checked> Peso
+                          </div>
+                          <div>
+                            <input type="checkbox" name="p_idp" class="flat"> #ID del producto
+                          </div>
+                          <div>
+                            <input type="checkbox" name="p_nop" class="flat"> Nombre del producto
+                          </div>
+                          <div>
+                            <input type="checkbox" name="p_prp" class="flat"> Precio 
+                          </div>
                         </div>
                       </div>
 
@@ -293,12 +302,22 @@
                     <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>-->
+
                     <div class="clearfix"></div>
                   </div>
-                  <div id="tabla_datos-lineas" class="x_content">
-                    
+                  <div id="tabla_datos-consulta" class="x_content">
+                     
                   </div>
+                  
+                  <div class="form-group">
+                    <div align="center">
+                      <button id="btn_oimgs" type="button" 
+                      class="btn btn-success hidden">Obtener imágenes</button>
+                    </div>
+                  </div>
+
                 </div>
+
               </div>
             </div>
           </div>
@@ -355,7 +374,10 @@
     <script type="text/javascript">
       $(document).ready(function(){
           $('#tallas_fc').picker(
-            texts:{ trigger : "Seleccione" }
+            texts : { trigger : "Seleccione" }
+          );
+          $('#banos_fc"').picker(
+            texts : { trigger : "Seleccione" }
           );
       });
     </script>

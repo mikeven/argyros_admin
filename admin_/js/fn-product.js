@@ -47,7 +47,7 @@ function editarProducto(){
 
 /* --------------------------------------------------------- */
 function cargarSubcategorias( regs ){
-	var lista = "<option value=''>Seleccione</option>";
+	var lista = "";
 	$.each( regs, function( i, v ) {
 		lista += "<option value=" + v.id + ">" + v.name + "</option>"; 
 	});

@@ -72,6 +72,15 @@
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerValoresGrupoUsuarioDefecto( $dbh ){
+		//Devuelve los multiplicadores asociados a los precios del perfil de usuario por defecto
+		$q = "select id, name, description, variable_a, variable_b, variable_c, variable_d, material 
+		from client_group where name = 'Defecto'";
+		
+		$data_user = mysqli_fetch_array( mysqli_query( $dbh, $q ) );
+		return $data_user;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerClientePorId( $dbh, $idc ){
 		//Devuelve el registro de cliente dado por id
 		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, 
