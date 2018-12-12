@@ -181,7 +181,7 @@
                       </div>
 
                       <div class="form-group"><!-- Precio por peso -->
-                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por peso </label>
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por gr</label>
                         <div class="col-md-4 col-sm-4 col-xs-6">
                           <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín $" name="prepes_min" value="" 
                           onkeypress="return isNumberKey(event)">
@@ -373,10 +373,10 @@
     <script src="vendors/select-picker/picker.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function(){
-          $('#tallas_fc').picker(
-            texts : { trigger : "Seleccione" }
-          );
-          $('#banos_fc"').picker(
+          /*$('#tallas_fc').picker(
+            texts : { trigger : "Selexione" }
+          );*/
+          $('#banos_fc').picker(
             texts : { trigger : "Seleccione" }
           );
       });

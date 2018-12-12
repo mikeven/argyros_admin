@@ -14,6 +14,7 @@
 			$data_p = $reg["data"];
 			$imgs 	= $reg["imagenes"];
 			$idr 	= $data_p["id"]."-".$data_p["id_det"];
+			$link	= "product-data.php?p=".$data_p["id"]."#".$data_p["id_det"];
 			
 			if( isset( $imgs[0] ) ) $image = $imgs[0]["path"]; else $image = "";
 
@@ -23,6 +24,7 @@
 			$bloque_img = str_replace( "{nombre}", 	$data_p["name"], 	$bloque_img );
 			$bloque_img = str_replace( "{image}", 	$image, 			$bloque_img );
 			$bloque_img = str_replace( "{codigo}", 	$data_p["code"], 	$bloque_img );
+			$bloque_img = str_replace( "{link}", 	$link, 				$bloque_img );
 			
 			$resultado .= $bloque_img;
 		}
@@ -33,12 +35,17 @@
 	function filtrarProductosPeso( $registros, $min, $max ){
 		//Devuelve los registros que cumplen con los filtros de: peso
 		$productos = array();
+		$id_reg_ag = array();
 
 		foreach ( $registros as $reg ) {
+			$data = $reg["data"];
 			$tallas = $reg["tallas"];
 			foreach ( $tallas as $t ) {
 				if( $t["peso"] >= $min && $t["peso"] <= $max ){
-					$productos[] = $reg;
+					if ( !in_array( $data["id_det"], $id_reg_ag ) ){
+						$id_reg_ag[] = $data["id_det"];
+						$productos[] = $reg;
+					}
 				}
 			}
 		}
@@ -46,7 +53,55 @@
 		return $productos;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function filtrarProductosConsulta( $form, $registros ){
+	function filtrarProductosPrecio( $registros, $form, $tipo_filtro_precio, $varg ){
+		//Devuelve los registros que cumplen con los filtros de: precio por pieza/peso
+		$productos = array();
+		$id_reg_ag = array();
+
+		if( $tipo_filtro_precio == "pieza" ){
+			
+			$min = $form["prepza_min"]; $max = $form["prepza_max"];
+			foreach ( $registros as $reg ) {
+				$data = $reg["data"];
+				$tallas = $reg["tallas"];
+				foreach ( $tallas as $t ) {
+					if( $t["precio"] >= $min && $t["precio"] <= $max ){
+						if ( !in_array( $data["id_det"], $id_reg_ag ) ){
+							$id_reg_ag[] = $data["id_det"];
+							$productos[] = $reg;
+						}
+					}
+				}
+			}
+
+		}
+
+		if( $tipo_filtro_precio == "peso" ){
+			
+			$min = $form["prepes_min"]; $max = $form["prepes_max"];
+			foreach ( $registros as $reg ) {
+				$det = $reg["detalle"];
+				if( $det["tipo_precio"] == 'g' ){
+					$precio_peso = obtenerPrecioPorGramo( $varg, $det["precio_peso"] );
+					if( $det["precio_peso"] >= $min && $det["precio_peso"] <= $max ){
+						$productos[] = $reg;
+					}
+				}
+				if( $det["tipo_precio"] == 'mo' ){
+					$precio_peso = obtenerPrecioPorGramoMO( $varg, $det["precio_mo"] );
+					if( $precio_peso >= $min && $precio_peso <= $max ){
+						$productos[] = $reg;
+					}
+				}
+			}
+
+		}
+
+		return $productos;
+
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function filtrarProductosConsulta( $form, $registros, $varg ){
 		//Devuelve los registros que cumplen con los filtros de: peso, precio
 		
 		$resultados = $registros;
@@ -56,7 +111,11 @@
 		}
 
 		if( $form["prepza_min"] != "" || $form["prepza_max"] != "" ){
-			$resultados = filtrarProductosPrecio( $registros, $form["peso_min"], $form["peso_max"] );	
+			$resultados = filtrarProductosPrecio( $registros, $form, "pieza", $varg );	
+		}
+
+		if( $form["prepes_min"] != "" || $form["prepes_min"] != "" ){
+			$resultados = filtrarProductosPrecio( $registros, $form, "peso", $varg );		
 		}
 
 		return $resultados;
@@ -179,6 +238,14 @@
 		return number_format( $precio, 2, ".", "" );	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerPrecioPorGramoMO( $varg, $valor_mo ){
+		//Devuelve el valor del precio del gramo en productos de tipo mano de obra 
+		//de acuerdo al perfil de cliente
+		$precio = ( ( $valor_mo * $varg["variable_c"] ) + $varg["material"] ) * $varg["variable_d"];
+		
+		return number_format( $precio, 2, ".", "" );	
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerPrecioRegistroTalla( $varg, $tipo_precio, $peso, $precio_u ){
 		//Devuelve el precio de un detalle de producto de acuerdo al peso y el perfil de cliente
 
@@ -189,7 +256,7 @@
 		if ( $tipo_precio == "mo" ){
 			$monto = ( $precio_u * ( $varg["variable_c"] ) + 
 									 $varg["material"] ) * $peso * ( $varg["variable_d"] );
-			$precio = number_format( $precio, 2, ".", "" );
+			$precio = number_format( $monto, 2, ".", "" );
 		}
 		if( $tipo_precio == "p" ){
 			$monto = $precio_u * ( $varg["variable_a"] );
@@ -223,16 +290,12 @@
 		return $ntallas;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerListadoProductosConsulta( $dbh, $registros_base, $form ){
+	function obtenerListadoProductosConsulta( $dbh, $registros_base, $form, $varg ){
 		// Devuelve la lista de productos de la consulta con su correspondiente detalle, tallas de detalle e imágenes de detalle 
 		// Cada registro devuelve la estructura [producto,detalle,tallas[],imagenes[]]
-		include( "data-clients.php" );
+		
 		include( "data-products.php" );
 		$lproductos = array();
-
-		if( $form["cgcliente"] != "" ) 
-			$varg = obtenerGrupoPorId( $dbh, $form["cgcliente"] );
-		else $varg = obtenerValoresGrupoUsuarioDefecto( $dbh );
 
 		foreach ( $registros_base as $reg ) {
 			
@@ -258,17 +321,25 @@
 	function obtenerProductosConsulta( $dbh, $form ){
 		//Construye la consulta dinámica y obtiene los registros de los productos consultados
 
+		include( "data-clients.php" );
 		ini_set( 'display_errors', 1 );
+
 		$datos = ajustarValores( $form );
-		//print_r( $datos );
+		
+		if( $form["cgcliente"] != "" ) 
+			$varg = obtenerGrupoPorId( $dbh, $form["cgcliente"] );
+		else $varg = obtenerValoresGrupoUsuarioDefecto( $dbh );
 		
 		$query_base = obtenerQueryConsulta( $datos );
 		$registros_base = obtenerRegistroQuery( $dbh, $query_base );
 		//print_r($registros_base);
 		
-		$lproductos = obtenerListadoProductosConsulta( $dbh, $registros_base, $form );
-		print_r($lproductos);
-		//$lproductos = filtrarProductosConsulta( $form, $lproductos );
+		$lproductos = obtenerListadoProductosConsulta( $dbh, $registros_base, $form, $varg );
+		//print_r($lproductos);
+
+		$lproductos = filtrarProductosConsulta( $form, $lproductos, $varg );
+
+		//print_r( $lproductos );
 
 		return $lproductos; 
 	}
@@ -287,8 +358,8 @@
 		parse_str( $_POST["img_catal"], $form );
 		
 		$productos = obtenerProductosConsulta( $dbh, $form );
-		
-		//echo mostrarProductosConsulta( $productos );
+
+		echo mostrarProductosConsulta( $productos );
 		
 	}
 

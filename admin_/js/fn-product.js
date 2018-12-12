@@ -48,6 +48,8 @@ function editarProducto(){
 /* --------------------------------------------------------- */
 function cargarSubcategorias( regs ){
 	var lista = "";
+	$( "#val_subc" ).html("");
+	
 	$.each( regs, function( i, v ) {
 		lista += "<option value=" + v.id + ">" + v.name + "</option>"; 
 	});

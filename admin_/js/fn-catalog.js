@@ -6,7 +6,7 @@
 /* --------------------------------------------------------- */
 function cargarOpcionesLista( regs, idlista ){
 	var lista = "";
-
+    $( idlista ).html("");
 	$.each( regs, function( i, v ) {
 		lista += "<option value=" + v.id + ">" + v.name + "</option>"; 
 	});
@@ -24,7 +24,8 @@ function mostrarTallasCategoria( idc ){
         success: function( response ){
         	res = jQuery.parseJSON( response );
         	cargarOpcionesLista( res, "#tallas_fc" );
-        	$('#tallas_fc').picker();
+        	$('#tallas_fc').picker('destroy');
+            $('#tallas_fc').picker();
         }
     });
 }
@@ -40,6 +41,7 @@ function mostrarBanosMaterial( idm ){
         	res = jQuery.parseJSON( response );
         	cargarOpcionesLista( res, "#banos_fc" );
         	//$('#banos_fc').prepend( "<option selected>Seleccione</option>" );
+            $('#banos_fc').picker('destroy');
         	$('#banos_fc').picker();
         }
     });
@@ -53,7 +55,7 @@ function buscarImagenesCatalogo( form_r ){
         url:"database/data-catalog.php",
         data:{ img_catal: form_r },
         success: function( response ){
-        	//console.log(response);
+        	console.log(response);
             $("#tabla_datos-consulta").html(response);
         }
     });

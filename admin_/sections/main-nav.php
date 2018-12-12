@@ -36,8 +36,8 @@
             <li>
                 <a href="sets.php">Juegos</a>
             </li>
-            <li class="hidden">
-                <a href="catalog-report.php">Imágenes catálogo</a>
+            <li class="">
+                <a href="catalog-report.php">Imágenes de catálogo</a>
             </li>
             <li>
                 <a href="countries.php">Países</a>
