@@ -10,7 +10,7 @@
 	$dbh = mysqli_connect ( $servidor, $usuariobd, $passbd ) 
 	or die('No se puede conectar a '.$servidor.": ". mysql_error());
 	mysqli_select_db ( $dbh, $basedatos );
-	mysqli_query( $dbh, "SET NAMES 'utf8'" );
+	//mysqli_query( $dbh, "SET NAMES 'utf8'" );
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	function redireccionar( $url ){
