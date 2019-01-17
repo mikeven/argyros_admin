@@ -17,7 +17,8 @@
 		
 		imagecopyresampled( $generada, $imagen, 0, 0, 0, 0, $longitud, $altura, $longitud, $altura );
 		imagefilledrectangle ( $generada , $x1 , $y1 , $x2 , $y2 , $color_2 );
-		imagettftext( $generada, 24, 0, 70, 70, $color_1, 'fonts/futura medium bt.ttf', "NOMBRE PRODUCTO" );
+		imagettftext( $generada, 24, 0, 70, 70, $color_1, 
+			'fonts/futura medium bt.ttf', "NOMBRE PRODUCTO" );
 		
 		imagepng( $generada, "salidas/imgr$n.png", 9 ); 
 		imagedestroy( $generada );
@@ -33,8 +34,7 @@
 	foreach ( $ficheros as $f ) {
 		if( $f != "." && $f != ".." ){
 			$n++;
-			if( $n <= 10 ){
-				
+			if( $n <= 2 ){
 				echo "Generando imagen para: ".$f."..."."<br>";
 				GI( "catalog/".$f, $n );
 			}
@@ -43,7 +43,7 @@
 
 	$directorio = "salidas/";
 	$gestor_dir = opendir( $directorio );
-	while (false !== ($nombre_fichero = readdir($gestor_dir))) {
+	while ( false !== ( $nombre_fichero = readdir( $gestor_dir ) ) ) {
 	    $pics[] = $nombre_fichero;
 	}
 	foreach ( $pics as $f ) {
@@ -53,8 +53,8 @@
 	$zip = new ZipArchive();
 	$filename = "catalog.zip";
 
-	if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
-	    exit("cannot open <$filename>\n");
+	if  ( $zip->open( $filename, ZipArchive::CREATE ) !== TRUE ) {
+	    exit( "cannot open <$filename>\n" );
 	}
 	foreach ( $pics as $f ) {
 		if( $f != "." && $f != ".." )

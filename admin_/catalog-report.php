@@ -16,7 +16,6 @@
     include( "database/data-treatments.php" );
     include( "database/data-categories.php" );
 
-
     checkSession( '' );
 ?>
 <!DOCTYPE html>
@@ -72,6 +71,10 @@
       padding-top: 6px !important;
       padding-bottom: 6px !important;
     }
+
+    #response_img{ margin-top: 10px; }
+
+    .lnkig{ margin-right: 5px; }
   </style>
 
   <?php
@@ -106,6 +109,7 @@
             <div class="clearfix"></div>
 
             <div class="row">
+              <!-- -------------------------- Primera columna ------------------------------- -->
               <div class="col-md-5 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
@@ -125,7 +129,6 @@
                         <div class="col-md-9 col-sm-9 col-xs-12">
                           <select id="selcateg_fr" name="categoria" class="form-control selectpicker" 
                           required title="Seleccione">
-                            
                             <?php foreach ( $categorias as $c ) { ?>
                               <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                             <?php } ?>
@@ -295,6 +298,7 @@
                   </div>
                 </div>
               </div>
+              <!-- -------------------------- Segunda columna ------------------------------- -->
               <div class="col-md-7 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
@@ -312,12 +316,12 @@
                   <div class="form-group">
                     <div align="center">
                       <button id="btn_oimgs" type="button" 
-                      class="btn btn-success hidden">Obtener imágenes</button>
+                      class="btn btn-success">Obtener imágenes</button>
+                      <div id="response_img"></div>
                     </div>
                   </div>
 
                 </div>
-
               </div>
             </div>
           </div>

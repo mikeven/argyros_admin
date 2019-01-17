@@ -343,6 +343,12 @@
 
 		return $lproductos; 
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function generarArchivosImagenes( $productos ){
+		// Inovoca la generación de imágenes y devuelve el archivo comprimido
+		include( "data-images.php" );
+		escribirImagenes( $productos );
+	}
 
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
@@ -354,13 +360,16 @@
 		
 		include( "bd.php" );
 		include( "data-sizes.php" );
+		$descarga = $_POST["descarga"];
 
 		parse_str( $_POST["img_catal"], $form );
 		
 		$productos = obtenerProductosConsulta( $dbh, $form );
-
-		echo mostrarProductosConsulta( $productos );
-		
+		if( $descarga != "" ){
+			echo generarArchivosImagenes( $productos );
+		}
+		else
+			echo mostrarProductosConsulta( $productos );
 	}
-
+	/* ----------------------------------------------------------------------------------- */
 ?>

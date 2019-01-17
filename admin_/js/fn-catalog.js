@@ -47,22 +47,31 @@ function mostrarBanosMaterial( idm ){
     });
 }
 /* --------------------------------------------------------- */
-function buscarImagenesCatalogo( form_r ){
+function buscarImagenesCatalogo( form_r, param ){
 	//Solicita los productos con los parámetros del formulario
-
+    var wait = "<img src='images/ajax-loader.gif' width='16' height='16'>";
 	$.ajax({
         type:"POST",
         url:"database/data-catalog.php",
-        data:{ img_catal: form_r },
+        data:{ img_catal: form_r, descarga: param },
+        beforeSend: function () {
+            if( param == 'descargar' )
+                $("#response_img").html( wait );
+        },
         success: function( response ){
-        	console.log(response);
-            $("#tabla_datos-consulta").html(response);
+        	console.log( response );
+            if( param != 'descargar' )
+                $("#tabla_datos-consulta").html( response );
+            else 
+                $("#response_img").html( response );
         }
     });
 }
 /* --------------------------------------------------------- */
 $( document ).ready(function() {	
 	$("#selcateg_fr").on( "change", function(){
+        // Invoca la actualización de la lista de subcategorías y tallas
+        // según la categoría seleccionada
 		$("#tallas_fc").html("");
 		var idc = $(this).val();
 		mostrarSubcategorias( idc );
@@ -70,15 +79,22 @@ $( document ).ready(function() {
     });
 
     $("#rmaterial").on( "change", function(){
+        // Invoca la actualización de la lista de baños según el material seleccionado
 		$("#banos_fc").html("");
 		var idm = $(this).val();
 		mostrarBanosMaterial( idm );
     });
 
     $("#btn_rcatal").on( "click", function(){
-    	
+    	// Invoca la búsqueda de los productos según el formulario de parámetros
 		var form_r = $( "#frm_rcatalogo" ).serialize();
-		buscarImagenesCatalogo( form_r );
+		buscarImagenesCatalogo( form_r, '' );
+    });
+
+    $("#btn_oimgs").on( "click", function(){
+        // Invoca la generación de las imágenes de catálogo resultantes de la búsqueda
+        var form_r = $( "#frm_rcatalogo" ).serialize();
+        buscarImagenesCatalogo( form_r, 'descargar' );
     });
 });
 /* --------------------------------------------------------- */
