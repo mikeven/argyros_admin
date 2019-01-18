@@ -283,6 +283,9 @@
                           <div>
                             <input type="checkbox" name="p_prp" class="flat"> Precio 
                           </div>
+                          <div>
+                            <input type="checkbox" name="p_tal" class="flat"> Tallas 
+                          </div>
                         </div>
                       </div>
 

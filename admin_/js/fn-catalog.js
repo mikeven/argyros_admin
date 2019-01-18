@@ -49,7 +49,7 @@ function mostrarBanosMaterial( idm ){
 /* --------------------------------------------------------- */
 function buscarImagenesCatalogo( form_r, param ){
 	//Solicita los productos con los parámetros del formulario
-    var wait = "<img src='images/ajax-loader.gif' width='16' height='16'>";
+    var wait = "<img src='images/ajax-loader.gif' width='25' height='25'>";
 	$.ajax({
         type:"POST",
         url:"database/data-catalog.php",

@@ -54,7 +54,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function filtrarProductosPrecio( $registros, $form, $tipo_filtro_precio, $varg ){
-		//Devuelve los registros que cumplen con los filtros de: precio por pieza/peso
+		// Devuelve los registros que cumplen con los filtros de: precio por pieza/peso
 		$productos = array();
 		$id_reg_ag = array();
 
@@ -102,7 +102,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function filtrarProductosConsulta( $form, $registros, $varg ){
-		//Devuelve los registros que cumplen con los filtros de: peso, precio
+		// Devuelve los registros que cumplen con los filtros de: peso, precio
 		
 		$resultados = $registros;
 
@@ -122,7 +122,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerRegistroQuery( $dbh, $q ){
-		//Devuelve los registros solicitados a través de la consulta dinámica
+		// Devuelve los registros solicitados a través de la consulta dinámica
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -130,7 +130,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerSubQueryValor( $qvalor, $valores ){
-		//
+		// Construye la cadena and campo = valor or campo = valor para un query
 
 		if( count( $valores ) > 0 ){
 			$q = "and (";  
@@ -231,6 +231,13 @@
 		return $datos;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerPrecioPorPieza( $varg, $precio_pieza ){
+		//Devuelve el valor del precio del gramo de acuerdo al perfil de cliente
+		$precio = $precio_pieza * $varg["variable_a"];
+		
+		return number_format( $precio, 2, ".", "" );	
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerPrecioPorGramo( $varg, $precio_gramo ){
 		//Devuelve el valor del precio del gramo de acuerdo al perfil de cliente
 		$precio = $precio_gramo * $varg["variable_b"];
@@ -246,22 +253,30 @@
 		return number_format( $precio, 2, ".", "" );	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function actualizarPrecioUnitario( $dbh, $reg, $varg ){
+		//Devuelve el precio de un detalle de producto de acuerdo al perfil de cliente
+		
+		if( $reg["tipo_precio"] == "g" )
+			$reg["precio_peso"] = obtenerPrecioPorGramo( $varg, $reg["precio_peso"] );
+		if( $reg["tipo_precio"] == "p" )
+			$reg["precio_pieza"] = obtenerPrecioPorPieza( $varg, $reg["precio_pieza"] );
+		if( $reg["tipo_precio"] == "mo" )
+			$reg["precio_mo"] = obtenerPrecioPorGramoMO( $varg, $reg["precio_mo"] );
+		
+		return $reg;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerPrecioRegistroTalla( $varg, $tipo_precio, $peso, $precio_u ){
 		//Devuelve el precio de un detalle de producto de acuerdo al peso y el perfil de cliente
 
-		if( $tipo_precio == "g" ){
-			$monto = $peso * obtenerPrecioPorGramo( $varg, $precio_u );
-			$precio = number_format( $monto, 2, ".", "" );
-		}
-		if ( $tipo_precio == "mo" ){
-			$monto = ( $precio_u * ( $varg["variable_c"] ) + 
-									 $varg["material"] ) * $peso * ( $varg["variable_d"] );
-			$precio = number_format( $monto, 2, ".", "" );
-		}
-		if( $tipo_precio == "p" ){
-			$monto = $precio_u * ( $varg["variable_a"] );
-			$precio = number_format( $monto, 2, ".", "" );
-		}
+		if( $tipo_precio == "g" )
+			$precio = number_format( $peso * $precio_u, 2, ".", "" );
+		
+		if ( $tipo_precio == "mo" )
+			$precio = number_format( $precio_u * $peso, 2, ".", "" );
+		
+		if( $tipo_precio == "p" )
+			$precio = number_format( $precio_u, 2, ".", "" );
 
 		return $precio;
 	}
@@ -301,7 +316,8 @@
 			
 			$producto["data"] 		= $reg;
 			
-			$producto["detalle"]	= obtenerRegistroDetalleProductoPorId( $dbh, $reg["id_det"] ); 
+			$producto["detalle"]	= obtenerRegistroDetalleProductoPorId( $dbh, $reg["id_det"] );
+			$producto["detalle"]	= actualizarPrecioUnitario( $dbh, $producto["detalle"], $varg );
 									// data-products.php
 			$producto["tallas"]		= obtenerTallasDetalleProducto( $dbh, $reg["id_det"] );
 									// data-products.php
@@ -344,10 +360,10 @@
 		return $lproductos; 
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function generarArchivosImagenes( $productos ){
+	function generarArchivosImagenes( $productos, $frm ){
 		// Inovoca la generación de imágenes y devuelve el archivo comprimido
 		include( "data-images.php" );
-		escribirImagenes( $productos );
+		escribirImagenes( $productos, $frm );
 	}
 
 	/* ----------------------------------------------------------------------------------- */
@@ -366,7 +382,7 @@
 		
 		$productos = obtenerProductosConsulta( $dbh, $form );
 		if( $descarga != "" ){
-			echo generarArchivosImagenes( $productos );
+			echo generarArchivosImagenes( $productos, $form );
 		}
 		else
 			echo mostrarProductosConsulta( $productos );
