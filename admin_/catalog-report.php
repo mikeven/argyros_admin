@@ -211,7 +211,6 @@
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <select id="gcliente" name="cgcliente" class="form-control selectpicker" 
                               title="Seleccione">
-                                
                                 <?php foreach ( $grupos as $g ) { ?>
                                   <option value="<?php echo $g["id"] ?>"><?php echo $g["name"] ?></option>
                                 <?php } ?>
@@ -292,11 +291,26 @@
 
                       <div id="panel_opciones_2" class="form-group" style="display: none;">
                         <!-- Identificador -->
+                        <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">
                         Identificador</label>
                         <div class="col-md-9 col-sm-9 col-xs-6">
                           <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Id producto-Id detalle" name="identificador">
                         </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Perfil cliente</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="gcliente" name="cgcliente" class="form-control selectpicker" 
+                              title="Seleccione">
+                                <?php foreach ( $grupos as $g ) { ?>
+                                  <option value="<?php echo $g["id"] ?>"><?php echo $g["name"] ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                        </div>
+
                       </div>
 
                       <div class="ln_solid"></div>
