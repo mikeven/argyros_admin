@@ -170,8 +170,17 @@
 		return $q;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerSubqueryProductosOcultos( $frm ){
+		// Devuelve la subcadena de query para indicar si se obtienen solo productos ocultos
+		$q_po = "";
+		if( isset( $frm["p_ocultos"] ) )
+			$q_po = "and p.visible <> 1";
+
+		return $q_po;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerQueryConsulta( $form ){
-		//Devuelve la consulta a bd de manera dinámica según los datos del formulario
+		// Devuelve la consulta a bd de manera dinámica según los datos del formulario
 
 		ini_set( 'display_errors', 1 );
 		$t_spd 	= ""; 	//Tabla: size_product_detail	(talla-detalle producto)
@@ -179,22 +188,27 @@
 		$t_lp 	= "";	//Tabla: line_product			(línea-producto) 
 		$idt 	= "";	//atributo: id talla
 		$q_jta 	= "";	//sub-query: unión talla - detalle_producto 
-		$qdet 	= "";	//sub-query: unión talla - detalle_producto
+		$qdet 	= "";	//sub-query:  
+		$q_sc 	= "";	//sub-query: subcategoría
+		$q_po	= "";	//sub-query: productos ocultos
 
 		$idc = $form["categoria"];
 		$idsc = $form["subcategoria"];
+
+		$q_po = obtenerSubqueryProductosOcultos( $form );
 
 		$q_l = obtenerSubQueryParam( "lp.product_id = p.id", "lp.line_id", $form["linea"] );
 		$q_t = obtenerSubQueryParam( "tp.product_id = p.id", "tp.making_id", $form["trabajo"] );
 
 		$q_m = obtenerSubQueryValorUnico( "p.material_id", $form["material"] );
-		$q_sc = obtenerSubQueryValorUnico( "p.subcategory_id", $form["subcategoria"] );
+		if( $form["subcategoria"] != "todos")
+			$q_sc = obtenerSubQueryValorUnico( "p.subcategory_id", $form["subcategoria"] );
 		
 		$q_b = obtenerSubQueryValor( "dp.treatment_id", $form["bano"] );
 		$q_co = obtenerSubQueryValor( "dp.color_id", $form["color"] );
 		$q_ta = obtenerSubQueryValor( "spd.size_id", $form["tallas"] );
 
-		if( $q_ta != "" ) {
+		if( $q_ta != "" ){
 			$idt = ", spd.size_id as idt";
 			$t_spd = "size_product_detail spd,";
 			$q_jta = "and spd.product_detail_id = dp.id";
@@ -208,10 +222,21 @@
 
 		$query = "select p.id, p.code, p.name, dp.id as id_det $idt  
 					from products p, $t_spd $t_mp $t_lp product_details dp 
-					where p.category_id = $idc $q_sc $q_m $q_l $q_t 
+					where p.category_id = $idc $q_sc $q_m $q_l $q_t $q_po
 					and dp.product_id = p.id $qdet";
 
+		return $query;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerQueryIdentificador( $form ){
+		// Devuelve la consulta a bd en función de idproducto-iddetalle
+		$ids = explode('-', $form["identificador"] );
+		list( $idp, $iddet ) = $ids;
 
+		$query = "select p.id, p.code, p.name, dp.id as id_det 
+		from products p, product_details dp where p.id = $idp 
+		and dp.id = $iddet and p.visible = 1";
+		
 		return $query;
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -346,7 +371,11 @@
 			$varg = obtenerGrupoPorId( $dbh, $form["cgcliente"] );
 		else $varg = obtenerValoresGrupoUsuarioDefecto( $dbh );
 		
-		$query_base = obtenerQueryConsulta( $datos );
+		if( isset ( $form["ch_busq_id"] ) )
+			$query_base = obtenerQueryIdentificador( $datos );
+		else
+			$query_base = obtenerQueryConsulta( $datos );
+
 		$registros_base = obtenerRegistroQuery( $dbh, $query_base );
 		//print_r($registros_base);
 		

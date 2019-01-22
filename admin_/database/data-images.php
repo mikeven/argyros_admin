@@ -9,7 +9,7 @@
 	function alturaInfo( $valores ){
 		$a_l = 20;	$h = 0;
 		foreach ( $valores as $v ){
-			if( $v != NULL )
+			if( $v != NULL && $h < 60 )
 				$h += $a_l;	
 		} 
 		return $h + 10;
@@ -23,7 +23,7 @@
 		$ancho_o 			= imagesx( $orig ); 
 		$alto_o 			= imagesy( $orig ); 
 		$nw 				= 500;
-		$nh 				= intval( ( $alto_o / $ancho_o) * $nw ) + $ai;
+		$nh 				= intval( ( $alto_o / $ancho_o ) * $nw ) + $ai;
 
 		$nva 				= imagecreatetruecolor( $nw, $nh ); 	
 		$color_1 			= imagecolorallocate( $nva, 0, 0, 0 );
@@ -37,14 +37,7 @@
 		//img, tam, ang, x, y, color, font, texto
 		$tam = 12; $typ = '../fonts/futura medium bt.ttf';
 		$lin = $y2 + 20;
-		if( $id != NULL ){
-			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $id );
-			$lin += 20;
-		}
-		if( $nombre != NULL ){
-			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $nombre );
-			$lin += 20;
-		}
+
 		if( $peso != NULL ){
 			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $peso );
 			$lin += 20;
@@ -53,9 +46,22 @@
 			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $precio );
 			$lin += 20;
 		}
-		if( $tallas != NULL ){
-			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $tallas );
+		if( $nombre != NULL ){
+			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $nombre );
+			$lin += 20;
 		}
+		if( $id != NULL ){
+			$lin = $y2 + 20;
+			$x = $nw / 2;
+			imagettftext( $nva, $tam, 0, $x, $lin, $color_1, $typ, $id );
+			$lin += 20;
+		}
+		if( $tallas != NULL ){
+			if( $id == NULL ) $lin = $y2 + 20;
+			$x = $nw / 2;
+			imagettftext( $nva, $tam-2, 0, $x, $lin, $color_1, $typ, $tallas );
+		}
+
 		$archivo = substr( $id_p, 1 );
 		imagepng( $nva, "../salidas/$archivo.png", 9 ); 
 		imagedestroy( $nva );
@@ -102,7 +108,7 @@
 			$det 	= $r["detalle"];
 			$und 	= array( 'p' => 'p', 'g' => 'g', 'mo' => 'g' );
 			$vcampo = array( 'p' => 'precio_pieza', 'g' => 'precio_peso', 'mo' => 'precio_mo' );
-			$precio = "$".$det[ $vcampo[ $det["tipo_precio"] ] ]."/".$und[ $det["tipo_precio"] ];
+			$precio = $det[ $vcampo[ $det["tipo_precio"] ] ]."$/".$und[ $det["tipo_precio"] ];
 		}
 		
 		return $precio;
@@ -111,12 +117,12 @@
 	function tallasP( $r, $f ){
 		$v_tallas = NULL;
 		if( isset( $f["p_tal"] ) ){
-			$v_tallas = "Tallas disponibles: ";
+			$v_tallas = "T: ";
 			$rt 	= $r["tallas"];
 			foreach ( $rt as $t ) 
-				$v_tallas .= $t["talla"].$t["unidad"]." ";
+				$v_tallas .= $t["talla"].$t["unidad"].", ";
 		}
-		return $v_tallas; 
+		return substr( $v_tallas, 0, -2 ); 
 	}
 	/* ---------------------------------------- */
 	function linkImg( $n ){

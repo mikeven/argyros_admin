@@ -123,152 +123,185 @@
                     <form id="frm_rcatalogo" data-parsley-validate 
                     class="form-horizontal form-label-left" 
                       action="" method="post">
-                      
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoría </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="selcateg_fr" name="categoria" class="form-control selectpicker" 
-                          required title="Seleccione">
-                            <?php foreach ( $categorias as $c ) { ?>
-                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
-                            <?php } ?>
-                          </select>
-                        </div>
-                      </div>
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="val_subc" name="subcategoria" class="form-control" 
-                          title="Seleccione" required>
-                          <option value="">Seleccione</option>
-                            
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <div class="ln_solid"></div>
-
-                      <div class="form-group"><!-- Tallas -->
-                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Tallas </label>
-                        <div class="col-md-8 col-sm-8 col-xs-12">
-                          <select id="tallas_fc" name="tallas[]" class="form-control" 
-                          title="Seleccione" multiple>                            
-                            
-                          </select>    
-                        </div>
-                      </div>
-
-                      <div class="form-group"><!-- Peso -->
-                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Peso </label>
-                        <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín gr." name="peso_min" value="" 
-                          onkeypress="return isNumberKey(event)">
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pes_max" class="form-control input_flt" placeholder="Máx gr." name="peso_max" value="" 
-                          onkeypress="return isNumberKey(event)">
-                        </div>
-                      </div>
-
-                      <div class="form-group"><!-- Precio por pieza -->
-                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por pieza </label>
-                        <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pro_min" class="form-control input_flt" placeholder="Mín $" name="prepza_min" value="" 
-                          onkeypress="return isNumberKey(event)">
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pro_max" class="form-control input_flt" placeholder="Máx $" name="prepza_max" value="" 
-                          onkeypress="return isNumberKey(event)">  
-                        </div>
-                      </div>
-
-                      <div class="form-group"><!-- Precio por peso -->
-                        <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por gr</label>
-                        <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín $" name="prepes_min" value="" 
-                          onkeypress="return isNumberKey(event)">
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-6">
-                          <input type="text" id="flt_pre_pes_max" class="form-control input_flt" placeholder="Máx $" name="prepes_max" value="" 
-                          onkeypress="return isNumberKey(event)">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Perfil cliente </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="gcliente" name="cgcliente" class="form-control selectpicker" 
-                          title="Seleccione">
-                            
-                            <?php foreach ( $grupos as $g ) { ?>
-                              <option value="<?php echo $g["id"] ?>"><?php echo $g["name"] ?></option>
-                            <?php } ?>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="form-group"><!-- Líneas -->
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Líneas </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="rlinea" name="linea[]" class="form-control selectpicker" 
-                          title="Seleccione" multiple>
-                            <?php foreach ( $lineas as $l ) { ?>
-                              <option value="<?php echo $l["id"] ?>"><?php echo $l["name"] ?></option>
-                            <?php } ?>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="form-group"><!-- Materiales -->
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Materiales </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="rmaterial" name="material" class="form-control selectpicker" 
-                          title="Seleccione">
-                            <?php foreach ( $materiales as $m ) { ?>
-                              <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>
-                            <?php } ?>
-                          </select>  
-                        </div>
-                      </div>
-
-                      <div class="form-group"><!-- Baños -->
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Baños </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="banos_fc" name="bano[]" class="form-control" multiple 
-                          title="Seleccione">
-                            
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="form-group"><!-- Colores -->
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Colores </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="rcolor" name="color[]" class="form-control selectpicker" 
-                          title="Seleccione" multiple>
-                            <?php foreach ( $colores as $c ) { ?>
-                              <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
-                            <?php } ?>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="form-group"><!-- Trabajos -->
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Trabajos </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <select id="rtrabajo" name="trabajo[]" class="form-control selectpicker" 
-                          title="Seleccione" multiple >
-                            <?php foreach ( $trabajos as $t ) { ?>
-                              <option value="<?php echo $t["id"] ?>"><?php echo $t["name"] ?></option>
-                            <?php } ?>
-                          </select>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <input id="busq_id" type="checkbox" class="flat" name="ch_busq_id"> 
+                          Buscar por identificador
                         </div>
                       </div>
 
                       <div class="ln_solid"></div>
+                      
+                      <div id="panel_opciones_1">
 
-                      <div class="form-group"><!-- Trabajos -->
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoría </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="selcateg_fr" name="categoria" class="form-control selectpicker" 
+                              required title="Seleccione">
+                                <?php foreach ( $categorias as $c ) { ?>
+                                  <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="val_subc" name="subcategoria" class="form-control" 
+                              title="Seleccione" required>
+                              <option value="">Seleccione</option>
+                                
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div class="ln_solid"></div>
+
+                          <div class="form-group"><!-- Tallas -->
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Tallas </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                              <select id="tallas_fc" name="tallas[]" class="form-control" 
+                              title="Seleccione" multiple>                            
+                                
+                              </select>    
+                            </div>
+                          </div>
+
+                          <div class="form-group"><!-- Peso -->
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Peso </label>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                              <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín gr." name="peso_min" value="" 
+                              onkeypress="return isNumberKey(event)">
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                              <input type="text" id="flt_pre_pes_max" class="form-control input_flt" placeholder="Máx gr." name="peso_max" value="" 
+                              onkeypress="return isNumberKey(event)">
+                            </div>
+                          </div>
+
+                          <div class="form-group"><!-- Precio por pieza -->
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por pieza </label>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                              <input type="text" id="flt_pre_pro_min" class="form-control input_flt" placeholder="Mín $" name="prepza_min" value="" 
+                              onkeypress="return isNumberKey(event)">
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                              <input type="text" id="flt_pre_pro_max" class="form-control input_flt" placeholder="Máx $" name="prepza_max" value="" 
+                              onkeypress="return isNumberKey(event)">  
+                            </div>
+                          </div>
+
+                          <div class="form-group"><!-- Precio por peso -->
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por gr</label>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                              <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín $" name="prepes_min" value="" 
+                              onkeypress="return isNumberKey(event)">
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                              <input type="text" id="flt_pre_pes_max" class="form-control input_flt" placeholder="Máx $" name="prepes_max" value="" 
+                              onkeypress="return isNumberKey(event)">
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Perfil cliente </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="gcliente" name="cgcliente" class="form-control selectpicker" 
+                              title="Seleccione">
+                                
+                                <?php foreach ( $grupos as $g ) { ?>
+                                  <option value="<?php echo $g["id"] ?>"><?php echo $g["name"] ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group"><!-- Líneas -->
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Líneas </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="rlinea" name="linea[]" class="form-control selectpicker" 
+                              title="Seleccione" multiple>
+                                <?php foreach ( $lineas as $l ) { ?>
+                                  <option value="<?php echo $l["id"] ?>"><?php echo $l["name"] ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div><!-- Líneas -->
+
+                          <div class="form-group"><!-- Materiales -->
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Materiales </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="rmaterial" name="material" class="form-control selectpicker" 
+                              title="Seleccione">
+                                <?php foreach ( $materiales as $m ) { ?>
+                                  <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>
+                                <?php } ?>
+                              </select>  
+                            </div>
+                          </div><!-- Materiales -->
+
+                          <div class="form-group"><!-- Baños -->
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Baños </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="banos_fc" name="bano[]" class="form-control" multiple 
+                              title="Seleccione">
+                                
+                              </select>
+                            </div>
+                          </div><!-- Baños -->
+
+                          <div class="form-group"><!-- Colores -->
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Colores </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="rcolor" name="color[]" class="form-control selectpicker" 
+                              title="Seleccione" multiple>
+                                <?php foreach ( $colores as $c ) { ?>
+                                  <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div><!-- Colores -->
+
+                          <div class="form-group"><!-- Trabajos -->
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Trabajos </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="rtrabajo" name="trabajo[]" class="form-control selectpicker" 
+                              title="Seleccione" multiple >
+                                <?php foreach ( $trabajos as $t ) { ?>
+                                  <option value="<?php echo $t["id"] ?>"><?php echo $t["name"] ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div><!-- Trabajos -->
+
+                          <div class="ln_solid"></div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <div>
+                                <input type="checkbox" name="p_ocultos" class="flat"> 
+                                Obtener sólo productos ocultos
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+                      <div id="panel_opciones_2" class="form-group" style="display: none;">
+                        <!-- Identificador -->
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                        Identificador</label>
+                        <div class="col-md-9 col-sm-9 col-xs-6">
+                          <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Id producto-Id detalle" name="identificador">
+                        </div>
+                      </div>
+
+                      <div class="ln_solid"></div>
+
+                      <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Mostrar </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
                           <div>
@@ -298,6 +331,31 @@
                       </div>
 
                     </form>  
+                  </div>
+                </div>
+
+                <div class="x_panel hidden">
+                  <div class="x_title">
+                    <h2>Búsqueda por identificador</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <form id="frm_rcatalogo_id" data-parsley-validate 
+                    class="form-horizontal form-label-left" 
+                      action="" method="post">
+                        <div class="input-group">
+                            <input type="text" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary">Buscar</button>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                        <div align="center">
+                          <button id="btn_rcatal_id" type="button" 
+                          class="btn btn-success">Buscar</button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -382,10 +440,10 @@
       $(document).ready(function(){
           /*$('#tallas_fc').picker(
             texts : { trigger : "Selexione" }
-          );*/
+          );
           $('#banos_fc').picker(
             texts : { trigger : "Seleccione" }
-          );
+          );*/
       });
     </script>
 

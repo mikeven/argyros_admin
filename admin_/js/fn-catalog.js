@@ -47,6 +47,19 @@ function mostrarBanosMaterial( idm ){
     });
 }
 /* --------------------------------------------------------- */
+function cargarSubcategoriasCatal( regs ){
+    // Muestra subcategorías en la lista desplegable al seleccionar una categoría 
+    $( "#val_subc" ).html("");
+    var lista = "<option value='todos'>Todas</option>";
+    
+    $.each( regs, function( i, v ) {
+        lista += "<option value=" + v.id + ">" + v.name + "</option>"; 
+    });
+
+    $( lista ).appendTo("#val_subc");
+    //alert(lista);
+}
+/* --------------------------------------------------------- */
 function buscarImagenesCatalogo( form_r, param ){
 	//Solicita los productos con los parámetros del formulario
     var wait = "<img src='images/ajax-loader.gif' width='25' height='25'>";
@@ -68,13 +81,38 @@ function buscarImagenesCatalogo( form_r, param ){
     });
 }
 /* --------------------------------------------------------- */
-$( document ).ready(function() {	
+function mostrarSubcategoriasCatal( idc ){
+    $.ajax({
+        type:"POST",
+        url:"database/data-categories.php",
+        data:{ m_subcategs: idc },
+        success: function( response ){
+            res = jQuery.parseJSON( response );
+            cargarSubcategoriasCatal( res );                     
+        }
+    }); 
+}
+/* --------------------------------------------------------- */
+$( document ).ready(function() {
+
+    $("#busq_id").on( "ifChanged", function(){
+        // Muestra / oculta opciones de búsqueda en formulario de parámetros
+        if( $(this).is(':checked') ){
+            $("#panel_opciones_2").fadeIn("250");
+            $("#panel_opciones_1").fadeOut("250");
+        }
+        else{
+            $("#panel_opciones_1").fadeIn("250");
+            $("#panel_opciones_2").fadeOut("250");
+        }
+    });
+
 	$("#selcateg_fr").on( "change", function(){
         // Invoca la actualización de la lista de subcategorías y tallas
         // según la categoría seleccionada
 		$("#tallas_fc").html("");
 		var idc = $(this).val();
-		mostrarSubcategorias( idc );
+		mostrarSubcategoriasCatal( idc );
 		mostrarTallasCategoria( idc );
     });
 
@@ -89,6 +127,12 @@ $( document ).ready(function() {
     	// Invoca la búsqueda de los productos según el formulario de parámetros
 		var form_r = $( "#frm_rcatalogo" ).serialize();
 		buscarImagenesCatalogo( form_r, '' );
+    });
+
+    $("#btn_rcatal_id").on( "click", function(){
+        // Invoca la búsqueda de los productos según identificador de producto
+        var form_r = $( "#frm_rcatalogo_id" ).serialize();
+        buscarImagenesCatalogo( form_r, '' );
     });
 
     $("#btn_oimgs").on( "click", function(){
