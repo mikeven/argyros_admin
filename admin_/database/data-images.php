@@ -131,11 +131,25 @@
 		return $lnk;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function actualizarProgreso( $n, $img ){
+		// Actualiza la variable de sesión que almacena el progreso de la generación de imágenes
+
+		session_start();
+		array_push ( $_SESSION["images"], $img );
+		session_write_close();
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function escribirImagenes( $productos, $frm ){
 		// 
+		session_start();
 		$enl = "";
+		$nregs = count( $productos );
+		$_SESSION["nimages"] = $nregs;
+		$_SESSION["images"] = array();
+		session_write_close();
+		
 		foreach ( $productos as $p ) {
-			//print_r($p);
+			
 			$img 		= 	imgP( $p ); 	
 			$nombre 	= 	nombreP( $p, $frm, false ); 
 			$nombre_i	=	nombreP( $p, $frm, true );
@@ -145,10 +159,12 @@
 			$precio 	= 	precioP( $p, $frm );
 			$tallas 	= 	tallasP( $p, $frm );
 			$enl 		.= 	linkImg( substr( $id_p, 1 ) );
-
-			GI( $img, $nombre_i, $nombre, $id_p, $id, $precio, $peso, $tallas );
+			if( $img != "" ){
+				actualizarProgreso( $nregs, $nombre_i );
+				GI( $img, $nombre_i, $nombre, $id_p, $id, $precio, $peso, $tallas );
+			}
 		}
-
+		
 		echo $enl;
 	}
 	/* ----------------------------------------------------------------------------------- */

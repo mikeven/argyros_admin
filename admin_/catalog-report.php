@@ -391,8 +391,13 @@
                   <div class="form-group">
                     <div align="center">
                       <button id="btn_oimgs" type="button" 
-                      class="btn btn-success">Obtener imágenes</button>
+                      class="btn btn-success" style="display: none">Obtener imágenes</button>
                       <div id="response_img"></div>
+                      <input type="hidden" id="status_r" value="0">
+                      <div id="progreso_img" class="progress progress-striped" style="display: none;">
+                        <div id="barra_progreso_img" data-transitiongoal="" aria-valuenow="" 
+                        class="progress-bar progress-bar-success progress-bar-animated"></div>
+                      </div>
                     </div>
                   </div>
 
@@ -477,6 +482,9 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+
+    <!-- bootstrap-progressbar -->
+    <script src="vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
 
     <!-- PNotify -->
     <script src="vendors/pnotify/dist/pnotify.js"></script>

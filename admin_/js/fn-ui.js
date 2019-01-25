@@ -139,6 +139,14 @@ function iniciarVentanaModal( idok, idcanc, enc, enc2, texto, tx_btnok ){
     $("#confirmar-accion .modal-body h4").html( enc2 );		//Subtítulo
     $("#confirmar-accion .modal-body p").html( texto );		//Cuerpo del mensaje
 }
+/* ----------------------------------------------------------------------------------- */
+function valorBarra( barra, valor ){
+    // Asigna el valor del progreso de la barra
+ 	$( barra ).attr( "style", "width: " + valor + "%" );
+    $( barra ).attr( "data-transitiongoal", valor );
+    $( barra ).attr( "aria-valuenow", valor ); 
+    $( barra ).html( valor + "%" );  
+}
 /*=====================================================================================*/
 $( document ).ready(function() {
 	

@@ -417,4 +417,25 @@
 			echo mostrarProductosConsulta( $productos );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_POST["progreso"] ) ){
+		ini_set( 'display_errors', 1 );
+		session_start();
+		$procesadas = 0;
+		/*$archivo = fopen( "impresiones.txt", "r" );
+		$procesadas = 0;
+		while( !feof( $archivo ) ) {
+			$procesadas++;
+			if( $procesadas == 1 )
+				list( $n, $img ) = explode( ',', fgets( $archivo ) );
+		}
+		fclose( $archivo );
+		echo intval( ( $procesadas / $n ) * 100 );*/
+		$n = $_SESSION["nimages"];
+		$images = $_SESSION["images"];
+		session_write_close();
+		foreach( $images as $i ){
+			$procesadas++;
+		}
+		echo intval( ( $procesadas / $n ) * 100 );
+	}
 ?>

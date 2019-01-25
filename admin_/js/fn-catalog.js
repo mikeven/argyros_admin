@@ -60,23 +60,62 @@ function cargarSubcategoriasCatal( regs ){
     //alert(lista);
 }
 /* --------------------------------------------------------- */
+function progreso(){
+    // Muestra el avance de la ejecución de la generación de imágenes de catálogo
+    if( $("#status_r").val() == 0 ){
+        $.ajax({
+            type:"POST",
+            url:"database/data-catalog.php",
+            data:{ progreso: 1 },
+            success: function( response ){
+                valorBarra( "#barra_progreso_img", response );
+            }
+        });
+    }
+}
+/* --------------------------------------------------------- */
+function previoVisualCargaImgs( param ){
+    // Prepara elementos previo a la invocación de generación de imágenes
+    
+    $("#status_r").val(0);
+    $("#response_img").html("");
+    if( param == 'descargar' ){
+        $("#btn_oimgs").prop( "disabled", true );
+        $("#progreso_img").fadeIn(100);
+        setInterval( progreso, 100 );
+    }
+}
+/* --------------------------------------------------------- */
+function posteriorVisualCargaImgs( param, data ){
+    // Reasigna valores a elementos después de la invocación de generación de imágenes
+    if( param != 'descargar' )
+        $("#tabla_datos-consulta").html( data );
+    else {
+        //console.log( response );
+        $("#status_r").val(1);
+        $("#progreso_img").fadeOut( 500, function(){
+            $("#btn_oimgs").prop( "disabled", false );
+            valorBarra( "#barra_progreso_img", 0 );
+        });
+        $("#response_img").html( data );
+    }
+    $("#btn_oimgs").show(10);
+}
+/* --------------------------------------------------------- */
 function buscarImagenesCatalogo( form_r, param ){
-	//Solicita los productos con los parámetros del formulario
+	// Solicita los productos con los parámetros del formulario
+    valorBarra( "#barra_progreso_img", 0 );
     var wait = "<img src='images/ajax-loader.gif' width='25' height='25'>";
+    
 	$.ajax({
         type:"POST",
         url:"database/data-catalog.php",
         data:{ img_catal: form_r, descarga: param },
         beforeSend: function () {
-            if( param == 'descargar' )
-                $("#response_img").html( wait );
+            previoVisualCargaImgs( param ); 
         },
         success: function( response ){
-        	console.log( response );
-            if( param != 'descargar' )
-                $("#tabla_datos-consulta").html( response );
-            else 
-                $("#response_img").html( response );
+            posteriorVisualCargaImgs( param, response );  
         }
     });
 }
@@ -137,6 +176,7 @@ $( document ).ready(function() {
 
     $("#btn_oimgs").on( "click", function(){
         // Invoca la generación de las imágenes de catálogo resultantes de la búsqueda
+        $("#status_r").val(0);
         var form_r = $( "#frm_rcatalogo" ).serialize();
         buscarImagenesCatalogo( form_r, 'descargar' );
     });
