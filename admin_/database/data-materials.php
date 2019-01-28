@@ -125,7 +125,7 @@
 		}else{
 			eliminarMaterial( $dbh, $_POST["id_elim_material"] );
 			$res["exito"] = 1;
-			$res["mje"] = "Línea eliminada con éxito";
+			$res["mje"] = "Material eliminado con éxito";
 		}
 		echo json_encode( $res );
 	}

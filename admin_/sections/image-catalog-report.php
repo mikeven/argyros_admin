@@ -3,7 +3,7 @@
     <div class="image view view-first">
       <img style="width: 100%; display: block;" src="{image}" alt="image" />
       <div class="mask">
-        <p>{codigo}</p>
+        <p>{desc}</p>
         <div class="tools tools-bottom">
           <a href="{link}" target="_blank"><i class="fa fa-external-link"></i></a>
           

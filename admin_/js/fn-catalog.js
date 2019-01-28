@@ -74,7 +74,7 @@ function progreso(){
     }
 }
 /* --------------------------------------------------------- */
-function previoVisualCargaImgs( param ){
+function previoVisualCargaImgs( wait, param ){
     // Prepara elementos previo a la invocación de generación de imágenes
     
     $("#status_r").val(0);
@@ -83,13 +83,18 @@ function previoVisualCargaImgs( param ){
         $("#btn_oimgs").prop( "disabled", true );
         $("#progreso_img").fadeIn(100);
         setInterval( progreso, 100 );
+    }else{
+        $("#tabla_datos-consulta").html( wait );
+        $("#btn_rcatal").prop( "disabled", true );
     }
 }
 /* --------------------------------------------------------- */
 function posteriorVisualCargaImgs( param, data ){
     // Reasigna valores a elementos después de la invocación de generación de imágenes
-    if( param != 'descargar' )
+    if( param != 'descargar' ){
+        $("#btn_rcatal").prop( "disabled", false );
         $("#tabla_datos-consulta").html( data );
+    }
     else {
         //console.log( response );
         $("#status_r").val(1);
@@ -112,9 +117,10 @@ function buscarImagenesCatalogo( form_r, param ){
         url:"database/data-catalog.php",
         data:{ img_catal: form_r, descarga: param },
         beforeSend: function () {
-            previoVisualCargaImgs( param ); 
+            previoVisualCargaImgs( wait, param ); 
         },
         success: function( response ){
+            console.log(response);
             posteriorVisualCargaImgs( param, response );  
         }
     });

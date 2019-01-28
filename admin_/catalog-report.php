@@ -75,6 +75,8 @@
     #response_img{ margin-top: 10px; }
 
     .lnkig{ margin-right: 5px; }
+
+    .view-first p{ max-height: 45px; }
   </style>
 
   <?php
@@ -235,6 +237,7 @@
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <select id="rmaterial" name="material" class="form-control selectpicker" 
                               title="Seleccione">
+                              <option value="">Seleccione</option>
                                 <?php foreach ( $materiales as $m ) { ?>
                                   <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>
                                 <?php } ?>
@@ -302,7 +305,8 @@
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Perfil cliente</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <select id="gcliente" name="cgcliente" class="form-control selectpicker" 
+                              <select id="gcliente_id" name="cgcliente_id" 
+                              class="form-control selectpicker" 
                               title="Seleccione">
                                 <?php foreach ( $grupos as $g ) { ?>
                                   <option value="<?php echo $g["id"] ?>"><?php echo $g["name"] ?></option>

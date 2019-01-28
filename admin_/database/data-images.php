@@ -15,7 +15,7 @@
 		return $h + 10;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas ){
+	function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip ){
 		ini_set("memory_limit","200M");
 		
 		$ai 				= alturaInfo( array( $nombre, $id, $precio, $peso, $tallas ) );
@@ -64,6 +64,8 @@
 
 		$archivo = substr( $id_p, 1 );
 		imagepng( $nva, "../salidas/$archivo.png", 9 ); 
+
+		$zip->addFile( "../salidas/$archivo.png" );
 		imagedestroy( $nva );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -126,8 +128,8 @@
 	}
 	/* ---------------------------------------- */
 	function linkImg( $n ){
-		//
-		$lnk = "<a class='lnkig' href='salidas/$n.png' target='_blank'>IMG</a>";
+		//download='$n.png'
+		$lnk = "<a class='lnkig' href='salidas/$n.png'  target='_blank'>IMG</a>";
 		return $lnk;
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -147,7 +149,10 @@
 		$_SESSION["nimages"] = $nregs;
 		$_SESSION["images"] = array();
 		session_write_close();
-		
+		$zip = new ZipArchive();
+		$fzip = "catalog.zip";
+		$zip->open( $fzip, ZipArchive::CREATE|ZipArchive::OVERWRITE );
+
 		foreach ( $productos as $p ) {
 			
 			$img 		= 	imgP( $p ); 	
@@ -161,10 +166,10 @@
 			$enl 		.= 	linkImg( substr( $id_p, 1 ) );
 			if( $img != "" ){
 				actualizarProgreso( $nregs, $nombre_i );
-				GI( $img, $nombre_i, $nombre, $id_p, $id, $precio, $peso, $tallas );
+				GI( $img, $nombre_i, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip );
 			}
 		}
-		
+		$zip->close();
 		echo $enl;
 	}
 	/* ----------------------------------------------------------------------------------- */

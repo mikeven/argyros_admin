@@ -11,6 +11,7 @@
 		$bloque_img = file_get_contents( "../sections/image-catalog-report.php" );
 
 		foreach ( $productos as $reg ) {
+
 			$data_p = $reg["data"];
 			$imgs 	= $reg["imagenes"];
 			$idr 	= $data_p["id"]."-".$data_p["id_det"];
@@ -23,7 +24,7 @@
 			$bloque_img = str_replace( "{id}", 		$idr, 				$bloque_img );
 			$bloque_img = str_replace( "{nombre}", 	$data_p["name"], 	$bloque_img );
 			$bloque_img = str_replace( "{image}", 	$image, 			$bloque_img );
-			$bloque_img = str_replace( "{codigo}", 	$data_p["code"], 	$bloque_img );
+			$bloque_img = str_replace( "{desc}", 	$data_p["description"], $bloque_img );
 			$bloque_img = str_replace( "{link}", 	$link, 				$bloque_img );
 			
 			$resultado .= $bloque_img;
@@ -172,7 +173,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerSubqueryProductosOcultos( $frm ){
 		// Devuelve la subcadena de query para indicar si se obtienen solo productos ocultos
-		$q_po = "";
+		$q_po = "and p.visible = 1";
 		if( isset( $frm["p_ocultos"] ) )
 			$q_po = "and p.visible <> 1";
 
@@ -220,7 +221,7 @@
 			$qdet = " $q_b $q_co $q_jta $q_ta";
 		}
 
-		$query = "select p.id, p.code, p.name, dp.id as id_det $idt  
+		$query = "select p.id, p.code, p.name, p.description, dp.id as id_det $idt  
 					from products p, $t_spd $t_mp $t_lp product_details dp 
 					where p.category_id = $idc $q_sc $q_m $q_l $q_t $q_po
 					and dp.product_id = p.id $qdet";
@@ -336,7 +337,7 @@
 		
 		include( "data-products.php" );
 		$lproductos = array();
-
+		
 		foreach ( $registros_base as $reg ) {
 			
 			$producto["data"] 		= $reg;
@@ -359,17 +360,29 @@
 		return $lproductos; 
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerVARG( $dbh, $form ){
+		// Devuelve las variables de grupo de cliente según la selección del formulario
+
+		$gcliente = $form["cgcliente"];
+		if( isset ( $form["ch_busq_id"] ) ){
+			$gcliente = $form["cgcliente_id"];
+		}
+		
+		if( $gcliente != "" ) 
+			$varg = obtenerGrupoPorId( $dbh, $gcliente );
+		else $varg = obtenerValoresGrupoUsuarioDefecto( $dbh );
+
+		return $varg;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerProductosConsulta( $dbh, $form ){
 		//Construye la consulta dinámica y obtiene los registros de los productos consultados
 
 		include( "data-clients.php" );
 		ini_set( 'display_errors', 1 );
-
-		$datos = ajustarValores( $form );
 		
-		if( $form["cgcliente"] != "" ) 
-			$varg = obtenerGrupoPorId( $dbh, $form["cgcliente"] );
-		else $varg = obtenerValoresGrupoUsuarioDefecto( $dbh );
+		$datos = ajustarValores( $form );
+		$varg = obtenerVARG( $dbh, $form );
 		
 		if( isset ( $form["ch_busq_id"] ) )
 			$query_base = obtenerQueryIdentificador( $datos );
