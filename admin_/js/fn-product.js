@@ -152,7 +152,7 @@ function activarProducto( idp, edo ){
         	res = jQuery.parseJSON( response );
 			if( res.exito == 1 ){
 				notificar( "Productos", res.mje, "success" );
-                setTimeout( function() { window.location = "products.php"; }, 4000 );
+                setTimeout( function() { window.location = "products.php"; }, 1000 );
 			}
         }
     });
@@ -308,21 +308,23 @@ function chequearCodigoProducto( codigo ){
 }
 /* --------------------------------------------------------- */
 function mostrarDatosValorPorTipoPrecio( tprecio ){
-	
+	$(".vtp").removeAttr( "required" );
 	if( tprecio == "g" ) { 
 		$("#valor_gramo").fadeIn('slow'); 
-		$("#vgramo").attr("data-parsley-nocero", 0.00);
-
+		$("#vgramo").attr( "required", true );
+		$("#vgramo").attr( "data-parsley-nocero", 0.00 );
 	}
 
 	if( tprecio == "p" ) { 
 		$("#valor_pieza").fadeIn('slow'); 
-		$("#vpieza").attr("data-parsley-nocero", 0.00);
+		$("#vpieza").attr( "data-parsley-nocero", 0.00 );
+		$("#vpieza").attr( "required", true );
 	}
 
 	if( tprecio == "mo" ){ 
 		$("#valor_mo").fadeIn('slow'); 
-		$("#vmanoo").attr("data-parsley-nocero", 0.00); 
+		$("#vmanoo").attr( "required", true );
+		$("#vmanoo").attr( "data-parsley-nocero", 0.00 ); 
 	}
 }
 /* --------------------------------------------------------- */

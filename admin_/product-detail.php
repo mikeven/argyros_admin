@@ -217,8 +217,8 @@
                                 <div id="valor_pieza" class="form-group oprecio">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Valor de la pieza </label>
                                   <div class="col-md-9 col-sm-9 col-xs-12">
-                                    <input id="vpieza" name="valor_pieza" type="text" class="form-control vtp" placeholder="Valor de pieza" 
-                                    value="0.00">
+                                    <input id="vpieza" name="valor_pieza" type="text" class="form-control vtp" placeholder="Valor de pieza" value="0.00" 
+                                    onkeypress="return isNumberKey(event)">
                                   </div>
                                 </div>
 

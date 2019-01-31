@@ -96,9 +96,13 @@
 	/* ---------------------------------------- */
 	function pesoP( $r, $f ){
 		$peso = NULL;
+	
 		if( isset( $f["p_pep"] ) ){
-			$rt 	= $r["tallas"];
-			$peso 	= $rt[0]["peso"]."g";
+			foreach ( $r["tallas"] as $talla ) {
+				if( $talla["visible"] == 1 ){
+					$peso = $talla["peso"]."g"; break;
+				}
+			}
 		}
 		
 		return $peso;
@@ -121,8 +125,10 @@
 		if( isset( $f["p_tal"] ) ){
 			$v_tallas = "T: ";
 			$rt 	= $r["tallas"];
-			foreach ( $rt as $t ) 
-				$v_tallas .= $t["talla"].$t["unidad"].", ";
+			foreach ( $rt as $t ) {
+				if( $t["visible"] == 1 )
+					$v_tallas .= $t["talla"].$t["unidad"].", ";
+			}
 		}
 		return substr( $v_tallas, 0, -2 ); 
 	}
@@ -130,6 +136,14 @@
 	function linkImg( $n ){
 		//download='$n.png'
 		$lnk = "<a class='lnkig' href='salidas/$n.png'  target='_blank'>IMG</a>";
+		return $lnk;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function linkZip( $archivo ){
+		//download='$n.png'
+		$pre = "database/";
+		$lnk = "<a class='lnkig btn btn-app' href='$pre$archivo' target='_blank'>
+					Descargar imágenes <i class='fa fa-download'></a>";
 		return $lnk;
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -141,18 +155,33 @@
 		session_write_close();
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function eliminarImagenesGeneradas( $a_comp ){
+		// Vacía el directorio donde se almacenan las imágenes generadas
+		
+		if( file_exists( $a_comp ) ) unlink( $a_comp );
+		$files = glob( '../salidas/*' ); 
+		foreach( $files as $file ){
+		    if( is_file( $file ) )
+		    unlink( $file );
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function escribirImagenes( $productos, $frm ){
-		// 
-		session_start();
+		// Obtiene los datos a mostrar e invoca la generación de las imágenes con los datos
+
 		$enl = "";
+		$archivo_zip = "catalogo.zip";
 		$nregs = count( $productos );
 		$_SESSION["nimages"] = $nregs;
 		$_SESSION["images"] = array();
 		session_write_close();
-		$zip = new ZipArchive();
-		$fzip = "catalog.zip";
-		$zip->open( $fzip, ZipArchive::CREATE|ZipArchive::OVERWRITE );
+		eliminarImagenesGeneradas( $archivo_zip );
 
+		$zip = new ZipArchive();
+		if ( $zip->open( $archivo_zip, ZipArchive::CREATE | ZipArchive::OVERWRITE ) ){
+
+		}else echo "ERROR ZIP";
+		
 		foreach ( $productos as $p ) {
 			
 			$img 		= 	imgP( $p ); 	
@@ -164,6 +193,7 @@
 			$precio 	= 	precioP( $p, $frm );
 			$tallas 	= 	tallasP( $p, $frm );
 			$enl 		.= 	linkImg( substr( $id_p, 1 ) );
+			//$enl 		= 	linkZip( $archivo_zip );
 			if( $img != "" ){
 				actualizarProgreso( $nregs, $nombre_i );
 				GI( $img, $nombre_i, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip );

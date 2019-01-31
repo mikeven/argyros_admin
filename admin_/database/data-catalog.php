@@ -5,7 +5,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	function mostrarProductosConsulta( $productos ){
-		//Devuelve la estructura HTML del resultado de la consulta de productos
+		// Devuelve la estructura HTML del resultado de la consulta de productos
 
 		$resultado = "";
 		$bloque_img = file_get_contents( "../sections/image-catalog-report.php" );
@@ -33,8 +33,24 @@
 		return $resultado;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function condicionIntervalo( $valor, $min, $max ){
+		// Devuelve verdadero o falso evaluando un valor en un intérvalo de mín y máx
+		$condicion = false;
+
+		if( ( $min == "" ) && ( $max != "" ) )	// $valor < $max
+			if( $valor <= $max  ) $condicion = true;
+
+		if( ( $min != "" ) && ( $max == "" ) )	// $valor > $min
+			if( $valor >= $min  ) $condicion = true;
+
+		if( ( $min != "" ) && ( $max != "" ) )	// $valor > $min
+			if( ( $valor >= $min ) && ( $valor <= $max )  ) $condicion = true;
+
+		return $condicion;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function filtrarProductosPeso( $registros, $min, $max ){
-		//Devuelve los registros que cumplen con los filtros de: peso
+		// Devuelve los registros que cumplen con los filtros de: peso
 		$productos = array();
 		$id_reg_ag = array();
 
@@ -42,7 +58,7 @@
 			$data = $reg["data"];
 			$tallas = $reg["tallas"];
 			foreach ( $tallas as $t ) {
-				if( $t["peso"] >= $min && $t["peso"] <= $max ){
+				if( condicionIntervalo( $t["peso"], $min, $max ) ){
 					if ( !in_array( $data["id_det"], $id_reg_ag ) ){
 						$id_reg_ag[] = $data["id_det"];
 						$productos[] = $reg;
@@ -54,7 +70,7 @@
 		return $productos;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function filtrarProductosPrecio( $registros, $form, $tipo_filtro_precio, $varg ){
+	function filtrarProductosPrecio( $registros, $form, $tipo_filtro_precio ){
 		// Devuelve los registros que cumplen con los filtros de: precio por pieza/peso
 		$productos = array();
 		$id_reg_ag = array();
@@ -66,7 +82,7 @@
 				$data = $reg["data"];
 				$tallas = $reg["tallas"];
 				foreach ( $tallas as $t ) {
-					if( $t["precio"] >= $min && $t["precio"] <= $max ){
+					if( condicionIntervalo( $t["precio"], $min, $max ) ){
 						if ( !in_array( $data["id_det"], $id_reg_ag ) ){
 							$id_reg_ag[] = $data["id_det"];
 							$productos[] = $reg;
@@ -82,18 +98,21 @@
 			$min = $form["prepes_min"]; $max = $form["prepes_max"];
 			foreach ( $registros as $reg ) {
 				$det = $reg["detalle"];
+
 				if( $det["tipo_precio"] == 'g' ){
-					$precio_peso = obtenerPrecioPorGramo( $varg, $det["precio_peso"] );
-					if( $det["precio_peso"] >= $min && $det["precio_peso"] <= $max ){
+					//$precio_peso = obtenerPrecioPorGramo( $varg, $det["precio_peso"] );
+					if( condicionIntervalo( $det["precio_peso"], $min, $max ) ){
 						$productos[] = $reg;
 					}
 				}
 				if( $det["tipo_precio"] == 'mo' ){
-					$precio_peso = obtenerPrecioPorGramoMO( $varg, $det["precio_mo"] );
-					if( $precio_peso >= $min && $precio_peso <= $max ){
+					//$precio_peso = obtenerPrecioPorGramoMO( $varg, $det["precio_mo"] );
+					//echo $det["precio_mo"]." === ".$precio_peso.": ".$min." , ".$max."\n";
+					if( condicionIntervalo( $det["precio_mo"], $min, $max ) ){
 						$productos[] = $reg;
 					}
 				}
+				
 			}
 
 		}
@@ -102,7 +121,7 @@
 
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function filtrarProductosConsulta( $form, $registros, $varg ){
+	function filtrarProductosConsulta( $form, $registros ){
 		// Devuelve los registros que cumplen con los filtros de: peso, precio
 		
 		$resultados = $registros;
@@ -112,11 +131,11 @@
 		}
 
 		if( $form["prepza_min"] != "" || $form["prepza_max"] != "" ){
-			$resultados = filtrarProductosPrecio( $registros, $form, "pieza", $varg );	
+			$resultados = filtrarProductosPrecio( $registros, $form, "pieza" );	
 		}
 
-		if( $form["prepes_min"] != "" || $form["prepes_min"] != "" ){
-			$resultados = filtrarProductosPrecio( $registros, $form, "peso", $varg );		
+		if( $form["prepes_min"] != "" || $form["prepes_max"] != "" ){
+			$resultados = filtrarProductosPrecio( $registros, $form, "peso" );		
 		}
 
 		return $resultados;
@@ -189,7 +208,7 @@
 		$t_lp 	= "";	//Tabla: line_product			(línea-producto) 
 		$idt 	= "";	//atributo: id talla
 		$q_jta 	= "";	//sub-query: unión talla - detalle_producto 
-		$qdet 	= "";	//sub-query:  
+		$qdet 	= "";	//sub-query: condiciones para detalle de producto 
 		$q_sc 	= "";	//sub-query: subcategoría
 		$q_po	= "";	//sub-query: productos ocultos
 
@@ -212,8 +231,9 @@
 		if( $q_ta != "" ){
 			$idt = ", spd.size_id as idt";
 			$t_spd = "size_product_detail spd,";
-			$q_jta = "and spd.product_detail_id = dp.id";
+			$q_jta = "and spd.product_detail_id = dp.id and spd.visible = 1";
 		}
+
 		if( $q_l != "" ) $t_lp = "line_product lp, ";
 		if( $q_t != "" ) $t_mp = "making_product tp, ";
 
@@ -234,7 +254,7 @@
 		$ids = explode('-', $form["identificador"] );
 		list( $idp, $iddet ) = $ids;
 
-		$query = "select p.id, p.code, p.name, dp.id as id_det 
+		$query = "select p.id, p.code, p.name, p.description, dp.id as id_det 
 		from products p, product_details dp where p.id = $idp 
 		and dp.id = $iddet and p.visible = 1";
 		
@@ -390,14 +410,8 @@
 			$query_base = obtenerQueryConsulta( $datos );
 
 		$registros_base = obtenerRegistroQuery( $dbh, $query_base );
-		//print_r($registros_base);
-		
 		$lproductos = obtenerListadoProductosConsulta( $dbh, $registros_base, $form, $varg );
-		//print_r($lproductos);
-
-		$lproductos = filtrarProductosConsulta( $form, $lproductos, $varg );
-
-		//print_r( $lproductos );
+		$lproductos = filtrarProductosConsulta( $form, $lproductos );
 
 		return $lproductos; 
 	}
@@ -413,36 +427,32 @@
 	/* ----------------------------------------------------------------------------------- */
 	
 	if( isset( $_POST["img_catal"] ) ){
+		session_start();
 		ini_set( 'display_errors', 1 );
 		//Solicita la lista de productos de la consulta: reporte de imágenes de catálogo
 		
 		include( "bd.php" );
 		include( "data-sizes.php" );
 		$descarga = $_POST["descarga"];
-
 		parse_str( $_POST["img_catal"], $form );
-		
-		$productos = obtenerProductosConsulta( $dbh, $form );
+
 		if( $descarga != "" ){
-			echo generarArchivosImagenes( $productos, $form );
+			echo generarArchivosImagenes( $_SESSION["regs_img_catal"], $form );
 		}
-		else
+		else{
+			
+			$productos = obtenerProductosConsulta( $dbh, $form );
+			$_SESSION["regs_img_catal"] = $productos;
+			session_write_close();
 			echo mostrarProductosConsulta( $productos );
+		}
 	}
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_POST["progreso"] ) ){
 		ini_set( 'display_errors', 1 );
 		session_start();
 		$procesadas = 0;
-		/*$archivo = fopen( "impresiones.txt", "r" );
-		$procesadas = 0;
-		while( !feof( $archivo ) ) {
-			$procesadas++;
-			if( $procesadas == 1 )
-				list( $n, $img ) = explode( ',', fgets( $archivo ) );
-		}
-		fclose( $archivo );
-		echo intval( ( $procesadas / $n ) * 100 );*/
+		
 		$n = $_SESSION["nimages"];
 		$images = $_SESSION["images"];
 		session_write_close();

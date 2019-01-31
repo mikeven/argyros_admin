@@ -40,7 +40,6 @@ function mostrarBanosMaterial( idm ){
         success: function( response ){
         	res = jQuery.parseJSON( response );
         	cargarOpcionesLista( res, "#banos_fc" );
-        	//$('#banos_fc').prepend( "<option selected>Seleccione</option>" );
             $('#banos_fc').picker('destroy');
         	$('#banos_fc').picker();
         }
@@ -138,6 +137,29 @@ function mostrarSubcategoriasCatal( idc ){
     }); 
 }
 /* --------------------------------------------------------- */
+function llenoValPr(){
+    var vacio = false;
+    $.each( $( ".valpr" ), function(){
+        if( $(this).val() != "" ) vacio = true; 
+    });
+    
+    return vacio;
+}
+/* --------------------------------------------------------- */
+function formCatalValido( arrfrm ){
+    // Determina si existen los datos mínimos para invocar la generación de imágenes
+    valido = true;
+    
+    if( $("#chk_prcat").is(':checked') || llenoValPr() ){
+        if( $("#gcliente").val() == "" ) {
+            notificar( "Imágenes de catálogo", "Debe seleccionar perfil de cliente", "error" );
+            valido = false;
+        }
+    }
+
+    return valido;
+}
+/* --------------------------------------------------------- */
 $( document ).ready(function() {
 
     $("#busq_id").on( "ifChanged", function(){
@@ -171,7 +193,8 @@ $( document ).ready(function() {
     $("#btn_rcatal").on( "click", function(){
     	// Invoca la búsqueda de los productos según el formulario de parámetros
 		var form_r = $( "#frm_rcatalogo" ).serialize();
-		buscarImagenesCatalogo( form_r, '' );
+        if( formCatalValido() )
+		  buscarImagenesCatalogo( form_r, '' );
     });
 
     $("#btn_rcatal_id").on( "click", function(){

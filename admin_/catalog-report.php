@@ -187,24 +187,28 @@
                           <div class="form-group"><!-- Precio por pieza -->
                             <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por pieza </label>
                             <div class="col-md-4 col-sm-4 col-xs-6">
-                              <input type="text" id="flt_pre_pro_min" class="form-control input_flt" placeholder="Mín $" name="prepza_min" value="" 
-                              onkeypress="return isNumberKey(event)">
+                              <input type="text" id="flt_pre_pro_min" 
+                              class="form-control input_flt valpr" placeholder="Mín $" 
+                              name="prepza_min" value="" onkeypress="return isNumberKey(event)">
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
-                              <input type="text" id="flt_pre_pro_max" class="form-control input_flt" placeholder="Máx $" name="prepza_max" value="" 
-                              onkeypress="return isNumberKey(event)">  
+                              <input type="text" id="flt_pre_pro_max" 
+                              class="form-control input_flt valpr" placeholder="Máx $" 
+                              name="prepza_max" value="" onkeypress="return isNumberKey(event)">  
                             </div>
                           </div>
 
                           <div class="form-group"><!-- Precio por peso -->
                             <label class="control-label col-md-4 col-sm-4 col-xs-12">Precio por gr</label>
                             <div class="col-md-4 col-sm-4 col-xs-6">
-                              <input type="text" id="flt_pre_pes_min" class="form-control input_flt" placeholder="Mín $" name="prepes_min" value="" 
-                              onkeypress="return isNumberKey(event)">
+                              <input type="text" id="flt_pre_pes_min" 
+                              class="form-control input_flt valpr" placeholder="Mín $" 
+                              name="prepes_min" value="" onkeypress="return isNumberKey(event)">
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-6">
-                              <input type="text" id="flt_pre_pes_max" class="form-control input_flt" placeholder="Máx $" name="prepes_max" value="" 
-                              onkeypress="return isNumberKey(event)">
+                              <input type="text" id="flt_pre_pes_max" 
+                              class="form-control input_flt valpr" placeholder="Máx $" 
+                              name="prepes_max" value="" onkeypress="return isNumberKey(event)">
                             </div>
                           </div>
 
@@ -332,7 +336,7 @@
                             <input type="checkbox" name="p_nop" class="flat"> Nombre del producto
                           </div>
                           <div>
-                            <input type="checkbox" name="p_prp" class="flat"> Precio 
+                            <input id="chk_prcat" type="checkbox" name="p_prp" class="flat"> Precio 
                           </div>
                           <div>
                             <input type="checkbox" name="p_tal" class="flat"> Tallas 
@@ -461,12 +465,12 @@
     <script src="vendors/select-picker/picker.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function(){
-          /*$('#tallas_fc').picker(
-            texts : { trigger : "Selexione" }
+          $('#tallas_fc').picker(
+            texts : { trigger : "Seleccione" }
           );
           $('#banos_fc').picker(
             texts : { trigger : "Seleccione" }
-          );*/
+          );
       });
     </script>
 

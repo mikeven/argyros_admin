@@ -28,7 +28,7 @@
                 <input id="nt0" type="hidden" value="<?php echo $t0["name"] ?>" data-idt="<?php echo $t0["id"] ?>"></td>
               <td>
                 <input type="text" class="form-control valtallas_sel" 
-                placeholder="gr: 0.00" value="" data-t="nt0">
+                placeholder="gr: 0.00" value="" data-t="nt0" onkeypress="return isNumberKey(event)">
               </td>
             </tr>
             <?php
@@ -42,7 +42,8 @@
                 </td>
                 <td>
                   <input type="text" class="form-control valtallas_sel" 
-                  placeholder="gr: 0.00" value="" data-t="nt<?php echo $n; ?>">
+                  onkeypress="return isNumberKey(event)" placeholder="gr: 0.00" 
+                  value="" data-t="nt<?php echo $n; ?>">
                 </td>
               </tr>
 

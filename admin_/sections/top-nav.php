@@ -9,7 +9,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="">
           <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <img src="images/img.jpg" alt="">
+            <img src="images/argyros-a.png" alt="">
             <?php echo $uargyros["first_name"]." ".$uargyros["last_name"]; ?>
             <span class=" fa fa-angle-down"></span>
           </a>
