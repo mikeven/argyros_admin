@@ -5,6 +5,8 @@
  */
 /* --------------------------------------------------------- */
 function cargarOpcionesLista( regs, idlista ){
+    // 
+
 	var lista = "";
     $( idlista ).html("");
 	$.each( regs, function( i, v ) {
@@ -15,7 +17,7 @@ function cargarOpcionesLista( regs, idlista ){
 }
 /* --------------------------------------------------------- */
 function mostrarTallasCategoria( idc ){
-	//Muestra las opciones de tallas correspondientes a la categoría seleccionada
+	// Muestra las opciones de tallas correspondientes a la categoría seleccionada
 	
 	$.ajax({
         type:"POST",
@@ -31,7 +33,7 @@ function mostrarTallasCategoria( idc ){
 }
 /* --------------------------------------------------------- */
 function mostrarBanosMaterial( idm ){
-	//Muestra las opciones de baños correspondientes al material seleccionado
+	// Muestra las opciones de baños correspondientes al material seleccionado
 	
 	$.ajax({
         type:"POST",
@@ -81,15 +83,16 @@ function previoVisualCargaImgs( wait, param ){
     if( param == 'descargar' ){
         $("#btn_oimgs").prop( "disabled", true );
         $("#progreso_img").fadeIn(100);
-        setInterval( progreso, 100 );
+        
     }else{
         $("#tabla_datos-consulta").html( wait );
         $("#btn_rcatal").prop( "disabled", true );
     }
 }
 /* --------------------------------------------------------- */
-function posteriorVisualCargaImgs( param, data ){
+function posteriorVisualCargaImgs( param, si, data ){
     // Reasigna valores a elementos después de la invocación de generación de imágenes
+
     if( param != 'descargar' ){
         $("#btn_rcatal").prop( "disabled", false );
         $("#tabla_datos-consulta").html( data );
@@ -97,6 +100,7 @@ function posteriorVisualCargaImgs( param, data ){
     else {
         //console.log( response );
         $("#status_r").val(1);
+        window.clearInterval(si);
         $("#progreso_img").fadeOut( 500, function(){
             $("#btn_oimgs").prop( "disabled", false );
             valorBarra( "#barra_progreso_img", 0 );
@@ -108,8 +112,10 @@ function posteriorVisualCargaImgs( param, data ){
 /* --------------------------------------------------------- */
 function buscarImagenesCatalogo( form_r, param ){
 	// Solicita los productos con los parámetros del formulario
+
     valorBarra( "#barra_progreso_img", 0 );
     var wait = "<img src='images/ajax-loader.gif' width='25' height='25'>";
+    var si = setInterval( progreso, 200 );
     
 	$.ajax({
         type:"POST",
@@ -120,17 +126,24 @@ function buscarImagenesCatalogo( form_r, param ){
         },
         success: function( response ){
             console.log(response);
-            posteriorVisualCargaImgs( param, response );  
+            posteriorVisualCargaImgs( param, si, response );  
         }
     });
 }
 /* --------------------------------------------------------- */
 function mostrarSubcategoriasCatal( idc ){
+    // 
+
+    var wait = "<img src='images/ajax-loader.gif' width='10' height='10'>";
     $.ajax({
         type:"POST",
         url:"database/data-categories.php",
         data:{ m_subcategs: idc },
+        beforeSend: function () {
+            $("#rcatr").html( wait ); 
+        }, 
         success: function( response ){
+            $("#rcatr").html( "" );
             res = jQuery.parseJSON( response );
             cargarSubcategoriasCatal( res );                     
         }
@@ -144,16 +157,17 @@ function llenoValPr(){
     });
     
     return vacio;
-}
+}//
 /* --------------------------------------------------------- */
 function formCatalValido( arrfrm ){
     // Determina si existen los datos mínimos para invocar la generación de imágenes
     valido = true;
     
     if( $("#chk_prcat").is(':checked') || llenoValPr() ){
-        if( $("#gcliente").val() == "" ) {
-            notificar( "Imágenes de catálogo", "Debe seleccionar perfil de cliente", "error" );
+        if( ( $("#gcliente").val() == "" ) && ( !$("#busq_id").is(':checked') ) || 
+            ( $("#gcliente_id").val() == "" ) && ( $("#busq_id").is(':checked') ) ){
             valido = false;
+            notificar( "Imágenes de catálogo", "Debe seleccionar perfil de cliente", "error" );
         }
     }
 

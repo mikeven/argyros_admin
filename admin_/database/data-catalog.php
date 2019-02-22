@@ -49,8 +49,8 @@
 		return $condicion;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function filtrarProductosPeso( $registros, $min, $max ){
-		// Devuelve los registros que cumplen con los filtros de: peso
+	function filtrarNivelTalla( $registros, $visible ){
+		// Devuelve los registros que cumplen condiciones de disponibilidad a nivel de tallas
 		$productos = array();
 		$id_reg_ag = array();
 
@@ -58,10 +58,40 @@
 			$data = $reg["data"];
 			$tallas = $reg["tallas"];
 			foreach ( $tallas as $t ) {
-				if( condicionIntervalo( $t["peso"], $min, $max ) ){
+				if( $t["visible"] == $visible ){
 					if ( !in_array( $data["id_det"], $id_reg_ag ) ){
 						$id_reg_ag[] = $data["id_det"];
 						$productos[] = $reg;
+					}
+				}
+			}
+		}
+		
+		return $productos;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function filtrarProductosPeso( $registros, $form ){
+		// Devuelve los registros que cumplen con los filtros de: peso
+		$productos = array();
+		$id_reg_ag = array();
+		$min = $form["peso_min"]; $max = $form["peso_max"];
+
+		foreach ( $registros as $reg ) {
+			$data = $reg["data"];
+			$tallas = $reg["tallas"];
+			foreach ( $tallas as $t ) {
+				if( condicionIntervalo( $t["peso"], $min, $max ) ){
+					if( isset( $form["tallas"] ) ){
+						if ( !in_array( $data["id_det"], $id_reg_ag ) &&
+							  in_array( $t["idtalla"], $form["tallas"] ) ){
+							$id_reg_ag[] = $data["id_det"];
+							$productos[] = $reg;
+						}
+					}else{
+						if ( !in_array( $data["id_det"], $id_reg_ag ) ){
+							$id_reg_ag[] = $data["id_det"];
+							$productos[] = $reg;
+						}
 					}
 				}
 			}
@@ -83,9 +113,17 @@
 				$tallas = $reg["tallas"];
 				foreach ( $tallas as $t ) {
 					if( condicionIntervalo( $t["precio"], $min, $max ) ){
-						if ( !in_array( $data["id_det"], $id_reg_ag ) ){
-							$id_reg_ag[] = $data["id_det"];
-							$productos[] = $reg;
+						if( isset( $form["tallas"] ) ){
+							if ( !in_array( $data["id_det"], $id_reg_ag ) &&
+								  in_array( $t["idtalla"], $form["tallas"] ) ){
+								$id_reg_ag[] = $data["id_det"];
+								$productos[] = $reg;
+							}
+						}else{
+							if ( !in_array( $data["id_det"], $id_reg_ag ) ){
+								$id_reg_ag[] = $data["id_det"];
+								$productos[] = $reg;
+							}
 						}
 					}
 				}
@@ -100,25 +138,65 @@
 				$det = $reg["detalle"];
 
 				if( $det["tipo_precio"] == 'g' ){
-					//$precio_peso = obtenerPrecioPorGramo( $varg, $det["precio_peso"] );
 					if( condicionIntervalo( $det["precio_peso"], $min, $max ) ){
 						$productos[] = $reg;
 					}
 				}
 				if( $det["tipo_precio"] == 'mo' ){
-					//$precio_peso = obtenerPrecioPorGramoMO( $varg, $det["precio_mo"] );
-					//echo $det["precio_mo"]." === ".$precio_peso.": ".$min." , ".$max."\n";
 					if( condicionIntervalo( $det["precio_mo"], $min, $max ) ){
 						$productos[] = $reg;
 					}
 				}
-				
 			}
-
 		}
 
 		return $productos;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function filtrarProductosOcultos( $registros ){
+		// Devuelve los productos que estén ocultos o tengan tallas no disponibles.
+		$productos = array();
+		$id_reg_ag = array();
 
+		foreach ( $registros as $reg ) {
+			$data = $reg["data"];
+			if( $data["visible"] == 0 ){
+				if ( !in_array( $data["id_det"], $id_reg_ag ) ){
+					$id_reg_ag[] = $data["id_det"];
+					$productos[] = $reg;
+				}
+			}
+
+			$tallas = $reg["tallas"];
+			foreach ( $tallas as $t ) {
+				if( $t["visible"] == 0 ){
+					if ( !in_array( $data["id_det"], $id_reg_ag ) ){
+						$id_reg_ag[] = $data["id_det"];
+						$productos[] = $reg;
+					}
+				}
+			}
+		}
+
+		return $productos;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function filtrarProductosVisibles( $registros ){
+		// Devuelve los productos visibles
+		$productos = array();
+		$id_reg_ag = array();
+
+		foreach ( $registros as $reg ) {
+			$data = $reg["data"];
+			if( $data["visible"] == 1 ){
+				if ( !in_array( $data["id_det"], $id_reg_ag ) ){
+					$id_reg_ag[] = $data["id_det"];
+					$productos[] = $reg;
+				}
+			}
+		}
+
+		return filtrarNivelTalla( $productos, 1 );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function filtrarProductosConsulta( $form, $registros ){
@@ -127,16 +205,21 @@
 		$resultados = $registros;
 
 		if( $form["peso_min"] != "" || $form["peso_max"] != "" ){
-			$resultados = filtrarProductosPeso( $registros, $form["peso_min"], $form["peso_max"] );	
+			$resultados = filtrarProductosPeso( $registros, $form );	
 		}
 
 		if( $form["prepza_min"] != "" || $form["prepza_max"] != "" ){
-			$resultados = filtrarProductosPrecio( $registros, $form, "pieza" );	
+			$resultados = filtrarProductosPrecio( $resultados, $form, "pieza" );	
 		}
 
 		if( $form["prepes_min"] != "" || $form["prepes_max"] != "" ){
-			$resultados = filtrarProductosPrecio( $registros, $form, "peso" );		
+			$resultados = filtrarProductosPrecio( $resultados, $form, "peso" );		
 		}
+
+		if( isset( $form["p_ocultos"] ) )
+			$resultados = filtrarProductosOcultos( $resultados );		
+		else
+			$resultados = filtrarProductosVisibles( $resultados );
 
 		return $resultados;
 	}
@@ -170,7 +253,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerSubQueryParam( $qparam, $qvalor, $valores ){
-		//
+		// 
 	
 		$q = "";
 		if( count( $valores ) > 0 ){
@@ -181,7 +264,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerSubQueryValorUnico( $campo, $valor ){
-		//
+		// 
 		if( count( $valor ) > 0 ){
 			$q = "and ".$campo." = ".$valor;
 		} 
@@ -193,9 +276,10 @@
 	function obtenerSubqueryProductosOcultos( $frm ){
 		// Devuelve la subcadena de query para indicar si se obtienen solo productos ocultos
 		$q_po = "and p.visible = 1";
+		
 		if( isset( $frm["p_ocultos"] ) )
-			$q_po = "and p.visible <> 1";
-
+			$q_po = "and p.visible = 0";
+			
 		return $q_po;
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -215,13 +299,13 @@
 		$idc = $form["categoria"];
 		$idsc = $form["subcategoria"];
 
-		$q_po = obtenerSubqueryProductosOcultos( $form );
+		//$q_po = obtenerSubqueryProductosOcultos( $form );
 
 		$q_l = obtenerSubQueryParam( "lp.product_id = p.id", "lp.line_id", $form["linea"] );
 		$q_t = obtenerSubQueryParam( "tp.product_id = p.id", "tp.making_id", $form["trabajo"] );
 
 		$q_m = obtenerSubQueryValorUnico( "p.material_id", $form["material"] );
-		if( $form["subcategoria"] != "todos")
+		if( $form["subcategoria"] != "todos" )
 			$q_sc = obtenerSubQueryValorUnico( "p.subcategory_id", $form["subcategoria"] );
 		
 		$q_b = obtenerSubQueryValor( "dp.treatment_id", $form["bano"] );
@@ -231,7 +315,7 @@
 		if( $q_ta != "" ){
 			$idt = ", spd.size_id as idt";
 			$t_spd = "size_product_detail spd,";
-			$q_jta = "and spd.product_detail_id = dp.id and spd.visible = 1";
+			$q_jta = "and spd.product_detail_id = dp.id";
 		}
 
 		if( $q_l != "" ) $t_lp = "line_product lp, ";
@@ -241,10 +325,12 @@
 			$qdet = " $q_b $q_co $q_jta $q_ta";
 		}
 
-		$query = "select p.id, p.code, p.name, p.description, dp.id as id_det $idt  
+		$query = "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det $idt  
 					from products p, $t_spd $t_mp $t_lp product_details dp 
-					where p.category_id = $idc $q_sc $q_m $q_l $q_t $q_po
+					where p.category_id = $idc $q_sc $q_m $q_l $q_t 
 					and dp.product_id = p.id $qdet";
+
+		//echo $query;
 
 		return $query;
 	}
@@ -254,7 +340,7 @@
 		$ids = explode('-', $form["identificador"] );
 		list( $idp, $iddet ) = $ids;
 
-		$query = "select p.id, p.code, p.name, p.description, dp.id as id_det 
+		$query = "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det 
 		from products p, product_details dp where p.id = $idp 
 		and dp.id = $iddet and p.visible = 1";
 		
@@ -352,8 +438,9 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListadoProductosConsulta( $dbh, $registros_base, $form, $varg ){
-		// Devuelve la lista de productos de la consulta con su correspondiente detalle, tallas de detalle e imágenes de detalle 
-		// Cada registro devuelve la estructura [producto,detalle,tallas[],imagenes[]]
+		// Devuelve la lista de productos de la consulta 
+		// con su correspondiente detalle, tallas e imágenes
+		// Cada registro devuelve la estructura [ producto, detalle, tallas[], imagenes[] ]
 		
 		include( "data-products.php" );
 		$lproductos = array();

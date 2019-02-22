@@ -7,18 +7,35 @@
 	ini_set( 'display_errors', 1 );
 	/* ----------------------------------------------------------------------------------- */
 	function alturaInfo( $valores ){
-		$a_l = 20;	$h = 0;
-		foreach ( $valores as $v ){
-			if( $v != NULL && $h < 60 )
-				$h += $a_l;	
+		$a_l = 20; $h = 0;
+
+		if( $valores["peso"] != NULL ) $h += $a_l;
+		if( $valores["precio"] != NULL ) $h += $a_l;
+		if( $valores["nombre"] != NULL ) $h += $a_l;
+		if( $valores["id"] != NULL && $h == 0 ) $h += $a_l;
+		if( $valores["tallas"] != NULL ){
+			if( $h == 0 || ( $h == $a_l && $valores["id"] != NULL ) )
+				$h += $a_l; 
 		} 
-		return $h + 10;
+
+		return $h + ( $a_l / 2 );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function vectorDI( $nombre, $id, $precio, $peso, $tallas ){
+		// 
+		$dv["peso"] 	= $peso;
+		$dv["id"] 		= $id;
+		$dv["nombre"] 	= $nombre;
+		$dv["tallas"] 	= $tallas;
+		$dv["precio"] 	= $precio;
+		
+		return $dv;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip ){
-		ini_set("memory_limit","200M");
+		ini_set( "memory_limit", "200M" );
 		
-		$ai 				= alturaInfo( array( $nombre, $id, $precio, $peso, $tallas ) );
+		$ai 				= alturaInfo( vectorDI( $nombre, $id, $precio, $peso, $tallas ) );
 		$orig 				= imagecreatefromjpeg( $img );
 		$ancho_o 			= imagesx( $orig ); 
 		$alto_o 			= imagesy( $orig ); 
@@ -32,7 +49,7 @@
 		$x1 = 0; 	$x2 = $nw;
 		$y1 = $nh; 	$y2 = $nh - $ai;
 		
-		imagecopyresampled( $nva, $orig, 0, 0, 0, 0, $nw, $nh, $ancho_o, $alto_o );
+		imagecopyresampled( $nva, $orig, 0, 0, 0, 0, $nw, $nh-$ai, $ancho_o, $alto_o );
 		imagefilledrectangle ( $nva , $x1 , $y1 , $x2 , $y2 , $color_2 );
 		//img, tam, ang, x, y, color, font, texto
 		$tam = 12; $typ = '../fonts/futura medium bt.ttf';
@@ -122,12 +139,15 @@
 	/* ---------------------------------------- */
 	function tallasP( $r, $f ){
 		$v_tallas = NULL;
+		$val_v = 1;
 		if( isset( $f["p_tal"] ) ){
 			$v_tallas = "T: ";
 			$rt 	= $r["tallas"];
 			foreach ( $rt as $t ) {
-				if( $t["visible"] == 1 )
-					$v_tallas .= $t["talla"].$t["unidad"].", ";
+				if( isset( $f["p_ocultos"] ) ) $val_v = 0;
+					
+				if( $t["visible"] == $val_v )
+						$v_tallas .= $t["talla"].$t["unidad"].", ";
 			}
 		}
 		return substr( $v_tallas, 0, -2 ); 

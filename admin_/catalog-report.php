@@ -146,6 +146,7 @@
                                   <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
                                 <?php } ?>
                               </select>
+                              <div id="rcatr"></div>
                             </div>
                           </div>
 
