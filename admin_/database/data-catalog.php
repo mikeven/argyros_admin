@@ -9,26 +9,27 @@
 
 		$resultado = "";
 		$bloque_img = file_get_contents( "../sections/image-catalog-report.php" );
+		if( $productos != NULL ){
+			foreach ( $productos as $reg ) {
 
-		foreach ( $productos as $reg ) {
+				$data_p = $reg["data"];
+				$imgs 	= $reg["imagenes"];
+				$idr 	= $data_p["id"]."-".$data_p["id_det"];
+				$link	= "product-data.php?p=".$data_p["id"]."#".$data_p["id_det"];
+				
+				if( isset( $imgs[0] ) ) $image = $imgs[0]["path"]; else $image = "";
 
-			$data_p = $reg["data"];
-			$imgs 	= $reg["imagenes"];
-			$idr 	= $data_p["id"]."-".$data_p["id_det"];
-			$link	= "product-data.php?p=".$data_p["id"]."#".$data_p["id_det"];
-			
-			if( isset( $imgs[0] ) ) $image = $imgs[0]["path"]; else $image = "";
+				$bloque_img = file_get_contents( "../sections/image-catalog-report.php" );
 
-			$bloque_img = file_get_contents( "../sections/image-catalog-report.php" );
-
-			$bloque_img = str_replace( "{id}", 		$idr, 				$bloque_img );
-			$bloque_img = str_replace( "{nombre}", 	$data_p["name"], 	$bloque_img );
-			$bloque_img = str_replace( "{image}", 	$image, 			$bloque_img );
-			$bloque_img = str_replace( "{desc}", 	$data_p["description"], $bloque_img );
-			$bloque_img = str_replace( "{link}", 	$link, 				$bloque_img );
-			
-			$resultado .= $bloque_img;
-		}
+				$bloque_img = str_replace( "{id}", 		$idr, 				$bloque_img );
+				$bloque_img = str_replace( "{nombre}", 	$data_p["name"], 	$bloque_img );
+				$bloque_img = str_replace( "{image}", 	$image, 			$bloque_img );
+				$bloque_img = str_replace( "{desc}", 	$data_p["description"], $bloque_img );
+				$bloque_img = str_replace( "{link}", 	$link, 				$bloque_img );
+				
+				$resultado .= $bloque_img;
+			}
+		} else $resultado = "Error al obtener resultados";
 
 		return $resultado;
 	}
@@ -337,13 +338,16 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerQueryIdentificador( $form ){
 		// Devuelve la consulta a bd en función de idproducto-iddetalle
-		$ids = explode('-', $form["identificador"] );
-		list( $idp, $iddet ) = $ids;
-
-		$query = "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det 
-		from products p, product_details dp where p.id = $idp 
-		and dp.id = $iddet and p.visible = 1";
+		$ids = array_pad(explode('-', $form["identificador"], 2 ), 2, null);;
 		
+		list( $idp, $iddet ) = $ids;
+		if( $idp != "" && $iddet != "" ){
+			$query = "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det 
+						from products p, product_details dp where p.id = $idp and 
+						dp.id = $iddet and p.visible = 1";
+		}
+		else $query = -1;
+
 		return $query;
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -495,10 +499,13 @@
 			$query_base = obtenerQueryIdentificador( $datos );
 		else
 			$query_base = obtenerQueryConsulta( $datos );
-
-		$registros_base = obtenerRegistroQuery( $dbh, $query_base );
-		$lproductos = obtenerListadoProductosConsulta( $dbh, $registros_base, $form, $varg );
-		$lproductos = filtrarProductosConsulta( $form, $lproductos );
+		
+		if( $query_base != -1 ){
+			$registros_base = obtenerRegistroQuery( $dbh, $query_base );
+			$lproductos = obtenerListadoProductosConsulta( $dbh, $registros_base, $form, $varg );
+			$lproductos = filtrarProductosConsulta( $form, $lproductos );
+		} else 
+			$lproductos = NULL;
 
 		return $lproductos; 
 	}
