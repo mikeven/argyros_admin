@@ -587,6 +587,7 @@
 			$res["exito"] = 1;
 			$res["mje"] = "Producto actualizado";
 			$res["reg"] = $idp;
+			$res["sta"] = $act;
 		} else {
 			$res["exito"] = 0;
 			$res["mje"] = "Error al actualizar producto";

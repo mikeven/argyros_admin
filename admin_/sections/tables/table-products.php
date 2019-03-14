@@ -59,7 +59,7 @@
         </td>
         <td>
           <div align="center">
-            <i class="fa fa-eye<?php echo $clp; ?> fa-2x <?php echo $ccol; ?>"></i>
+            <i id="im<?php echo $p['id']?>" class="fa fa-eye<?php echo $clp; ?> fa-2x <?php echo $ccol; ?>"></i>
           </div>
           <hr>
           <div align="center">

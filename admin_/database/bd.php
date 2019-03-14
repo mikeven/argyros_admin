@@ -2,15 +2,20 @@
 	/* Argyros - Conexión a base de datos */
 	/* ----------------------------------------------------------------------------------- */
 	$servidor = "127.0.0.1";
-	$usuariobd = "argyrosbd";
+	/*$usuariobd = "argyrosbd";
 	$passbd = "argyros@bd";
-	$basedatos = "argyros18";
+	$basedatos = "argyros18";*/ 		// Servidor argyros
+
+	$usuariobd = "root";
+	$passbd = "";
+	$basedatos = "mgideasn_argyros";	// Servidor local
+
 	//require_once($_SERVER['DOCUMENT_ROOT'].'/lib/FirePHPCore/fb.php');
 	
 	$dbh = mysqli_connect ( $servidor, $usuariobd, $passbd ) 
 	or die('No se puede conectar a '.$servidor.": ". mysql_error());
 	mysqli_select_db ( $dbh, $basedatos );
-	//mysqli_query( $dbh, "SET NAMES 'utf8'" );
+	mysqli_query( $dbh, "SET NAMES 'utf8'" );
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	function redireccionar( $url ){

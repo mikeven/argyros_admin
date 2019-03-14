@@ -19,13 +19,15 @@ function obtenerEnlaceDocumentoCreado( documento, frt ){
 /* ----------------------------------------------------------------------------------- */
 function notificar( titulo, mensaje, tipo ){
 	//Muestra una notificación: 
-	var notice = new PNotify({
-	  title: titulo,
-	  text: mensaje,
-	  type: tipo,
-	  styling: 'bootstrap3'
-	  
-	});
+	if( $(".ui-pnotify").length < 1 ){
+		var notice = new PNotify({
+		  title: titulo,
+		  text: mensaje,
+		  type: tipo,
+		  styling: 'bootstrap3',
+		  tag: null,
+		});
+	}		
 }
 /* ----------------------------------------------------------------------------------- */
 function ventanaMensaje( exito, mensaje, enlace ){

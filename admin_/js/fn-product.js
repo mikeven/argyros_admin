@@ -140,6 +140,22 @@ function agregarDetalleProducto(){
     });
 }
 /* --------------------------------------------------------- */
+function actualizarIconoMP( idp, estado ){
+	// Actualiza el ícono Mostrar/Ocultar producto después de una acción mostrar/ocultar
+	$( "#im" + idp ).removeClass();
+	if( estado == 1 ) {
+		clase = "fa fa-2x fa-eye pstat_";
+		accion = "Ocultar";
+	}
+	if( estado == 0 ) {
+		clase = "fa fa-2x fa-eye-slash pstat_o";
+		accion = "Mostrar";
+	}
+	$( "#im" + idp ).addClass( clase );
+	$("a[data-idp='"+idp+"']").html( accion );
+	$("a[data-idp='"+idp+"']").attr( "data-op", estado );
+}
+/* --------------------------------------------------------- */
 function activarProducto( idp, edo ){
 	//Envía al servidor la petición para activar/desactivar producto 
 	//dependiendo de su estado actual
@@ -152,7 +168,11 @@ function activarProducto( idp, edo ){
         	res = jQuery.parseJSON( response );
 			if( res.exito == 1 ){
 				notificar( "Productos", res.mje, "success" );
-                setTimeout( function() { window.location = "products.php"; }, 1000 );
+				actualizarIconoMP( idp, res.sta );
+                /*setTimeout( function() { 
+                	//window.location = "products.php"; 
+                	
+                }, 1000 );*/
 			}
         }
     });
@@ -411,8 +431,8 @@ $( document ).ready(function() {
         iniciarBotonActivarProducto( mensaje_conf.t, mensaje_conf.a, mensaje_conf.m );
 
         $('#btn_accion_producto').on('click', function(){
-            
-            $("#btn_canc").click();
+            //$("#btn_canc").click();
+            $('#confirmar-accion').modal('hide');
             activarProducto( idp, edo );
         });
     });
