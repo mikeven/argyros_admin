@@ -421,22 +421,21 @@ $( document ).ready(function() {
 
 	/* ---------------------------------------------------------------- */
 	//Acción para invocar el mostrar/ocultar un producto
-    $("#lista_general_productos").on( "click", ".bt-prod-act", function(){
-
-    	var edo = $(this).attr("data-op");		//operación: 1:esta visible -> acción: ocultar
-    											//operación: 0:esta oculto 	-> acción: mostrar
-		var idp = $(this).attr("data-idp");
-        
-        mensaje_conf = etiqAccionActivarProd( edo );
-        iniciarBotonActivarProducto( mensaje_conf.t, mensaje_conf.a, mensaje_conf.m );
-
-        $('#btn_accion_producto').on('click', function(){
-            //$("#btn_canc").click();
-            $('#confirmar-accion').modal('hide');
-            activarProducto( idp, edo );
-        });
-    });
-	
+    $("#lista_general_productos").on( "click", ".bt-prod-act", function(){   
+		edo = $(this).attr("data-op");		//operación: 1:esta visible -> acción: ocultar
+		idp = $(this).attr("data-idp");		//operación: 0:esta oculto 	-> acción: mostrar
+	    
+	    mensaje_conf = etiqAccionActivarProd( edo );
+	    iniciarBotonActivarProducto( mensaje_conf.t, mensaje_conf.a, mensaje_conf.m );
+	    
+	    $('#btn_accion_producto').on('click', function(e){
+	    	if( e.handled !== true ) {
+		        $('#confirmar-accion').modal('hide');
+		        activarProducto( idp, edo );
+		        e.handled = true;
+	        }
+	    });
+	});
 	/* ---------------------------------------------------------------- */
 	//initNoCero();
 	

@@ -213,7 +213,7 @@
 			$precio 	= 	precioP( $p, $frm );
 			$tallas 	= 	tallasP( $p, $frm );
 			$enl 		.= 	linkImg( substr( $id_p, 1 ) );
-			//$enl 		= 	linkZip( $archivo_zip );
+			$enl 		= 	linkZip( $archivo_zip );
 			if( $img != "" ){
 				actualizarProgreso( $nregs, $nombre_i );
 				GI( $img, $nombre_i, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip );

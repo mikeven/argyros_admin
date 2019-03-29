@@ -171,6 +171,7 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.19/filtering/type-based/accent-neutralise.js"></script>
 
     <!-- PNotify -->
     <script src="vendors/pnotify/dist/pnotify.js"></script>
@@ -178,8 +179,9 @@
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="js/custom.js"></script>
     <script src="js/fn-product.js"></script>
+    <script src="js/custom.js"></script>
+    
     <script src="js/fn-ui.js"></script>
 	
   </body>

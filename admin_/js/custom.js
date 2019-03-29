@@ -2554,7 +2554,44 @@ if (typeof NProgress != 'undefined') {
 					}
 				  };
 				}();
-
+				
+				/* Accent neutralise */
+				jQuery.fn.DataTable.ext.type.search.string = function ( data ) {
+    			return ! data ?
+			        '' :
+			        typeof data === 'string' ?
+			            data
+			                .replace( /έ/g, 'ε' )
+			                .replace( /[ύϋΰ]/g, 'υ' )
+			                .replace( /ό/g, 'ο' )
+			                .replace( /ώ/g, 'ω' )
+			                .replace( /ά/g, 'α' )
+			                .replace( /[ίϊΐ]/g, 'ι' )
+			                .replace( /ή/g, 'η' )
+			                .replace( /\n/g, ' ' )
+			                .replace( /á/g, 'a' )
+			                .replace( /Á/g, 'A' )
+			                .replace( /é/g, 'e' )
+			                .replace( /É/g, 'E' )
+			                .replace( /í/g, 'i' )
+			                .replace( /Í/g, 'I' )
+			                .replace( /ó/g, 'o' )
+			                .replace( /Ó/g, 'O' )
+			                .replace( /ú/g, 'u' )
+			                .replace( /Ú/g, 'U' )
+			                .replace( /ê/g, 'e' )
+			                .replace( /î/g, 'i' )
+			                .replace( /ô/g, 'o' )
+			                .replace( /è/g, 'e' )
+			                .replace( /ï/g, 'i' )
+			                .replace( /ü/g, 'u' )
+			                .replace( /ã/g, 'a' )
+			                .replace( /õ/g, 'o' )
+			                .replace( /ç/g, 'c' )
+			                .replace( /ì/g, 'i' ) :
+			            data;
+				};  
+				/*-------------------------------------------------------*/
 				$('#datatable').dataTable({
 					  "paging": true,
 					  "iDisplayLength": 10,
