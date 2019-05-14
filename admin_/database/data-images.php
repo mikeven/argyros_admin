@@ -5,6 +5,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	ini_set( 'display_errors', 1 );
+
 	/* ----------------------------------------------------------------------------------- */
 	function alturaInfo( $valores ){
 		$a_l = 20; $h = 0;
@@ -34,6 +35,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip ){
 		ini_set( "memory_limit", "200M" );
+		ini_set('MAX_EXECUTION_TIME', '900');
 		
 		$ai 				= alturaInfo( vectorDI( $nombre, $id, $precio, $peso, $tallas ) );
 		$orig 				= imagecreatefromjpeg( $img );
