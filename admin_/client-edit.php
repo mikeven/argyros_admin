@@ -174,9 +174,9 @@
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Teléfono </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" placeholder="Teléfono" name="telefono"  
-                              value="<?php echo $cliente["telefono"]; ?>">
-                            </div>
+                              <input type="text" class="form-control" placeholder="Teléfono" 
+                              name="telefono" value="<?php echo $cliente["telefono"]; ?>">
+                            </div>|
                           </div>
 
                           <div class="form-group">
