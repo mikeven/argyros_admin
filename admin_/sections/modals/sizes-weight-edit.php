@@ -55,7 +55,7 @@
               $n = 1;
               
               //$tallas: registro general de tallas registradas en la categoría
-              foreach ( $tallas as $t ) {
+              foreach ( $tallas as $t ) { // $tallas: product-detail-edit.php: 137
 
                 $data = obtenerDatosTallaRegistrada( $iddet, $t["id"], $tallas_det );
                 //fn/fn-sizes.php

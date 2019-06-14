@@ -99,9 +99,13 @@ function enviarRevisionPedido(){
         type:"POST",
         url:"database/data-orders.php",
         data:{ rev_ped: form_rev, idp: ido, monto_orden:monto },
+        beforeSend: function () {
+            $("#area_rsp_pedido").html("<img src='images/ajax-loader.gif' width='16' height='16'>");
+        },
         success: function( response ){
         	console.log(response);
 			res = jQuery.parseJSON(response);
+			$("#area_rsp_pedido").html("");
 			if( res.exito == 1 ){ 
 				notificar( tit_notif, res.mje, "success" );
 				location.reload();

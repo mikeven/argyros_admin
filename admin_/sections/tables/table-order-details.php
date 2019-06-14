@@ -109,7 +109,7 @@
 
   <div id="panel_revision_pedido" class="dcol">
     <hr>
-    <div class="form-group">
+    <div id="area_rsp_pedido" class="form-group">
         <a href="#!">
             <button id="resp_pedido" type="button" class="btn btn-info btn-xs">Enviar respuesta</button>
         </a> 
