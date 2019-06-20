@@ -136,7 +136,7 @@ function actualizarPedido( estado ){
 			
 			if( res.exito == 1 ){ 
 				notificar( tit_notif, res.mje, "success" );
-				setTimeout(function() { location.reload(); }, 5000 );
+				setTimeout(function() { location.reload(); }, 3000 );
 			}
         }
     });		
