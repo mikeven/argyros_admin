@@ -814,6 +814,10 @@
 		include( "data-sizes.php" );
 
 		$tallas = obtenerListaTallasCategoria( $dbh, $_POST["tallas_cat"] );
+		$talla0 = obtenerValoresTallaCero( $dbh );
+		$talla0["name"] = "Ajustable/Única";
+		array_unshift( $tallas, $talla0 );
+		
 		echo json_encode( $tallas );
 	}
 	/* ----------------------------------------------------------------------------------- */

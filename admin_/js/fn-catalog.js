@@ -124,7 +124,7 @@ function buscarImagenesCatalogo( form_r, param ){
         type:"POST",
         url:"database/data-catalog.php",
         data:{ img_catal: form_r, descarga: param },
-        beforeSend: function (){
+        beforeSend: function(){
             previoVisualCargaImgs( wait, param ); 
         },
         success: function( response ){
