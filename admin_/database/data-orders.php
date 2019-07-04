@@ -178,8 +178,8 @@
 		$idr = registrarRevisionPedido( $dbh, $revision["regrev"] );
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
 			actualizarEstadoPedido( $dbh, $_POST["idp"], "revisado", "no-leido" );
-			$renvio = notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], 
-													$_POST["monto_orden"] );
+			/*$renvio = notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], 
+													$_POST["monto_orden"] );*/
 			if( $renvio["exito"] == 1 ){
 				$res["exito"] = 1;
 				$res["mje"] = "La respuesta del pedido ha sido enviada";
