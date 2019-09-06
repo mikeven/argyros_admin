@@ -14,7 +14,7 @@
       <?php 
         foreach ( $sizes as $s ) {
           $prods = obtenerProductosTalla( $dbh, $s["id"] );
-          if( $s["cid"] != 0 ){   //Se filtra la talla N/A: categoría 0
+          if( $s["cid"] != 1 ){   //Se filtra la talla N/A: categoría 0
       ?>
         <tr>
           <td><?php echo $s["name"]; ?></td>

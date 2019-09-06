@@ -158,9 +158,10 @@
 		// Devuelve los productos que estén ocultos o tengan tallas no disponibles.
 		$productos = array();
 		$id_reg_ag = array();
-
+		
 		foreach ( $registros as $reg ) {
 			$data = $reg["data"];
+			
 			if( $data["visible"] == 0 ){
 				if ( !in_array( $data["id_det"], $id_reg_ag ) ){
 					$id_reg_ag[] = $data["id_det"];
@@ -178,6 +179,7 @@
 				}
 			}
 		}
+
 
 		return $productos;
 	}

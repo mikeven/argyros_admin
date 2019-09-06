@@ -19,7 +19,7 @@
 		//Filtrar la categoría neutra del listado obtenido de BD
 		$nlista = array();
 		foreach ( $lista as $reg ) {
-			if( $reg[$nid] != 0 ) $nlista[] = $reg;
+			if( $reg[$nid] != 1 ) $nlista[] = $reg;
 		}
 
 		return $nlista;

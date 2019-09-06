@@ -41,7 +41,7 @@
 		$orig 				= imagecreatefromjpeg( $img );
 		$ancho_o 			= imagesx( $orig ); 
 		$alto_o 			= imagesy( $orig ); 
-		$nw 				= 500;
+		$nw 				= 300;
 		$nh 				= intval( ( $alto_o / $ancho_o ) * $nw ) + $ai;
 
 		$nva 				= imagecreatetruecolor( $nw, $nh ); 	
@@ -224,5 +224,5 @@
 		$zip->close();
 		echo $enl;
 	}
-	/* ----------------------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------------------ */
 ?>

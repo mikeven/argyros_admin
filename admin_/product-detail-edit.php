@@ -8,7 +8,9 @@
     include( "database/bd.php" );
     include( "database/data-user.php" );
     include( "database/data-system.php" );
+    
     include( "fn/common-functions.php" );
+
     include( "database/data-lines.php" );
     include( "database/data-sizes.php" );
     include( "database/data-colors.php" );
@@ -25,13 +27,13 @@
     checkSession( '' );
     
     if( isset( $_GET["id"] ) ){
-        $iddet = $_GET["id"];
-        $detalle = obtenerDatosDetalleProductoPorId( $dbh, $iddet );
-        $datos_det = $detalle["datos"];
-        $tallas_det = $detalle["tallas"];        
-        $dtalla0 = obtenerValorTallaCeroDetalleProducto( $tallas_det );
-        $imgs_det = $detalle["imagenes"];
-        $url_post_edit = "product-detail-edit.php?id=$iddet";
+      $iddet = $_GET["id"];
+      $detalle = obtenerDatosDetalleProductoPorId( $dbh, $iddet );
+      $datos_det = $detalle["datos"];
+      $tallas_det = $detalle["tallas"];        
+      $dtalla0 = obtenerValorTallaCeroDetalleProducto( $tallas_det );
+      $imgs_det = $detalle["imagenes"];
+      $url_post_edit = "product-detail-edit.php?id=$iddet";
     }  
 ?>
 <!DOCTYPE html>
