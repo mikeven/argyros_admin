@@ -8,7 +8,8 @@
 		//Devuelve la lista de clientes
 		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, c.phone,  
 		ug.name as grupo, p.name as pais, c.city as ciudad, c.verified as verificado, 
-		c.company_type as tipo, date_format(c.created_at,'%d/%m/%Y') as fcreacion, 
+		c.company_type as tipo, c.company as esempresa, c.company_name as nempresa,  
+		date_format(c.created_at,'%d/%m/%Y') as fcreacion, 
 		c.blocked as bloqueado from clients c, client_group ug, countries p 
 		where c.client_group_id = ug.id and c.country_id = p.id order by c.id DESC";
 		
@@ -108,8 +109,9 @@
 	/* ----------------------------------------------------------------------------------- */
 	function modificarGrupoUsuarioCliente( $dbh, $idu, $idgrupo ){
 		//Actualiza el grupo al que pertenece un cliente
-		$q = "update clients set client_group_id = $idgrupo where id = $idu";
-
+		$q = "update clients set client_group_id = $idgrupo, updated_at = NOW() 
+		where id = $idu";
+		
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -119,7 +121,7 @@
 		variable_d, material, created_at ) values ( '$grupo[nombre]', $grupo[var_a], $grupo[var_b],  
 		$grupo[var_c], $grupo[var_d], $grupo[material], NOW() )";
 		
-		//echo $q;
+		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}

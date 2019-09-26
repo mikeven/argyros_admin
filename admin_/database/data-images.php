@@ -34,6 +34,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip ){
+		
 		ini_set( "memory_limit", "200M" );
 		ini_set('MAX_EXECUTION_TIME', '900');
 		
@@ -41,7 +42,7 @@
 		$orig 				= imagecreatefromjpeg( $img );
 		$ancho_o 			= imagesx( $orig ); 
 		$alto_o 			= imagesy( $orig ); 
-		$nw 				= 300;
+		$nw 				= 500;
 		$nh 				= intval( ( $alto_o / $ancho_o ) * $nw ) + $ai;
 
 		$nva 				= imagecreatetruecolor( $nw, $nh ); 	

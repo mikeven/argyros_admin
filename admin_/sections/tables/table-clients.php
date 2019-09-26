@@ -17,6 +17,8 @@
     <?php 
       foreach ( $clientes as $c ) {
         $lnk_e = "client-edit.php?id=".$c["id"];
+        $nombre_empresa = "";
+        if( $c["esempresa"] == 1 ) $nombre_empresa = "(".trim($c["nempresa"]).")";
         if( $c["bloqueado"] == 1 ) {
           $data_bl = 0; $cll = "blocked_user";
           $blq_tx = "Desbloquear";
@@ -35,14 +37,15 @@
         <td>
           <select class="form-control selec_grupo_perfil selectpicker" data-idc="<?php echo $c["id"]; ?>">
             <option disabled>Seleccione</option>
-            <?php foreach ( $grupos as $g ) { ?>
+            <?php 
+              foreach ( $grupos as $g ) { ?>
               <option <?php echo sop( $c["grupo"], $g["name"] ); ?> 
               class="cambio_perfil" data-trg="<?php echo $c["id"]; ?>" 
               value="<?php echo $g["id"]; ?>"><?php echo $g["name"] ?> </option>
             <?php } ?>
           </select>    
         </td>
-        <td><?php echo $c["tipo"]; ?></td>
+        <td><?php echo $c["tipo"].$nombre_empresa; ?></td>
         <td><?php echo $c["fcreacion"]; ?></td>
         <td> <?php echo etiquetaEstadoCliente( $c["verificado"] ); ?> </td>
         <td><a href="<?php echo $lnk_e; ?>">Editar</a></td>

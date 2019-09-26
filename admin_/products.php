@@ -95,7 +95,17 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Lista de productos</h2>
-                    
+                    <div style="float: right;">
+                        <?php if( isset( $_GET["imagenes"] ) ) { ?>
+                            <a href="products.php">
+                                <i class="fa fa-file-image-o"></i> No mostrar imágenes
+                            </a>
+                        <?php } else { ?>
+                            <a href="products.php?imagenes">
+                                <i class="fa fa-file-image-o"></i> Mostrar imágenes
+                            </a>
+                        <?php } ?>
+                    </div>
                     <div class="clearfix"></div>
                   </div>
                   <div id="lista_general_productos" class="x_content">

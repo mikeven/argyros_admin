@@ -1,7 +1,9 @@
 <table id="datatable" class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th><i class="fa fa-file-image-o"></i></th>
+      <?php if( isset( $_GET["imagenes"] ) ) { ?>
+        <th><i class="fa fa-file-image-o"></i></th>
+      <?php } ?>
       <th>Id</th>
       <th>Código</th>
       <th>Nombre</th>
@@ -29,11 +31,13 @@
           //$lnk_d = "product-detail.php?p=$p[id]"; 
       ?>
       <tr>
-        <td>
-          <a href="#!" class="pop-img-p" data-toggle="modal" data-src="<?php echo $url_img;?>" 
-          data-target="#img-product-pop"><img src="<?php echo $url_img;?>" width="60px">
-          </a>
-        </td>
+        <?php if( isset( $_GET["imagenes"] ) ) { ?>
+          <td>
+            <a href="#!" class="pop-img-p" data-toggle="modal" data-src="<?php echo $url_img;?>" 
+            data-target="#img-product-pop"><img src="<?php echo $url_img;?>" width="60px">
+            </a>
+          </td>
+        <?php } ?>
         <td>
           <a class="primary" href="<?php echo $lnk_p; ?>"><?php echo $p["id"]; ?></a>
         </td>

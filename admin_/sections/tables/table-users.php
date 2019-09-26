@@ -3,7 +3,7 @@
     <tr>
       <th>Nombre</th>
       <th>Email</th>
-      <th>Rol</th>
+      <!--<th>Rol</th>-->
       <th>Fecha creación</th>
       <th>Editar</th>    </tr>
   </thead>
@@ -14,7 +14,7 @@
       <tr>
         <td><a href="user-data.php?id=<?php echo $u["id"]; ?>"><?php echo $u["nombre"]." ".$u["apellido"]; ?></a></td>
         <td><?php echo $u["email"]; ?></td>
-        <td>
+        <td class="hidden">
           <select id="<?php echo $u["id"]; ?>" class="form-control ctr_rol_usuario">
             <option disabled>Seleccione</option>
             <?php foreach ( $roles as $r ) { ?>
