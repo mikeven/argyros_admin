@@ -128,9 +128,8 @@ function buscarImagenesCatalogo( form_r, param ){
             previoVisualCargaImgs( wait, param ); 
         },
         success: function( response ){
-            console.log(response);
             request.abort();
-            
+            console.log(response);
             posteriorVisualCargaImgs( param, si, response );  
         }
     });
