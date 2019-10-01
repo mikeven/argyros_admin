@@ -192,8 +192,9 @@
 	function escribirImagenes( $productos, $frm ){
 		// Obtiene los datos a mostrar e invoca la generación de las imágenes con los datos
 
+		$filename = date("Ymd-h.i"); 
 		$enl = "";
-		$archivo_zip = "catalogo.zip";
+		$archivo_zip = $filename.".zip";
 		$nregs = count( $productos );
 		$_SESSION["nimages"] = $nregs;
 		$_SESSION["images"] = array();
