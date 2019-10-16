@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="background:#ccc;">
+            <tr style="background:#ccc; display: none;">
               <td>
 
                 <input type="checkbox" id="ajustable" name="talla-ajustable" value="ajustable">
@@ -34,10 +34,13 @@
             <?php
               $n = 1; 
               foreach ( $tallas as $t ) { 
+                $n_talla = $t["name"];    if ( $t["name"] == "ajust" )  $n_talla  = "Ajustable";
+                                          if ( $t["name"] == "unica" )  $n_talla  = "Única";
+                $n_und = "($t[unidad])";  if ( $t["unidad"] == "" )     $n_und    = "";
             ?>
               <tr>
                 <td></td>
-                <td><?php echo $t["name"]." "."($t[unidad])"; ?>
+                <td><?php echo $n_talla." ".$n_und; ?>
                   <input id="nt<?php echo $n; ?>" type="hidden" value="<?php echo $t["name"] ?>" data-idt="<?php echo $t["id"] ?>">
                 </td>
                 <td>

@@ -45,6 +45,8 @@
             <form id="loginform" role="form">
               <h1>Iniciar sesión</h1>
               <input name="login" type="hidden" value="1"/>
+              <!-- DEVELOPMENT -->
+              
               <div>
                 <input type="text" class="form-control" placeholder="Dirección de correo" required="" name="email"/>
               </div>
@@ -57,7 +59,7 @@
               </div>
 
               <div class="clearfix"></div>
-
+            
               <div class="separator">
                 <p class="change_link hidden">¿Usuario nuevo?
                   <a href="#signup" class="to_register"> Crear cuenta</a>
@@ -71,6 +73,7 @@
                 </div>
                 <div id="response"></div>
               </div>
+
             </form>
           </section>
         </div>

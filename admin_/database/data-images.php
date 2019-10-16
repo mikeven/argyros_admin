@@ -119,9 +119,9 @@
 	
 		if( isset( $f["p_pep"] ) ){
 			foreach ( $r["tallas"] as $talla ) {
-				if( $talla["visible"] == 1 ){
+				//if( $talla["visible"] == 1 ){
 					$peso = $talla["peso"]."g"; break;
-				}
+				//}
 			}
 		}
 		

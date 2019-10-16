@@ -262,10 +262,13 @@
                                             foreach ( $tallas_detalle as $talla ) {
                                                 if( $talla["visible"] == 1 ) $ctble = ""; 
                                                 else $ctble = "poculto"; 
+                                                $n_talla = $talla["talla"];  
+                                                if ( $talla["talla"] == "ajust" )  $n_talla  = "Ajustable";
+                                                if ( $talla["talla"] == "unica" )  $n_talla  = "Única";
                                         ?>
                                             <tr class="<?php echo $ctble; ?>">
                                                 <td align="center">
-                                                    <?php echo $talla["talla"]; ?>
+                                                    <?php echo $n_talla; ?>
                                                     <?php if ($talla["unidad"]) 
                                                         echo "(".$talla["unidad"].")"; 
                                                     ?>

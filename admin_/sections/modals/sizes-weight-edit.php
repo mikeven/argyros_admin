@@ -27,7 +27,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="background:#ccc;">
+            <tr style="background:#ccc; display: none;">
               <td>
                 <input type="checkbox" id="ajustable" name="talla-ajustable" 
                 value="ajustable" <?php echo $aj_ch; ?>>
@@ -57,6 +57,10 @@
               //$tallas: registro general de tallas registradas en la categoría
               foreach ( $tallas as $t ) { // $tallas: product-detail-edit.php: 137
 
+                $n_talla = $t["name"];    if ( $t["name"] == "ajust" )  $n_talla  = "Ajustable";
+                                          if ( $t["name"] == "unica" )  $n_talla  = "Única";
+                $n_und = "($t[unidad])";  if ( $t["unidad"] == "" )     $n_und    = "";
+
                 $data = obtenerDatosTallaRegistrada( $iddet, $t["id"], $tallas_det );
                 //fn/fn-sizes.php
                 //$tallas_det: tallas registradas en detalle prod
@@ -66,7 +70,7 @@
             ?>
             <tr>
               <td></td>
-              <td><?php echo $t["name"]." "."($t[unidad])"; ?>
+              <td><?php echo $n_talla." ".$n_und; ?>
                 <input id="nt<?php echo $n; ?>" type="hidden" value="<?php echo $t["name"] ?>" 
                 data-idt="<?php echo $t["id"] ?>">
               </td>
