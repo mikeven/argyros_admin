@@ -6,7 +6,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerJuegosProductos( $dbh ){
 		//Devuelve los registros de juegos de producto
-		$q = "select id, date_format( created_at,'%d/%m/%Y') as fecha from sets";
+		$q = "select id, date_format( created_at,'%d/%m/%Y') as fecha from sets order by id DESC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_j = obtenerListaRegistros( $data );

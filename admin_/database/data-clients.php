@@ -84,7 +84,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerClientePorId( $dbh, $idc ){
 		//Devuelve el registro de cliente dado por id
-		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, 
+		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, c.verified as verificado,  
 		c.phone as telefono, c.address as direccion, cg.name as grupo, p.name as pais, p.id as idpais, 
 		date_format(c.created_at,'%d/%m/%Y') as fcreacion, 
 		date_format(c.updated_at,'%d/%m/%Y') as fmodificacion, c.company as escompania, 
@@ -109,9 +109,13 @@
 	/* ----------------------------------------------------------------------------------- */
 	function modificarGrupoUsuarioCliente( $dbh, $idu, $idgrupo ){
 		//Actualiza el grupo al que pertenece un cliente
-		$q = "update clients set client_group_id = $idgrupo, updated_at = NOW() 
-		where id = $idu";
-		
+		$q = "update clients set client_group_id = $idgrupo, updated_at = NOW() where id = $idu";
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function activarCuentaNoVerificada( $dbh, $idc ){
+		//Actualiza el campo de verificación de cuenta de cliente: cuenta activada
+		$q = "update clients set verified = 1 where id = $idc";
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -219,6 +223,22 @@
 		}else{
 			$res["exito"] = 0;
 			$res["mje"] = "Error al editar grupo de usuario";
+		}
+		
+		echo json_encode( $res );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	//Invocación para activar cuenta no verificada de un cliente
+	if( isset( $_POST["act_cta"] ) ){
+		include( "bd.php" );	
+	
+		$idg = activarCuentaNoVerificada( $dbh, $_POST["act_cta"] );
+		if( ( $idg != 0 ) && ( $idg != "" ) ){
+			$res["exito"] = 1;
+			$res["mje"] = "Cuenta activada con éxito";
+		}else{
+			$res["exito"] = 0;
+			$res["mje"] = "Error al activar cuenta de cliente";
 		}
 		
 		echo json_encode( $res );

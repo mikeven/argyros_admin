@@ -1,6 +1,7 @@
 <table id="datatable" class="table table-striped table-bordered">
   <thead>
     <tr>
+      <th class="hidden"></th>
       <th>ID</th>
       <th>Productos</th>
       <th>Acción</th>
@@ -12,6 +13,7 @@
         foreach ( $juegos as $j ) {
       ?>
       <tr>
+        <td class="hidden"></td>
         <td>#<?php echo $j["id"]; ?></td>
         <td>
           <div>

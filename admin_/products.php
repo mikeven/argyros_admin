@@ -95,7 +95,7 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Lista de productos</h2>
-                    <div style="float: right;">
+                    <div style="float: right;" class="hidden">
                         <?php if( isset( $_GET["imagenes"] ) ) { ?>
                             <a href="products.php">
                                 <i class="fa fa-file-image-o"></i> No mostrar imágenes
@@ -110,7 +110,7 @@
                   </div>
                   <div id="lista_general_productos" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-products.php");?>
+                    <?php include("sections/tables/table-data-products.php");?>
                     <?php include( "sections/modals/confirm_action.php" ); ?>
                   </div>
                 </div>
@@ -193,6 +193,53 @@
     <script src="js/custom.js"></script>
     
     <script src="js/fn-ui.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#datatable-products').dataTable({
+                
+                "ajax": { 
+                    "method":"POST",
+                    "url":"database/data-table-products.php"
+                },
+                "columns":[
+                    {"data":"img"},
+                    {"data":"id"},
+                    {"data":"codigo"},
+                    {"data":"nombre"},
+                    {"data":"desc"},
+                    {"data":"categ"},
+                    {"data":"rdets"},
+                    {"data":"editar"},
+                    {"data":"accion"}
+                ],
+                "processing": true,
+                "paging": true,
+                "iDisplayLength": 10,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "deferRender": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ regs por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando pág _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros",
+                    "infoFiltered": "(filtrados de _MAX_ regs)",
+                    "search": "Buscar:",
+                    "processing": "<img src='https://www.argyros.com.pa/admin/images/ajax-loader.gif' width='20'>",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Último",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }
+                }
+            });
+        });   
+    </script>
 	
   </body>
 </html>

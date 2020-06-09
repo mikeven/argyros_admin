@@ -129,10 +129,11 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Grupo cliente: </label>
-                        <select class="form-control">
+                        <select class="form-control selec_grupo_perfil" data-idc="<?php echo $idc ?>">
                             <option disabled>Seleccione</option>
                             <?php foreach ( $grupos as $g ) { ?>
-                            <option <?php echo sop( $cliente["grupo"], $g["name"] ); ?> ><?php echo $g["name"] ?> 
+                            <option <?php echo sop( $cliente["grupo"], $g["name"] ); ?> value="<?php echo $g['id'] ?>">
+                                <?php echo $g["name"] ?> 
                             </option>
                             <?php } ?>
                         </select>
@@ -147,9 +148,19 @@
                         <label class="control-label">Tipo compañía: </label> <?php echo $cliente["tcompania"]; ?>
                     </div>                
                     
+                    <?php if( $cliente["verificado"] != 1 ) { ?>
+                        <div id="activacion_cuenta">
+                            <div class="ln_solid"></div>
+                            <span>Cuenta no verificada </span>
+
+                            <button id="act_cuenta" type="button" class="btn btn-success btn-xs" 
+                            data-toggle="modal" data-target="#confirmar-accion" 
+                            data-idc="<?php echo $idc ?>">Activar cuenta de usuario</button>
+                        </div>
+
+                    <?php } ?>
 
                     <div class="ln_solid"></div>
-
 
                     <div class="form-group">
                         <label class="control-label">Fecha creación: </label> 
@@ -262,6 +273,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
-	
+    <script src="js/fn-client.js"></script>
+	<script src="js/fn-ui.js"></script>
   </body>
 </html>

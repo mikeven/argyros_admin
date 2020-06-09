@@ -2,14 +2,9 @@
 	/* Argyros - Conexión a base de datos */
 	/* ----------------------------------------------------------------------------------- */
 	$servidor = "127.0.0.1";
-	/*$usuariobd = "argyrosbd";
+	$usuariobd = "argyrosbd";
 	$passbd = "argyros@bd";
-	$basedatos = "argyros18";*/ 		// Servidor argyros
-
-	$usuariobd = "root";
-	$passbd = "";
-	$basedatos = "mgideasn_argyros";	// Servidor local
-
+	$basedatos = "argyros18";
 	//require_once($_SERVER['DOCUMENT_ROOT'].'/lib/FirePHPCore/fb.php');
 	
 	$dbh = mysqli_connect ( $servidor, $usuariobd, $passbd ) 

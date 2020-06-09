@@ -196,8 +196,13 @@
     <script src="js/custom.js"></script>
     <script src="js/fn-sets.js"></script>
     <script src="js/fn-ui.js"></script>
-
-    <?php //include( "fn/fn-lines.php" ); ?>
-	
+	<script>
+        $(document).ready(function() {
+            var table = $('#datatable').DataTable();
+ 
+            // Ordenar por columna cero, dibujar
+            table.order( [ 0, 'desc' ] ).draw();
+        });   
+    </script>
   </body>
 </html>

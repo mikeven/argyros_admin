@@ -30,10 +30,9 @@
             <div>
               <table class="seleccion-detalle-juego" width="100%" align="center">
                 <tr>
-                  <th width="33.3%">
-                    <a href="<?php echo $lnk_dp;?>" target="_blank">
-                      #<?php echo $p["id"]."-".$dp["id"];?>
-                    </a>
+                  <th width="33.3%"><a href="<?php echo $lnk_dp;?>" target="_blank">
+                        #<?php echo $p["id"]."-".$dp["id"];?>
+                      </a>
                   </th>
                   <th width="33.3%">
                     <img id="img<?php echo $dp["id"];?>" src="<?php echo $url_img;?>" width="60px">

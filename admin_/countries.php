@@ -9,6 +9,7 @@
     include( "database/data-user.php" );
     include( "database/data-countries.php" );
     checkSession( '' );
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
