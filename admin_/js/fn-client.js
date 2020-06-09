@@ -41,6 +41,24 @@ function cambiarGrupoCliente( idc, valor ){
     });
 }
 /* --------------------------------------------------------- */
+function activarCuentaCliente( idc ){
+    //Invocación al servidor para activar cuenta de un cliente (cuenta no verificada)
+    
+    $.ajax({
+        type:"POST",
+        url:"database/data-clients.php",
+        data:{ act_cta: idc },
+        success: function( response ){
+            console.log( response );
+            res = jQuery.parseJSON(response);
+            if( res.exito == 1 ){ 
+               notificar( "Clientes", res.mje, "success" );
+               $("#activacion_cuenta").fadeOut();
+            }
+        }
+    });
+}
+/* --------------------------------------------------------- */
 function borrarGrupoCliente( idg ){
     //Invocación al servidor para eliminar un grupo de clientes
     $.ajax({
@@ -142,6 +160,12 @@ $( document ).ready(function() {
         var valor = $(this).val();
         var idc = $(this).attr("data-idc");
         cambiarGrupoCliente( idc, valor );
+    });
+
+    /*.......................................................*/
+    $('#act_cuenta').on('click', function() {
+        var idc = $(this).attr("data-idc");
+        activarCuentaCliente( idc );
     });
     /* ................................................................ */
     $("#tabla_datos-gclientes").on( "click", ".elim-gcliente", function(){

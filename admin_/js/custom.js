@@ -2599,6 +2599,7 @@ if (typeof NProgress != 'undefined') {
 					  "searching": true,
 					  "ordering": true,
 					  "info": true,
+					  "deferRender": true,
 					  "autoWidth": false,
 					  "language": {
 						"lengthMenu": "Mostrar _MENU_ regs por página",

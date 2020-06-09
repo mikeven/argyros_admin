@@ -55,7 +55,7 @@ $( document ).ready(function() {
     });
 
     $("#pcodigo").on('blur', function() {
-		chequearCodigoProducto( $(this).val() );
+		/*chequearCodigoProducto( $(this).val() );*/
 	});	
 
     /*new-product.php*/
