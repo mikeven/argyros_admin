@@ -238,6 +238,9 @@
                     }
                 }
             });
+            var table = $('#datatable-products').DataTable();
+            // Ordenar por columna cero, dibujar
+            table.order( [ 1, 'desc' ] ).draw();
         });   
     </script>
 	

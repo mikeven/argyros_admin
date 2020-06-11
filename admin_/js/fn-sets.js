@@ -97,6 +97,15 @@ function iniciarBotonBorrarJuego(){
                          "Confirmar acción" );
 }
 /* --------------------------------------------------------- */
+function iniciarBotonAgregarSeleccionJuego(){
+    // Asigna acción al botón de agregar detalle de producto a nuevo juego
+    $("#datatable-sets-products").on( "click", ".sel-pj", function(){
+        var iddet = $(this).attr( "data-idd" );
+        var id_img = "img" + iddet;
+        agregarSeleccionJuego( iddet, id_img );
+    });   
+}
+/* --------------------------------------------------------- */
 $( document ).ready(function() {	
     // ============================================================================ //
     
@@ -134,11 +143,7 @@ $( document ).ready(function() {
         });
     }
     
-    $("#datatable").on( "click", ".sel-pj", function(){
-    	var iddet = $(this).attr( "data-idd" );
-    	var id_img = "img" + iddet;
-    	agregarSeleccionJuego( iddet, id_img );
-    });
+    iniciarBotonAgregarSeleccionJuego();
 
     $("#seleccion_juego").on( "click", ".e_spj", function(){
     	var idf = $(this).attr( "data-fj" );

@@ -388,20 +388,26 @@ function etiqAccionActivarProd( op ){
 	return etiq;
 }
 /* --------------------------------------------------------- */
-$( document ).ready(function() {	
-    // ============================================================================ //
-    
-    /*Pop image list products*/
-    $("#datatable").on( "click", ".pop-img-p", function(){
+function iniciarPopImagenesProductos(){
+	// Inicializa los enlaces para mostrar las imágenes de productos en ventanas emergentes
+
+	/*Pop image list products*/
+    $("#lista_general_productos").on( "click", ".pop-img-p", function(){
     	var img = $(this).attr("data-src");
     	$("#img-preview").attr( "src", img );
     });
 
-    $(".pop-img-p").on( "click", function(){
+    $("#lista_general_productos").on( "click", ".pop-img-p", function(){
     	var img = $(this).attr("data-src");
     	$("#img-preview").attr( "src", img );
     });
     /*Pop image */
+}
+/* --------------------------------------------------------- */
+$( document ).ready(function() {	
+    // ============================================================================ //
+    
+    iniciarPopImagenesProductos();
 
 	// ============================================================================ //
 	/*product-detail.php*/

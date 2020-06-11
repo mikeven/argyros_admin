@@ -3,6 +3,7 @@
      * Argyros Admin - Colores
      * 
      */
+    ini_set( "session.gc_maxlifetime", "86400" );
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );

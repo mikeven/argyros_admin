@@ -59,10 +59,7 @@
     </style>
   </head>
 
-  <?php
-    $productos = obtenerListaProductos( $dbh );
-    $juego = obtenerNumeroNuevoJuego( $dbh );
-  ?>
+  <?php $juego = obtenerNumeroNuevoJuego( $dbh ); ?>
 
   <body class="nav-md">
     <div class="container body">
@@ -103,7 +100,7 @@
                   <div id="tabla_datos-lineas" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
                     <?php 
-                      include( "sections/tables/table-products-sets.php" );
+                      include( "sections/tables/table-sets-products.php" );
                     ?>
                     <?php include( "sections/modals/confirm_action.php" ); ?>
                     <input id="id-linea-e" type="hidden">
@@ -232,7 +229,47 @@
     <script src="js/fn-sets.js"></script>
     <script src="js/fn-ui.js"></script>
 
-    
+    <script>
+        $(document).ready(function() {
+            $('#datatable-sets-products').dataTable({
+                
+                "ajax": { 
+                    "method":"POST",
+                    "url":"database/datatable-products-sets.php"
+                },
+                "columns":[
+                    {"data":"categoria"},
+                    {"data":"subcategoria"},
+                    {"data":"producto"},
+                    {"data":"detalles"}
+                ],
+                "processing": true,
+                "paging": true,
+                "iDisplayLength": 10,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "deferRender": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ regs por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando pág _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros",
+                    "infoFiltered": "(filtrados de _MAX_ regs)",
+                    "search": "Buscar:",
+                    "processing": "<img src='https://www.argyros.com.pa/admin/images/ajax-loader.gif' width='20'>",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Último",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }
+                }
+            });
+        });   
+    </script>
 	
   </body>
 </html>

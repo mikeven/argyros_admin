@@ -3,6 +3,7 @@
      * Argyros Admin - Inicio
      * 
      */
+    ini_set( "session.gc_maxlifetime", "86400" ); 
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/data-user.php" );
@@ -74,6 +75,7 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Contenido</h2>
+                    
                     <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>

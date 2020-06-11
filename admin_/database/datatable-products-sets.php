@@ -17,16 +17,6 @@
 		return $lista;	
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerImagenesProducto( $dbh, $id ){
-		//Devuelve los registros de imágenes de dado el id de producto
-		$q = "select i.path as image FROM images i, product_details d 
-		where i.product_detail_id = d.id and d.product_id = $id";
-
-		$data = mysqli_query( $dbh, $q );
-		$lista = obtenerListaRegistros( $data );
-		return $lista;
-	}
-	/* ----------------------------------------------------------------------------------- */
 	function obtenerDetalleProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
 		$q = "select dp.id as id, c.name as color, t.name as bano, dp.price_type as tipo_precio, 
@@ -40,55 +30,70 @@
 		return $lista;		
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerImagenesDetalleProducto( $dbh, $idd, $limite ){
+		//Devuelve los registros de imágenes de detalle de producto
+		$l = "";
+		if( $limite != NULL ) $l = "LIMIT $limite";
+		
+		$q = "select id, path from images where product_detail_id = $idd $l";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista = obtenerListaRegistros( $data );
+		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerTablaDetallesProducto( $p, $dp, $lnk_dp, $url_img ){
+		// Devuelve la tabla con los detalles de un producto
+
+		$html_tabla = "<div>
+              			<table class='seleccion-detalle-juego' width='100%' align='center'>
+                			<tr>
+                  				<th width='33.3%'>
+                  					<a href='".$lnk_dp."' target='_blank'>#".$p["id"]."-".$dp["id"]."</a>
+                  				</th>
+                  				<th width='33.3%'>
+                    				<img id='img".$dp["id"]."' src='".$url_img."' width='60px'>
+                  				</th>
+                  				<th width='33.3%'>
+                    				<a href='#!' class='sel-pj' data-idd='".$dp["id"]."'>
+                      					<i class='fa fa-2x fa-plus-square'></i>
+                    				</a>
+                  				</th>
+                			</tr>
+              			</table>
+            		</div>";
+
+        return $html_tabla;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
 	include( "bd.php" );
 	$productos = obtenerListaProductos( $dbh );
 
 	foreach ( $productos as $p ) {
+    	$lnk_p = "product-data.php?p=$p[id]";
+    	$drdet = obtenerDetalleProductoPorId( $dbh, $p["id"] );
 
-		$lnk_p = "product-data.php?p=$p[id]";
-		$imgs = obtenerImagenesProducto( $dbh, $p["id"]);
-		$drdet = obtenerDetalleProductoPorId( $dbh, $p["id"] );
-		$url_img = "";
-		
-		if( isset( $imgs[0] ) ){
-			$url_img = $imgs[0]["image"];
-		}
-
-		if( $p["visible"] == 1 ) {
-			$clp = ""; $accion = "Ocultar"; $ccol = "pstat_";
-		}else{ 
-			$clp = "-slash"; $accion = "Mostrar"; $ccol = "pstat_o"; 
-		}
-		
-		$html_det = "";
-
+    	$detalles = "";
 		foreach ( $drdet as $dp ) {
-			$lnk_dp 	= "product-data.php?p=$p[id]#$dp[id]";
-			$html_det 	.= "<div><a href='".$lnk_dp."'>#".$dp['id']."</a></div>";
+			$lnk_dp = "product-data.php?p=$p[id]#$dp[id]"; 
+			$imgs = obtenerImagenesDetalleProducto( $dbh, $dp["id"], "" );
+			$url_img = "";
+			
+			if( isset( $imgs[0] ) ){
+				$url_img = $imgs[0]["path"];
+			}
+
+			$detalles .= obtenerTablaDetallesProducto( $p, $dp, $lnk_dp, $url_img );
 		}
 		/*......................................................................*/
-		$reg_prod["img"] 		= "<a href='#!' class='pop-img-p' data-toggle='modal' 
-									data-src='".$url_img."' data-target='#img-product-pop'>
-									<img src='".$url_img."' width='60px'></a>";
-		$reg_prod["id"]			= "<a class='primary' href='".$lnk_p."'>".$p["id"]."</a>";
-		$reg_prod["codigo"] 	= $p["codigo"];
-		$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_p."'>".$p["nombre"]."</a>";
-		$reg_prod["desc"] 		= $p["descripcion"];
-		$reg_prod["categ"] 		= $p["categoria"];
-		$reg_prod["rdets"] 		= $html_det;
-		$reg_prod["editar"] 	= "<a href='product-edit.php?id=".$p["id"]."'><i class='fa fa-edit'></i></a>";
-
-		$reg_prod["accion"] 	= "<div align='center'>
-            						<i id='im".$p["id"]."' class='fa fa-eye".$clp." fa-2x ". $ccol."'></i></div>
-          							<hr>
-          							<div align='center'>
-          								<a href='#!' class='bt-prod-act' data-idp='".$p["id"]."' 
-          								data-op='".$p["visible"]."' data-toggle='modal' 
-          								data-target='#confirmar-accion'>".$accion."</a></div>";
+		$reg_prod["categoria"] 		= $p["categoria"];
+		$reg_prod["subcategoria"] 	= $p["subcategoria"];
+		$reg_prod["producto"] 		= $p["nombre"];
+		$reg_prod["detalles"] 		= $detalles;
 		/*......................................................................*/
-		$data_productos["data"][] = $reg_prod;
+		$data_productos["data"][] 	= $reg_prod;
 	}
 
 	echo json_encode( $data_productos );
