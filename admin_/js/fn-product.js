@@ -397,7 +397,7 @@ function iniciarPopImagenesProductos(){
     	$("#img-preview").attr( "src", img );
     });
 
-    $("#lista_general_productos").on( "click", ".pop-img-p", function(){
+    $(".pop-img-p").on( "click", function(){
     	var img = $(this).attr("data-src");
     	$("#img-preview").attr( "src", img );
     });

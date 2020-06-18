@@ -72,7 +72,7 @@
 		$reg_prod["img"] 		= "<a href='#!' class='pop-img-p' data-toggle='modal' 
 									data-src='".$url_img."' data-target='#img-product-pop'>
 									<img src='".$url_img."' width='60px'></a>";
-		$reg_prod["id"]			= "<a class='primary' href='".$lnk_p."'>".$p["id"]."</a>";
+		$reg_prod["id"]			= "<a class='primary' href='".$lnk_p."' target='_blank'>".$p["id"]."</a>";
 		$reg_prod["codigo"] 	= $p["codigo"];
 		$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_p."'>".$p["nombre"]."</a>";
 		$reg_prod["desc"] 		= $p["descripcion"];
