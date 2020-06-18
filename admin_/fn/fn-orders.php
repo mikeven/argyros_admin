@@ -39,6 +39,22 @@
 		return $nitems;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function calcularTotalOrden( $orden, $detalle ){
+		// Devuelve el total de una orden después de haber sido revisado/confirmado
+		$monto = 0;
+
+		foreach ( $detalle as $item ){
+			if( $orden["estado"] == "pendiente" || $orden["estado"] == "cancelado" )
+				$monto += $item["quantity"] * $item["price"];
+			else{
+				if( $item["istatus"] != "retirado" )
+					$monto += $item["disponible"] * $item["price"];
+			}
+		}
+
+		return $monto;		
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerOrdenActualizada( $orden, $detalle ){
 		//Devuelve los datos actualizados de una orden dependiendo del estado
 		$orden["procesada"] = false;

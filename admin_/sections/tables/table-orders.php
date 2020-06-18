@@ -15,14 +15,14 @@
       foreach ( $pedidos as $p ) {
          $iconoe = obtenerIconoEstado( $p["estado"], "" );
          $dorden = obtenerDetalleOrden( $dbh, $p["id"] );
-         $orden_act = obtenerOrdenActualizada( $p, $dorden );
+         $total_o = calcularTotalOrden( $p, $dorden );
     ?>
     <tr>
       <td><a href="order-data.php?order-id=<?php echo $p["id"]; ?>">#Pedido <?php echo $p["id"]; ?></a></td>
       <td><?php echo $p["nombre"]." ".$p["apellido"]; ?></td>
       <td class="datesort"><?php echo $p["fecha"]; ?></td>
       <td><?php echo $iconoe." ".$p["estado"]; ?></td>
-      <td>$ <?php echo $orden_act["total_actualizado"]; ?></td>
+      <td>$ <?php echo $total_o; ?></td>
       <td class="hidden"><?php echo $p["creada"]; ?></td>
     </tr>
     <?php } ?>
