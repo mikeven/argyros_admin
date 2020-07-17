@@ -6,8 +6,18 @@
     ini_set( "session.gc_maxlifetime", "86400" ); 
     session_start();
     ini_set( 'display_errors', 1 );
+    include( "database/bd.php" );
     include( "database/data-user.php" );
     checkSession( '' );
+
+    $directorio = opendir( "catalog/" );
+    function obtenerProductoPorImagen( $dbh, $archivo ){
+      $q = "select p.id, p.name as nombre, dp.id as iddet FROM products p, product_details dp, images i
+      where p.id = dp.product_id and dp.id = i.product_detail_id and i.path = '$archivo'";
+
+      $data = mysqli_query( $dbh, $q );
+      return mysqli_fetch_array( $data );
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,8 +56,6 @@
       <div class="main_container">
         <?php include("sections/main-nav.php"); ?>
 
-        <?php include("sections/top-nav.php"); ?>
-
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
@@ -58,46 +66,29 @@
 
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <!-- <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div> -->
+                  
                 </div>
               </div>
             </div>
 
             <div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Contenido</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>-->
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                      
-                  </div>
-                </div>
-              </div>
-            </div>
+            <?php 
+              $archivo = "catalog/_ZYC199084f573a63ee034b0ea46c209a1964698.jpg";
+              /*while ( $archivo = readdir( $directorio ) ) {
+                  if (is_dir( $archivo ) ){
+                      //echo "[".$archivo . "]<br />";
+                  }
+                  else {
+                    if ( $archivo == "155371471583340873d6ed517594c78e2732f6f480320cdf.jpg" ){
+                      $pr = obtenerProductoPorImagen( $dbh, $archivo );
+                      print_r($pr);
+                    }
+                  }
+              }*/
+              $pr = obtenerProductoPorImagen( $dbh, $archivo );
+              echo "#".$pr["id"]."-".$pr["iddet"];
+            ?>
           </div>
         </div>
         <!-- /page content -->

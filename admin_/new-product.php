@@ -64,6 +64,12 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+    <style type="text/css">
+      .rlist option{
+        color: #5A738E;
+        font-size: 12px;
+      }
+    </style>
   </head>
 
   <?php
@@ -143,7 +149,9 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">País de origen </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="pais" class="form-control selectpicker" title="Seleccione">
+                                  <select name="pais" class="form-control rlist" 
+                                  title="Seleccione" required>
+                                    <option></option>
                                     <?php foreach ( $paises as $p ) { ?>
                                       <option value="<?php echo $p["id"] ?>"><?php echo $p["name"] ?></option>
                                     <?php } ?>
@@ -154,7 +162,8 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Línea </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="linea[]" class="form-control selectpicker" multiple required="">
+                                  <select name="linea[]" class="form-control selectpicker" 
+                                  multiple required>
                                     <?php foreach ( $lineas as $l ) { ?>
                                       <option value="<?php echo $l["id"] ?>"><?php echo $l["name"] ?></option>
                                     <?php } ?>
@@ -190,8 +199,8 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="val_subc" name="subcategoria" class="form-control" 
-                                  title="Seleccione" required>
+                                  <select id="val_subc" name="subcategoria" 
+                                  class="rlist form-control" title="Seleccione" required>
                                   <option value="">Seleccione</option>
                                     
                                   </select>
@@ -201,7 +210,8 @@
                               <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="smaterial" name="material" class="form-control selectpicker" title="Seleccione" required>
+                                  <select id="smaterial" name="material" 
+                                  class="rlist form-control" title="Seleccione" required>
                                     <option></option>
                                     <?php foreach ( $materiales as $m ) { ?>
                                       <option value="<?php echo $m["id"] ?>"><?php echo $m["name"] ?></option>

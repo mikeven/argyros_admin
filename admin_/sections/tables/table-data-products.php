@@ -1,7 +1,6 @@
 <table id="datatable-products" class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th class="hidden"></th>
       <th>
           <?php if( isset( $_GET["imagenes"] ) ) { ?>
             <i class="fa fa-file-image-o"></i>

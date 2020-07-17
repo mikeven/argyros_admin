@@ -36,15 +36,16 @@
             <li>
                 <a href="sets.php">Juegos</a>
             </li>
-            <li class="">
+            <li>
                 <a href="catalog-report.php">Imágenes de catálogo</a>
             </li>
             <li>
                 <a href="countries.php">Países</a>
             </li>
-            <li><a href="#">Propiedades <span class="fa fa-chevron-down"></span></a>
+
+            <li><a>Propiedades <span class="fa fa-chevron-down"></span></a>
               <ul class="nav child_menu">
-                <li><a href="materials.php">Materiales</a></li>
+                <li class="sub_menu"><a href="materials.php">Materiales</a></li>
                 <li><a href="treatments.php">Baños</a></li>
                 <li><a href="colors.php">Colores</a></li>
                 <li><a href="sizes.php">Tallas</a></li>

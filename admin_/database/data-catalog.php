@@ -236,7 +236,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerSubQueryValor( $qvalor, $valores ){
-		// Construye la cadena 'and campo = valor or campo = valor' para un query
+		// Construye la cadena and campo = valor or campo = valor para un query
 
 		if( count( $valores ) > 0 ){
 			$q = "and (";  
