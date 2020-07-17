@@ -34,9 +34,8 @@
             <?php
               $n = 1; 
               foreach ( $tallas as $t ) { 
-                $n_talla = $t["name"];    if ( $t["name"] == "ajust" )  $n_talla  = "Ajustable";
-                                          if ( $t["name"] == "unica" )  $n_talla  = "Única";
-                $n_und = "($t[unidad])";  if ( $t["unidad"] == "" )     $n_und    = "";
+                $n_talla = $t["name"]; if ( $t["name"] == "ajust" ) $n_talla = "Ajustable";
+                $n_und = "($t[unidad])"; if ( $t["unidad"] == "" ) $n_und = "";
             ?>
               <tr>
                 <td></td>
