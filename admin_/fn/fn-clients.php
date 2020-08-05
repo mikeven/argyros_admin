@@ -20,16 +20,28 @@
       <script>
         notificar( "Grupo de cliente", "Perfil de cliente creado con éxito", "success" );
       </script>
-<?php }	?>
+  <?php }	?>
 
-<?php if( isset( $_GET["editgroupsuccess"] ) ){ ?>
-  <script>
-    notificar( "Grupo de cliente", "Datos de grupo modificados", "success" );
-  </script>
-<?php } ?>
+  <?php if( isset( $_GET["editgroupsuccess"] ) ){ ?>
+    <script>
+      notificar( "Grupo de cliente", "Datos de grupo modificados", "success" );
+    </script>
+  <?php } ?>
 
-<?php if( isset( $_GET["editar_usuario-exito"] ) ){ ?>
-  <script>
-    notificar( "Cliente", "Datos de cliente modificados", "success" );
-  </script>
-<?php } ?>
+  <?php if( isset( $_GET["editar_usuario-exito"] ) ){ ?>
+    <script>
+      notificar( "Cliente", "Datos de cliente modificados", "success" );
+    </script>
+  <?php } ?>
+
+  <?php if( isset( $_GET["editar_password-cliente-exito"] ) ){ ?>
+    <script>
+      notificar( "Cliente", "Contraseña de cliente actualizada", "success" );
+    </script>
+  <?php } ?>
+
+  <?php if( isset( $_GET["nueva_nota-exito"] ) ){ ?>
+    <script>
+      notificar( "Cliente", "Nueva nota agregada con éxito", "success" );
+    </script>
+  <?php } ?>

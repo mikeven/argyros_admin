@@ -110,7 +110,7 @@
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                 <input name="nombre" type="text" 
                                                 class="form-control" placeholder="Nombre" 
-                                                value="<?php echo $usuario["first_name"]?>" required>
+                                                value="<?php echo $usuario[nombre]?>" required>
                                             </div>
                                         </div>
 
@@ -119,7 +119,7 @@
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                               <input name="apellido" type="text" 
                                               class="form-control" placeholder="Apellido" 
-                                              value="<?php echo $usuario["last_name"]?>" required>
+                                              value="<?php echo $usuario[apellido]?>" required>
                                             </div>
                                         </div>
 

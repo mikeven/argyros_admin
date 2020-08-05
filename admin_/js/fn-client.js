@@ -150,8 +150,14 @@ function iniciarBotonBloquearCliente( accion ){
                          "Confirmar acción" );
 }
 /* --------------------------------------------------------- */
-
 $( document ).ready(function() {
+    
+    if ( $("#frm_nvapasswd_cliente").length > 0 ){
+        $('#frm_nvapasswd_cliente').parsley().on('form:success', function() {
+            //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+        });
+    }
+
     $("#bot_guardar_grupo").on( "click", function(){
 		agregarGrupoCliente();
     });
@@ -202,7 +208,7 @@ $( document ).ready(function() {
         });
     });
     /* ................................................................ */
-    $('#datatable-clients').dataTable({
+    /*$('#datatable-clients').dataTable({
           "paging": true,
           "iDisplayLength": 10,
           "lengthChange": true,
@@ -227,7 +233,57 @@ $( document ).ready(function() {
                 "previous":   "Anterior"
             }
         }
-    });
+    });*/
+
+    $(document).ready(function() {
+        $('#datatable-clients').dataTable({
+            
+            "ajax": { 
+                "method":"POST",
+                "url":"database/data-table-clients.php"
+            },
+            "columns":[
+                {"data":"id"},
+                {"data":"nombre"},
+                {"data":"email"},
+                {"data":"pais"},
+                {"data":"tipo"},
+                {"data":"grupo"},
+                {"data":"fcreacion"},
+                {"data":"flogin"},
+                {"data":"estado"},
+                {"data":"editar"},
+                {"data":"accion"}
+            ],
+            "processing": true,
+            "paging": true,
+            "iDisplayLength": 10,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "deferRender": true,
+            "autoWidth": false,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ regs por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando pág _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros",
+                "infoFiltered": "(filtrados de _MAX_ regs)",
+                "search": "Buscar:",
+                "processing": "<img src='https://www.argyros.com.pa/admin/images/ajax-loader.gif' width='20'>",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Próximo",
+                    "previous":   "Anterior"
+                }
+            }
+        });
+        var table = $('#datatable-clients').DataTable();
+        // Ordenar por columna cero, dibujar
+        table.order( [ 0, 'desc' ] ).draw();
+    }); 
 });
 
 /* --------------------------------------------------------- */

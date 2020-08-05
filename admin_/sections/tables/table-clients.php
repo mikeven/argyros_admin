@@ -40,7 +40,7 @@
             <?php 
               foreach ( $grupos as $g ) { ?>
               <option <?php echo sop( $c["grupo"], $g["name"] ); ?> 
-              class="cambio_perfil" data-trg="<?php echo $c["id"]; ?>" 
+              class="cambio_perfil" data-trg="<?php echo $c[id]; ?>" 
               value="<?php echo $g["id"]; ?>"><?php echo $g["name"] ?> </option>
             <?php } ?>
           </select>    

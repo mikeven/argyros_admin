@@ -18,6 +18,17 @@
 		return $lista_c;	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerListaNotasClientes( $dbh, $idc ){
+		//Devuelve la lista de notas asociadas a clientes
+		$q = "select n.note as nota, u.first_name as nombre, u.last_name as apellido, 
+		 		date_format(n.created_at,'%d/%m/%Y') as fecha from client_notes n, users u, clients c 
+				where n.fk_user = u.id and n.fk_client = c.id and c.id = $idc order by n.created_at DESC";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista_c = obtenerListaRegistros( $data );
+		return $lista_c;	
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaGruposClientes( $dbh ){
 		//Devuelve la lista de clientes
 		$q = "select * from client_group order by name ASC";
@@ -83,10 +94,11 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerClientePorId( $dbh, $idc ){
-		//Devuelve el registro de cliente dado por id
+		// Devuelve el registro de cliente dado por id
 		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, c.verified as verificado,  
 		c.phone as telefono, c.address as direccion, cg.name as grupo, p.name as pais, p.id as idpais, 
-		date_format(c.created_at,'%d/%m/%Y') as fcreacion, 
+		date_format(c.created_at,'%d/%m/%Y') as fcreacion,
+		date_format(c.last_login,'%d/%m/%Y %h:%i %p') as flogin, 
 		date_format(c.updated_at,'%d/%m/%Y') as fmodificacion, c.company as escompania, 
 		c.company_name as ncompania, c.company_type as tcompania, c.city as ciudad, 
 		c.blocked as bloqueado from clients c, client_group cg, countries p 
@@ -97,7 +109,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function editarCliente( $dbh, $cliente ){
-		//Modifica los datos de un cliente
+		// Modifica los datos de un cliente
 
 		$q = "update clients set first_name = '$cliente[nombre]', last_name = '$cliente[apellido]', 
 		email = '$cliente[email]', address='$cliente[direccion]', phone='$cliente[telefono]', 
@@ -116,6 +128,12 @@
 	function activarCuentaNoVerificada( $dbh, $idc ){
 		//Actualiza el campo de verificación de cuenta de cliente: cuenta activada
 		$q = "update clients set verified = 1 where id = $idc";
+		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function modificarPasswordCliente( $dbh, $cliente ){
+		// Actualiza la contraseña de un cliente
+		$q = "update clients set password = '$cliente[password]' where id = $cliente[id]";
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -140,7 +158,15 @@
 
 		return $asociado;
 	}
-
+	/* ----------------------------------------------------------------------------------- */
+	function agregarNotaCliente( $dbh, $cliente ){
+		// Agrega una nueva nota asociada a un cliente
+		$q = "insert into client_notes ( note, fk_client, fk_user, created_at ) 
+				values ( '$cliente[nota]', $cliente[idc], $cliente[idu], NOW() )";
+		
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_insert_id( $dbh );
+	}
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes POST al servidor para procesar información de Clientes */
 	/* ----------------------------------------------------------------------------------- */
@@ -182,6 +208,39 @@
 		if( ( $idc != 0 ) && ( $idc != "" ) ){
 			header( "Location: ../client-edit.php?id=$cliente[id]&editar_usuario-exito" );
 		}		
+		
+	}
+	/* ----------------------------------------------------------------------------------- */
+	//Modificar contraseña
+	if( isset( $_GET["mpassword"] ) ){
+		ini_set( 'display_errors', 1 );
+		include( "bd.php" );
+
+		$cliente["id"]			= $_POST["idcliente"];
+		$cliente["password"]	= mysqli_real_escape_string( $dbh, $_POST["password"] );		 
+
+		$idr = modificarPasswordCliente( $dbh, $cliente );
+		
+		if( ( $idr != 0 ) && ( $idr != "" ) ){
+			header( "Location: ../client-data.php?id=$cliente[id]&editar_password-cliente-exito" );
+		}
+		
+	}
+	/* ----------------------------------------------------------------------------------- */
+	// Agregar nueva nota
+	if( isset( $_GET["nvanota"] ) ){
+		ini_set( 'display_errors', 1 );
+		include( "bd.php" );
+
+		$cliente["idc"]			= $_POST["idcliente"];
+		$cliente["idu"]			= $_POST["idusuario"];
+		$cliente["nota"]		= mysqli_real_escape_string( $dbh, $_POST["nota"] );		 
+
+		$idr = agregarNotaCliente( $dbh, $cliente );
+		
+		if( ( $idr != 0 ) && ( $idr != "" ) ){
+			header( "Location: ../client-data.php?id=$cliente[idc]&nueva_nota-exito" );
+		}
 		
 	}
 

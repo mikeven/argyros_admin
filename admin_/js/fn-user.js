@@ -52,7 +52,8 @@ function registroU(){
 }
 /* --------------------------------------------------------- */
 function initValid(){
-  
+
+  	/* ---------------------------------------------------------------------------- */
 	$('#frm_mcuenta').bootstrapValidator({
 		message: 'Revise el contenido del campo',
 		feedbackIcons: {
@@ -76,7 +77,7 @@ function initValid(){
 			modificarDatosUsuario( "#frm_mcuenta" );
 		}
 	});
-
+	/* ---------------------------------------------------------------------------- */
 	$('#frm_musuario').bootstrapValidator({
 		message: 'Revise el contenido del campo',
 		feedbackIcons: {
@@ -94,7 +95,7 @@ function initValid(){
 			modificarDatosUsuario( "#frm_musuario" );
 		}
 	});
-
+	/* ---------------------------------------------------------------------------- */
 	$('#frm_mpassw').bootstrapValidator({
 		message: 'Revise el contenido del campo',
 		feedbackIcons: {
@@ -121,7 +122,7 @@ function initValid(){
 			modificarDatosUsuario( "#frm_mpassw" );//modificarDatosUsuario( $(this) );
 		}
 	});
-
+	/* ---------------------------------------------------------------------------- */
 }
 /* --------------------------------------------------------- */
 function modificarDatosUsuario( param ){

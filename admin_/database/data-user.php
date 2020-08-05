@@ -64,7 +64,9 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerUsuarioPorId( $dbh, $idu ){
-		$sql = "select * from users where id = $idu";
+		$sql = "Select id, first_name as nombre, last_name as apellido, email, 
+		date_format(created_at,'%d/%m/%Y') as fcreacion from users where id = $idu";
+
 		$data_user = mysqli_fetch_array( mysqli_query ( $dbh, $sql ) );
 		return $data_user;					
 	}
@@ -152,7 +154,7 @@
 		//Actualiza el valor de contraseña de usuario
 		$actualizado = 1;
 		$q = "update users set password = '$usuario[password]' where id = $usuario[id]";
-		echo $q;
+		
 		mysqli_query( $dbh, $q );
 		if( mysqli_affected_rows( $dbh ) == -1 ) $actualizado = 0;
 		

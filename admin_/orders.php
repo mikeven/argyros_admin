@@ -98,7 +98,7 @@
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-orders.php");?>
+                    <?php include("sections/tables/table-data-orders.php");?>
                   </div>
                 </div>
               </div>
@@ -173,34 +173,52 @@
     <script src="js/custom.js"></script>
     <script>
       $(document).ready(function() {
-        var table = $('#datatable_o').dataTable({
+        $('#datatable_o').dataTable({
+            
+            "ajax": { 
+                "method":"POST",
+                "url":"database/data-table-orders.php"
+            },
+            "columns":[
+                {"data":"id"},
+                {"data":"pedido"},
+                {"data":"cliente"},
+                {"data":"fecha"},
+                {"data":"status"},
+                {"data":"total"},
+            ],
+            "processing": true,
             "paging": true,
             "iDisplayLength": 10,
             "lengthChange": true,
             "searching": true,
             "ordering": true,
-            'order': [[ 5, 'desc' ]],
             "info": true,
+            "deferRender": true,
             "autoWidth": false,
             "language": {
-            "lengthMenu": "Mostrar _MENU_ regs por página",
-            "zeroRecords": "No se encontraron resultados",
-            "info": "Mostrando pág _PAGE_ de _PAGES_",
-            "infoEmpty": "No hay registros",
-            "infoFiltered": "(filtrados de _MAX_ regs)",
-            "search": "Buscar:",
-            "paginate": {
-              "first":      "Primero",
-              "last":       "Último",
-              "next":       "Próximo",
-              "previous":   "Anterior"
+                "lengthMenu": "Mostrar _MENU_ regs por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando pág _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros",
+                "infoFiltered": "(filtrados de _MAX_ regs)",
+                "search": "Buscar:",
+                "processing": "<img src='https://www.argyros.com.pa/admin/images/ajax-loader.gif' width='20'>",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Próximo",
+                    "previous":   "Anterior"
+                }
             }
-          }
         });
+        var table = $('#datatable_o').DataTable();
+        // Ordenar por columna cero, dibujar
+        table.order( [ 0, 'desc' ] ).draw();
+    });
 
-        //table.columns( '.datesort' ).order( 'desc' ).draw();
+    //table.columns( '.datesort' ).order( 'desc' ).draw();
 
-      });
     </script>
 	
   </body>
