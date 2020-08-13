@@ -17,6 +17,8 @@
     }
     
     checkSession( '' );
+    $idusuario = $_SESSION["user-adm"]["id"];
+    $notas_cliente = obtenerListaNotasClientes( $dbh, $idc )
 
 ?>
 <!DOCTYPE html>
@@ -98,8 +100,6 @@
             <div class="row">
               
               <div class="col-md-4 col-sm-6 col-xs-12">
-                
-                
                 <div class="x_panel">
                   
                   <div class="x_title">
@@ -176,7 +176,7 @@
                         <?php echo $cliente["flogin"]; ?>
                     </div>  
 
-                    <?php if( $_SESSION["user-adm"]["id"] == 2 ) { ?>
+                    <?php if( $_SESSION["user-adm"]["id"] == 1 ) { ?>
                         <div class="ln_solid"></div>
                         <form id="frm_nvapasswd_cliente" data-parsley-validate 
                         class="form-horizontal form-label-left" action="database/data-clients.php?mpassword" method="post">
@@ -201,18 +201,45 @@
                   </div>
                 
                 </div>
-
               </div>
               
               <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel hidden">
-                  <div class="x_title">
-                    <h2>Actividad</h2>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    
-                  </div>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Notas</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        
+                        <?php include("sections/tables/table-client-notes.php"); // Tabla con registro de notas ?>
+
+                    </div>
+
+                    <?php if( $_SESSION["user-adm"]["id"] == 1 || $_SESSION["user-adm"]["id"] == 2 ) { ?>
+                    <div class="x_content">
+                        <div class="ln_solid"></div>
+                        
+                        <form id="frm_nvanota_cliente" data-parsley-validate class="form-horizontal form-label-left" 
+                            action="database/data-clients.php?nvanota" method="post">
+                            <div class="form-group">
+                                <label class="control-label">Agregar nueva nota: </label> 
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" name="idcliente" value="<?php echo $idc; ?>">
+                                <input type="hidden" name="idusuario" value="<?php echo $idusuario; ?>">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Nota: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  <textarea class="form-control" placeholder="Nota" name="nota" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                              <div align="center">
+                                <button type="submit" class="btn btn-success">Guardar</button>
+                              </div>
+                            </div>
+                        </form>
+                    </div>
+                    <?php } ?>
                 </div> 
               </div>
             

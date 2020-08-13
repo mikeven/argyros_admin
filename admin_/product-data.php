@@ -63,6 +63,7 @@
 
         <!-- Custom Theme Style -->
         <link href="build/css/custom.min.css" rel="stylesheet">
+        <link href="css/custom-styles.css" rel="stylesheet">
     </head>
     <style>
         .thumb_detailproduct{
@@ -85,8 +86,12 @@
         $dproducto = obtenerDetalleProductoPorId( $dbh, $idp );
         $trabajosp = obtenerTrabajosDeProductoPorId( $dbh, $idp );
         $lineasp = obtenerLineasDeProductoPorId( $dbh, $idp );
-
         //print_r( $lineasp );
+    }
+    if( $producto["visible"] == 1 ) {
+        $clp = ""; $ccol = "pstat_";
+    }else{ 
+        $clp = "-slash";  $ccol = "pstat_o";
     }
   ?>
 
@@ -132,8 +137,10 @@
                         <p class="text-muted font-13 m-b-30"> </p>
                         <?php if( isset( $idp ) ) { ?>
                         <div class="row">
-                          
                             <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div align="left">
+                                    <i class="fa fa-eye<?php echo $clp; ?> fa-2x <?php echo $ccol; ?>"></i>
+                                </div>
                                 <div class="data-product-label">
                                     <label class="control-label">
                                         ID: </label> <?php echo $producto["id"]; ?>

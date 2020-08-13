@@ -11,9 +11,8 @@
       <th>Nombre</th>
       <th>Descripción</th>
       <th>Categoría</th>
+      <th>Visibilidad</th>
       <th>Detalles</th>
-      <th>Editar</th>
-      <th>Acción</th>
     </tr>
   </thead>
 </table>

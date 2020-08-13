@@ -40,6 +40,53 @@
 		return $lista;		
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerTallasDetalleProducto( $dbh, $idd ){
+		//Devuelve los registros de tallas de detalle de producto
+		$q = "select spd.size_id as idtalla, convert(s.name, decimal(4,2)) as vsize, 
+		spd.product_detail_id as iddetprod, s.name as talla, s.unit as unidad, 
+		spd.weight as peso, spd.visible as visible, spd.adjustable as ajustable 
+		from size_product_detail spd, sizes s where spd.size_id = s.id 
+		and spd.product_detail_id = $idd order by vsize ASC";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista = obtenerListaRegistros( $data );
+		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerAccionVisibilidad( $p, $clp, $ccol, $accion ){
+		// Devuelve las acciones de mostrar/ocultar productos.
+
+		$visible = "<div align='center'>
+			            <i id='im".$p['id']."' class='fa fa-eye".$clp." fa-2x ".$ccol."'></i>
+			        </div>
+			        <hr>
+			        <div align='center'>
+			            <a href='#!' class='bt-prod-act' data-idp='".$p[id]."' data-op='".$p[visible]."' 
+			            data-toggle='modal' data-target='#confirmar-accion'>".$accion."</a>
+			        </div>";
+
+		return $visible;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerCodigoDisponibilidad( $dbh, $idd ){
+		// Devuelve la clase de color según nivel de disponibilidad de un detalle de producto
+		$tallas 		= obtenerTallasDetalleProducto( $dbh, $idd );
+		$cant_tallas 	= count( $tallas );
+		$disponibles 	= 0;
+
+		foreach ( $tallas as $t ) {
+			if( $t["visible"] == 1 ) $disponibles++;
+		}
+
+		if( $disponibles == $cant_tallas ) 	$class = "dsp_total";
+		if( $disponibles == 0 ) 			$class = "dsp_agotado";
+		if( ( $disponibles > 0 ) && ( $disponibles < $cant_tallas ) ) 
+											$class = "dsp_parcial";
+
+		return $class;
+	}
+
+	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
 	include( "bd.php" );
@@ -61,12 +108,14 @@
 		}else{ 
 			$clp = "-slash"; $accion = "Mostrar"; $ccol = "pstat_o"; 
 		}
-		
+		$visibilidad = obtenerAccionVisibilidad( $p, $clp, $ccol, $accion );
+
 		$html_det = "";
 
 		foreach ( $drdet as $dp ) {
+			$cod_color 	= obtenerCodigoDisponibilidad( $dbh, $dp["id"] );
 			$lnk_dp 	= "product-data.php?p=$p[id]#$dp[id]";
-			$html_det 	.= "<div><a href='".$lnk_dp."'>#".$dp['id']."</a></div>";
+			$html_det 	.= "<div><a href='".$lnk_dp."' class='badge $cod_color'>#".$dp['id']."</a></div>";
 		}
 		/*......................................................................*/
 		$reg_prod["img"] 		= "<a href='#!' class='pop-img-p' data-toggle='modal' 
@@ -77,16 +126,9 @@
 		$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_p."'>".$p["nombre"]."</a>";
 		$reg_prod["desc"] 		= $p["descripcion"];
 		$reg_prod["categ"] 		= $p["categoria"];
+		$reg_prod["visible"]	= $visibilidad;
 		$reg_prod["rdets"] 		= $html_det;
-		$reg_prod["editar"] 	= "<a href='product-edit.php?id=".$p["id"]."'><i class='fa fa-edit'></i></a>";
-
-		$reg_prod["accion"] 	= "<div align='center'>
-            						<i id='im".$p["id"]."' class='fa fa-eye".$clp." fa-2x ". $ccol."'></i></div>
-          							<hr>
-          							<div align='center'>
-          								<a href='#!' class='bt-prod-act' data-idp='".$p["id"]."' 
-          								data-op='".$p["visible"]."' data-toggle='modal' 
-          								data-target='#confirmar-accion'>".$accion."</a></div>";
+		
 		/*......................................................................*/
 		$data_productos["data"][] = $reg_prod;
 	}

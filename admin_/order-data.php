@@ -145,10 +145,16 @@
                                         <?php } ?>
                                         <hr>
 
+                                        <?php if( $orden["estado"] == "revisado" ) { ?>
+                                            <div><b>Observaciones en la revisión: </b></div>
+                                            <div><?php echo $orden["revision_note"]?> </div>
+                                        <?php } ?>
+
                                         <?php if( $orden["estado"] == "confirmado" || $orden["estado"] == "entregado" ) { ?>
                                             <div><b>Observaciones del cliente: </b></div>
                                             <div><?php echo $orden["client_note"]?> </div>
                                         <?php } ?>
+
                                         <?php if( $orden["estado"] == "entregado" ) { ?>
                                             <div><b>Observaciones del administrador: </b></div>
                                             <div><?php echo $orden["admin_note"]?> </div>

@@ -19,7 +19,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerProductosC_S( $dbh, $idc, $idsc ){
 		//Devuelve la lista de productos pertenecientes a una categoría y subcategoría
-		$q = "select p.id, p.code, p.name, p.description, p.is_visible as visible, 
+		$q = "select p.id, p.code, p.name, p.description, p.visible as visible, 
 		co.name as pais, ca.name as category, sc.name as subcategory, m.name as material 
 		FROM products p, categories ca, subcategories sc, countries co, materials m 
 		where p.visible = 1 and p.category_id = ca.id and p.subcategory_id = sc.id and 
@@ -32,7 +32,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerProductosC_S_Basico( $dbh, $idc, $idsc ){
 		//Devuelve la lista de productos pertenecientes a una categoría y subcategoría
-		$q = "select p.id, p.code, p.name, p.description, p.is_visible as visible 
+		$q = "select p.id, p.code, p.name, p.description, p.visible as visible 
 		FROM products p, categories ca, subcategories sc 
 		where p.visible = 1 and p.category_id = ca.id and p.subcategory_id = sc.id and 
 		p.category_id = $idc and p.subcategory_id = $idsc order by p.name ASC";

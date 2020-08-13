@@ -1,0 +1,21 @@
+<ul class="list-unstyled timeline">
+    <?php foreach ( $notas_cliente as $nota ) { ?>
+    <li>
+      <div class="block">
+        <div class="tags">
+          <a href="" class="tag">
+            <span>Entertainment</span>
+          </a>
+        </div>
+        <div class="block_content">
+          
+          <div class="byline">
+            <span><?php echo $nota["fecha"]; ?></span> por: 
+            <a><?php echo $nota["nombre"]." ".$nota["apellido"]; ?></a>
+          </div>
+          <p class="excerpt"> <?php echo $nota["nota"];?> </p>
+        </div>
+      </div>
+    </li>
+    <?php } ?>
+</ul>

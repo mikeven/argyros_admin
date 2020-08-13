@@ -21,7 +21,7 @@
 		$data_orden = NULL;
 		
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
-		o.client_note, o.admin_note, date_format( o.created_at,'%d/%m/%Y') as fecha, c.id as cid, 
+		o.client_note, o.admin_note, o.revision_note, date_format( o.created_at,'%d/%m/%Y') as fecha, c.id as cid, 
 		c.first_name nombre, c.last_name as apellido, c.email as email, g.name as grupo_cliente 
 		from orders o, clients c, client_group g 
 		where o.user_id = c.id and c.client_group_id = g.id and o.id = $ido";
@@ -106,6 +106,14 @@
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function actualizarNotaRevisionPedido( $dbh, $id, $nota ){
+		// Actualiza la nota de revisión de pedido
+		$q = "update orders set revision_note = '$nota' where id = $id";
+
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function actualizarEstadoPedido( $dbh, $id, $estado, $leido ){
 		//Actualiza el estado de un pedido, y asigna no leído por el cliente
 		$q = "update orders set order_status = '$estado', order_read = '$leido', updated_at = NOW() where id = $id";
@@ -128,11 +136,12 @@
 		//Recorre el vector de registros de detalle de pedido (id, cant) para enviar a BD
 		$res = 0;
 		include( "data-products.php" );
-
-		foreach ( $revision as $r ){
-			list( $id, $cant, $srev ) = explode( ',', $r );
-			$res += actualizarDetallePedidoRevision( $dbh, $id, $cant, $srev );
-			ajustarDisponibilidadProducto( $dbh, $cant, $id );
+		if( count( $revision ) > 0 ){
+			foreach ( $revision as $r ){
+				list( $id, $cant, $srev ) = explode( ',', $r );
+				$res += actualizarDetallePedidoRevision( $dbh, $id, $cant, $srev );
+				ajustarDisponibilidadProducto( $dbh, $cant, $id );
+			}
 		}
 		return $res;
 	}
@@ -173,9 +182,11 @@
 		include( "bd.php" );
 		ini_set( 'display_errors', 1 );
 		parse_str( $_POST["rev_ped"], $revision );
-		
+	
 		$idr = registrarRevisionPedido( $dbh, $revision["regrev"] );
+		
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
+			actualizarNotaRevisionPedido( $dbh, $_POST["idp"], $revision["nota_revision"] );
 			actualizarEstadoPedido( $dbh, $_POST["idp"], "revisado", "no-leido" );
 			$renvio = notificarActualizacionPedido( $dbh, "pedido_revisado", $_POST["idp"], 
 													$_POST["monto_orden"] );

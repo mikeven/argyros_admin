@@ -54,6 +54,11 @@
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
     <link href="css/custom-styles.css" rel="stylesheet">
+    <style type="text/css">
+        .dsp_total{ background-color: #28a745 }
+        .dsp_parcial{ background-color: #ffc107; }
+        .dsp_agotado{ background-color: #dc3545; }
+    </style>
 
 </head>
 
@@ -209,9 +214,8 @@
                     {"data":"nombre"},
                     {"data":"desc"},
                     {"data":"categ"},
-                    {"data":"rdets"},
-                    {"data":"editar"},
-                    {"data":"accion"}
+                    {"data":"visible"},
+                    {"data":"rdets"}
                 ],
                 "processing": true,
                 "paging": true,
