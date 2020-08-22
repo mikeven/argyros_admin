@@ -252,9 +252,10 @@ $( document ).ready(function() {
                 {"data":"fcreacion"},
                 {"data":"flogin"},
                 {"data":"estado"},
-                {"data":"editar"},
                 {"data":"accion"}
-            ],
+            ],"defaultContent": "<button>Edit</button>",
+            "columnDefs" : [{"targets":6, "type":"date-eu"},
+                            {"targets":7, "type":"date-eu", "defaultContent": ""}],
             "processing": true,
             "paging": true,
             "iDisplayLength": 10,

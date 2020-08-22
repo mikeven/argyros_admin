@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Productos
+     * Argyros Admin - Productos no disponibles
      * 
      */
     session_start();
@@ -20,7 +20,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Productos :: Argyros Admin</title>
+    <title>Productos disponibilidad por talla :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -54,6 +54,11 @@
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
     <link href="css/custom-styles.css" rel="stylesheet">
+    <style type="text/css">
+        .dsp_total{ background-color: #28a745 }
+        .dsp_parcial{ background-color: #ffc107; }
+        .dsp_agotado{ background-color: #dc3545; }
+    </style>
 
 </head>
 
@@ -73,19 +78,8 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Productos</h3>
+                <h3>Disponibilidad de productos por tallas</h3>
               </div>
-
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
-                  <div class="input-group" style="float:right;">
-                    <a href="new-product.php" class="btn btn-app">
-                      <i class="fa fa-plus"></i> Agregar
-                    </a>
-                  </div>
-                </div>
-              </div>
-            
             </div>
 
             <div class="clearfix"></div>
@@ -95,7 +89,7 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Lista de productos</h2>
-                    <div style="float: right;">
+                    <div style="float: right;" class="hidden">
                         <?php if( isset( $_GET["imagenes"] ) ) { ?>
                             <a href="products.php">
                                 <i class="fa fa-file-image-o"></i> No mostrar imágenes
@@ -110,8 +104,7 @@
                   </div>
                   <div id="lista_general_productos" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include("sections/tables/table-productz.php");?>
-                    <?php include( "sections/modals/confirm_action.php" ); ?>
+                    <?php include( "sections/tables/table-data-unavailable-products.php" ); ?>
                   </div>
                 </div>
               </div>
@@ -194,25 +187,32 @@
     
     <script src="js/fn-ui.js"></script>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+
     <script>
+        //$.fn.dataTable.moment('YYYY/MM/DD HH:mm');
+        $.fn.dataTable.moment('DD/MM/YYYY hh:mm:ss A');
+
         $(document).ready(function() {
-            $('#datatable-products').dataTable({
+            $('#dt-unavailable-products').dataTable({
                 
                 "ajax": { 
                     "method":"POST",
-                    "url":"database/data-table-products.php"
+                    "url":"database/data-table-unav-products.php"
                 },
                 "columns":[
-                    {"data":"img"},
-                    {"data":"id"},
+                    {"data":"fagotado"},
                     {"data":"codigo"},
                     {"data":"nombre"},
                     {"data":"desc"},
                     {"data":"categ"},
-                    {"data":"rdets"},
-                    {"data":"editar"},
-                    {"data":"accion"}
+                    {"data":"detalle"},
+                    {"data":"tallas"}
                 ],
+                "columnDefs" : [
+                                { "targets":[1,3,4,5,6], "orderable": false }],
                 "processing": true,
                 "paging": true,
                 "iDisplayLength": 10,
@@ -238,6 +238,9 @@
                     }
                 }
             });
+            var table = $('#dt-unavailable-products').DataTable();
+            // Ordenar por columna cero, dibujar
+            table.order( [ 0, 'desc' ] ).draw();
         });   
     </script>
 	

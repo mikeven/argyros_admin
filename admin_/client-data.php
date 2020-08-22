@@ -215,7 +215,7 @@
 
                     </div>
 
-                    <?php if( $_SESSION["user-adm"]["id"] == 1 || $_SESSION["user-adm"]["id"] == 2 ) { ?>
+                    
                     <div class="x_content">
                         <div class="ln_solid"></div>
                         
@@ -239,7 +239,7 @@
                             </div>
                         </form>
                     </div>
-                    <?php } ?>
+                    
                 </div> 
               </div>
             
@@ -335,6 +335,47 @@
 	<script src="js/fn-ui.js"></script>
 
     <?php include( "fn/fn-clients.php" ); ?>
+
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.12/sorting/datetime-moment.js"></script>
+    
+    <script>
+        $.fn.dataTable.moment( 'DD/MM/YY' );
+        $(document).ready(function() {
+            $('#datatable-client-notes').dataTable({
+                "processing": true,
+                "paging": true,
+                "iDisplayLength": 10,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "deferRender": true,
+                "autoWidth": false,
+                "columnDefs" : [{"targets":0, "type":"date-eu"}],
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ regs por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando pág _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros",
+                    "infoFiltered": "(filtrados de _MAX_ regs)",
+                    "search": "Buscar:",
+                    "processing": "<img src='https://www.argyros.com.pa/admin/images/ajax-loader.gif' width='20'>",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Último",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }
+                }
+            });
+            var table = $('#datatable-client-notes').DataTable();
+            // Ordenar por columna cero, dibujar
+            table.order( [ 0, 'desc' ] ).draw();
+        });   
+    </script>
 
   </body>
 </html>

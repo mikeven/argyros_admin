@@ -261,7 +261,8 @@ function agregarImagenesDetalleProducto(){
 }
 /* --------------------------------------------------------- */
 function actualizarDisponibilidadProducto( nivel, idp, iddp, iddettalla, estado ){
-	//Envía al servidor la petición de guardar las imágenes cargadas por el plugin. 
+	// Envía al servidor la invocación para actualizar disponibilidad de una talla de detalle de producto
+	 
 	var tit_notif = "Actualización de producto";
 	
 	$.ajax({

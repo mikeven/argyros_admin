@@ -116,7 +116,7 @@
 		$reg_cliente["grupo"] 		= $c["grupo"];
 		$reg_cliente["fcreacion"] 	= $c["fcreacion"];
 		$reg_cliente["estado"] 		= etiquetaEstadoCliente( $c["verificado"] );
-		$reg_cliente["editar"] 		= "<a href='".$lnk_e."'>Editar</a>";
+		//$reg_cliente["editar"] 		= "<a href='".$lnk_e."'>Editar</a>";
 		$reg_cliente["accion"] 		= enlaceAccion( $c, $cll, $blq_tx, $data_bl );
 		
 		$data_clientes["data"][] = $reg_cliente;

@@ -538,6 +538,14 @@
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function actualizarFechaNoDisponibilidad( $dbh, $iddetprod ){
+		// Actualiza la fecha de un producto al NO estar disponible
+		$q = "update product_details set unavailable_at = NOW() where id = $iddetprod";
+		
+		$data = mysqli_query( $dbh, $q );
+		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function actualizarBañoDetalleProducto( $dbh, $idd, $valor ){
 		//Actualiza el valor de un baño de detalle de producto
 		$q = "update product_details set treatment_id = $valor where id = $idd";
@@ -771,22 +779,27 @@
 		//invoca: fn-product.js (actualizarDisponibilidadProducto)
 		include( "bd.php" );
 
-		$detalle_p = obtenerRegistroDetalleProductoPorId( $dbh, $_POST["id_dp"] );
+		$iddet 		= $_POST["id_dp"];				// Id detalle de producto
+		$idta 		= $_POST["id_dettalla"];		// Id de talla
+		$stat 		= $_POST["status"];				// Valor disponibilidad 1:disponible; 0: No disponible
+		
+		$detalle_p 	= obtenerRegistroDetalleProductoPorId( $dbh, $_POST["id_dp"] );
 
 		if( $_POST["ajuste_disp"] == "talla" ){
-			$idr = actualizarDisponibilidadTallaProducto( 
-				$dbh, $_POST["id_dp"], $_POST["id_dettalla"], $_POST["status"] );
+			$idr 	= actualizarDisponibilidadTallaProducto( $dbh, $iddet, $idta, $stat );
+			if( $stat == 0 )
+				actualizarFechaNoDisponibilidad( $dbh, $iddet );
 			actualizarDisponibilidadProductoPorAjuste( $dbh, $detalle_p["idp"] );
 		}
 
 		if ( ( $idr != 0 ) && ( $idr != "" ) ){
-			$res["exito"] = 1;
-			$res["mje"] = "Disponibilidad actualizada";
-			$res["reg"] = NULL;
+			$res["exito"] 	= 1;
+			$res["mje"] 	= "Disponibilidad actualizada";
+			$res["reg"] 	= NULL;
 		} else {
-			$res["exito"] = 0;
-			$res["mje"] = "Error al actualizar producto";
-			$res["reg"] = NULL;
+			$res["exito"] 	= 0;
+			$res["mje"] 	= "Error al actualizar producto";
+			$res["reg"] 	= NULL;
 		}
 
 		echo json_encode( $res );

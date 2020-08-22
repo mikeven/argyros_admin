@@ -1,6 +1,6 @@
 <footer>
   <div class="pull-right">
-    Argyros administrador by <a href="http://mgideas.net">MG IDEAS</a>
+    Argyros administrador
   </div>
   <div class="clearfix"></div>
 </footer>

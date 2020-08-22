@@ -146,7 +146,7 @@
                                         <hr>
 
                                         <?php if( $orden["estado"] == "revisado" ) { ?>
-                                            <div><b>Observaciones en la revisión: </b></div>
+                                            <div><b>Observaciones de revisión: </b></div>
                                             <div><?php echo $orden["revision_note"]?> </div>
                                         <?php } ?>
 

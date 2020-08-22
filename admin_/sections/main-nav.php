@@ -24,6 +24,11 @@
             <li>
                 <a href="products.php">Productos</a>
             </li>
+            <?php if( $_SESSION["user-adm"]["id"] == 1 || $_SESSION["user-adm"]["id"] == 2 ) { ?>
+              <li>
+                  <a href="unavailable-products.php">Disponibilidad por tallas</a>
+              </li>
+            <?php } ?>
             <li>
                 <a href="categories.php">Categorías</a>
             </li>

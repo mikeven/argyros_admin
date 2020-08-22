@@ -27,13 +27,14 @@
 		return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerDetalleProductoPorId( $dbh, $idp ){
+	function obtenerDetallesProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
-		$q = "select dp.id as id, c.name as color, t.name as bano, dp.price_type as tipo_precio, 
-		dp.weight as peso, dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
-		dp.weight_price_value as precio_peso FROM product_details dp
-		LEFT JOIN treatments t ON t.id = dp.treatment_id LEFT JOIN colors c ON dp.color_id = c.id 
-		WHERE dp.product_id = $idp ORDER BY dp.id DESC";
+		$q = "select p.id as p_id, dp.id as d_id, p.code as codigo, p.name as nombre, p.description as descripcion, 
+		ca.name as categoria, sc.name as subcategoria, date_format(dp.unavailable_at,'%d/%m/%Y %h:%i:%s %p') as fagotado, 
+		TIMESTAMP(dp.unavailable_at) as ts     
+		FROM product_details dp, products p, categories ca, subcategories sc 
+		WHERE dp.product_id = p.id and p.category_id = ca.id and p.subcategory_id = sc.id  and 
+		dp.product_id = $idp ORDER BY dp.unavailable_at DESC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -53,19 +54,15 @@
 		return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerAccionVisibilidad( $p, $clp, $ccol, $accion ){
-		// Devuelve las acciones de mostrar/ocultar productos.
-
-		$visible = "<div align='center'>
-			            <i id='im".$p['id']."' class='fa fa-eye".$clp." fa-2x ".$ccol."'></i>
-			        </div>
-			        <hr>
-			        <div align='center'>
-			            <a href='#!' class='bt-prod-act' data-idp='".$p[id]."' data-op='".$p[visible]."' 
-			            data-toggle='modal' data-target='#confirmar-accion'>".$accion."</a>
-			        </div>";
-
-		return $visible;
+	function obtenerListadoGeneralDetallesProductos( $dbh, $productos ){
+		// Devuelve un vector formado por la unión de todos los detalles de productos
+		$detalles = array();
+		foreach ( $productos as $p ) {
+			$reg_det 		= obtenerDetallesProductoPorId( $dbh, $p["id"] );
+			$detalles		= array_merge( $detalles, $reg_det );
+		}
+		
+		return $detalles;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerImagenDetalleProducto( $dbh, $idd ){
@@ -80,60 +77,52 @@
 		return $html_img;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerCodigoDisponibilidad( $dbh, $idd ){
+	function obtenerColoresDisponibilidadTallas( $tallas ){
 		// Devuelve la clase de color según nivel de disponibilidad de un detalle de producto
-		$tallas 		= obtenerTallasDetalleProducto( $dbh, $idd );
-		$cant_tallas 	= count( $tallas );
-		$disponibles 	= 0;
+		$html_ta 	= "";
 
 		foreach ( $tallas as $t ) {
-			if( $t["visible"] == 1 ) $disponibles++;
+			if( $t["visible"] == 1 )  $class = "dsp_total"; else $class = "dsp_agotado";
+
+			$html_ta .= "<div align='center'>
+							<a href='#!' class='badge $class'>".$t['talla']." ".$t['unidad']."</a>
+						</div>";
+				
 		}
 
-		if( $disponibles == $cant_tallas ) 	$class = "dsp_total";
-		if( $disponibles == 0 ) 			$class = "dsp_agotado";
-		if( ( $disponibles > 0 ) && ( $disponibles < $cant_tallas ) ) 
-											$class = "dsp_parcial";
-
-		return $class;
+		return $html_ta;
 	}
 
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
 	include( "bd.php" );
-	ini_set( 'display_errors', 1 );
-	$productos = obtenerListaProductos( $dbh );
+	$productos 			= obtenerListaProductos( $dbh );
+	$detalles_productos = obtenerListadoGeneralDetallesProductos( $dbh, $productos );
 
-	foreach ( $productos as $p ) {
-
-		$lnk_p = "product-data.php?p=$p[id]";
+	foreach ( $detalles_productos as $dp ) {
 		
-		$drdet = obtenerDetalleProductoPorId( $dbh, $p["id"] );
+		if( !$dp["fagotado"] ) $fagotado = "-"; else $fagotado = $dp["fagotado"];
+			
+		$tallas 		= obtenerTallasDetalleProducto( $dbh, $dp["d_id"] );
+		$lnk_dp 		= "product-data.php?p=$dp[p_id]#$dp[d_id]";
+		$html_det		= obtenerImagenDetalleProducto( $dbh, $dp["d_id"] );		
+		$html_det 		.= "<div align='center'>
+								<a href='".$lnk_dp."' target='_blank'>#".$dp["p_id"]."-".$dp["d_id"]."</a>
+							</div>";
 
-		if( $p["visible"] == 1 ) {
-			$clp = ""; $accion = "Ocultar"; $ccol = "pstat_";
-		}else{ 
-			$clp = "-slash"; $accion = "Mostrar"; $ccol = "pstat_o"; 
-		}
-		$visibilidad = obtenerAccionVisibilidad( $p, $clp, $ccol, $accion );
+		$html_ta		= obtenerColoresDisponibilidadTallas( $tallas );
 
-		$html_det = "";
-
-		foreach ( $drdet as $dp ) {
-			$cod_color 	= obtenerCodigoDisponibilidad( $dbh, $dp["id"] );
-			$lnk_dp 	= "product-data.php?p=$p[id]#$dp[id]";
-			$html_det	.= obtenerImagenDetalleProducto( $dbh, $dp["id"] );		
-			$html_det 	.= "<div align='center'><a href='".$lnk_dp."' class='badge $cod_color'>#".$dp['id']."</a></div>";
-		}
 		/*......................................................................*/
-		$reg_prod["id"]			= "<a class='primary' href='".$lnk_p."' target='_blank'>".$p["id"]."</a>";
-		$reg_prod["rdets"] 		= $html_det;
-		$reg_prod["codigo"] 	= $p["codigo"];
-		$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_p."'>".$p["nombre"]."</a>";
-		$reg_prod["desc"] 		= $p["descripcion"];
-		$reg_prod["categ"] 		= $p["categoria"];
-		$reg_prod["visible"]	= $visibilidad;
+		
+		$reg_prod["fagotado"] 	= $fagotado;
+		$reg_prod["codigo"] 	= $dp["codigo"];
+		$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_dp."'>".$dp["nombre"]."</a>";
+		$reg_prod["desc"] 		= $dp["descripcion"];
+		$reg_prod["categ"] 		= $dp["categoria"]." > ".$dp["subcategoria"];
+		$reg_prod["detalle"]	= $html_det;
+		$reg_prod["tallas"] 	= $html_ta;
+	
 		/*......................................................................*/
 		$data_productos["data"][] = $reg_prod;
 	}

@@ -1,4 +1,4 @@
-<table id="datatable" class="table table-striped table-bordered">
+<table id="datatable-client-notes" class="table table-striped table-bordered">
   <thead>
     <tr>
       <th>Fecha</th>

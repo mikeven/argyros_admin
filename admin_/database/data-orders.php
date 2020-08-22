@@ -128,6 +128,7 @@
 		if( $cant_disponible == 0 ){
 			$datap = obtenerDataProductoIdDetalle( $dbh, $id_detalle_orden );
 			actualizarDisponibilidadTallaProducto( $dbh, $datap["product_detail_id"], $datap["size_id"], 0 );
+			actualizarFechaNoDisponibilidad( $dbh, $datap["product_detail_id"] );
 			actualizarDisponibilidadProductoPorAjuste( $dbh, $datap["product_id"] );
 		}
 	}

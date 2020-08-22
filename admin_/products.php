@@ -208,14 +208,13 @@
                     "url":"database/data-table-products.php"
                 },
                 "columns":[
-                    {"data":"img"},
                     {"data":"id"},
+                    {"data":"rdets"},
                     {"data":"codigo"},
                     {"data":"nombre"},
                     {"data":"desc"},
                     {"data":"categ"},
-                    {"data":"visible"},
-                    {"data":"rdets"}
+                    {"data":"visible"}
                 ],
                 "processing": true,
                 "paging": true,
@@ -244,7 +243,7 @@
             });
             var table = $('#datatable-products').DataTable();
             // Ordenar por columna cero, dibujar
-            table.order( [ 1, 'desc' ] ).draw();
+            table.order( [ 0, 'desc' ] ).draw();
         });   
     </script>
 	

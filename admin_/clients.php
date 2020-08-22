@@ -187,6 +187,10 @@
     <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.12/sorting/datetime-moment.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
     <script src="js/fn-client.js"></script>

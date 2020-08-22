@@ -10,7 +10,6 @@
       <th>Fecha registro</th>
       <th>Último ingreso</th>
       <th>Estado</th>
-      <th>Editar</th>
       <th>Acción</th>
     </tr>
   </thead>
