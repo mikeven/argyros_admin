@@ -3,8 +3,33 @@
  * fn-sets.js
  *
  */
- /* --------------------------------------------------------- */
- function borrarDPJ( iddpj, idj ){
+/* --------------------------------------------------------- */
+
+function crearNuevoJuego(){
+    //Invocación al servidor para crear un nuevo juego de productos
+    var form_nj = $("#frm_njuego").serialize();
+
+    $.ajax({
+        type:"POST",
+        url:"database/data-sets.php",
+        data:{ nset: form_nj },
+        success: function( response ){
+            console.log( response );
+            res = jQuery.parseJSON(response);
+            console.log( res );
+            if( res.exito == 1 ){ 
+                notificar( "Nuevo Juego", res.mje, "success" );
+                actualizarPanelNuevoJuego( res.idpj );
+                //setTimeout( function() { window.location = "sets.php"; }, 2000 );
+            }
+            if( res.exito == -1 ){ 
+                notificar( "Nuevo Juego", res.mje, "error" );
+            }
+        }
+    });
+}
+/* --------------------------------------------------------- */
+function borrarDPJ( iddpj, idj ){
     //Invocación al servidor para desvincular un producto de un juego
     $.ajax({
         type:"POST",
@@ -44,6 +69,15 @@ function borrarJuego( idj ){
     });
 }
 /* --------------------------------------------------------- */
+function actualizarPanelNuevoJuego( idpj ){
+    // Actualiza el formulario de creación de juegos después de la creación exitosa de uno previo
+    
+    $(".fselj").fadeOut(600, function(){
+        $(".fselj").remove();
+        $("#id_prox_juego").val( idpj );
+    });
+}
+/* --------------------------------------------------------- */
 function obtenerElementoSeleccionJuego( id_e, img, iddet, id_img ){
     //Genera código hltm correspondiente a un elemento
 	
@@ -61,24 +95,33 @@ function obtenerElementoSeleccionJuego( id_e, img, iddet, id_img ){
 /* --------------------------------------------------------- */
 function chequearMinimoElementos(){
 	//Bloquea/desbloquea botón guardar nuevo juego si hay el mínimo de elementos necesarios
+
 	if( $('.fselj').length >= 2 ){
-		//alert("valido: " + $('.fselj').length );
 		$("#bot_ag_juego").prop("disabled", false );
 	}
 	else {
-		//alert("no valido: " + $('.fselj').length );
 		$("#bot_ag_juego").prop("disabled", true );	
 	}
+}
+/* --------------------------------------------------------- */
+function estaAgregado( iddet ){
+    // Devuelve verdadero si el detalle de producto está agregado en la selección actual de detalles para crear juego
+    var agregado = false;
+    if( $('#f' + iddet).length ) agregado = true;
+
+    return agregado;
 }
 /* --------------------------------------------------------- */
 function agregarSeleccionJuego( iddet, id_img ){
 	//Agrega un producto al bloque de creación de juegos
 	var img = $( "#" + id_img ).attr("src");
 	var id_e = "sel" + iddet;
-	var elemento = obtenerElementoSeleccionJuego( id_e, img, iddet, id_img );
-	$("#seleccion_juego").append( elemento );
-	$("#f" + iddet ).show("slow");
-	chequearMinimoElementos();
+    if( estaAgregado( iddet ) == false ){
+    	var elemento = obtenerElementoSeleccionJuego( id_e, img, iddet, id_img );
+    	$("#seleccion_juego").append( elemento );
+    	$("#f" + iddet ).show("slow");
+    	chequearMinimoElementos();
+    }
 }
 /* --------------------------------------------------------- */
 function iniciarBotonBorrarDPJ(){
@@ -135,11 +178,11 @@ $( document ).ready(function() {
 	  	});	
 	}
 	/* ---------------------------------------------------------------- */
-	//Acción para invocar el mostrar/ocultar un producto
-
+	//Acción para invocar la creación de nuevo juego
 	if ( $("#frm_njuego").length > 0 ){
-        $('#frm_njuego').parsley().on('form:success', function() {
-            //Validación del formulario sin acciones previstas, submit directo por POST sin ajax
+        $('#frm_njuego').parsley().on('form:success', function(e) {
+            e.validationResult = false;
+            crearNuevoJuego();
         });
     }
     

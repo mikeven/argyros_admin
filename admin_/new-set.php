@@ -117,13 +117,12 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="frm_njuego" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="database/data-sets.php?nset" method="post">
+                    <form id="frm_njuego" data-parsley-validate class="form-horizontal form-label-left" method="post">
                       
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">ID </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" name="numero" readonly="true" 
+                          <input id="id_prox_juego" type="text" class="form-control" name="numero" readonly="true" 
                           value="<?php echo $juego["numero"]; ?>" required="">
                         </div>
                       </div>

@@ -37,8 +37,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	function agregarJuego( $dbh ){
 		//Agrega un registro de juego de producto
-		$q = "insert into sets ( created_at ) values ( NOW() )";
-
+		$q = "insert into sets ( created_at, updated_at ) values ( NOW(), NOW() )";
+		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}	
@@ -89,17 +89,27 @@
 	/* ----------------------------------------------------------------------------------- */
 	ini_set( 'display_errors', 1 );
 	//Agregar nuevo juego de productos
-	if( isset( $_GET["nset"] ) ){
+	if( isset( $_POST["nset"] ) ){
 		include( "bd.php" );
 
-		$iddetalles = $_POST["iddp"];	//Conjunto de campos ocultos generados dinámicamente
+		parse_str( $_POST["nset"], $juego );
+		$iddetalles = $juego["iddp"];			//Conjunto de campos ocultos generados dinámicamente
 		$idj = agregarJuego( $dbh );
+		
 		foreach ( $iddetalles as $id ) {
-			echo agregarProductoJuego( $dbh, $idj, $id );
+			agregarProductoJuego( $dbh, $idj, $id );
 		}
+
 		if( ( $idj != 0 ) && ( $idj != "" ) ){
-			header( "Location: ../sets.php?agregar_juego-exito" );
+			$res["exito"] = 1;
+			$res["idpj"] = $idj + 1;
+			$res["mje"] = "Juego creado con éxito";
+		}else{
+			$res["exito"] = -1;
+			$res["mje"] = "Error al crear juego";
 		}
+
+		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	// Modificar juego de productos
