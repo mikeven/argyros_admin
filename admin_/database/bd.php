@@ -5,6 +5,8 @@
 	$usuariobd = "argyrosa_bd";
 	$passbd = "argyros@bd";
 	$basedatos = "argyrosa_20";
+
+	ini_set( "memory_limit", "128M" );
 	//require_once($_SERVER['DOCUMENT_ROOT'].'/lib/FirePHPCore/fb.php');
 	
 	$dbh = mysqli_connect ( $servidor, $usuariobd, $passbd ) 
@@ -34,6 +36,17 @@
 			}
 		}
 		return $lista_c;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function escaparCampos( $dbh, $registro ){
+		// Devuelve un arreglo con los valores escapados de sus  
+		// campos de tipo string
+		foreach ( $registro as $campo => $valor ) {
+			$registro[$campo] = $valor;
+			if( is_string( $valor ) )
+				$registro[$campo] = mysqli_real_escape_string( $dbh, $valor );
+		}
+		return $registro;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerFechaConFormato($lnk, $fecha, $formato){

@@ -40,7 +40,14 @@
       ?>
       <tr class="<?php echo $clase_item; ?>">
         
-        <td align="center"><img src="<?php echo $r["imagen"]; ?>" width="20"></td>
+        <td align="center">
+
+          <a href='#!' class="pop-img-p" data-toggle="modal" 
+            data-src="<?php echo $r["imagen"]; ?>" data-target="#img-product-pop">
+            <img src="<?php echo $r["imagen"]; ?>" width="30">
+          </a>
+          
+        </td>
 
         <td>
           <a target="_blank" href="<?php echo $lnk_p; ?>">

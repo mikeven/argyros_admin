@@ -69,7 +69,7 @@
                 <br />
                 <div>
                   <h1><img dt> Argyros Admin</h1>
-                  <p>©2018 Administrador de contenido web</p>
+                  <p>©2020 Administrador de contenido web</p>
                 </div>
                 <div id="response"></div>
               </div>

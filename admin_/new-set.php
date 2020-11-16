@@ -97,7 +97,7 @@
                     </ul>-->
                     <div class="clearfix"></div>
                   </div>
-                  <div id="tabla_datos-lineas" class="x_content">
+                  <div id="tabla_datos-juegos" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
                     <?php 
                       include( "sections/tables/table-sets-products.php" );

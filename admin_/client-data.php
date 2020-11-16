@@ -82,6 +82,12 @@
                 <h3>Cliente</h3>
               </div>
 
+              <div class="input-group" style="float:right;">
+                <a href="clients.php" class="btn btn-app">
+                  <i class="fa fa-arrow-left"></i> Volver a clientes
+                </a>
+              </div>
+
               <!--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">

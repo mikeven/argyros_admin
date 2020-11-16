@@ -78,7 +78,6 @@
     .lnkig{ margin-right: 5px; }
 
     .view-first p{ max-height: 45px; }
-
   </style>
 
   <?php
@@ -310,18 +309,13 @@
 
                           <div class="form-group"><!-- Fecha de reposición -->
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha de reposición</label>
-                            <div class="col-md-8 col-sm-8 col-xs-10">
-                              <div class="input-prepend input-group frepos-input">
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <div class="input-prepend input-group">
                                   <span class="add-on input-group-addon">
                                     <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                                   </span>
                                   <input type="text" name="rango_frepos" id="frepos" class="form-control" value=""/>
                               </div> 
-                            </div>
-                            <div class="col-md-1 col-sm-1 col-xs-1">
-                              <button id="rst_frepos" type="button" class="btn btn-xs" title="Borrar rango de fechas"> 
-                                <i class="fa fa-times"></i> 
-                              </button>
                             </div>
                           </div><!-- Fecha de reposición -->
 

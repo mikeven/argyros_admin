@@ -83,8 +83,9 @@ function obtenerElementoSeleccionJuego( id_e, img, iddet, id_img ){
 	
 	var id_f = "f" + iddet;
 	var html_i = "<tr id='" + id_f + "' class='fselj'>";
-    html_i += "<th width='33.3%'><img id='" + id_e + "' src='" + img + "' width='50px'></th>";
-	html_i += "<th width='33.3%'><span class=''>#" 
+    html_i += "<th width='33.3%'><a href='#!' class='pop-img-p' data-toggle='modal' data-src='" + img 
+                + "' data-target='#img-product-pop'><img id='" + id_e + "' src='" + img + "' width='50px'></a></th>";
+    html_i += "<th width='33.3%'><span class=''>#" 
 	+ iddet + "</span><input type='hidden' name='iddp[]' value='" + iddet + "'></th>";
 	html_i += "<th width='33.3%'><a href='#!' class='e_spj' data-fj='"
 				+ id_f + "'><i class='fa fa-times-circle'></i></a></th>";
@@ -148,14 +149,15 @@ function iniciarBotonAgregarSeleccionJuego(){
         agregarSeleccionJuego( iddet, id_img );
     });   
 }
+
 /* --------------------------------------------------------- */
 $( document ).ready(function() {	
     // ============================================================================ //
     
     /*Pop image list products*/
-    $("#datatable").on( "click", ".pop-img-p", function(){
-    	var img = $(this).attr("data-src");
-    	$("#img-preview").attr( "src", img );
+    $("#tabla_datos-juegos, #seleccion_juego").on( "click", ".pop-img-p", function(){
+        var img = $(this).attr("data-src");
+        $("#img-preview").attr( "src", img );
     });
 
     $(".pop-img-p").on( "click", function(){

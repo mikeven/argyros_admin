@@ -33,6 +33,17 @@
 		return $dv;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function crearImagenDesdeArchivo( $img ){
+		// Devuelve la creación de imagen a partir de la imagen original de acuerdo a su formato.
+		$formato = substr( $img, -3 );
+		if( $formato == "jpg" )
+			$imagen = imagecreatefromjpeg( $img );
+		if( $formato == "png" )
+			$imagen = imagecreatefrompng( $img );
+
+		return $imagen;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip ){
 		
 		ini_set( "memory_limit", "200M" );
@@ -119,9 +130,9 @@
 	
 		if( isset( $f["p_pep"] ) ){
 			foreach ( $r["tallas"] as $talla ) {
-				//if( $talla["visible"] == 1 ){
+				if( $talla["visible"] == 1 ){
 					$peso = $talla["peso"]."g"; break;
-				//}
+				}
 			}
 		}
 		
@@ -172,7 +183,6 @@
 	/* ----------------------------------------------------------------------------------- */
 	function actualizarProgreso( $n, $img ){
 		// Actualiza la variable de sesión que almacena el progreso de la generación de imágenes
-
 		session_start();
 		array_push ( $_SESSION["images"], $img );
 		session_write_close();
@@ -192,12 +202,12 @@
 	function escribirImagenes( $productos, $frm ){
 		// Obtiene los datos a mostrar e invoca la generación de las imágenes con los datos
 
-		$filename = date("Ymd-h.i"); 
-		$enl = "";
-		$archivo_zip = $filename.".zip";
-		$nregs = count( $productos );
-		$_SESSION["nimages"] = $nregs;
-		$_SESSION["images"] = array();
+		$filename 				= date("Ymd-h.i"); 
+		$enl 					= "";
+		$archivo_zip 			= $filename.".zip";
+		$nregs 					= count( $productos );
+		$_SESSION["nimages"] 	= $nregs;
+		$_SESSION["images"] 	= array();
 		session_write_close();
 		eliminarImagenesGeneradas( $archivo_zip );
 

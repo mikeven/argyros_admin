@@ -7,7 +7,7 @@
       <th>Nombre</th>
       <th>Descripción</th>
       <th>Categoría</th>
-      <th>Visibilidad</th>
+      <!--<th>Disponibilidad</th>-->
     </tr>
   </thead>
 </table>

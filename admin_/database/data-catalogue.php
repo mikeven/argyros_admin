@@ -329,11 +329,13 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerSubQueryFechas( $campo, $rango_fechas ){
 		// Devuelve el subquery para filtrar búsqueda en un rango de fechas
+		
 		list( $fi, $ff ) = explode( "-", $rango_fechas );
+
 		$f_ini = str_replace( " ", "", cambiaf_a_mysql( $fi ) );
 		$f_fin = str_replace( " ", "", cambiaf_a_mysql( $ff ) );
 		
-		$sq = " and $campo between '$f_ini' and '$f_fin'";
+		$sq = " and CAST($campo AS DATE) between '$f_ini' and '$f_fin'";
 		
 		return $sq;
 	}
@@ -354,6 +356,8 @@
 		$q_kw	= "";	//sub-query: palabras claves
 		$q_fr	= "";	//sub-query: fecha reposición
 
+		
+		
 		$idc 	= $form["categoria"];
 		$idsc 	= $form["subcategoria"];
 
@@ -390,9 +394,9 @@
 			$qdet 	= " $q_b $q_co $q_jta $q_ta";
 		}
 
-		$query 		= "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det $idt  
+		$query 	= "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det $idt  
 					from products p, $t_spd $t_mp $t_lp product_details dp 
-					where p.category_id = $idc $q_sc $q_pa $q_m $q_l $q_t $q_kw and dp.product_id = p.id $qdet ";
+					where p.category_id = $idc $q_sc $q_pa $q_m $q_l $q_t $q_kw $q_fr and dp.product_id = p.id $qdet";
 
 		return $query;
 	}

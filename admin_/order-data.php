@@ -163,7 +163,10 @@
                                         <hr>
                                         <div class="form-group">
                                             <label class="control-label">Cliente: </label> 
-                                            <?php echo $orden["nombre"]." ".$orden["apellido"]; ?>
+                                            <a href="client-data.php?id=<?php echo $orden[cid] ?>" target="_blank">
+                                                <?php echo "#".$orden["cid"]; ?>
+                                                <?php echo $orden["nombre"]." ".$orden["apellido"]; ?>
+                                            </a>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Grupo cliente: </label> 
@@ -235,6 +238,7 @@
                                   </div>
                                   <div class="x_content">
                                     <?php include( "sections/tables/table-order-details.php" );?> 
+                                    <?php include( "sections/modals/product-image.php" ); ?>
                                   </div>                                  
                                 
                                 </div>

@@ -69,10 +69,13 @@
 		$iconoe = obtenerIconoEstado( $p["estado"], "" );
         $dorden = obtenerDetalleOrden( $dbh, $p["id"] );
         $total_o = calcularTotalOrden( $p, $dorden ); 
+        $lnk_cliente = "client-data.php?id=$p[idu]";
+        $link_pedido = "<a href='order-data.php?order-id=$p[id]'>Pedido N° $p[id]</a>"." | ".
+        				"<a href='order-data.php?order-id=$p[id]' target='_blank'><i class='fa fa-external-link'></i></a>";
 
         $reg_pedido["id"] 			= $p["id"];
-		$reg_pedido["pedido"] 		= "<a href='order-data.php?order-id=$p[id]'>#Pedido $p[id]</a>";
-		$reg_pedido["cliente"] 		= $p["nombre"]." ".$p["apellido"];
+		$reg_pedido["pedido"] 		= $link_pedido;
+		$reg_pedido["cliente"] 		= "<a href='$lnk_cliente' target='_blank'>".$p["nombre"]." ".$p["apellido"]."</a>";
 		$reg_pedido["fecha"] 		= $p["fecha"];
 		$reg_pedido["status"] 		= $iconoe." ".$p["estado"];
 		$reg_pedido["total"] 		= "$".$total_o;

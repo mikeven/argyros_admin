@@ -1,33 +1,26 @@
 <?php
     /*
-     * Argyros Admin - Nuevo juego
+     * Argyros Admin - Productos no disponibles
      * 
      */
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
-    include( "database/data-sets.php" );
+    include( "fn/common-functions.php" );
     include( "database/data-products.php" );
-
     checkSession( '' );
-
-    if( isset( $_GET["ids"] ) ){
-      $idj = $_GET["ids"];
-      $productos = obtenerListaProductos( $dbh );
-      $juego = obtenerDetallesProductoPorJuego( $dbh, $idj );
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Editar juego :: Argyros Admin</title>
+    <title>Productos disponibilidad por talla :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -61,11 +54,17 @@
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
     <link href="css/custom-styles.css" rel="stylesheet">
-    <style>
-      .fselj{ display:none; }
+    <style type="text/css">
+        .dsp_total{ background-color: #28a745 }
+        .dsp_parcial{ background-color: #ffc107; }
+        .dsp_agotado{ background-color: #dc3545; }
     </style>
-  
-  </head>
+
+</head>
+
+  <?php
+    $productos = obtenerListaProductos( $dbh );
+  ?>
 
   <body class="nav-md">
     <div class="container body">
@@ -79,109 +78,36 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Edición de juego</h3>
+                <h3>Disponibilidad de productos por tallas</h3>
               </div>
-
-              <div class="input-group" style="float:right;">
-                <a href="sets.php" class="btn btn-app">
-                  <i class="fa fa-arrow-left"></i> Volver a juegos
-                </a>
-              </div>
-            
             </div>
 
             <div class="clearfix"></div>
 
             <div class="row">
-
-              <div class="col-md-8 col-sm-5 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Lista de productos</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>-->
+                    <div style="float: right;" class="hidden">
+                        <?php if( isset( $_GET["imagenes"] ) ) { ?>
+                            <a href="products.php">
+                                <i class="fa fa-file-image-o"></i> No mostrar imágenes
+                            </a>
+                        <?php } else { ?>
+                            <a href="products.php?imagenes">
+                                <i class="fa fa-file-image-o"></i> Mostrar imágenes
+                            </a>
+                        <?php } ?>
+                    </div>
                     <div class="clearfix"></div>
                   </div>
-                  <div id="tabla_datos-juegos" class="x_content">
+                  <div id="lista_general_productos" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php 
-                      include( "sections/tables/table-sets-products.php" );
-                    ?>
-                    <?php include( "sections/modals/confirm_action.php" ); ?>
-                    <input id="id-linea-e" type="hidden">
+                    <?php include( "sections/tables/table-data-unavailable-products.php" ); ?>
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Editar Juego</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>-->
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <form id="frm_mjuego" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="database/data-sets.php?mset" method="post">
-                      
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">ID </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" name="numero" readonly="true" 
-                          value="#<?php echo $idj; ?>" required="">
-                          <input type="hidden" name="idjuego" value="<?php echo $idj; ?>">
-                        </div>
-                      </div>
-                          
-                      <div id="" class="form-group">
-                        <table id="seleccion_juego" width="100%">
-                          <tbody>
-                            <?php 
-                              foreach ( $juego as $dp ) { 
-                                $imgs = obtenerImagenesDetalleProducto( $dbh, $dp["idd"], "" );
-                                $url_img = "";
-                                if( isset( $imgs[0] ) ){
-                                  $url_img = $imgs[0]["path"];
-                                }
-                            ?>
-                              <tr id="f<?php echo $dp["idd"]?>" class="fselj" 
-                                style="display: table-row;">
-                                <th width="33.3%">
-                                  <a href='#!' class='pop-img-p' data-toggle='modal' 
-                                  data-src='<?php echo $url_img;?>' data-target='#img-product-pop'>
-                                    <img id="sel<?php echo $dp["idd"]?>" src="<?php echo $url_img;?>" width="50px">
-                                  </a>
-                                </th>
-                                <th width="33.3%">
-                                  <span class="">#<?php echo $dp["idd"]?></span>
-                                  <input type="hidden" name="iddp[]" value="<?php echo $dp["idd"]?>">
-                                </th>
-                                <th width="33.3%">
-                                  <a href="#!" class="e_spj" data-fj="f<?php echo $dp["idd"]?>">
-                                    <i class="fa fa-times-circle"></i>
-                                  </a>
-                                </th>
-                              </tr>                               
-                            <?php } ?>
-                          </tbody>
-                        </table>                          
-                      </div>
-                      
-                      <div class="ln_solid"></div>
-
-                      <div class="form-group">
-                        <div align="center">
-                          <button id="bot_ag_juego" type="submit" class="btn btn-success">Guardar</button>
-                        </div>
-                      </div>
-
-                    </form>  
-                  </div>
-                </div>
-              </div>
-              
             </div>
           </div>
         </div>
@@ -248,35 +174,45 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.19/filtering/type-based/accent-neutralise.js"></script>
 
     <!-- PNotify -->
     <script src="vendors/pnotify/dist/pnotify.js"></script>
     <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
-    <!-- Parsley -->
-    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
-    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
-
     <!-- Custom Theme Scripts -->
+    <script src="js/fn-product.js"></script>
     <script src="js/custom.js"></script>
-    <script src="js/fn-sets.js"></script>
+    
     <script src="js/fn-ui.js"></script>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+
     <script>
+        //$.fn.dataTable.moment('YYYY/MM/DD HH:mm');
+        $.fn.dataTable.moment('DD/MM/YYYY hh:mm:ss A');
+
         $(document).ready(function() {
-            $('#datatable-sets-products').dataTable({
+            $('#dt-unavailable-products').dataTable({
                 
                 "ajax": { 
                     "method":"POST",
-                    "url":"database/datatable-products-sets.php"
+                    "url":"database/data-table-unav-products.php"
                 },
                 "columns":[
-                    {"data":"categoria"},
-                    {"data":"subcategoria"},
-                    {"data":"producto"},
-                    {"data":"detalles"}
+                    {"data":"fagotado"},
+                    {"data":"codigo"},
+                    {"data":"nombre"},
+                    {"data":"desc"},
+                    {"data":"categ"},
+                    {"data":"detalle"},
+                    {"data":"tallas"}
                 ],
+                "columnDefs" : [
+                                { "targets":[1,3,4,5,6], "orderable": false }],
                 "processing": true,
                 "paging": true,
                 "iDisplayLength": 10,
@@ -302,11 +238,11 @@
                     }
                 }
             });
+            var table = $('#dt-unavailable-products').DataTable();
+            // Ordenar por columna cero, dibujar
+            table.order( [ 0, 'desc' ] ).draw();
         });   
     </script>
-    <?php
-      include( "fn/fn-sets.php" );
-    ?>
 	
   </body>
 </html>

@@ -58,6 +58,8 @@
         .dsp_total{ background-color: #28a745 }
         .dsp_parcial{ background-color: #ffc107; }
         .dsp_agotado{ background-color: #dc3545; }
+        .f_repos_actv{ background-color: #17a2b8; }
+
     </style>
 
 </head>
@@ -214,7 +216,7 @@
                     {"data":"nombre"},
                     {"data":"desc"},
                     {"data":"categ"},
-                    {"data":"visible"}
+                    /*{"data":"visible"}*/
                 ],
                 "processing": true,
                 "paging": true,

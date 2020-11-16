@@ -1,13 +1,13 @@
 <table id="dt-unavailable-products" class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th>Agotado</th>
-      <th>Código</th>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Categoría</th>
-      <th>Detalle</th>
-      <th>Tallas</th>
+      <th width="8%">Agotado</th>
+      <th width="20%">Código</th>
+      <th width="15%">Nombre</th>
+      <th width="16%">Descripción</th>
+      <th width="14%">Categoría</th>
+      <th width="15%">Detalle</th>
+      <th width="12%">Tallas</th>
     </tr>
   </thead>
 </table>

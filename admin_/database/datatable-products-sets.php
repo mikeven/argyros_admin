@@ -20,7 +20,7 @@
 	function obtenerDetalleProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
 		$q = "select dp.id as id, c.name as color, t.name as bano, dp.price_type as tipo_precio, 
-		dp.weight as peso, dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
+		dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
 		dp.weight_price_value as precio_peso FROM product_details dp
 		LEFT JOIN treatments t ON t.id = dp.treatment_id LEFT JOIN colors c ON dp.color_id = c.id 
 		WHERE dp.product_id = $idp ORDER BY dp.id DESC";
@@ -52,7 +52,10 @@
                   					<a href='".$lnk_dp."' target='_blank'>#".$p["id"]."-".$dp["id"]."</a>
                   				</th>
                   				<th width='33.3%'>
-                    				<img id='img".$dp["id"]."' src='".$url_img."' width='60px'>
+                  					<a href='#!' class='pop-img-p' data-toggle='modal' 
+										data-src='".$url_img."' data-target='#img-product-pop'>
+                    					<img id='img".$dp["id"]."' src='".$url_img."' width='60px'>
+                    				</a>
                   				</th>
                   				<th width='33.3%'>
                     				<a href='#!' class='sel-pj' data-idd='".$dp["id"]."'>

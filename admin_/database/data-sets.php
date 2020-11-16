@@ -115,14 +115,15 @@
 	// Modificar juego de productos
 	if( isset( $_GET["mset"] ) ){
 		include( "bd.php" );
-		$idj = $_POST["idjuego"];
+		$idj 		= $_POST["idjuego"];
 		$iddetalles = $_POST["iddp"]; //Conjunto de campos ocultos generados dinámicamente
+
 		eliminarProductosJuego( $dbh, $idj );
 		foreach ( $iddetalles as $id ) {
-			echo agregarProductoJuego( $dbh, $idj, $id );
+			agregarProductoJuego( $dbh, $idj, $id );
 		}
 		if( ( $idj != 0 ) && ( $idj != "" ) ){
-			header( "Location: ../sets.php?editar_juego-exito" );
+			header( "Location: ../set-edit.php?ids=$idj&editar_juego-exito" );
 		}
 	}
 	/* ----------------------------------------------------------------------------------- */

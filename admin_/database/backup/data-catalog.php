@@ -4,8 +4,6 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
-	ini_set( "memory_limit", "128M" );
-
 	function mostrarProductosConsulta( $productos ){
 		// Devuelve la estructura HTML del resultado de la consulta de productos
 
@@ -31,7 +29,7 @@
 				
 				$resultado .= $bloque_img;
 			}
-		} else $resultado = "No hay resultados";
+		} else $resultado = "Error al obtener resultados";
 
 		return $resultado;
 	}
@@ -156,7 +154,7 @@
 		return $productos;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	/*function filtrarProductosOcultos( $registros ){
+	function filtrarProductosOcultos( $registros ){
 		// Devuelve los productos que estén ocultos o tengan tallas no disponibles.
 		$productos = array();
 		$id_reg_ag = array();
@@ -180,16 +178,13 @@
 					}
 				}
 			}
-			if( $reg["disponibles"] == false )
-				$productos[] = $reg;
-
 		}
 
 
 		return $productos;
-	}*/
+	}
 	/* ----------------------------------------------------------------------------------- */
-	/*function filtrarProductosVisibles( $registros ){
+	function filtrarProductosVisibles( $registros ){
 		// Devuelve los productos visibles
 		$productos = array();
 		$id_reg_ag = array();
@@ -205,17 +200,6 @@
 		}
 
 		return filtrarNivelTalla( $productos, 1 );
-	}*/
-	function filtrarProductosDisponibilidad( $registros, $disp ){
-		// Devuelve los productos filtrados por disponibilidad.
-		$productos_filtrados = array();
-		
-		foreach ( $registros as $reg ) {
-			if( $reg["disponible"] == $disp )
-				$productos_filtrados[] = $reg;
-		}
-
-		return $productos_filtrados;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function filtrarProductosConsulta( $form, $registros ){
@@ -236,9 +220,9 @@
 		}
 
 		if( isset( $form["p_ocultos"] ) )
-			$resultados = filtrarProductosDisponibilidad( $resultados, false );		
+			$resultados = filtrarProductosOcultos( $resultados );		
 		else
-			$resultados = filtrarProductosDisponibilidad( $resultados, true );	
+			$resultados = filtrarProductosVisibles( $resultados );
 
 		return $resultados;
 	}
@@ -283,8 +267,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerSubQueryValorUnico( $campo, $valor ){
-		// Devuelve el subquery para filtrar búsqueda a través de un valor de campo
-
+		// 
 		if( count( $valor ) > 0 ){
 			$q = "and ".$campo." = ".$valor;
 		} 
@@ -293,56 +276,20 @@
 		return $q;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerSubQueryMultiplesCampoValor( $dbh, $string_claves ){
-		// Devuelve el subquery para filtrar búsqueda a través de palabras en 3 campos
-
-		$palabras = explode( ",", $string_claves );
-
-		/* coincidencias por campo: nombre */
-		$sq = "and (";
-		foreach ( $palabras as $p ) {
-			$p = mysqli_real_escape_string( $dbh, $p );
-			$sq .= "p.name like '%$p%' or ";
-		}
-		$sq = substr( $sq, 0, -4 );
-
-		/* coincidencias por campo: descripción */
-		$sq .= " or ";
-		foreach ( $palabras as $p ) {
-			$p = mysqli_real_escape_string( $dbh, $p );
-			$sq .= "p.description like '%$p%' or ";
-		}
-		$sq = substr( $sq, 0, -4 );
-
-		/* coincidencias por campo: código */
-		$sq .= " or ";
-		foreach ( $palabras as $p ) {
-			$p = mysqli_real_escape_string( $dbh, $p );
-			$sq .= "p.code like '%$p%' or ";
-		}
-		$sq = substr( $sq, 0, -4 );
-
-		$sq = $sq." )";
-
-		return $sq;
+	function obtenerSubqueryProductosOcultos( $frm ){
+		// Devuelve la subcadena de query para indicar si se obtienen solo productos ocultos
+		$q_po = "and p.visible = 1";
+		
+		if( isset( $frm["p_ocultos"] ) )
+			$q_po = "and p.visible = 0";
+			
+		return $q_po;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerSubQueryFechas( $campo, $rango_fechas ){
-		// Devuelve el subquery para filtrar búsqueda en un rango de fechas
-		list( $fi, $ff ) = explode( "-", $rango_fechas );
-		$f_ini = str_replace( " ", "", cambiaf_a_mysql( $fi ) );
-		$f_fin = str_replace( " ", "", cambiaf_a_mysql( $ff ) );
-		
-		$sq = " and $campo between '$f_ini' and '$f_fin'";
-		
-		return $sq;
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function obtenerQueryConsulta( $dbh, $form ){
+	function obtenerQueryConsulta( $form ){
 		// Devuelve la consulta a bd de manera dinámica según los datos del formulario
 
 		ini_set( 'display_errors', 1 );
-
 		$t_spd 	= ""; 	//Tabla: size_product_detail	(talla-detalle producto)
 		$t_mp 	= "";	//Tabla: making_product			(trabajo-producto) 
 		$t_lp 	= "";	//Tabla: line_product			(línea-producto) 
@@ -350,56 +297,50 @@
 		$q_jta 	= "";	//sub-query: unión talla - detalle_producto 
 		$qdet 	= "";	//sub-query: condiciones para detalle de producto 
 		$q_sc 	= "";	//sub-query: subcategoría
-		$q_pa	= "";	//sub-query: país de origen
-		$q_kw	= "";	//sub-query: palabras claves
-		$q_fr	= "";	//sub-query: fecha reposición
+		$q_pa	= "";	//sub-query: país
 
-		$idc 	= $form["categoria"];
-		$idsc 	= $form["subcategoria"];
+		$idc = $form["categoria"];
+		$idsc = $form["subcategoria"];
 
-		$q_l 	= obtenerSubQueryParam( "lp.product_id = p.id", "lp.line_id", $form["linea"] );
-		$q_t 	= obtenerSubQueryParam( "tp.product_id = p.id", "tp.making_id", $form["trabajo"] );
+		//$q_po = obtenerSubqueryProductosOcultos( $form );
 
-		$q_m 	= obtenerSubQueryValorUnico( "p.material_id", $form["material"] );
+		$q_l = obtenerSubQueryParam( "lp.product_id = p.id", "lp.line_id", $form["linea"] );
+		$q_t = obtenerSubQueryParam( "tp.product_id = p.id", "tp.making_id", $form["trabajo"] );
+
+		$q_m = obtenerSubQueryValorUnico( "p.material_id", $form["material"] );
 		if( $form["subcategoria"] != "todos" )
 			$q_sc = obtenerSubQueryValorUnico( "p.subcategory_id", $form["subcategoria"] );
-
-		if( $form["pais"] != "" )
-			$q_pa = obtenerSubQueryValorUnico( "p.country_id", $form["pais"] );
-
-		if( $form["claves"] != "" )
-			$q_kw = obtenerSubQueryMultiplesCampoValor( $dbh, $form["claves"] );
-
-		if( $form["rango_frepos"] != "" )
-			$q_fr = obtenerSubQueryFechas( "repositioned_at", $form["rango_frepos"] );
 		
-		$q_b 	= obtenerSubQueryValor( "dp.treatment_id", $form["bano"] );
-		$q_co 	= obtenerSubQueryValor( "dp.color_id", $form["color"] );
-		$q_ta 	= obtenerSubQueryValor( "spd.size_id", $form["tallas"] );
+		$q_b = obtenerSubQueryValor( "dp.treatment_id", $form["bano"] );
+		$q_co = obtenerSubQueryValor( "dp.color_id", $form["color"] );
+		$q_ta = obtenerSubQueryValor( "spd.size_id", $form["tallas"] );
 
 		if( $q_ta != "" ){
-			$idt 	= ", spd.size_id as idt";
-			$t_spd 	= "size_product_detail spd,";
-			$q_jta 	= "and spd.product_detail_id = dp.id";
+			$idt = ", spd.size_id as idt";
+			$t_spd = "size_product_detail spd,";
+			$q_jta = "and spd.product_detail_id = dp.id";
 		}
 
 		if( $q_l != "" ) $t_lp = "line_product lp, ";
 		if( $q_t != "" ) $t_mp = "making_product tp, ";
 
 		if( $q_b != "" || $q_co != "" || $q_ta != "" ){ 
-			$qdet 	= " $q_b $q_co $q_jta $q_ta";
+			$qdet = " $q_b $q_co $q_jta $q_ta";
 		}
 
-		$query 		= "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det $idt  
+		$query = "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det $idt  
 					from products p, $t_spd $t_mp $t_lp product_details dp 
-					where p.category_id = $idc $q_sc $q_pa $q_m $q_l $q_t $q_kw and dp.product_id = p.id $qdet ";
+					where p.category_id = $idc $q_sc $q_m $q_l $q_t 
+					and dp.product_id = p.id $qdet";
+
+		//echo $query;
 
 		return $query;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerQueryIdentificador( $form ){
 		// Devuelve la consulta a bd en función de idproducto-iddetalle
-		$ids = array_pad( explode( '-', $form["identificador"], 2 ), 2, null );
+		$ids = array_pad(explode('-', $form["identificador"], 2 ), 2, null);;
 		
 		list( $idp, $iddet ) = $ids;
 		if( $idp != "" && $iddet != "" ){
@@ -410,36 +351,6 @@
 		else $query = -1;
 
 		return $query;
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function obtenerRegistrosPorIds( $dbh, $ids ){
-		// Devuelve la consulta a bd en función de idproducto-iddetalle
-
-		$lista = array();
-		$ids = array_pad( explode( '-', $ids, 2 ), 2, null );
-		list( $idp, $iddet ) = $ids;
-		
-		if( $idp != "" && $iddet != "" ){
-			$query = "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det 
-						from products p, product_details dp where p.id = $idp and dp.id = $iddet";
-
-			$data = mysqli_query( $dbh, $query );
-			$lista = obtenerListaRegistros( $data );
-		}
-
-		return $lista;
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function obtenerRegistrosPorIdentificador( $dbh, $form ){
-		// Devuelve los registros base de productos por identificador
-		$dupla_ids 		= explode( ",", $form["identificador"] );	// #xxxx-0000, #xxxx-0000, ...,#xxxx-0000
-		$registros 		= array();
-		
-		foreach ( $dupla_ids as $dupla ) {
-			$registros = array_merge( $registros, obtenerRegistrosPorIds( $dbh, $dupla ) );
-		}
-
-		return $registros;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function ajustarValores( $datos ){
@@ -545,24 +456,18 @@
 			$producto["data"] 		= $reg;
 			
 			$producto["detalle"]	= obtenerRegistroDetalleProductoPorId( $dbh, $reg["id_det"] );
-										// data-products.php
-			
 			$producto["detalle"]	= actualizarPrecioUnitario( $dbh, $producto["detalle"], $varg );
-										// data-products.php
-			
+									// data-products.php
 			$producto["tallas"]		= obtenerTallasDetalleProducto( $dbh, $reg["id_det"] );
-										// data-products.php
+									// data-products.php
 
-			$producto["tallas"]		= obtenerPreciosEnTallas( $dbh, $producto["detalle"], $producto["tallas"], $varg );
-										//data-catalog.php
-			
+			$producto["tallas"]		= obtenerPreciosEnTallas( $dbh, $producto["detalle"], 
+														      $producto["tallas"], $varg );
+									//data-catalog.php
 			$producto["imagenes"]	= obtenerImagenesDetalleProducto( $dbh, $reg["id_det"], "" );
-										// data-products.php
+									// data-products.php
 
-			$producto["disponible"]	= tieneTallasDisponiblesDetalleProducto( $dbh, $producto["tallas"] );
-										// data-products.php
-
-			$lproductos[] 			= $producto;			
+			$lproductos[] = $producto;			
 		}
 
 		return $lproductos; 
@@ -592,17 +497,17 @@
 		$datos = ajustarValores( $form );
 		$varg = obtenerVARG( $dbh, $form );
 		
-		if( isset ( $form["ch_busq_id"] ) ){
-			
-			$registros_base = obtenerRegistrosPorIdentificador( $dbh, $datos );
-		}else{
-
-			$query_base 	= obtenerQueryConsulta( $dbh, $datos );	
-			$registros_base = obtenerRegistroQuery( $dbh, $query_base );
-		}
+		if( isset ( $form["ch_busq_id"] ) )
+			$query_base = obtenerQueryIdentificador( $datos );
+		else
+			$query_base = obtenerQueryConsulta( $datos );
 		
-		$lproductos = obtenerListadoProductosConsulta( $dbh, $registros_base, $form, $varg );
-		$lproductos = filtrarProductosConsulta( $form, $lproductos );
+		if( $query_base != -1 ){
+			$registros_base = obtenerRegistroQuery( $dbh, $query_base );
+			$lproductos = obtenerListadoProductosConsulta( $dbh, $registros_base, $form, $varg );
+			$lproductos = filtrarProductosConsulta( $form, $lproductos );
+		} else 
+			$lproductos = NULL;
 
 		return $lproductos; 
 	}

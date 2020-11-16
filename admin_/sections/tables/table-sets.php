@@ -29,7 +29,10 @@
               }
           ?>
                 <td class="img-j">
-                  <img id="img<?php echo $dp["idd"];?>" src="<?php echo $url_img;?>" width="60px">
+                  <a href='#!' class='pop-img-p' data-toggle='modal' 
+                  data-src='<?php echo $url_img;?>' data-target='#img-product-pop'>
+                    <img id="img<?php echo $dp["idd"];?>" src="<?php echo $url_img;?>" width="60px">
+                  </a>
                   <a href="#!" class="elim_djp" data-iddpj="<?php echo $dp["idd"];?>" 
                     data-idj="<?php echo $j["id"]; ?>" data-toggle="modal" 
                     data-target="#confirmar-accion" title="Quitar del juego">

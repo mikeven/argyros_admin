@@ -192,6 +192,11 @@ $( document ).ready( function() {
 
 	$("#cnf_pedido").hide();
 
+	$(".pop-img-p").on( "click", function(){
+    	var img = $(this).attr("data-src");
+    	$("#img-preview").attr( "src", img );
+    });
+
     /*.......................................................*/
 
     //Clic: Acción dada por los íconos de revisión de pedido

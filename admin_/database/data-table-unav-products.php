@@ -31,7 +31,7 @@
 		//Devuelve los registros detalles asociados a un producto dado su id
 		$q = "select p.id as p_id, dp.id as d_id, p.code as codigo, p.name as nombre, p.description as descripcion, 
 		ca.name as categoria, sc.name as subcategoria, date_format(dp.unavailable_at,'%d/%m/%Y %h:%i:%s %p') as fagotado, 
-		TIMESTAMP(dp.unavailable_at) as ts     
+		date_format(dp.created_at,'%d/%m/%Y %h:%i:%s %p') as fcreado     
 		FROM product_details dp, products p, categories ca, subcategories sc 
 		WHERE dp.product_id = p.id and p.category_id = ca.id and p.subcategory_id = sc.id  and 
 		dp.product_id = $idp ORDER BY dp.unavailable_at DESC";
@@ -86,6 +86,7 @@
 
 			$html_ta .= "<div align='center'>
 							<a href='#!' class='badge $class'>".$t['talla']." ".$t['unidad']."</a>
+							<span>".$t['peso']."</span>
 						</div>";
 				
 		}
@@ -102,29 +103,30 @@
 
 	foreach ( $detalles_productos as $dp ) {
 		
-		if( !$dp["fagotado"] ) $fagotado = "-"; else $fagotado = $dp["fagotado"];
+		if( !$dp["fagotado"] ) $fagotado = $dp["fcreado"]; else $fagotado = $dp["fagotado"];
+		/*if( $fagotado != "-" ){*/
+			$tallas 		= obtenerTallasDetalleProducto( $dbh, $dp["d_id"] );
+			$lnk_dp 		= "product-data.php?p=$dp[p_id]#$dp[d_id]";
+			$html_det		= obtenerImagenDetalleProducto( $dbh, $dp["d_id"] );		
+			$html_det 		.= "<div align='center'>
+									<a href='".$lnk_dp."' target='_blank'>#".$dp["p_id"]."-".$dp["d_id"]."</a>
+								</div>";
+
+			$html_ta		= obtenerColoresDisponibilidadTallas( $tallas );
+
+			/*......................................................................*/
 			
-		$tallas 		= obtenerTallasDetalleProducto( $dbh, $dp["d_id"] );
-		$lnk_dp 		= "product-data.php?p=$dp[p_id]#$dp[d_id]";
-		$html_det		= obtenerImagenDetalleProducto( $dbh, $dp["d_id"] );		
-		$html_det 		.= "<div align='center'>
-								<a href='".$lnk_dp."' target='_blank'>#".$dp["p_id"]."-".$dp["d_id"]."</a>
-							</div>";
-
-		$html_ta		= obtenerColoresDisponibilidadTallas( $tallas );
-
-		/*......................................................................*/
+			$reg_prod["fagotado"] 	= $fagotado;
+			$reg_prod["codigo"] 	= $dp["codigo"];
+			$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_dp."'>".$dp["nombre"]."</a>";
+			$reg_prod["desc"] 		= $dp["descripcion"];
+			$reg_prod["categ"] 		= $dp["categoria"]." > ".$dp["subcategoria"];
+			$reg_prod["detalle"]	= $html_det;
+			$reg_prod["tallas"] 	= $html_ta;
 		
-		$reg_prod["fagotado"] 	= $fagotado;
-		$reg_prod["codigo"] 	= $dp["codigo"];
-		$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_dp."'>".$dp["nombre"]."</a>";
-		$reg_prod["desc"] 		= $dp["descripcion"];
-		$reg_prod["categ"] 		= $dp["categoria"]." > ".$dp["subcategoria"];
-		$reg_prod["detalle"]	= $html_det;
-		$reg_prod["tallas"] 	= $html_ta;
-	
-		/*......................................................................*/
-		$data_productos["data"][] = $reg_prod;
+			/*......................................................................*/
+			$data_productos["data"][] = $reg_prod;
+		/*}*/
 	}
 
 	echo json_encode( $data_productos );

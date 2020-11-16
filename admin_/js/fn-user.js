@@ -15,7 +15,7 @@ function log_in(){
         url:"database/data-user.php",
         data:form.serialize(),
         success: function( response ){
-			
+			console.log(response);
 			res = jQuery.parseJSON(response);
 			if( res.exito == 1 ){
 				window.location = "home.php";

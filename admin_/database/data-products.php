@@ -4,6 +4,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
+	ini_set( "memory_limit", "128M" );
+	
 	function obtenerListaProductos( $dbh ){
 		//Devuelve la lista de productos en general
 		$q = "select p.id, p.code as codigo, p.name as nombre, p.description as descripcion, 
@@ -97,17 +99,10 @@
 	function obtenerDetalleProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
 		$q = "select dp.id as id, c.name as color, t.name as bano, dp.price_type as tipo_precio, 
-		dp.weight as peso, dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
-		dp.weight_price_value as precio_peso FROM product_details dp
-		LEFT JOIN treatments t ON t.id = dp.treatment_id LEFT JOIN colors c ON dp.color_id = c.id 
-		WHERE dp.product_id = $idp ORDER BY dp.id DESC";
-
-		/*SELECT dp.id AS id, c.name AS color, t.name AS bano, dp.price_type AS tipo_precio, 
-		dp.weight AS peso, dp.piece_price_value AS precio_pieza, 
-		dp.manufacture_value AS precio_mo, dp.weight_price_value AS precio_peso 
-		FROM product_details dp, treatments t, colors c 
-		WHERE dp.color_id = c.id AND dp.treatment_id = t.id AND dp.product_id = 2
-		ORDER BY dp.id DESC*/
+		dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
+		date_format(dp.repositioned_at,'%d/%m/%Y') as freposicion, dp.weight_price_value as precio_peso 
+		FROM product_details dp LEFT JOIN treatments t ON t.id = dp.treatment_id 
+		LEFT JOIN colors c ON dp.color_id = c.id WHERE dp.product_id = $idp ORDER BY dp.id DESC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -117,7 +112,7 @@
 	function obtenerRegistroDetalleProductoPorId( $dbh, $idd ){
 		//Devuelve un registro de detalle de producto dado id de detalle
 		$q = "select dp.id as id, dp.product_id as idp, c.id as color, t.id as bano, 
-		dp.price_type as tipo_precio, dp.weight as peso, dp.piece_price_value as precio_pieza, 
+		dp.price_type as tipo_precio, dp.piece_price_value as precio_pieza, 
 		dp.manufacture_value as precio_mo, dp.product_id as pid, dp.weight_price_value as precio_peso 
 		FROM product_details dp LEFT JOIN treatments t ON t.id = dp.treatment_id 
 		LEFT JOIN colors c ON dp.color_id = c.id where dp.id = $idd";
@@ -175,6 +170,14 @@
 		return mysqli_fetch_array( $data );
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerFechaReposicionDetalle( $dbh, $idd ){
+		//Devuelve los registros detalles asociados a un producto dado su id
+		$q = "select date_format(repositioned_at,'%d/%m/%Y') as freposicion FROM product_details WHERE id = $idd";
+		
+		$data = mysqli_fetch_array( mysqli_query( $dbh, $q ) );
+		return $data["freposicion"];
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerTallasDetalleProducto( $dbh, $idd ){
 		//Devuelve los registros de tallas de detalle de producto
 		$q = "select spd.size_id as idtalla, convert(s.name, decimal(4,2)) as vsize, 
@@ -226,9 +229,9 @@
 	function agregarDetalleProducto( $dbh, $detalle ){
 		//Guarda el registro de detalle de un producto
 		$q = "insert into product_details ( product_id, color_id, treatment_id, price_type, 
-		piece_price_value, manufacture_value, weight_price_value, created_at ) 
+		piece_price_value, manufacture_value, weight_price_value, created_at, repositioned_at ) 
 		values ( $detalle[idproducto], $detalle[color], $detalle[bano], '$detalle[tprecio]', 
-		$detalle[valor_pieza], $detalle[valor_mano_obra], $detalle[valor_gramo], NOW())";
+		$detalle[valor_pieza], $detalle[valor_mano_obra], $detalle[valor_gramo], NOW(), NOW())";
 		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
@@ -518,6 +521,16 @@
 		return $disponible;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function tieneTallasDisponiblesDetalleProducto( $dbh, $tallas_det ){
+		//Devuelve verdadero si hay registros de tallas disponibles en un detalle de un producto
+		$disponible = false;
+
+		foreach ( $tallas_det as $t ) {
+			if( $t["visible"] == 1 ) $disponible = true;
+		}
+		return $disponible;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function actualizarDisponibilidadProductoPorAjuste( $dbh, $idp ){
 		//Chequea si todas las tallas de un producto están disponibles, marca como no diponible
 		//si no hay alguna talla disponible.
@@ -544,6 +557,13 @@
 		
 		$data = mysqli_query( $dbh, $q );
 		return $data;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function actualizarFechaReposicion( $dbh, $iddetprod ){
+		// Actualiza la fecha de reposición de un detalle de producto
+		$q = "update product_details set repositioned_at = NOW() where id = $iddetprod";
+		
+		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function actualizarBañoDetalleProducto( $dbh, $idd, $valor ){
@@ -613,6 +633,8 @@
 		include( "bd.php" );	
 		parse_str( $_POST["form_np"], $producto );
 
+		$producto = escaparCampos( $dbh, $producto );
+
 		$idp = agregarProducto( $dbh, $producto );
 		$producto["idproducto"] = $idp;
 		
@@ -635,6 +657,8 @@
 	if( isset( $_POST["form_mp"] ) ){
 		include( "bd.php" );	
 		parse_str( $_POST["form_mp"], $producto );
+
+		$producto = escaparCampos( $dbh, $producto );
 
 		$r = editarProducto( $dbh, $producto );
 		$cambio_mat = ajusteRegistroBanos( $dbh, $producto );
@@ -832,6 +856,26 @@
 		array_unshift( $tallas, $talla0 );
 		
 		echo json_encode( $tallas );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_POST["freposicion"] ) ){
+		//Solicita las tallas de una categoría: reporte de imágenes de catálogo
+		
+		include( "bd.php" );
+
+		$iddet 		= $_POST["freposicion"];				// Id detalle de producto
+		$idr 		= actualizarFechaReposicion( $dbh, $iddet );
+		
+		if ( ( $idr != 0 ) && ( $idr != "" ) ){
+			$res["exito"] 	= 1;
+			$res["mje"] 	= "Producto actualizado";
+			$res["fecha"] 	= obtenerFechaReposicionDetalle( $dbh, $iddet );
+		} else {
+			$res["exito"] 	= 0;
+			$res["mje"] 	= "Error al actualizar producto";
+		}
+
+		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
 ?>

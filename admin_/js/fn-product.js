@@ -261,8 +261,7 @@ function agregarImagenesDetalleProducto(){
 }
 /* --------------------------------------------------------- */
 function actualizarDisponibilidadProducto( nivel, idp, iddp, iddettalla, estado ){
-	// Envía al servidor la invocación para actualizar disponibilidad de una talla de detalle de producto
-	 
+	//Envía al servidor la petición para actualizar la disponibilidad de una talla de producto 
 	var tit_notif = "Actualización de producto";
 	
 	$.ajax({
@@ -280,6 +279,28 @@ function actualizarDisponibilidadProducto( nivel, idp, iddp, iddettalla, estado 
 				notificar( tit_notif, res.mje, "error" );
 
 			setTimeout(function() { location.reload(); }, 3000 );
+        }
+    });
+}
+/* --------------------------------------------------------- */
+function actualizarFechaReposicionDetalle( iddet, btn ){
+	//Envía al servidor la petición para actualizar fecha de reposición de detalle de producto
+	var tit_notif = "Fecha de reposición";
+	
+	$.ajax({
+        type:"POST",
+        url:"database/data-products.php",
+        data:{ freposicion: iddet },
+        success: function( response ){
+			console.log(response);
+			res = jQuery.parseJSON(response);
+			if( res.exito == 1 ){ 
+				notificar( tit_notif, res.mje, "success" );
+				$("#data-freposicion").html( res.fecha );
+				if( btn != "" ) $(btn).addClass( "f_repos_actv" );
+			}
+			else
+				notificar( tit_notif, res.mje, "error" );
         }
     });
 }
@@ -485,8 +506,6 @@ $( document ).ready(function() {
 
     /*Bloque peticiones para editar datos asociados a detalle de producto*/
 
-    
-
     $("#bot_editar_detproducto").on( "click", function(){
 		//editarDatosDetalleProducto();	
     });
@@ -524,12 +543,12 @@ $( document ).ready(function() {
 		seleccionarTallas();	
     });
 	
-	/*product-edit.php*/
+	/* product-edit.php */
 	$("#bot_editar_producto").on( "click", function(){
 		editarProducto();	
     });
 
-    /*product-data.php*/
+    /* product-data.php */
     $(".o-tdetp").on( "click", function(){
 		var idtalla 	= $(this).attr("data-idtalla");
 		var iddetprod 	= $(this).attr("data-idpdet");
@@ -537,6 +556,16 @@ $( document ).ready(function() {
 		$(this).fadeOut( 200 );
 
 		actualizarDisponibilidadProducto( "talla", "", iddetprod, idtalla, valestado );
+    });
+
+    /* product-data.php */
+    $(".act_frepos").on( "click", function(){
+		actualizarFechaReposicionDetalle( $(this).attr("data-id"), "" );
+    });
+
+    /* products.php :: data-table-products.php */
+    $("#lista_general_productos").on( "click", ".act_frepos", function(){  
+    	actualizarFechaReposicionDetalle( $(this).attr("data-id"), $(this) );
     });
 
 });

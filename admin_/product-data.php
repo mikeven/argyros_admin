@@ -232,6 +232,15 @@
                                             <label class="control-label">Precio por peso: </label> <?php echo $dp["precio_peso"]; ?>
                                         </div>
                                         <?php } ?>
+                                        <div class="">
+                                            <label class="control-label">Fecha última reposición: </label> 
+                                            <span id="data-freposicion"><?php echo $dp["freposicion"]; ?></span> |
+                                            <button type="button" class="btn btn-info btn-xs act_frepos" 
+                                            data-id="<?php echo $dp[id] ?>">
+                                                <i class="fa fa-arrow-circle-up"></i> Actualizar
+                                            </button>
+                                            
+                                        </div>
                                         
                                     </div>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
