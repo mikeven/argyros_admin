@@ -45,7 +45,6 @@
 		return $tx[$tipo];
 	}
 	/* ----------------------------------------------------------------------------------- */
-
 	function Subir_Imagen($Input, $Ruta, $Foto, $Miniatura, $AnchoMax, $AltoMax){
 	    $Respuesta = array();
 	    $NombreOriginal  = basename($_FILES[$Input]['name']);
@@ -113,15 +112,13 @@
 		$Respuesta['Script'] .= "Alerta('La imagen se ha optimizado correctamente.','success',3000);";
 	    return json_encode($Respuesta);
 	}
-
+	/* ----------------------------------------------------------------------------------- */
 	function uploadI( $file ){
 		$FondoPantalla = Subir_Imagen( $file, 'uploads/rsz/', 'Nombrefoto', 'SI', 300, 300 );
 		$img = json_decode( $FondoPantalla );
 		print_r($img);
 	}
-
-
-
+	/* ----------------------------------------------------------------------------------- */
 	function make_thumb($src, $dest, $desired_width) {
 
 		/* read the source image */
@@ -150,7 +147,21 @@
 		echo "IMG: ".var_dump($img);
 
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerDatosProveedores( $dbh, $producto ){
+		// Devuelve los datos de proveedores de producto
+		$proveedores[1] = NULL; $proveedores[2] = NULL; $proveedores[3] = NULL;
 
+		if( $producto["idpvd1"] )
+			$proveedores[1] = obtenerProveedorPorId( $dbh, $producto["idpvd1"] );
+		if( $producto["idpvd2"] )
+        	$proveedores[2] = obtenerProveedorPorId( $dbh, $producto["idpvd2"] );
+        if( $producto["idpvd3"] )
+        	$proveedores[3] = obtenerProveedorPorId( $dbh, $producto["idpvd3"] );
+
+        return $proveedores;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_POST["submitf"] ) ){
 		//print_r($_FILES["files"]);
 		//uploadI( $_FILES["files"] );
@@ -158,4 +169,5 @@
 	}else{
 		
 	}
+	/* ----------------------------------------------------------------------------------- */
 ?>
