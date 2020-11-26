@@ -10,13 +10,14 @@ function agregarProducto(){
 
 	$.ajax({
         type:"POST",
-        url:"database/data-products.php",
+        url:"database/data-productsx.php",
         data:{ form_np: fs },
         success: function( response ){
         	console.log( response );
 			res = jQuery.parseJSON( response );
-			if( res.exito == 1 )
-				enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.idproducto );
+			if( res.exito == 1 ){
+				//enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.idproducto );
+			}
 			else
 				notificar( "Nuevo producto", res.mje, "error" );
         }
@@ -33,44 +34,18 @@ function editarProducto(){
         success: function( response ){
         	console.log( response );
 			res = jQuery.parseJSON( response );
-			if( res.exito == 1 ){
+			if( res.exito == 1 )
 				notificar( "Productos", res.mje, "success" );
-				setTimeout( function() { 
-					enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.id ); 
-				}, 3000);
-			}
 			if( res.exito == 2 )
 				notificar( "Productos", res.mje, "info" );
-			if( res.exito == 0 )
-				notificar( "Nuevo producto", res.mje, "error" );
+			setTimeout( function() { 
+				enviarRespuesta( res, "redireccion", "product-data.php?p=" + res.reg.id ); 
+				}, 5000 
+			);
         }
     });
 }
-/* --------------------------------------------------------- */
-function verificarCodigosFabricanteRepetidos( idp ){
-	// new-product, product-edit
-	var c1 = $("#cdgf1").val(); var c2 = $("#cdgf2").val(); var c3 = $("#cdgf3").val();
 
-	$.ajax({
-        type:"POST",
-        url:"database/data-products.php",
-        data:{ chck_codf: idp, cod1: c1, cod2: c2, cod3: c3 },
-        beforeSend: function () {
-            $("#wrnmessage").fadeOut();
-            $(".neweditprod").prop( 'disabled', true );
-        },
-        success: function( response ){
-        	console.log( response );
-			res = jQuery.parseJSON( response );
-			if( res.cant > 0 ){
-				$("#tx_wrn").html( "Los siguientes productos tienen asignados los códigos de fabricantes ingresados" );
-				$("#product_list").html( res.regs );
-				$("#wrnmessage").fadeIn();
-			}
-			$(".neweditprod").prop( 'disabled', false );
-        }
-    });
-}
 /* --------------------------------------------------------- */
 function cargarSubcategorias( regs ){
 	var lista = "";
@@ -613,11 +588,6 @@ $( document ).ready(function() {
     	var iddet 		= $(this).attr("data-id");
     	var ubc 		= $( "#ub" + iddet ).val();
 		actualizarUbicacionDetalleProducto( iddet, ubc );
-    });
-
-    /* new-product.php; product-edit.php */
-    $(".codfab_disp").on( "blur", function(){
-		verificarCodigosFabricanteRepetidos( $(this).attr("data-idp") );
     });
 
     /* products.php :: data-table-products.php */
