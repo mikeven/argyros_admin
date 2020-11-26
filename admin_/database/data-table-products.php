@@ -7,8 +7,8 @@
 	function obtenerListaProductos( $dbh ){
 		//Devuelve la lista de productos en general
 		$q = "select p.id, p.code as codigo, p.name as nombre, p.description as descripcion, 
-		p.visible as visible, ca.name as categoria, sc.name as subcategoria 
-		FROM products p, categories ca, subcategories sc 
+		p.visible as visible, ca.name as categoria, sc.name as subcategoria, 
+		p.provider_id1 as idpvd1, p.manfact_code1 as codigof1 FROM products p, categories ca, subcategories sc 
 		where p.category_id = ca.id and p.subcategory_id = sc.id order by p.id DESC";
 		
 		$data = mysqli_query( $dbh, $q );
@@ -28,7 +28,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDetalleProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
-		$q = "select dp.id as id FROM product_details dp WHERE dp.product_id = $idp ORDER BY dp.id DESC";
+		$q = "select dp.id as id, location as ubicacion FROM product_details dp 
+				WHERE dp.product_id = $idp ORDER BY dp.id DESC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -46,6 +47,13 @@
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
 		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerDatosProveedorPorId( $dbh, $id ){
+		//Devuelve el registro de proveedor dado su id
+		$q = "select id, name, number from providers where id = $id";
+
+		return mysqli_fetch_array( mysqli_query( $dbh, $q ) );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerAccionVisibilidad( $p, $clp, $ccol, $accion ){
@@ -92,6 +100,19 @@
 
 		return $class;
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerCodigosProducto( $dbh, $p ){
+		// Devuelve los datos para la columna de código
+		if( $p["idpvd1"] != "" ){
+			$proveedor = obtenerDatosProveedorPorId( $dbh, $p["idpvd1"] );
+		}
+		else $proveedor[number] = "";
+
+		$codigo =	"<div>$p[codigo]</div>";
+		$codigo .=	"<div>$proveedor[number]-$p[codigof1]</div>"; 
+
+		return $codigo;
+	}
 
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
@@ -102,16 +123,22 @@
 	
 	foreach ( $productos as $p ) {
 		
-		$lnk_p = "product-data.php?p=$p[id]";
+		$lnk_p 			= "product-data.php?p=$p[id]";
 		
-		$drdet = obtenerDetalleProductoPorId( $dbh, $p["id"] );
+		$drdet 			= obtenerDetalleProductoPorId( $dbh, $p["id"] );
+
+		$col_cod		= obtenerCodigosProducto( $dbh, $p );
 
 		/*if( $p["visible"] == 1 ) {
 			$clp = ""; $accion = "Ocultar"; $ccol = "pstat_";
 		}else{ 
 			$clp = "-slash"; $accion = "Mostrar"; $ccol = "pstat_o"; 
 		}
-		$visibilidad = obtenerAccionVisibilidad( $p, $clp, $ccol, $accion );*/
+		$visibilidad = obtenerAccionVisibilidad( $p, $clp, $ccol, $accion );
+		<a href='#!' class='badge act_frepos' data-id='$dp[id]' title='Actualizar fecha de reposición'>
+			<i class='fa fa-arrow-circle-up'></i> RE
+		</a>
+		*/
 
 		$html_det = "";
 
@@ -121,15 +148,13 @@
 			$html_det	.= obtenerImagenDetalleProducto( $dbh, $dp["id"] );		
 			$html_det 	.= "<div align='center'>
 								<a href='".$lnk_dp."' class='badge $cod_color'>#".$dp['id']."</a>
-								<a href='#!' class='badge act_frepos' data-id='$dp[id]' title='Actualizar fecha de reposición'>
-									<i class='fa fa-arrow-circle-up'></i> RE
-								</a>
 							</div>";
+			$html_det 	.= "<div align='center'><i class='fa fa-archive'></i> $dp[ubicacion]</div>";							
 		}
 		/*......................................................................*/
 		$reg_prod["id"]			= "<a class='primary' href='".$lnk_p."' target='_blank'>".$p["id"]."</a>";
 		$reg_prod["rdets"] 		= $html_det;
-		$reg_prod["codigo"] 	= $p["codigo"];
+		$reg_prod["codigo"] 	= $col_cod;
 		$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_p."'>".$p["nombre"]."</a>";
 		$reg_prod["desc"] 		= $p["descripcion"];
 		$reg_prod["categ"] 		= $p["categoria"];

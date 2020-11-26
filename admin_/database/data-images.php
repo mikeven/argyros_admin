@@ -133,6 +133,9 @@
 				if( $talla["visible"] == 1 ){
 					$peso = $talla["peso"]."g"; break;
 				}
+				if( isset( $f["p_ocultos"] ) ){
+					$peso = $talla["peso"]."g"; break;
+				}
 			}
 		}
 		

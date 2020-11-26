@@ -63,9 +63,7 @@
 		$q = "select p.id, p.code as codigo, p.name as nombre, p.description as descripcion, 
 		p.category_id as cid, p.subcategory_id as scid, p.visible as visible, 
 		co.id as idpais, co.name as pais, ca.name as categoria, sc.name as subcategoria, 
-		m.id as idmaterial, m.name as material, p.provider_id1 as idpvd1, p.provider_id2 as idpvd2, 
-		p.provider_id3 as idpvd3, p.manfact_code1 as codigof1, p.manfact_code2 as codigof2, p.manfact_code3 as codigof3, 
-		date_format(p.created_at,'%d/%m/%Y') as fcreacion 
+		m.id as idmaterial, m.name as material, date_format(p.created_at,'%d/%m/%Y') as fcreacion 
 		FROM products p, categories ca, subcategories sc, countries co, materials m 
 		where p.category_id = ca.id and p.subcategory_id = sc.id and p.material_id = m.id 
 		and p.country_id = co.id and p.id = $idp";
@@ -158,7 +156,7 @@
 		if( $limite != NULL ) $l = "LIMIT $limite";
 		
 		$q = "select id, path from images where product_detail_id = $idd $l";
-	
+		
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
 		return $lista;
@@ -200,12 +198,14 @@
 		$detalle["imagenes"] 	= obtenerImagenesDetalleProducto( $dbh, $idd, "" );
 
 		return $detalle;
+		
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function asociarLineaProducto( $dbh, $idl, $idp ){
 		//Registra la asignación de una línea a un producto
 		$q = "insert into line_product ( line_id, product_id ) values ( $idl, $idp )";
 		$data = mysqli_query( $dbh, $q );
+
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function asociarTrabajoProducto( $dbh, $idt, $idp ){
@@ -217,17 +217,11 @@
 	/* ----------------------------------------------------------------------------------- */
 	function agregarProducto( $dbh, $producto ){
 		//Guarda el registro de un producto
-		$idprv1 = $producto[proveedor1]; if( !$producto[proveedor1] ) $idprv1 = 'NULL';
-		$idprv2 = $producto[proveedor2]; if( !$producto[proveedor2] ) $idprv2 = 'NULL';
-		$idprv3 = $producto[proveedor3]; if( !$producto[proveedor3] ) $idprv3 = 'NULL';
-		
 		$q = "insert into products ( code, name, description, country_id, category_id, 
-		subcategory_id, material_id, provider_id1, provider_id2, provider_id3, manfact_code1, 
-		manfact_code2, manfact_code3, created_at ) values ( '$producto[codigo]', '$producto[nombre]', 
+		subcategory_id, material_id, created_at ) values ( '$producto[codigo]', '$producto[nombre]', 
 		'$producto[descripcion]', $producto[pais], $producto[categoria], $producto[subcategoria], 
-		$producto[material], $idprv1, $idprv2, $idprv3, 
-		'$producto[codigof1]', '$producto[codigof2]', '$producto[codigof3]', NOW() )";
-		
+		$producto[material], NOW() )";
+
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
 	}
@@ -248,10 +242,7 @@
 		$q = "update products set code = '$producto[codigo]', name = '$producto[nombre]', 
 		description = '$producto[descripcion]', country_id = '$producto[pais]', 
 		category_id = $producto[categoria], subcategory_id = $producto[subcategoria], 
-		material_id = $producto[material], provider_id1 = $producto[proveedor1], 
-		provider_id2 = $producto[proveedor2], provider_id3 = $producto[proveedor3], 
-		manfact_code1 = '$producto[codigof1]', manfact_code2 = '$producto[codigof2]', 
-		manfact_code3 = '$producto[codigof3]', updated_at = NOW() where id = $producto[idproducto]";
+		material_id = $producto[material], updated_at = NOW() where id = $producto[idproducto]";
 		
 		$data = mysqli_query( $dbh, $q );
 		return $data;
@@ -587,84 +578,6 @@
 		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerIdsDetalleProductoPorId( $dbh, $idp ){
-		$q = "select p.id as p_id, dp.id as d_id, p.name as nombre FROM product_details dp, products p 
-		WHERE dp.product_id = p.id and dp.product_id = $idp ORDER BY p.id DESC";
-		
-		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function obtenerHtmlImagenDetalleProducto( $dbh, $idd ){
-		// Devuelve la primera imagen del detalle de producto.
-		$images 	= obtenerImagenesDetalleProducto( $dbh, $idd, "" );
-		
-		$url_img	= $images[0]["path"];
-		$html_img 	= "<div class='wrng_prods'>
-						<div><a href='#!' class='pop-img-p' data-toggle='modal' 
-						data-src='".$url_img."' data-target='#img-product-pop'>
-						<img src='".$url_img."' width='60px'></a></div>";
-
-		return $html_img;
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function obtenerProductosPorCodigoFabricante( $dbh, $codigof, $idp ){
-		// Devuelve la lista de productos dado un código de fabricante 
-		$param 		= "";
-		if( $idp != NULL ) $param = "and id <> $idp";
-		$q = "select id from products 
-				where (manfact_code1 = '$codigof' or manfact_code2 = '$codigof' or manfact_code3 = '$codigof') $param";
-		
-		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function productosCodigosFabricantesRepetidos( $dbh, $codigos, $idp ){
-		// Devuelve los productos que ya tienen asignado un código de fabricante
-		$detalles 			= array();
-		
-		foreach ( $codigos as $cod ){
-			if( $cod != "" ){
-				$productos 			= obtenerProductosPorCodigoFabricante( $dbh, $cod, $idp );
-				foreach ( $productos as $p ){
-					$reg_det 		= obtenerIdsDetalleProductoPorId( $dbh, $p["id"] );
-					$detalles		= array_merge( $detalles, $reg_det );
-				}
-			}
-		}
-		
-		$html 				= "";
-		foreach ( $detalles as $dp ){
-			
-			$lnk_dp 		= "product-data.php?p=$dp[p_id]#$dp[d_id]";
-			$html			.= obtenerHtmlImagenDetalleProducto( $dbh, $dp["d_id"] );		
-			$html 			.= "<div>
-									<a href='".$lnk_dp."' target='_blank'>#".$dp["p_id"]."-".$dp["d_id"]."</a>
-								</div></div>";
-		}
-		$resultado["cant"] = count( $detalles );
-		$resultado["regs"] = $html;
-
-		return $resultado;
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function codigoFabricanteDisponible( $dbh, $valor, $idp ){
-		//Actualiza el valor de un baño de detalle de producto
-		$disponible 	= true;
-		$param 			= "";
-
-		if( $valor != "" ){
-			
-			if( $idp != NULL ) $param = "and id <> $idp";
-			$q = "select id from products 
-					where (manfact_code1 = '$valor' or manfact_code2 = '$valor' or manfact_code3 = '$valor') $param";
-			
-			$nrows = mysqli_num_rows( mysqli_query( $dbh, $q ) );
-
-			if( $nrows > 0 ) $disponible = false;
-		}
-
-		return $disponible;
-	}
-	/* ----------------------------------------------------------------------------------- */
 	function eliminarBañoRegistrosProducto( $dbh, $idproducto ){
 		//Anula los valores de baño asociado a todos los detalles de un producto
 		$detalle = obtenerDetalleProductoPorId( $dbh, $idproducto );
@@ -682,34 +595,7 @@
 		}
 		return $cambio;
 	}
-	/* ----------------------------------------------------------------------------------- */
-	function codigosProductoValidos( $dbh, $data, $idp ){
-		// Devuelve falso si los códigos de fabricantes ya están asociados a otro producto.
-		$valido 			= true;
-		$asignados 			= "";
 
-		for ( $i = 1;  $i  <= 3 ;  $i++ ) { 
-			if( !codigoFabricanteDisponible( $dbh, $data["codigof$i"], $idp ) ){
-				$valido = false;
-				$asignados .= $data["codigof$i"].", ";
-			}
-		}
-
-		$validez["mensaje"] = "Códigos de fabricante ya asignados: ".substr( $asignados, 0, -2 );
-		$validez["valido"] 	= $valido;
-		
-		return $validez;
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function asignarValorProveedores( $producto ){
-		//Ajusta el valor de proveedores si no están asignados
-
-		if( !$producto[proveedor1] ) $producto[proveedor1] = 'NULL';
-		if( !$producto[proveedor2] ) $producto[proveedor2] = 'NULL';
-		if( !$producto[proveedor3] ) $producto[proveedor3] = 'NULL';
-
-		return $producto;
-	}
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
@@ -752,30 +638,22 @@
 		include( "bd.php" );	
 		parse_str( $_POST["form_np"], $producto );
 
-		$producto 		= escaparCampos( $dbh, $producto );
-		//$val_codigos 	= codigosProductoValidos( $dbh, $producto, NULL );
+		$producto = escaparCampos( $dbh, $producto );
+
+		$idp = agregarProducto( $dbh, $producto );
+		$producto["idproducto"] = $idp;
 		
-		//if( $val_codigos["valido"] ){
-			$idp = agregarProducto( $dbh, $producto );
-			$producto["idproducto"] = $idp;
-			
-			registrarAsociacionesTrabajosLineas( $dbh, $producto );
+		registrarAsociacionesTrabajosLineas( $dbh, $producto );
 
-			if( ( $idp != 0 ) && ( $idp != "" ) ){
-				$res["exito"] 	= 1;
-				$res["mje"] 	= "Registro exitoso";
-				$res["reg"] 	= $producto;
-			} else {
-				$res["exito"] 	= 0;
-				$res["mje"] 	= "Error al registrar producto";
-				$res["reg"] 	= NULL;
-			}
-
-		/*}else {
-			$res["exito"] 		= 0;
-			$res["mje"] 		= $val_codigos["mensaje"];
-			$res["reg"] 		= NULL;
-		}*/
+		if( ( $idp != 0 ) && ( $idp != "" ) ){
+			$res["exito"] = 1;
+			$res["mje"] = "Registro exitoso";
+			$res["reg"] = $producto;
+		} else {
+			$res["exito"] = 0;
+			$res["mje"] = "Error al registrar producto";
+			$res["reg"] = NULL;
+		}
 
 		echo json_encode( $res );
 	}
@@ -783,41 +661,31 @@
 	//Edición de datos de producto
 	if( isset( $_POST["form_mp"] ) ){
 		include( "bd.php" );	
-		
 		parse_str( $_POST["form_mp"], $producto );
-		$producto 		= escaparCampos( $dbh, $producto );
-		$producto 		= asignarValorProveedores( $producto );
-		//$val_codigos 	= codigosProductoValidos( $dbh, $producto, $producto["idproducto"] );
-		
-		//if( $val_codigos["valido"] ){
 
-			$r = editarProducto( $dbh, $producto );
-			
-			$cambio_mat = ajusteRegistroBanos( $dbh, $producto );
-			eliminarAsociacionesTrabajosLineas( $dbh, $producto );
-			registrarAsociacionesTrabajosLineas( $dbh, $producto );
-			$producto["id"] = $producto["idproducto"];
+		$producto = escaparCampos( $dbh, $producto );
 
-			if( ( $r != 0 ) && ( $r != "" ) ) {
-				if( $cambio_mat != 1 ){
-					$res["exito"] = 1;
-					$res["mje"] = "Datos de productos actualizados";
-					$res["reg"] = $producto;
-				}else{
-					$res["exito"] = 2;
-					$res["mje"] = "Datos de productos actualizados. Debe reasignar valores de baños en los detalles de producto";
-					$res["reg"] = $producto;
-				}
-			} else {
-				$res["exito"] = 0;
-				$res["mje"] = "Error al modificar producto";
-				$res["reg"] = NULL;
+		$r = editarProducto( $dbh, $producto );
+		$cambio_mat = ajusteRegistroBanos( $dbh, $producto );
+		eliminarAsociacionesTrabajosLineas( $dbh, $producto );
+		registrarAsociacionesTrabajosLineas( $dbh, $producto );
+		$producto["id"] = $producto["idproducto"];
+
+		if( ( $r != 0 ) && ( $r != "" ) ) {
+			if( $cambio_mat != 1 ){
+				$res["exito"] = 1;
+				$res["mje"] = "Datos de productos actualizados";
+				$res["reg"] = $producto;
+			}else{
+				$res["exito"] = 2;
+				$res["mje"] = "Datos de productos actualizados. Debe reasignar valores de baños en los detalles de producto";
+				$res["reg"] = $producto;
 			}
-		/*}else {
-			$res["exito"] 		= 0;
-			$res["mje"] 		= $val_codigos["mensaje"];
-			$res["reg"] 		= NULL;
-		}*/
+		} else {
+			$res["exito"] = 0;
+			$res["mje"] = "Error al modificar producto";
+			$res["reg"] = NULL;
+		}
 
 		echo json_encode( $res );
 	}
@@ -1036,17 +904,4 @@
 		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
-	if( isset( $_POST["chck_codf"] ) ){
-		//Solicita la verificación de códigos de fabricantes repetidos
-		
-		include( "bd.php" );
-		$idp = $_POST["chck_codf"] != "" ? $_POST["chck_codf"] : NULL;
-
-		$codigos[0] = $_POST["cod1"];
-		$codigos[1] = $_POST["cod2"];
-		$codigos[2] = $_POST["cod3"];
-		
-		$productos = productosCodigosFabricantesRepetidos( $dbh, $codigos, $idp );
-		echo json_encode( $productos );
-	}
 ?>

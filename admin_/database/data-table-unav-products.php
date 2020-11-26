@@ -29,8 +29,9 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDetallesProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
-		$q = "select p.id as p_id, dp.id as d_id, p.code as codigo, p.name as nombre, p.description as descripcion, 
-		ca.name as categoria, sc.name as subcategoria, date_format(dp.unavailable_at,'%d/%m/%Y %h:%i:%s %p') as fagotado, 
+		$q = "select p.id as p_id, dp.id as d_id, p.code as codigo, p.name as nombre, p.description as descripcion,
+		p.provider_id1 as idpvd1, p.manfact_code1 as codigof1, ca.name as categoria, sc.name as subcategoria, 
+		date_format(dp.unavailable_at,'%d/%m/%Y %h:%i:%s %p') as fagotado, 
 		date_format(dp.created_at,'%d/%m/%Y %h:%i:%s %p') as fcreado     
 		FROM product_details dp, products p, categories ca, subcategories sc 
 		WHERE dp.product_id = p.id and p.category_id = ca.id and p.subcategory_id = sc.id  and 
@@ -52,6 +53,12 @@
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
 		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerDatosProveedorPorId( $dbh, $id ){
+		//Devuelve el registro de proveedor dado su id
+		$q = "select id, name, number from providers where id = $id";
+		return mysqli_fetch_array( mysqli_query( $dbh, $q ) );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListadoGeneralDetallesProductos( $dbh, $productos ){
@@ -93,7 +100,19 @@
 
 		return $html_ta;
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerCodigosProducto( $dbh, $dp ){
+		// Devuelve los datos para la columna de código
+		if( $dp["idpvd1"] != "" ){
+			$proveedor = obtenerDatosProveedorPorId( $dbh, $dp["idpvd1"] );
+		}
+		else $proveedor[number] = "";
 
+		$codigo =	"<div>$dp[codigo]</div>";
+		$codigo .=	"<div>$proveedor[number]-$dp[codigof1]</div>"; 
+
+		return $codigo;
+	}
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
@@ -111,13 +130,13 @@
 			$html_det 		.= "<div align='center'>
 									<a href='".$lnk_dp."' target='_blank'>#".$dp["p_id"]."-".$dp["d_id"]."</a>
 								</div>";
-
+			$col_cod		= obtenerCodigosProducto( $dbh, $dp );
 			$html_ta		= obtenerColoresDisponibilidadTallas( $tallas );
 
 			/*......................................................................*/
 			
 			$reg_prod["fagotado"] 	= $fagotado;
-			$reg_prod["codigo"] 	= $dp["codigo"];
+			$reg_prod["codigo"] 	= $col_cod;
 			$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_dp."'>".$dp["nombre"]."</a>";
 			$reg_prod["desc"] 		= $dp["descripcion"];
 			$reg_prod["categ"] 		= $dp["categoria"]." > ".$dp["subcategoria"];
