@@ -9,6 +9,7 @@
     include( "database/data-user.php" );
     include( "fn/common-functions.php" );
     include( "database/data-products.php" );
+    include( "database/data-providers.php" );
 
     include( "fn/fn-products.php" );
 
@@ -78,6 +79,7 @@
         }
 
         .poculto{ background-color: #f9c7c6 !important; }
+        .txubc{ border: 1px solid #f1f1f1; }
     </style>
 
   <?php
@@ -86,12 +88,8 @@
         $dproducto = obtenerDetalleProductoPorId( $dbh, $idp );
         $trabajosp = obtenerTrabajosDeProductoPorId( $dbh, $idp );
         $lineasp = obtenerLineasDeProductoPorId( $dbh, $idp );
-        //print_r( $lineasp );
-    }
-    if( $producto["visible"] == 1 ) {
-        $clp = ""; $ccol = "pstat_";
-    }else{ 
-        $clp = "-slash";  $ccol = "pstat_o";
+        
+        $proveedores    = obtenerDatosProveedores( $dbh, $producto );
     }
   ?>
 
@@ -138,9 +136,7 @@
                         <?php if( isset( $idp ) ) { ?>
                         <div class="row">
                             <div class="col-md-4 col-sm-4 col-xs-12">
-                                <div align="left">
-                                    <i class="fa fa-eye<?php echo $clp; ?> fa-2x <?php echo $ccol; ?>"></i>
-                                </div>
+                                
                                 <div class="data-product-label">
                                     <label class="control-label">
                                         ID: </label> <?php echo $producto["id"]; ?>
@@ -169,6 +165,35 @@
                                 <div class="data-product-label">
                                     <label class="control-label">Fecha de creación: </label> 
                                     <?php echo $producto["fcreacion"]; ?>
+                                </div>
+
+                                <div class="ln_solid"></div>
+                                
+                                <div class="data-product-label">
+                                    <label class="control-label">Código de fabricante 1: </label> 
+                                    <?php echo $producto["codigof1"]; ?> 
+                                    <?php if( $proveedores[1] ) { ?>
+                                        | <label class="control-label">Proveedor 1: </label> 
+                                        <?php echo $proveedores[1]["number"]." ".$proveedores[1]["name"]; ?>  
+                                    <?php } ?>
+                                </div>
+                                
+                                <div class="data-product-label">
+                                    <label class="control-label">Código de fabricante 2: </label> 
+                                    <?php echo $producto["codigof2"]; ?> 
+                                    <?php if( $proveedores[2] ) { ?>
+                                        | <label class="control-label">Proveedor 2: </label> 
+                                        <?php echo $proveedores[2]["number"]." ".$proveedores[2]["name"]; ?>  
+                                    <?php } ?>
+                                </div>
+
+                                <div class="data-product-label">
+                                    <label class="control-label">Código de fabricante 3: </label> 
+                                    <?php echo $producto["codigof3"]; ?> 
+                                    <?php if( $proveedores[3] ) { ?>
+                                        | <label class="control-label">Proveedor 3: </label> 
+                                        <?php echo $proveedores[3]["number"]." ".$proveedores[3]["name"]; ?>  
+                                    <?php } ?>
                                 </div>
                                 
                                 <div class="ln_solid"></div>
@@ -202,6 +227,7 @@
                                 ?>
                                 <div class="row">
                                     <div id="<?php echo $dp["id"]; ?>" class="col-md-4 col-sm-4 col-xs-12">
+                                        
                                         <div class="">
                                             <label class="control-label">#Reg: </label> <?php echo $dp["id"]; ?>
                                         </div>
@@ -239,9 +265,17 @@
                                             data-id="<?php echo $dp[id] ?>">
                                                 <i class="fa fa-arrow-circle-up"></i> Actualizar
                                             </button>
-                                            
                                         </div>
-                                        
+                                        <div class="">
+                                            <label class="control-label" title="Ubicación">
+                                                <i class="fa fa-archive"></i> Ubicación: 
+                                            </label> 
+                                            <input id="ub<?php echo $dp["id"]; ?>" class="txubc" type="text" 
+                                            value="<?php echo $dp["ubicacion"]; ?>" maxlength="10">
+                                            <button type="button" class="btn btn-info btn-xs act_ubicacion" 
+                                                data-id="<?php echo $dp[id] ?>" title="Cambiar"> <i class="fa fa-save"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
                                         <?php 

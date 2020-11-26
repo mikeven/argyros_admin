@@ -114,13 +114,16 @@
         <div class="right_col" role="main">
           <div class="">
             
-            <!--<div class="page-title">
-              
+            <div class="page-title">
               <div class="title_left">
-                <h3>Nuevo producto</h3>
+                <h3>Nuevo detalle de producto</h3>
               </div>
-
-              <div class="title_right">
+              <div class="input-group" style="float:right;">
+                <a href="products.php" class="btn btn-app">
+                  <i class="fa fa-arrow-left"></i> Volver a productos
+                </a>
+              </div>
+              <!--<div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -129,8 +132,9 @@
                     </span>
                   </div>
                 </div>
-              </div>
-            </div> -->
+              </div> -->
+            
+            </div>
 
             <div class="clearfix"></div>
 
@@ -138,10 +142,8 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Detalle de producto</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                     <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li> -->
-                    </ul>
+                    <h2>Datos de detalle de producto</h2>
+                    
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -175,6 +177,13 @@
                                 </div>
                                 
                                 <div class="ln_solid"></div>
+                                <div class="form-group">
+                                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Ubicación </label>
+                                  <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" class="form-control" name="ubicacion" 
+                                    placeholder="Ubicación" maxlength="10">
+                                  </div>
+                                </div>
 
                                 <div class="form-group">
                                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Baño </label>

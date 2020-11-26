@@ -14,6 +14,7 @@
     include( "database/data-materials.php" );
     include( "database/data-countries.php" );
     include( "database/data-categories.php" );
+    include( "database/data-providers.php" );
 
     checkSession( '' );
 
@@ -23,6 +24,7 @@
       $lineasp        = obtenerLineasDeProductoPorId( $dbh, $idp );
       $trabajosp      = obtenerTrabajosDeProductoPorId( $dbh, $idp );
       $subcategoriap  = obtenerListaSubCategoriasCategoria( $dbh, $producto["cid"] );
+      $proveedores    = obtenerListaProveedores( $dbh );
     }
 ?>
 <!DOCTYPE html>
@@ -69,6 +71,8 @@
     <link href="build/css/custom.min.css" rel="stylesheet">
     <style type="text/css">
       #cambio_mm{ padding: 8px; margin: 8px; }
+      #wrnmessage { display: none; }
+      .wrng_prods{ float: left; margin-right: 15px; }
     </style>
   </head>
 
@@ -122,153 +126,231 @@
                   </div>
                   <div class="x_content">
                     
-                        <p class="text-muted font-13 m-b-30"> </p>
+                    <p class="text-muted font-13 m-b-30"> </p>
                         
-                        <div class="row">
+                    <form id="frm_mproduct" data-parsley-validate class="form-horizontal form-label-left">
+                      
+                      <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
                           
-                          <form id="frm_mproduct" data-parsley-validate class="form-horizontal form-label-left">
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                              
-                              <div class="form-group">
-                                <input id="idproducto" name="idproducto" type="hidden" value="<?php echo $idp; ?>">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Código </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input type="text" class="form-control" name="codigo" 
-                                  placeholder="Código de producto" value="<?php echo $producto["codigo"]; ?>">
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input type="text" class="form-control" name="nombre" 
-                                  placeholder="Nombre de producto" value="<?php echo $producto["nombre"]; ?>">
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">País de origen </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select name="pais" class="form-control selectpicker">
-                                    <option disabled>Seleccione</option>
-                                    <?php foreach ( $paises as $p ) { ?>
-                                      <option value="<?php echo $p["id"] ?>" <?php echo sop( $p["id"], $producto["idpais"] ); ?>>
-                                        <?php echo $p["name"] ?>
-                                      </option>
-                                    <?php } ?>
-                                  </select>
-                                </div>
-                              </div>
-                              
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Línea </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="sline" name="linea[]" class="form-control selectpicker" multiple>
-                                    <?php foreach ( $lineas as $l ) { ?>
-                                      <option value="<?php echo $l["id"] ?>">
-                                        <?php echo $l["name"] ?>
-                                      </option>
-                                    <?php } ?>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Descripción </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <textarea class="form-control" rows="3" name="descripcion" 
-                                  placeholder="Texto descriptivo de producto"><?php echo $producto["descripcion"]; ?></textarea>
-                                </div>
-                              </div>
-                              
+                          <div class="form-group">
+                            <input id="idproducto" name="idproducto" type="hidden" value="<?php echo $idp; ?>">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Código </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" name="codigo" 
+                              placeholder="Código de producto" value="<?php echo $producto["codigo"]; ?>">
                             </div>
-                          
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                              
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoría </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="selcateg" name="categoria" class="form-control selectpicker">
-                                    <option disabled>Seleccione</option>
-                                    <?php foreach ( $categorias as $c ) { ?>
-                                      <option value="<?php echo $c["id"] ?>" <?php echo sop( $c["id"], $producto["cid"] ); ?>>
-                                        <?php echo $c["name"] ?>
-                                      </option>
-                                    <?php } ?>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="val_subc" name="subcategoria" class="form-control">
-                                    <?php foreach ( $subcategoriap as $sc ) { ?>
-                                      <option value="<?php echo $sc["id"] ?>" <?php echo sop( $sc["id"], $producto["scid"] ); ?>>
-                                        <?php echo $sc["name"] ?>
-                                      </option>
-                                    <?php } ?> 
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <input id="idmat_actual" type="hidden" name="idmat_actual" 
-                                  value="<?php echo $producto["idmaterial"]; ?>">
-                                  <select id="smaterial_e" 
-                                  name="material" class="form-control selectpicker">
-                                    <?php foreach ( $materiales as $m ) { ?>
-                                      <option value="<?php echo $m["id"] ?>" 
-                                        <?php echo sop( $m["id"], $producto["idmaterial"] ); ?>>
-                                        <?php echo $m["name"] ?>
-                                      </option>
-                                    <?php } ?>
-                                  </select>
-                                  <div id="cambio_mm" class="alert-danger" style="display: none;">
-                                    Si se cambia el material del producto, se deben reasignar los valores de baño para cada detalle de este producto
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Trabajo </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select id="streat" name="trabajo[]" class="form-control selectpicker" multiple>
-                                    <?php foreach ( $trabajos as $t ) { ?>
-                                      <option value="<?php echo $t["id"] ?>"><?php echo $t["name"] ?></option>
-                                    <?php } ?>
-                                  </select>
-                                </div>
-                              </div>
-                                                      
-                            </div>
-                          
-                          </form>
-                        
-                        </div>
-                        <div class="ln_solid"></div>
-                        <div class="form-group">
-                          <div align="center">
-                            <button id="bot_editar_producto" type="button" class="btn btn-success">Guardar</button>
                           </div>
-                          <div id="ghres"></div>
-                          <!--<button type="button" class="btn btn-primary" data-toggle="modal" 
-                          data-target=".bs-example-modal-sm">Respuesta</button>-->
-                          <?php include( "sections/modals/response_message.php" );?>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control" name="nombre" 
+                              placeholder="Nombre de producto" value="<?php echo $producto["nombre"]; ?>">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">País de origen </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select name="pais" class="form-control selectpicker">
+                                <option disabled>Seleccione</option>
+                                <?php foreach ( $paises as $p ) { ?>
+                                  <option value="<?php echo $p["id"] ?>" <?php echo sop( $p["id"], $producto["idpais"] ); ?>>
+                                    <?php echo $p["name"] ?>
+                                  </option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Línea </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="sline" name="linea[]" class="form-control selectpicker" multiple>
+                                <?php foreach ( $lineas as $l ) { ?>
+                                  <option value="<?php echo $l["id"] ?>">
+                                    <?php echo $l["name"] ?>
+                                  </option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Descripción </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <textarea class="form-control" rows="3" name="descripcion" 
+                              placeholder="Texto descriptivo de producto"><?php echo $producto["descripcion"]; ?></textarea>
+                            </div>
+                          </div>
+                          
                         </div>
+                      
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoría </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="selcateg" name="categoria" class="form-control selectpicker">
+                                <option disabled>Seleccione</option>
+                                <?php foreach ( $categorias as $c ) { ?>
+                                  <option value="<?php echo $c["id"] ?>" <?php echo sop( $c["id"], $producto["cid"] ); ?>>
+                                    <?php echo $c["name"] ?>
+                                  </option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="val_subc" name="subcategoria" class="form-control">
+                                <?php foreach ( $subcategoriap as $sc ) { ?>
+                                  <option value="<?php echo $sc["id"] ?>" <?php echo sop( $sc["id"], $producto["scid"] ); ?>>
+                                    <?php echo $sc["name"] ?>
+                                  </option>
+                                <?php } ?> 
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input id="idmat_actual" type="hidden" name="idmat_actual" 
+                              value="<?php echo $producto["idmaterial"]; ?>">
+                              <select id="smaterial_e" 
+                              name="material" class="form-control selectpicker">
+                                <?php foreach ( $materiales as $m ) { ?>
+                                  <option value="<?php echo $m["id"] ?>" 
+                                    <?php echo sop( $m["id"], $producto["idmaterial"] ); ?>>
+                                    <?php echo $m["name"] ?>
+                                  </option>
+                                <?php } ?>
+                              </select>
+                              <div id="cambio_mm" class="alert-danger" style="display: none;">
+                                Si se cambia el material del producto, se deben reasignar los valores de baño para cada detalle de este producto
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Trabajo </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="streat" name="trabajo[]" class="form-control selectpicker" multiple>
+                                <?php foreach ( $trabajos as $t ) { ?>
+                                  <option value="<?php echo $t["id"] ?>"><?php echo $t["name"] ?></option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div>
+                                                  
+                        </div>
+                      </div>
+                      
+                      <div class="ln_solid"></div>
+
+                      <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Proveedor 1</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select name="proveedor1" class="form-control rlist" title="Seleccione" required>
+                                <option></option>
+                                <?php foreach ( $proveedores as $p ) { ?>
+                                  <option value="<?php echo $p[id] ?>" <?php echo sop( $p["id"], $producto["idpvd1"] ); ?>> 
+                                    <?php echo $p["numero"]." ".$p["nombre"] ?> 
+                                  </option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Proveedor 2</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select name="proveedor2" class="form-control rlist" title="Seleccione">
+                                <option></option>
+                                <?php foreach ( $proveedores as $p ) { ?>
+                                  <option value="<?php echo $p[id] ?>" <?php echo sop( $p["id"], $producto["idpvd2"] ); ?>> 
+                                    <?php echo $p["numero"]." ".$p["nombre"] ?> 
+                                  </option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Proveedor 3</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select name="proveedor3" class="form-control rlist" title="Seleccione">
+                                <option></option>
+                                <?php foreach ( $proveedores as $p ) { ?>
+                                  <option value="<?php echo $p[id] ?>" <?php echo sop( $p["id"], $producto["idpvd3"] ); ?>> 
+                                    <?php echo $p["numero"]." ".$p["nombre"] ?> 
+                                  </option>
+                                <?php } ?>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Cód. fabricante 1</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control codfab_disp" name="codigof1" id="cdgf1" 
+                              placeholder="Código fabricante 1" data-parsley-available="" 
+                              value="<?php echo $producto[codigof1] ?>" data-idp="<?php echo $producto[id] ?>">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Cód. fabricante 2</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control codfab_disp" name="codigof2" id="cdgf2" 
+                              placeholder="Código fabricante 2" data-parsley-available="" 
+                              value="<?php echo $producto[codigof2] ?>" data-idp="<?php echo $producto[id] ?>">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Cód. fabricante 3</label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <input type="text" class="form-control codfab_disp" name="codigof3" id="cdgf3" 
+                              placeholder="Código fabricante 3" data-parsley-available="" 
+                              value="<?php echo $producto[codigof3] ?>" data-idp="<?php echo $producto[id] ?>">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </form>
                     
+                    <?php include( "sections/warning.html" ); ?>
+                    
+                    <div class="ln_solid"></div>
+                  
                   </div>
-                
+                  
+                  <div class="form-group">
+                    <div align="center">
+                      <button id="bot_editar_producto" type="button" class="btn btn-success neweditprod">Guardar</button>
+                    </div>
+                    <div id="ghres"></div>
+                    <!--<button type="button" class="btn btn-primary" data-toggle="modal" 
+                    data-target=".bs-example-modal-sm">Respuesta</button>-->
+                    <?php include( "sections/modals/response_message.php" );?>
+                  </div>
+                    
                 </div>
+                
               </div>
             </div>
           </div>
         </div>
-        <!-- /page content -->
+      </div>
+      <!-- /page content -->
 
-        <!-- footer content -->
-        <?php include( "sections/footer.php" ); ?>
-        <!-- /footer content -->
+      <!-- footer content -->
+      <?php include( "sections/footer.php" ); ?>
+      <!-- /footer content -->
+
       </div>
     </div>
 
