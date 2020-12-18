@@ -37,7 +37,7 @@
 		//Devuelve los registros correspondientes a un detalle de pedido dado su id
 		$q = "select od.id, od.order_id, od.product_id, od.product_detail_id, 
 		od.available as disponible, od.item_status as istatus, od.check_revision as revision, od.quantity, 
-		od.price, p.name as producto, p.description, s.name as talla, s.unit 
+		od.price, p.name as producto, p.description, s.name as talla, s.unit, pd.location as ubicacion 
 		from orders o, order_details od, products p, sizes s, size_product_detail sd, product_details pd 
 		where od.order_id = o.id and od.product_id = p.id and od.product_detail_id = pd.id and 
 		od.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and o.id = $ido";

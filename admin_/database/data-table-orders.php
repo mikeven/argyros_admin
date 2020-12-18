@@ -1,6 +1,6 @@
 <?php
 	/* ----------------------------------------------------------------------------------- */
-	/* Argyros - Funciones sobre datos de tabla de clientes */
+	/* Argyros - Funciones sobre datos de tabla de pedidos */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerOrdenesUsuarios( $dbh ){
@@ -66,12 +66,12 @@
 
 	foreach ( $pedidos as $p ) {
 
-		$iconoe = obtenerIconoEstado( $p["estado"], "" );
-        $dorden = obtenerDetalleOrden( $dbh, $p["id"] );
-        $total_o = calcularTotalOrden( $p, $dorden ); 
-        $lnk_cliente = "client-data.php?id=$p[idu]";
-        $link_pedido = "<a href='order-data.php?order-id=$p[id]'>Pedido N° $p[id]</a>"." | ".
-        				"<a href='order-data.php?order-id=$p[id]' target='_blank'><i class='fa fa-external-link'></i></a>";
+		$iconoe 					= obtenerIconoEstado( $p["estado"], "" );
+        $dorden 					= obtenerDetalleOrden( $dbh, $p["id"] );
+        $total_o 					= calcularTotalOrden( $p, $dorden ); 
+        $lnk_cliente 				= "client-data.php?id=$p[idu]";
+        $link_pedido 				= "<a href='order-data.php?order-id=$p[id]'>Pedido N° $p[id]</a>"." | ".
+        							"<a href='order-data.php?order-id=$p[id]' target='_blank'><i class='fa fa-external-link'></i></a>";
 
         $reg_pedido["id"] 			= $p["id"];
 		$reg_pedido["pedido"] 		= $link_pedido;

@@ -260,7 +260,8 @@
                                         <?php } ?>
                                         <div class="">
                                             <label class="control-label">Fecha última reposición: </label> 
-                                            <span id="data-freposicion"><?php echo $dp["freposicion"]; ?></span> |
+                                            <span id="data-freposicion<?php echo $dp[id] ?>">
+                                                <?php echo $dp["freposicion"]; ?></span> |
                                             <button type="button" class="btn btn-info btn-xs act_frepos" 
                                             data-id="<?php echo $dp[id] ?>">
                                                 <i class="fa fa-arrow-circle-up"></i> Actualizar
@@ -271,7 +272,7 @@
                                                 <i class="fa fa-archive"></i> Ubicación: 
                                             </label> 
                                             <input id="ub<?php echo $dp["id"]; ?>" class="txubc" type="text" 
-                                            value="<?php echo $dp["ubicacion"]; ?>" maxlength="10">
+                                            value="<?php echo $dp["ubicacion"]; ?>" maxlength="20">
                                             <button type="button" class="btn btn-info btn-xs act_ubicacion" 
                                                 data-id="<?php echo $dp[id] ?>" title="Cambiar"> <i class="fa fa-save"></i>
                                             </button>

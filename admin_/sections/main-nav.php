@@ -68,7 +68,16 @@
         </ul>
       </li>
       <li><a href="orders.php"><i class="fa fa-file-text-o fa-fw"></i>Pedidos</a>
-      </li>
+      <?php if( in_array( $uargyros["id"], array( 1, 2, 7 ) ) ) { ?>
+        <li><a><i class="fa fa-truck fa-fw"></i>Compras <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+            <li> <a href="providers.php">Proveedores</a> </li>
+            <li> <a href="products-sizes.php">Productos por tallas</a> </li>
+            <li> <a href="preorder.php">Lista Pre-Orden</a> </li>
+            <li> <a href="purchase-orders.php">Órdenes de compra</a> </li>
+        </ul>
+      <?php } ?>
+      
       <li>
         <a href="users.php"><i class="fa fa-users fa-fw"></i>Usuarios</a>
       </li>

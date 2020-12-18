@@ -1,25 +1,27 @@
 <?php
     /*
-     * Argyros Admin - Proveedores
+     * Argyros Admin - Órdenes de compra
      * 
      */
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
-    include( "database/data-providers.php" );
+    include( "fn/common-functions.php" );
+
     checkSession( '' );
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+  
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Proveedores :: Argyros Admin</title>
+    <title>Órdenes de compra :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -38,11 +40,6 @@
     <!-- bootstrap-daterangepicker -->
     <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
-    <!-- PNotify -->
-    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-
     <!-- Datatables -->
     <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
@@ -52,12 +49,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
-    <link href="css/custom-styles.css" rel="stylesheet">
-  </head>
-
-  <?php
-    $proveedores = obtenerListaProveedores( $dbh );
-  ?>
+</head>
 
   <body class="nav-md">
     <div class="container body">
@@ -71,16 +63,15 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Proveedores</h3>
+                <h3>Órdenes de compra</h3>
               </div>
 
               <!--<div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
+                  <div class="input-group" style="float:right;">
+                    <a href="new-client.php" class="btn btn-app">
+                      <i class="fa fa-plus"></i> Agregar
+                    </a>
                   </div>
                 </div>
               </div>-->
@@ -90,59 +81,18 @@
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-4 col-sm-6 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear proveedor</h2>
+                    <h2>Lista de órdenes</h2>
                     <!--<ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>-->
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form id="frm_nproveedor" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="database/data-providers.php?nprovider" method="post">
-                      
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre de proveedor" name="nombre">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Número </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Número de proveedor" name="numero" required>
-                        </div>
-                      </div>
-                      
-                      <div class="ln_solid"></div>
-
-                      <div class="form-group">
-                        <div align="center">
-                          <button type="submit" class="btn btn-success">Guardar</button>
-                        </div>
-                      </div>
-
-                    </form>  
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lista de proveedores</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>-->
-                    <div class="clearfix"></div>
-                  </div>
-                  <div id="tabla_datos-lineas" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include( "sections/tables/table-providers.php" );?>
-                    <?php include( "sections/modals/confirm_action.php" ); ?>
-                    <input id="id-linea-e" type="hidden">
+                    <?php include("sections/tables/table-data-purchases.php");?>
                   </div>
                 </div>
               </div>
@@ -213,21 +163,57 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
-    <!-- PNotify -->
-    <script src="vendors/pnotify/dist/pnotify.js"></script>
-    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
-
-    <!-- Parsley -->
-    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
-    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
-
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
-    <script src="js/fn-lines.js"></script>
-    <script src="js/fn-ui.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#datatable_o').dataTable({
+            
+            "ajax": { 
+                "method":"POST",
+                "url":"database/data-table-purchases.php"
+            },
+            "columns":[
+                {"data":"id"},
+                {"data":"orden"},
+                {"data":"proveedor"},
+                {"data":"fecha"},
+                {"data":"total"},
+                {"data":"status"},
+            ],
+            "processing": true,
+            "paging": true,
+            "iDisplayLength": 10,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "deferRender": true,
+            "autoWidth": false,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ regs por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando pág _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros",
+                "infoFiltered": "(filtrados de _MAX_ regs)",
+                "search": "Buscar:",
+                "processing": "<img src='https://www.argyros.com.pa/admin/images/ajax-loader.gif' width='20'>",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Próximo",
+                    "previous":   "Anterior"
+                }
+            }
+        });
+        var table = $('#datatable_o').DataTable();
+        // Ordenar por columna cero, dibujar
+        table.order( [ 0, 'desc' ] ).draw();
+    });
 
-    <?php include( "fn/fn-providers.php" ); ?>
+    //table.columns( '.datesort' ).order( 'desc' ).draw();
+
+    </script>
 	
   </body>
 </html>

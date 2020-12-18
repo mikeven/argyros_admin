@@ -30,6 +30,21 @@ function notificar( titulo, mensaje, tipo ){
 	}		
 }
 /* ----------------------------------------------------------------------------------- */
+function tNotificar( titulo, mensaje, tipo, t ){
+	
+	//Muestra una notificación: 
+	if( $(".ui-pnotify").length < 1 ){
+		var notice = new PNotify({
+		  title: titulo,
+		  text: mensaje,
+		  type: tipo,
+		  delay: t,
+		  styling: 'bootstrap3',
+		  tag: null,
+		});
+	}		
+}
+/* ----------------------------------------------------------------------------------- */
 function ventanaMensaje( exito, mensaje, enlace ){
 	var clase_m = ["modal-danger", "modal-success"];
 	if( exito == '1' )
@@ -57,9 +72,11 @@ function isNumberKey(evt){
 
 function isIntegerKey(evt){
 	var charCode = (evt.which) ? evt.which : evt.keyCode;
-	if ( charCode < 48 || charCode > 57 )
+	
+	if ( ( charCode > 47 && charCode < 58 ) )
+		return true;
+	else
 		return false;
-	return true;
 }
 /* ----------------------------------------------------------------------------------- */
 function alertaMensaje( exito, mensaje ){

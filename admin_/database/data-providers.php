@@ -54,13 +54,13 @@
 		$nombre = mysqli_real_escape_string( $dbh, $_POST["nombre"] );
 		$numero = mysqli_real_escape_string( $dbh, $_POST["numero"] );
 
-		if( nombreDisponible( $dbh, "plines", "number", $nombre, "", "" ) ){
+		if( nombreDisponible( $dbh, "providers", "number", $numero, "", "" ) ){
 			$idp = agregarProveedor( $dbh, $nombre, $numero );
 		}else{
 			header( "Location: ../providers.php?agregar_proveedor-nodisponible" );
 		}
 
-		if( ( $idl != 0 ) && ( $idl != "" ) ){
+		if( ( $idp != 0 ) && ( $idp != "" ) ){
 			header( "Location: ../providers.php?agregar_proveedor-exito" );
 		}	
 	} else {

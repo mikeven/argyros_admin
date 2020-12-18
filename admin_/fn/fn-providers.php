@@ -13,7 +13,7 @@
 <?php if( isset( $_GET["agregar_proveedor-nodisponible"] ) 
        || isset( $_GET["editar_proveedor-nodisponible"] ) ){ ?>
   <script>
-    notificar( "Proveedores", "Nombre de línea ya existente", "error" );
+    notificar( "Proveedores", "Número de proveedor ya existente", "error" );
   </script>
 <?php } ?>
 

@@ -1,25 +1,26 @@
 <?php
     /*
-     * Argyros Admin - Proveedores
+     * Argyros Admin - Productos no disponibles
      * 
      */
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
-    include( "database/data-providers.php" );
+    include( "fn/common-functions.php" );
+    include( "database/data-products.php" );
     checkSession( '' );
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Proveedores :: Argyros Admin</title>
+    <title>Productos por talla :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -53,10 +54,22 @@
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
     <link href="css/custom-styles.css" rel="stylesheet">
-  </head>
+    <style type="text/css">
+        .dsp_total{ background-color: #28a745 }
+        .dsp_parcial{ background-color: #ffc107; }
+        .dsp_agotado{ background-color: #dc3545; }
+
+        .it_oc_rec{ color: #5cb85c; }
+        .it_oc_pen{ color: #f0ad4e; }
+        .it_oc_nor{ color: #ac2925; }
+
+        .inc_lpreo{ color: #28a745 }
+    </style>
+
+</head>
 
   <?php
-    $proveedores = obtenerListaProveedores( $dbh );
+    $productos = obtenerListaProductos( $dbh );
   ?>
 
   <body class="nav-md">
@@ -70,79 +83,37 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
+              
               <div class="title_left">
-                <h3>Proveedores</h3>
+                <h3>Lista de productos por tallas</h3>
               </div>
-
-              <!--<div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
+                  <div class="input-group" style="float:right;">
+                    <a href="preorder.php" class="btn btn-app">
+                    <i class="fa fa-list-alt"></i> Ir a Lista Pre-Orden
+                </a>
                   </div>
                 </div>
-              </div>-->
-            
+              </div>
+              
             </div>
 
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-4 col-sm-6 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Crear proveedor</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>-->
+                    <h2>Lista de productos</h2>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
-                    <form id="frm_nproveedor" data-parsley-validate class="form-horizontal form-label-left" 
-                      action="database/data-providers.php?nprovider" method="post">
-                      
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Nombre de proveedor" name="nombre">
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Número </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Número de proveedor" name="numero" required>
-                        </div>
-                      </div>
-                      
-                      <div class="ln_solid"></div>
-
-                      <div class="form-group">
-                        <div align="center">
-                          <button type="submit" class="btn btn-success">Guardar</button>
-                        </div>
-                      </div>
-
-                    </form>  
+                  <div class="instrucciones" align="center">
+                      <p class="text-muted font-13 m-b-30"> Seleccione los productos a agregar a la lista de pre-orden con en el ícono <i class="fa fa-list"></i></p>
                   </div>
-                </div>
-              </div>
-              <div class="col-md-8 col-sm-5 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Lista de proveedores</h2>
-                    <!--<ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>-->
-                    <div class="clearfix"></div>
-                  </div>
-                  <div id="tabla_datos-lineas" class="x_content">
+                  <div id="lista_productos_tallas" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include( "sections/tables/table-providers.php" );?>
-                    <?php include( "sections/modals/confirm_action.php" ); ?>
-                    <input id="id-linea-e" type="hidden">
+                    <?php include( "sections/tables/table-data-products-sizes.php" ); ?>
                   </div>
                 </div>
               </div>
@@ -212,22 +183,75 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.19/filtering/type-based/accent-neutralise.js"></script>
 
     <!-- PNotify -->
     <script src="vendors/pnotify/dist/pnotify.js"></script>
     <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
-    <!-- Parsley -->
-    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
-    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
-
     <!-- Custom Theme Scripts -->
+    <script src="js/fn-purchase.js"></script>
     <script src="js/custom.js"></script>
-    <script src="js/fn-lines.js"></script>
+    
     <script src="js/fn-ui.js"></script>
 
-    <?php include( "fn/fn-providers.php" ); ?>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+
+    <script>
+        //$.fn.dataTable.moment('YYYY/MM/DD HH:mm');
+        $.fn.dataTable.moment('DD/MM/YYYY hh:mm:ss A');
+
+        $(document).ready(function() {
+            $('#dt-unavailable-products').dataTable({
+                
+                "ajax": { 
+                    "method":"POST",
+                    "url":"database/data-table-products-sizes.php"
+                },
+                "columns":[
+                    {"data":"fagotado"},
+                    {"data":"codigo"},
+                    {"data":"nombre"},
+                    {"data":"desc"},
+                    {"data":"categ"},
+                    {"data":"detalle"},
+                    {"data":"tallas"}
+                ],
+                "columnDefs" : [
+                                { "targets":[1,3,4,5,6], "orderable": false }],
+                "processing": true,
+                "paging": true,
+                "iDisplayLength": 10,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "deferRender": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ regs por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando pág _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros",
+                    "infoFiltered": "(filtrados de _MAX_ regs)",
+                    "search": "Buscar:",
+                    "processing": "<img src='https://www.argyros.com.pa/admin/images/ajax-loader.gif' width='20'>",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Último",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }
+                }
+            });
+            var table = $('#dt-unavailable-products').DataTable();
+            // Ordenar por columna cero, dibujar
+            table.order( [ 0, 'desc' ] ).draw();
+        });   
+    </script>
 	
   </body>
 </html>

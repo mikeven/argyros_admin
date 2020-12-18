@@ -1,5 +1,9 @@
 <form id="revision_pedido" data-parsley-validate class="form-horizontal form-label-left" method="post">
   <input id="idpedido" type="hidden" value="<?php echo $orden["id"]; ?>">
+  <div id="leyenda" align="right">
+      <i class="fa-circle fa iley_dsp"></i> Retirado por disponibilidad
+      | <i class="fa-circle fa iley_cli"></i> Retirado por cliente
+  </div>
   <table id="datatable_do" class="table table-bordered">
     <thead>
       <tr>
@@ -35,7 +39,12 @@
           $total_item = $r["quantity"] * $r["price"];
           if ( ( $orden["estado"] != "pendiente" ) && ( $orden["estado"] != "cancelado" ) )
              $total_item = $r["disponible"] * $r["price"];
-          if( $r["istatus"] == "retirado" ) $clase_item = "item_retirado";
+
+          if( $r["istatus"] == "retirado" ) 
+            $clase_item = "item_retirado";          // Retirado por estar no disponible
+          if( $r["istatus"] == "retirado" && $r["revision"] != "nodisp" ) 
+            $clase_item = "item_retirado_cliente";  // Retirado por por cliente
+
           $lnk_p = "product-data.php?p=".$r["product_id"]."#".$r["product_detail_id"];
       ?>
       <tr class="<?php echo $clase_item; ?>">
@@ -53,6 +62,7 @@
           <a target="_blank" href="<?php echo $lnk_p; ?>">
             <?php echo "P:".$r["product_id"]." - ".$r["producto"]." (#".$r["product_detail_id"].")"." | "."Talla: ".$r["talla"]; ?>
           </a>
+          <div align="left" title="Ubicación"><i class="fa fa-archive"></i> <?php echo $r["ubicacion"]; ?></div>
         </td>
         
         <td id="qcd<?php echo $r["id"]; ?>" align="center">

@@ -71,7 +71,7 @@
         font-size: 12px;
       }
       #wrnmessage { display: none; }
-      .wrng_prods{ float: left; margin-right: 15px; }
+      .wrng_prods{ display: inline-block; margin-right: 15px; }
     </style>
   </head>
 
@@ -301,8 +301,10 @@
                         </div>
                       </div>
                     </form>
-                    
-                    <?php include( "sections/warning.html" ); ?>
+                    <div id="warning_productos">
+                      <?php include( "sections/warning.html" ); ?>
+                    </div>
+                    <?php include( "sections/modals/product-image.php" ); ?>
                     
                     <div class="ln_solid"></div>
                     

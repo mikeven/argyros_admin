@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Datos de pedido
+     * Argyros Admin - Datos de orden de compra
      * 
      */
     session_start();
@@ -8,9 +8,10 @@
     include( "database/bd.php" );
     include( "database/data-user.php" );
     include( "fn/common-functions.php" );
-    include( "database/data-orders.php" );
+    include( "database/data-purchase.php" );
     include( "database/data-products.php" );
-    include( "fn/fn-orders.php" );
+    include( "database/data-providers.php" );
+    include( "fn/fn-purchase.php" );
    
     checkSession( '' );
 ?>
@@ -23,7 +24,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Pedido :: Argyros Admin</title>
+        <title>Orden de compra :: Argyros Admin</title>
 
         <!-- Bootstrap -->
         <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -61,15 +62,18 @@
             .dcol{ display: none; }
             #datatable_do .dcol .fa:hover{ cursor: pointer; }
             .marked{ color: #5bc0de; }
-            .item_retirado{ background: #f9c7c6; } .iley_dsp{ color: #f9c7c6; }
-            .item_retirado_cliente{ background: #f3d9ba; }  .iley_cli{ color: #f3d9ba; }
-            .item_leyenda{ float: left; margin-right: 12px; }
+            .icono_ista{ font-size: 14px; }
             .qdisp_orden{ width: 100%; text-align: center; }
             .btn_accion_pedido{ float: left; }
             .accion_observaciones{ margin-bottom: 20px; }
-            .tx_al_c{ text-align: center;}
+            .tx_al_c{ text-align: center; }
+            .cnt_preord.act_preo {
+                text-align: center;
+            }
         </style>
     </head>
+
+    <?php $ids_detalles_oc = obtenerIdsDetallesEnOrdenCompra( $detalle_oc ); ?>
 
   <body class="nav-md">
     <div class="container body">
@@ -86,23 +90,13 @@
                 
                     <div class="page-title">
                       <div class="title_left">
-                        <h3>Pedido</h3>
+                        <h3>Orden de compra</h3>
                       </div>
                       <div class="input-group" style="float:right;">
-                        <a href="orders.php" class="btn btn-app">
-                          <i class="fa fa-arrow-left"></i> Volver a pedidos
+                        <a href="purchase-orders.php" class="btn btn-app">
+                          <i class="fa fa-arrow-left"></i> Volver a órdenes de compra
                         </a>
                       </div>
-                      <!--<div class="title_right">
-                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                          <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search for...">
-                            <span class="input-group-btn">
-                              <button class="btn btn-default" type="button">Go!</button>
-                            </span>
-                          </div>
-                        </div>
-                      </div>-->
                     
                     </div>
 
@@ -115,113 +109,68 @@
                             <div class="x_panel">
                                 <?php if( isset( $orden ) ) { ?>
                                     <div class="x_title">
-                                        <h2>Datos del pedido</h2>
+                                        <h2>Datos de la orden de compra</h2>
                                         <ul class="nav navbar-right panel_toolbox">
                                             <?php echo $iconoe; ?> 
                                         </ul>
                                         <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="control-label">Estado: </label> <?php echo $orden["estado"]; ?>
+                                            <input type="hidden" id="status_oc" value="<?php echo $orden["estado"]; ?>">
+                                        </div>
                                     </div>
                                   
                                     <div class="x_content">
                                         
                                         <div class="form-group">
-                                            <label class="control-label">Pedido: </label> <?php echo "#".$orden["id"]; ?>
+                                            <label class="control-label">Orden: </label> <?php echo "#".$orden["id"]; ?>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Fecha: </label> <?php echo $orden["fecha"]; ?>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">Ítems: </label> <?php echo $orden["ncant_items"]; ?>
+                                            <label class="control-label">Ítems: </label> <?php echo count( $ids_detalles_oc ); ?>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Cantidades: </label> 
+                                            <?php echo $totales["cant"]." ( $peso_aprox gr apróx. )"; ?>
                                         </div>
                                         
-                                        <div class="form-group">
-                                            <label class="control-label">Total estimado: </label> 
-                                            $<span id="monto_total_orden"><?php echo $orden["total_actualizado"]; ?></span>
-                                            <input type="hidden" id="previo_total_orden" value="<?php echo $orden["total"]; ?>">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="control-label">Estado: </label> <?php echo $orden["estado"]; ?>
-                                        </div>
-                                        <?php if ( $orden["procesada"] ) {?>
-                                            <div class="form-group">
-                                                <span>Monto inicial: $<?php echo $orden["total"]; ?></span>   
-                                            </div> 
-                                        <?php } ?>
                                         <hr>
 
-                                        <?php if( $orden["estado"] == "revisado" ) { ?>
-                                            <div><b>Observaciones de revisión: </b></div>
-                                            <div><?php echo $orden["revision_note"]?> </div>
-                                        <?php } ?>
-
-                                        <?php if( $orden["estado"] == "confirmado" || $orden["estado"] == "entregado" ) { ?>
-                                            <div><b>Observaciones del cliente: </b></div>
-                                            <div><?php echo $orden["client_note"]?> </div>
-                                        <?php } ?>
-
-                                        <?php if( $orden["estado"] == "entregado" ) { ?>
-                                            <div><b>Observaciones del administrador: </b></div>
-                                            <div><?php echo $orden["admin_note"]?> </div>
-                                        <?php } ?>
-
-                                        <hr>
                                         <div class="form-group">
-                                            <label class="control-label">Cliente: </label> 
-                                            <a href="client-data.php?id=<?php echo $orden[cid] ?>" target="_blank">
-                                                <?php echo "#".$orden["cid"]; ?>
-                                                <?php echo $orden["nombre"]." ".$orden["apellido"]; ?>
+                                            <label class="control-label">Proveedor: </label> 
+                                            <a href="provider.php?id=<?php echo $orden[idpvd] ?>" target="_blank">
+                                                <?php echo "#".$orden["idpvd"]; ?>
+                                                <?php echo $orden["nombre"]." ".$orden["numero"]; ?>
                                             </a>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="control-label">Grupo cliente: </label> 
-                                            <?php echo $orden["grupo_cliente"]; ?>
-                                        </div>
 
-                                        <?php if ( $orden["estado"] == "pendiente" ) { ?>
                                         <hr>
-                                        <div class="form-group btn_accion_pedido">
-                                            <a href="#!">
-                                                <button id="r_pedido" type="button" class="btn btn-info btn-xs">Revisar</button>
+
+                                        <div class="nota_orden_compra">
+                                          <textarea id="nota_oc" class="form-control" rows="3" placeholder="Nota" name="nota_revision"><?php echo $orden[nota] ?></textarea>
+                                        </div>
+                                        <div id="area_rsp_pedido" class="form-group">
+                                            <a id="act_nota_oc" data-idoc="<?php echo $ido ?>" href="#!">
+                                                <button type="button" class="btn btn-info btn-xs">Guardar Nota</button>
                                             </a> 
                                         </div>
 
-                                        <div class="form-group btn_accion_pedido" style="margin-left:20px;">
-                                            <a href="#!">
-                                                <button id="cnf_pedido" type="button" 
-                                                class="btn btn-success btn-xs" data-toggle="modal" 
-                                                data-target="#confirmar-accion">Confirmar</button>
-                                            </a> 
-                                        </div>
-                                        <div class="form-group btn_accion_pedido" style="margin-left:20px;">
-                                            <a href="#!">
-                                                <button id="can_pedido" type="button" 
-                                                class="btn btn-danger btn-xs" data-toggle="modal" 
-                                                data-target="#confirmar-accion">Cancelar</button>
-                                            </a> 
-                                        </div>
-                                        
-                                        <?php } ?>
-                                        
-                                        <?php if ( $orden["estado"] == "confirmado" ) { ?>
-                                            <hr>
+                                        <hr>
 
-                                            <div class="accion_observaciones">
-                                              <textarea id="admin_obs" class="form-control" rows="3" placeholder="Observaciones" name="observaciones"></textarea>
-                                            </div>
+                                        <div class="input-group" style="float:right;">
+                                            <a href="purchase-print.php?purchase-id=<?php echo $orden[id] ?>" 
+                                                class="btn btn-app" target="_blank">
+                                              <i class="fa fa-file-text-o"></i> Imprimir
+                                            </a>
+                                        </div>
 
-                                            <div class="form-group btn_accion_pedido">
-                                                <a href="#!">
-                                                    <button id="e_pedido" type="button" 
-                                                    class="btn btn-info btn-xs" data-toggle="modal" 
-                                                    data-target="#confirmar-accion">Marcar como entregado</button>
-                                                </a> 
-                                            </div>
-                                            
-                                        <?php } ?>
+                                        <?php include( "sections/purchase-options.php" ); ?>
 
                                         <div id="res_serv"></div>
+
                                         <?php include( "sections/modals/confirm_action.php" ); ?>
                                       
                                     </div>
@@ -239,11 +188,11 @@
                                 <div class="x_panel">
 
                                   <div class="x_title">
-                                    <h2>Detalle de pedido</h2>
+                                    <h2>Detalle de orden de compra</h2>
                                     <div class="clearfix"></div>
                                   </div>
                                   <div class="x_content">
-                                    <?php include( "sections/tables/table-order-details.php" );?> 
+                                    <?php include( "sections/tables/table-purchase-details.php" );?> 
                                     <?php include( "sections/modals/product-image.php" ); ?>
                                   </div>                                  
                                 
@@ -264,13 +213,6 @@
             <!-- footer content -->
             <?php include( "sections/footer.php" ); ?>
             <!-- /footer content -->
-
-            <button type="button" class="btn btn-default source hidden" onclick="new PNotify({
-                title: '',
-                text: 'That thing that you were trying to do worked!',
-                type: 'success',
-                styling: 'bootstrap3'
-            });">Success</button>
 
         </div>
 
@@ -340,11 +282,7 @@
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
     <script src="js/fn-ui.js"></script>
-    <script src="js/fn-order.js"></script>
-    
-    <?php if ( $orden["estado"] == "confirmado" ) { ?>
-        <script>iniciarBotonEntregado();</script>                    
-    <?php } ?>
+    <script src="js/fn-purchase.js"></script>
 
   </body>
 </html>

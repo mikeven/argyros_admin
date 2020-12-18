@@ -68,6 +68,7 @@ function verificarCodigosFabricanteRepetidos( idp ){
 				$("#wrnmessage").fadeIn();
 			}
 			$(".neweditprod").prop( 'disabled', false );
+				
         }
     });
 }
@@ -322,7 +323,7 @@ function actualizarFechaReposicionDetalle( iddet, btn ){
 			res = jQuery.parseJSON(response);
 			if( res.exito == 1 ){ 
 				notificar( tit_notif, res.mje, "success" );
-				$("#data-freposicion").html( res.fecha );
+				$( "#data-freposicion" + iddet ).html( res.fecha );
 				if( btn != "" ) $(btn).addClass( "f_repos_actv" );
 			}
 			else
@@ -343,9 +344,9 @@ function actualizarUbicacionDetalleProducto( iddet, ubc ){
 			console.log(response);
 			res = jQuery.parseJSON(response);
 			if( res.exito == 1 )
-				notificar( tit_notif, res.mje, "success" );
+				tNotificar( tit_notif, res.mje, "success", 2000 );
 			else
-				notificar( tit_notif, res.mje, "error" );
+				tNotificar( tit_notif, res.mje, "error", 2000 );
         }
     });
 }
@@ -460,6 +461,11 @@ function iniciarPopImagenesProductos(){
 
 	/*Pop image list products*/
     $("#lista_general_productos").on( "click", ".pop-img-p", function(){
+    	var img = $(this).attr("data-src");
+    	$("#img-preview").attr( "src", img );
+    });
+
+    $("#warning_productos").on( "click", ".pop-img-p", function(){
     	var img = $(this).attr("data-src");
     	$("#img-preview").attr( "src", img );
     });
@@ -616,7 +622,7 @@ $( document ).ready(function() {
     });
 
     /* new-product.php; product-edit.php */
-    $(".codfab_disp").on( "blur", function(){
+    $(".codfab_disp").on( "change", function(){
 		verificarCodigosFabricanteRepetidos( $(this).attr("data-idp") );
     });
 

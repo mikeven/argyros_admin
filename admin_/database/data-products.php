@@ -115,6 +115,8 @@
 		//Devuelve un registro de detalle de producto dado id de detalle
 		$q = "select dp.id as id, dp.product_id as idp, c.id as color, t.id as bano, 
 		dp.price_type as tipo_precio, dp.piece_price_value as precio_pieza, 
+		date_format(dp.created_at,'%d/%m/%Y %h:%i:%s %p') as fcreado,      
+		date_format(dp.unavailable_at,'%d/%m/%Y %h:%i:%s %p') as fagotado, 
 		dp.manufacture_value as precio_mo, dp.product_id as pid, dp.weight_price_value as precio_peso 
 		FROM product_details dp LEFT JOIN treatments t ON t.id = dp.treatment_id 
 		LEFT JOIN colors c ON dp.color_id = c.id where dp.id = $idd";
@@ -191,6 +193,13 @@
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
 		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerDisponibilidadTallaDetallePorIds( $dbh, $idd, $idt ){
+		//Devuelve la disponibilidad de una talla de detalle de producto
+		$q = "select visible from size_product_detail where size_id = $idt and product_detail_id = $idd";
+		
+		return mysqli_fetch_array( mysqli_query( $dbh, $q ) );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDatosDetalleProductoPorId( $dbh, $idd ){
@@ -589,7 +598,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerIdsDetalleProductoPorId( $dbh, $idp ){
 		$q = "select p.id as p_id, dp.id as d_id, p.name as nombre FROM product_details dp, products p 
-		WHERE dp.product_id = p.id and dp.product_id = $idp ORDER BY p.id DESC";
+		WHERE dp.product_id = p.id and dp.product_id = $idp ORDER BY p.id DESC LIMIT 1";
 		
 		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
 	}
@@ -610,10 +619,13 @@
 	function obtenerProductosPorCodigoFabricante( $dbh, $codigof, $idp ){
 		// Devuelve la lista de productos dado un código de fabricante 
 		$param 		= "";
-		if( $idp != NULL ) $param = "and id <> $idp";
-		$q = "select id from products 
-				where (manfact_code1 = '$codigof' or manfact_code2 = '$codigof' or manfact_code3 = '$codigof') $param";
+		if( $idp != NULL ) $param = "and p.id <> $idp";
 		
+		$q = "select p.id as p_id, dp.id as d_id, p.name as nombre from product_details dp, products p 
+				where dp.product_id = p.id and 
+				(manfact_code1 = '$codigof' or manfact_code2 = '$codigof' or manfact_code3 = '$codigof') 
+				$param order by p.id desc LIMIT 1";
+
 		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -622,25 +634,21 @@
 		$detalles 			= array();
 		
 		foreach ( $codigos as $cod ){
-			if( $cod != "" ){
+			if( $cod != "" )
 				$productos 			= obtenerProductosPorCodigoFabricante( $dbh, $cod, $idp );
-				foreach ( $productos as $p ){
-					$reg_det 		= obtenerIdsDetalleProductoPorId( $dbh, $p["id"] );
-					$detalles		= array_merge( $detalles, $reg_det );
-				}
-			}
 		}
 		
 		$html 				= "";
-		foreach ( $detalles as $dp ){
-			
-			$lnk_dp 		= "product-data.php?p=$dp[p_id]#$dp[d_id]";
-			$html			.= obtenerHtmlImagenDetalleProducto( $dbh, $dp["d_id"] );		
+
+		foreach ( $productos as $r ){
+			$lnk_dp 		= "product-data.php?p=$r[p_id]#$r[d_id]";
+			$html			.= obtenerHtmlImagenDetalleProducto( $dbh, $r["d_id"] );		
 			$html 			.= "<div>
-									<a href='".$lnk_dp."' target='_blank'>#".$dp["p_id"]."-".$dp["d_id"]."</a>
+									<a href='".$lnk_dp."' target='_blank'>#".$r["p_id"]."-".$r["d_id"]."</a>
 								</div></div>";
 		}
-		$resultado["cant"] = count( $detalles );
+
+		$resultado["cant"] = count( $productos );
 		$resultado["regs"] = $html;
 
 		return $resultado;
