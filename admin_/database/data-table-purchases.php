@@ -6,8 +6,9 @@
 	function obtenerOrdenesCompra( $dbh ){
 		//Devuelve el registro de las órdenes registradas
 		$q = "select o.id, o.status as estado, o.note as nota, date_format( o.created_at,'%d/%m/%Y') as fecha, 
-		p.id as idpvd, p.name as nombre, p.number as numero from purchases o, providers p 
-		where o.provider_id = p.id order by o.created_at DESC";
+		p.id as idpvd, p.name as nombre, p.number as numero, u.first_name as nombre_u, u.last_name as apellido_u 
+		from purchases o, providers p, users u 
+		where o.provider_id = p.id and o.user_id = u.id order by o.created_at DESC";
 
 		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
 	}
@@ -99,6 +100,7 @@
         						<i class='fa fa-external-link'></i></a>";
 
         $reg_orden["id"] 			= $o["id"];
+        $reg_orden["usuario"] 		= $o["nombre_u"]." ".$o["apellido_u"];
 		$reg_orden["orden"] 		= $link_orden;
 		$reg_orden["proveedor"] 	= "<a href='$lnk_pvd' target='_blank'>".$o["nombre"]." ".$o["numero"]."</a>";
 		$reg_orden["fecha"] 		= $o["fecha"];

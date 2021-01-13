@@ -175,6 +175,7 @@
             },
             "columns":[
                 {"data":"id"},
+                {"data":"usuario"},
                 {"data":"orden"},
                 {"data":"proveedor"},
                 {"data":"fecha"},

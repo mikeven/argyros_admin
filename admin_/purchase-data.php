@@ -14,6 +14,7 @@
     include( "fn/fn-purchase.php" );
    
     checkSession( '' );
+    $idusuario = $_SESSION["user-adm"]["id"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,6 +119,10 @@
                                             <label class="control-label">Estado: </label> <?php echo $orden["estado"]; ?>
                                             <input type="hidden" id="status_oc" value="<?php echo $orden["estado"]; ?>">
                                         </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Creada por: </label> 
+                                            <?php echo $orden["nombre_u"]." ".$orden["apellido_u"]; ?>
+                                        </div>
                                     </div>
                                   
                                     <div class="x_content">
@@ -149,27 +154,36 @@
 
                                         <hr>
 
-                                        <div class="nota_orden_compra">
-                                          <textarea id="nota_oc" class="form-control" rows="3" placeholder="Nota" name="nota_revision"><?php echo $orden[nota] ?></textarea>
-                                        </div>
-                                        <div id="area_rsp_pedido" class="form-group">
-                                            <a id="act_nota_oc" data-idoc="<?php echo $ido ?>" href="#!">
-                                                <button type="button" class="btn btn-info btn-xs">Guardar Nota</button>
-                                            </a> 
-                                        </div>
+                                        <?php include( "sections/purchase-options.php" ); ?>
 
-                                        <hr>
-
-                                        <div class="input-group" style="float:right;">
+                                        <div class="form-group">
                                             <a href="purchase-print.php?purchase-id=<?php echo $orden[id] ?>" 
                                                 class="btn btn-app" target="_blank">
                                               <i class="fa fa-file-text-o"></i> Imprimir
                                             </a>
                                         </div>
 
-                                        <?php include( "sections/purchase-options.php" ); ?>
-
                                         <div id="res_serv"></div>
+
+                                        <hr>
+
+                                        <?php include("sections/tables/table-purchase-notes.php"); 
+                                        // Tabla con registro de notas ?>
+
+                                        <hr>
+
+                                        <form id="frm_nvanota_oc" data-parsley-validate class="form-horizontal form-label-left" action="database/data-purchase.php?nvanota" method="post">
+                                            <input type="hidden" name="idorden" value="<?php echo $ido ?>">
+                                            <input type="hidden" name="idusuario" value="<?php echo $idusuario ?>">
+                                            <div class="nota_orden_compra">
+                                              <textarea class="form-control" placeholder="Nota" name="nota" required></textarea>
+                                            </div>
+                                            <div id="area_rsp_pedido" class="form-group">
+                                                <div align="center">
+                                                    <button type="submit" class="btn btn-info btn-xs">Guardar</button>
+                                                </div> 
+                                            </div>
+                                        </form>
 
                                         <?php include( "sections/modals/confirm_action.php" ); ?>
                                       
@@ -283,6 +297,52 @@
     <script src="js/custom.js"></script>
     <script src="js/fn-ui.js"></script>
     <script src="js/fn-purchase.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.12/sorting/datetime-moment.js"></script>
+    
+    <script>
+        $.fn.dataTable.moment( 'DD/MM/YY' );
+        $(document).ready(function() {
+            $('#datatable-purchase-notes').dataTable({
+                "processing": true,
+                "paging": true,
+                "iDisplayLength": 10,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "deferRender": true,
+                "autoWidth": false,
+                "columnDefs" : [{"targets":0, "type":"date-eu"}],
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ regs por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando pág _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros",
+                    "infoFiltered": "(filtrados de _MAX_ regs)",
+                    "search": "Buscar:",
+                    "processing": "<img src='https://www.argyros.com.pa/admin/images/ajax-loader.gif' width='20'>",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Último",
+                        "next":       "Próximo",
+                        "previous":   "Anterior"
+                    }
+                }
+            });
+            var table = $('#datatable-purchase-notes').DataTable();
+            // Ordenar por columna cero, dibujar
+            table.order( [ 0, 'desc' ] ).draw();
+        });   
+    </script>
+
+    <?php if( isset( $_GET["nueva_nota-exito"] ) ){ ?>
+        <script>
+          notificar( "Orden de Compra", "Nueva nota agregada con éxito", "success" );
+        </script>
+    <?php } ?>
 
   </body>
 </html>

@@ -18,7 +18,7 @@
     
     checkSession( '' );
     $idusuario = $_SESSION["user-adm"]["id"];
-    $notas_cliente = obtenerListaNotasClientes( $dbh, $idc )
+    $notas_cliente = obtenerListaNotasClientes( $dbh, $idc );
 
 ?>
 <!DOCTYPE html>

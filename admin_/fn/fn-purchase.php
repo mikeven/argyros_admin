@@ -4,12 +4,34 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
+	define( "PFXLPOFILE", "saved_preorder_u" );
+
 	function agregarItemListaPreorden( $item ){
 		//Agrega el item de producto a lista de pre-orden
 
-		$preorden = $_SESSION["preorden"];
-		$preorden[] = $item;
-		$_SESSION["preorden"] = $preorden;
+		$preorden 				= $_SESSION["preorden"];
+		$preorden[] 			= $item;
+		$_SESSION["preorden"] 	= $preorden;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function guardarEstadoLista( $preorden ){
+		// Devuelve el contenido de carrito de compra con los datos a almacenar en cookie
+		$filename 				= PFXLPOFILE.$_SESSION["user-adm"]["id"];
+
+		$json_string 			= json_encode( $preorden );
+		$file 					= "saved_preorders/".$filename.".json";
+		file_put_contents( $file, $json_string );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerListaPreOrdenRegistrada(){
+		// Devuelve el contenido de carrito de compra con los datos a almacenar en cookie
+		$filename 				= PFXLPOFILE.$_SESSION["user-adm"]["id"];
+
+		if( file_exists( "../fn/saved_preorders/".$filename.".json" ) ){
+			$filepreorder			= file_get_contents( "../fn/saved_preorders/".$filename.".json" );
+			$preorden 				= json_decode( $filepreorder, true );
+			$_SESSION["preorden"] 	= $preorden;
+		}
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function generarItemListaPreorden( $producto, $detalle, $imagenes, $talla ){
@@ -244,11 +266,32 @@
 
 		return $totales;
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function tieneItemsEnOC( $items ){
+		// Devuelve verdadero si al menos un ítem está marcado para ser incluido en una orden de compra
+		$items_enoc = false;
+		foreach ( $items as $it ) {
+			if( $it["en_oc"] == true ) $items_enoc = true;
+        }
+
+        return $items_enoc;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerMovimientosProducto( $dbh, $idd ){
+		// Devuelve los movimientos de compra y venta de un detalle de pedido
+		$regs_oc 		= obtenerOrdenesCompraDetalleProducto( $dbh, $idd );
+		$regs_p 		= obtenerPedidosDetalleProducto( $dbh, $idd );
+		
+		$movimientos 	= array_merge( $regs_oc, $regs_p ); 
+		
+		return $movimientos;
+	}
 	
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor sobre Órdenes de compra y lista pre-orden */
 	/* ----------------------------------------------------------------------------------- */
 	ini_set( 'display_errors', 1 );
+
 	if( isset( $_POST["agregar_prod_preorden"] ) ){
 		//Invoca a función de agregar un producto a la lista de pre-orden
 		session_start();
@@ -257,7 +300,7 @@
 		include( "../database/bd.php" );
 		include( "../database/data-products.php" );
 		
-		$idd = $_POST["agregar_prod_preorden"];
+		$idd 		= $_POST["agregar_prod_preorden"];
 		
 		$detalle 	= obtenerDatosDetalleProductoPorId( $dbh, $idd );
 		$producto 	= obtenerProductoPorId( $dbh, $detalle["datos"]["idp"] );
@@ -276,6 +319,8 @@
 			$res["exito"] = $resultado;
 			$res["mje"] = "Producto ya está incluído en la lista pre-orden";
 		}
+
+		guardarEstadoLista( $_SESSION["preorden"] );
 
 		echo json_encode( $res );
 	}
@@ -303,6 +348,8 @@
 				actualizarValorListaPreorden( "en_oc", $idd, $idt, false );
 		}
 
+		guardarEstadoLista( $_SESSION["preorden"] );
+
 		echo $mensaje;
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -313,6 +360,7 @@
 
         if( $orden ){
 	        $detalle_oc		= obtenerDetalleOrdenCompra( $dbh, $ido );
+	        $notas_oc 		= obtenerListaNotasOrden( $dbh, $ido );
 	        $totales 		= obtenerTotalesOC( $detalle_oc );
 	        $peso_aprox		= number_format( $totales["peso"], 2, '.', '' );
 	        $iconoe 		= obtenerIconoEstadoOC( $orden["estado"], "fa-2x" );

@@ -223,7 +223,7 @@
                                     foreach ( $dproducto as $dp ) {
                                         $imagenes_detalle = obtenerImagenesDetalleProducto( $dbh, $dp["id"], NULL );
                                         $tallas_detalle = obtenerTallasDetalleProducto( $dbh, $dp["id"] ); 
-
+                                        $lnk_mvm = "product-movements.php?p=$producto[id]&dp=$dp[id]";
                                 ?>
                                 <div class="row">
                                     <div id="<?php echo $dp["id"]; ?>" class="col-md-4 col-sm-4 col-xs-12">
@@ -295,6 +295,11 @@
                                             <a href="product-detail-edit.php?id=<?php echo $dp["id"]; ?>">
                                                 <button type="button" class="btn btn-info btn-xs">Editar</button>
                                             </a>
+                                            <div> 
+                                                <a href="<?php echo $lnk_mvm ?>">
+                                                    <i class="fa fa-exchange"></i> Registro de Movimientos
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                     <?php include( "sections/modals/product-image.php" ); ?>

@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th>Id</th>
+      <th>Usuario</th>
       <th>Orden</th>
       <th>Proveedor</th>
       <th class="datesort">Fecha</th>

@@ -15,14 +15,14 @@
         foreach ( $ids_preo as $iddet ) {
           $items        = obtenerItemsPorDetalle( $iddet );
           $i            = $items[0];
-          $npzas          = 0;
-          $tpeso          = 0;
-
+          $npzas        = 0;
+          $tpeso        = 0;
+          $items_enoc   = tieneItemsEnOC( $items );
           $lnk_dp       = "product-data.php?p=$i[idp]#$i[idd]";
           $producto     = obtenerProductoPorId( $dbh, $i["idp"] ); 
           $proveedor    = obtenerProveedorPorId( $dbh, $producto["idpvd1"] );
 
-          if( $i["idpvd"] == $idpvd ){
+          if( $i["idpvd"] == $idpvd && $items_enoc ){
       ?>
             <tr id="itemid<?php echo $i[idd] ?>">
               <td align="center"> <div class="numeracion" style="margin-bottom: 5px"><?php echo $numeracion ?></div> </td>

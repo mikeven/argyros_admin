@@ -1,6 +1,6 @@
 // JavaScript Document
 /*
- * fn-catalog.js
+ * fn-catalogue.js
  *
  */
 /* --------------------------------------------------------- */

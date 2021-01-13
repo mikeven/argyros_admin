@@ -116,10 +116,22 @@
 		$q = "select dp.id as id, dp.product_id as idp, c.id as color, t.id as bano, 
 		dp.price_type as tipo_precio, dp.piece_price_value as precio_pieza, 
 		date_format(dp.created_at,'%d/%m/%Y %h:%i:%s %p') as fcreado,      
-		date_format(dp.unavailable_at,'%d/%m/%Y %h:%i:%s %p') as fagotado, 
+		date_format(dp.unavailable_at,'%d/%m/%Y %h:%i:%s %p') as fagotado,
 		dp.manufacture_value as precio_mo, dp.product_id as pid, dp.weight_price_value as precio_peso 
 		FROM product_details dp LEFT JOIN treatments t ON t.id = dp.treatment_id 
 		LEFT JOIN colors c ON dp.color_id = c.id where dp.id = $idd";
+		
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_fetch_array( $data );		
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerDatosRegistroDetalleProductoPorId( $dbh, $idp, $idd ){
+		//Devuelve los datos de un registro de detalle de producto dado id de detalle
+		$q = "select dp.id as id, c.name as color, t.name as bano, dp.price_type as tipo_precio, 
+		dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, dp.location as ubicacion,  
+		date_format(dp.repositioned_at,'%d/%m/%Y') as freposicion, dp.weight_price_value as precio_peso 
+		FROM product_details dp LEFT JOIN treatments t ON t.id = dp.treatment_id 
+		LEFT JOIN colors c ON dp.color_id = c.id WHERE dp.product_id = $idp and dp.id = $idd";
 		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_fetch_array( $data );		
@@ -997,9 +1009,9 @@
 		include( "data-sizes.php" );
 
 		$tallas = obtenerListaTallasCategoria( $dbh, $_POST["tallas_cat"] );
-		$talla0 = obtenerValoresTallaCero( $dbh );
-		$talla0["name"] = "Ajustable/Única";
-		array_unshift( $tallas, $talla0 );
+		//$talla0 = obtenerValoresTallaCero( $dbh );
+		//$talla0["name"] = "Ajustable/Única";
+		//array_unshift( $tallas, $talla0 );
 		
 		echo json_encode( $tallas );
 	}

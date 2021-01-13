@@ -117,9 +117,10 @@
 	/* ----------------------------------------------------------------------------------- */
 	function iniciarSesion( $email, $pass, $lnk ){
 		session_start();
+		include( "../fn/fn-purchase.php" );
 		$idresult = 0; 
 		$sql = "select * from users where email = '$email' and password='$pass'";
-		//echo $sql;
+		
 		$data = mysqli_query( $lnk, $sql );
 		$data_user = mysqli_fetch_array( $data );
 		$nrows = mysqli_num_rows( $data );
@@ -129,6 +130,7 @@
 				$_SESSION["login-adm"] = 1;
 				$_SESSION["user-adm"] = $data_user;
 				//registrarInicioSesion( $data_user, $dbh );
+				obtenerListaPreOrdenRegistrada();
 				$idresult = 1;
 			}else{
 				$idresult = -1;	

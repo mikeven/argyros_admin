@@ -15,9 +15,9 @@
             <tr>
                 <td><img src="https://argyros.com.pa/admin/images/alogo.png" height="26"></td>
                 <td align="left"> 
-                    Order: <?php echo "#".$orden["id"]." ( $orden[numero] ) "; ?> 
+                    Orden de compra: <?php echo "#".$orden["id"]." ( $orden[numero] ) "; ?> 
                 </td>
-                <td align="right"> Date: <?php echo $orden["fecha_en"]; ?></td>
+                <td align="right"> Fecha: <?php echo $orden["fecha"]; ?></td>
             </tr>
         </table>
         <div class="clearfix"></div>
@@ -25,10 +25,10 @@
       <table id="datatable-oc<?php echo $ido ?>" class="table_items_oc" border="0">
         <thead>
           <tr>
-            <th width="15%">Item/Code</th>
-            <th width="15%">Photo</th>
-            <th width="30%" align="left">Size/Weight/Qty</th>
-            <th width="40%" align="left">Remarks</th>
+            <th width="15%">Ítem</th>
+            <th width="15%">Producto</th>
+            <th width="30%" align="left">Descripción</th>
+            <th width="40%" align="left">Obs</th>
           </tr>
         </thead>
         <tbody>
@@ -57,9 +57,9 @@
               <tbody>
                   <?php foreach ( $items as $it ) { ?>
                     <tr id="<?php echo $it[idd].$it[idt] ?>">
-                      <td align="left"><?php echo "Size: ".$it["talla"]." ".$it["unidad"]; ?></td>
-                      <td align="center"><?php echo "Wt: ".$it["peso"]; ?></td>
-                      <td align="right"><?php echo "Qty: ".$it[cant] ?></td>
+                      <td align="left"><?php echo "Talla: ".$it["talla"]." ".$it["unidad"]; ?></td>
+                      <td align="center"><?php echo "Peso: ".$it["peso"]; ?></td>
+                      <td align="right"><?php echo "Cant: ".$it[cant] ?></td>
                     </tr> 
                   <?php } ?>
               </tbody> 

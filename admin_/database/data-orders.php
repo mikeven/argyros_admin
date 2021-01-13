@@ -47,6 +47,18 @@
 		return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerPedidosDetalleProducto( $dbh, $idd ){
+		//Devuelve el registro de los pedidos registrados con un detalle de producto
+		$q = "select distinct o.id, date_format(o.created_at,'%d/%m/%y') as fcreacion, o.id as id,  
+		CONCAT('Pedido ', o.id) as movimiento, CONCAT(c.last_name, ' ', c.first_name) as cliente_proveedor, 
+		od.quantity as cant, 'pedido' as tipo_movimiento from orders o, order_details od, clients c 
+		where od.order_id = o.id and o.user_id = c.id and od.product_detail_id = $idd";
+
+		$data 	= mysqli_query( $dbh, $q );
+		$lista 	= obtenerListaRegistros( $data );
+		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerDataProductoIdDetalle( $dbh, $id_detalle ){
 		//Devuelve los datos correspondientes a un detalle de pedido dado el id del detalle
 		$q = "select product_id, product_detail_id, size_id from order_details where id = $id_detalle";

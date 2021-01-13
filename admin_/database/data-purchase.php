@@ -10,17 +10,31 @@
 		date_format( o.created_at,'YYYY-MM-DD') as creada, p.id as idpvd, p.name as nombre, p.number as numero  
 		from purchases o, providers p where o.provider_id = p.id order by o.created_at DESC";
 
-		$data = mysqli_query( $dbh, $q );
-		$lista = obtenerListaRegistros( $data );
+		$data 	= mysqli_query( $dbh, $q );
+		$lista 	= obtenerListaRegistros( $data );
+		return $lista;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerOrdenesCompraDetalleProducto( $dbh, $idd ){
+		//Devuelve el registro de las órdenes de compra registradas con un detalle de producto
+		$q = "select date_format(oc.created_at,'%d/%m/%y') as fcreacion, oc.id as id, 
+		CONCAT('Compra ', oc.id) as movimiento, CONCAT(p.number, ' ', p.name) as cliente_proveedor, 
+		doc.quantity as cant, 'oc' as tipo_movimiento from purchases oc, purchase_details doc, providers p
+		where doc.purchase_id= oc.id and oc.provider_id = p.id and doc.product_detail_id = $idd";
+		
+		$data 	= mysqli_query( $dbh, $q );
+		$lista 	= obtenerListaRegistros( $data );
 		return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerOrdenCompraPorId( $dbh, $ido ){
 		//Devuelve el registro de una orden de compra por id
-		$q = "select o.id, o.status as estado, o.note as nota, date_format( o.created_at,'%d/%m/%Y') as fecha, 
-		o.created_at as creada, p.id as idpvd, p.name as nombre, p.number as numero, SUM(doc.quantity) AS cantidades  
-		from purchases o, providers p, purchase_details doc 
-		where o.provider_id = p.id and doc.purchase_id = o.id and o.id = $ido";
+		$q = "select o.id, o.status as estado, o.note as nota, 
+		date_format( o.created_at,'%d/%m/%Y') as fecha, date_format( o.created_at,'%m/%d/%Y') as fecha_en, 
+		o.created_at as creada, p.id as idpvd, p.name as nombre, p.number as numero, 
+		SUM(doc.quantity) AS cantidades, u.first_name as nombre_u, u.last_name as apellido_u 
+		from purchases o, providers p, purchase_details doc, users u  
+		where o.provider_id = p.id and doc.purchase_id = o.id and o.user_id = u.id and o.id = $ido";
 
 		return mysqli_fetch_array( mysqli_query( $dbh, $q ) );
 	}
@@ -35,6 +49,17 @@
 		doc.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and oc.id = $ido";
 
 		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerListaNotasOrden( $dbh, $ido ){
+		//Devuelve la lista de notas asociadas a una orden de compra
+		$q = "select n.note as nota, u.first_name as nombre, u.last_name as apellido, 
+		 		date_format(n.created_at,'%d/%m/%Y') as fecha from purchase_notes n, users u, purchases o 
+				where n.fk_user = u.id and n.fk_purchase = o.id and o.id = $ido order by n.created_at DESC";
+		
+		$data = mysqli_query( $dbh, $q );
+		$lista_c = obtenerListaRegistros( $data );
+		return $lista_c;	
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function registrarOrdenCompra( $dbh, $idpvd, $idu ){
@@ -84,6 +109,33 @@
 		//Actualiza la nota de una orden de compra
 		$q = "update purchases set note = '$valor' where id = $iddo";
 		return mysqli_query( $dbh, $q );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function agregarNotaOrden( $dbh, $nota ){
+		// Agrega una nueva nota asociada a una orden de compra
+		$q = "insert into purchase_notes ( note, fk_purchase, fk_user, created_at ) 
+				values ( '$nota[nota]', $nota[ido], $nota[idu], NOW() )";
+		
+		$data = mysqli_query( $dbh, $q );
+		return mysqli_insert_id( $dbh );
+	}
+
+	/* ----------------------------------------------------------------------------------- */
+	// Agregar nueva nota
+	if( isset( $_GET["nvanota"] ) ){
+		ini_set( 'display_errors', 1 );
+		include( "bd.php" );
+
+		$nota["ido"]			= $_POST["idorden"];
+		$nota["idu"]			= $_POST["idusuario"];
+		$nota["nota"]			= mysqli_real_escape_string( $dbh, $_POST["nota"] );		 
+
+		$idr = agregarNotaOrden( $dbh, $nota );
+		
+		if( ( $idr != 0 ) && ( $idr != "" ) ){
+			header( "Location: ../purchase-data.php?purchase-id=$nota[ido]&nueva_nota-exito" );
+		}
+		
 	}
 
 	/* ----------------------------------------------------------------------------------- */
