@@ -14,12 +14,12 @@
 		$_SESSION["preorden"] 	= $preorden;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function guardarEstadoLista( $preorden ){
+	function guardarEstadoLista( $preorden, $path ){
 		// Devuelve el contenido de carrito de compra con los datos a almacenar en cookie
 		$filename 				= PFXLPOFILE.$_SESSION["user-adm"]["id"];
 
 		$json_string 			= json_encode( $preorden );
-		$file 					= "saved_preorders/".$filename.".json";
+		$file 					= $path."saved_preorders/".$filename.".json";
 		file_put_contents( $file, $json_string );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -197,6 +197,7 @@
 	function actualizarValorListaPreorden( $campo, $idd, $idt, $valor ){
 		// Actualiza un valor de un producto en la lista pre-orden identidicado por $idd y $idt
 		$index = obtenerPosicionItem( $idd, $idt );
+		if( $valor == "" ) $valor = 0;
 		$_SESSION["preorden"][$index][$campo] = $valor;
 		//print_r($_SESSION["preorden"][$index]);
 	}
@@ -247,9 +248,11 @@
 		$preorden 		= $_SESSION["preorden"];
 
 		foreach ( $preorden as $key => $i ) {
-			if( $i["idpvd"] == $idpvd ) 
+			if( $i["idpvd"] == $idpvd && $i["en_oc"] == true ) 
 				unset( $_SESSION["preorden"][$key] );
 		}
+
+		guardarEstadoLista( $_SESSION["preorden"], "../fn/" );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerTotalesOC( $detalle ){
@@ -320,7 +323,7 @@
 			$res["mje"] = "Producto ya está incluído en la lista pre-orden";
 		}
 
-		guardarEstadoLista( $_SESSION["preorden"] );
+		guardarEstadoLista( $_SESSION["preorden"], "" );
 
 		echo json_encode( $res );
 	}
@@ -348,7 +351,7 @@
 				actualizarValorListaPreorden( "en_oc", $idd, $idt, false );
 		}
 
-		guardarEstadoLista( $_SESSION["preorden"] );
+		guardarEstadoLista( $_SESSION["preorden"], "" );
 
 		echo $mensaje;
 	}

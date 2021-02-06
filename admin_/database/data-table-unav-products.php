@@ -72,6 +72,19 @@
 		return $detalles;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerListadoCompletoDetallesProductos( $dbh ){
+		// Devuelve los registros de todos los detalles de productos
+		$q = "select p.id as p_id, dp.id as d_id, p.code as codigo, p.name as nombre, p.description as descripcion,
+		p.provider_id1 as idpvd1, p.manfact_code1 as codigof1, ca.name as categoria, sc.name as subcategoria, 
+		date_format(dp.unavailable_at,'%d/%m/%y %h:%i:%s %p') as fagotado, 
+		date_format(dp.created_at,'%d/%m/%y %h:%i:%s %p') as fcreado     
+		from product_details dp, products p, categories ca, subcategories sc 
+		where dp.product_id = p.id and p.category_id = ca.id and p.subcategory_id = sc.id 
+		order by dp.unavailable_at desc";
+		
+		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerImagenDetalleProducto( $dbh, $idd ){
 		// Devuelve la primera imagen del detalle de producto.
 		$images 	= obtenerImagenesDetalleProducto( $dbh, $idd );
@@ -117,8 +130,7 @@
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
 	include( "bd.php" );
-	$productos 			= obtenerListaProductos( $dbh );
-	$detalles_productos = obtenerListadoGeneralDetallesProductos( $dbh, $productos );
+	$detalles_productos = obtenerListadoCompletoDetallesProductos( $dbh );
 
 	foreach ( $detalles_productos as $dp ) {
 		

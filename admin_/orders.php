@@ -183,6 +183,7 @@
                 {"data":"id"},
                 {"data":"pedido"},
                 {"data":"cliente"},
+                {"data":"pais"},
                 {"data":"fecha"},
                 {"data":"status"},
                 {"data":"total"},

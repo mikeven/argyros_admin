@@ -1,6 +1,6 @@
 <?php
 	/* ----------------------------------------------------------------------------------- */
-	/* Argyros - Funciones de datos para tabla de productos por disponibilidad de tallas */
+	/* Argyros - Funciones de datos para tabla de productos en desuso */
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
 	
@@ -33,17 +33,18 @@
 		return mysqli_fetch_array( mysqli_query( $dbh, $q ) );
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerListadoGeneralDetallesProductos( $dbh ){
-		//Devuelve todos los registros de detalles de producto
+	function obtenerListadoProductosDesuso( $dbh ){
+		//Devuelve todos los registros de detalles de productos en desuso
 
 		$q = "select p.id as p_id, dp.id as d_id, p.code as codigo, p.name as nombre, p.description as descripcion,
 		p.provider_id1 as idpvd1, p.provider_id2 as idpvd2, p.provider_id3 as idpvd3, p.manfact_code1 as codigof1, 
-		p.manfact_code2 as codigof2, p.manfact_code3 as codigof3, ca.name as categoria, sc.name as subcategoria, 
+		p.manfact_code2 as codigof2, p.manfact_code3 as codigof3, ca.name as categoria, sc.name as subcategoria,
+		dp.disused as desuso, date_format(dp.disused_at,'%d/%m/%Y %h:%i:%s %p') as fdesuso, 
 		date_format(dp.unavailable_at,'%d/%m/%Y %h:%i:%s %p') as fagotado, 
 		date_format(dp.created_at,'%d/%m/%Y %h:%i:%s %p') as fcreado     
-		FROM product_details dp, products p, categories ca, subcategories sc 
-		WHERE dp.product_id = p.id and p.category_id = ca.id and p.subcategory_id = sc.id 
-		ORDER BY dp.unavailable_at DESC";
+		from product_details dp, products p, categories ca, subcategories sc 
+		where dp.product_id = p.id and p.category_id = ca.id and p.subcategory_id = sc.id and dp.disused is not null 
+		order by dp.unavailable_at desc";
 		
 		$lista = obtenerListaRegistros( mysqli_query( $dbh, $q ) );
 		
@@ -97,13 +98,10 @@
 		$html_ta 	= "";
 
 		foreach ( $tallas as $t ) {
-			$oc = obtenerUltimaOCTallaProducto( $dbh, $dp, $t["idtalla"] );
-			$lnk_oc = obtenerEnlaceOCPorTalla( $oc );
 
 			if( $t["visible"] == 1 )  $class = "dsp_total"; else $class = "dsp_agotado";
 
 			$html_ta .= "<div align='center'>
-							$lnk_oc
 							<a href='#!' class='badge $class'>".$t['talla']." ".$t['unidad']."</a>
 							<span>".$t['peso']."</span>
 						</div>";
@@ -131,52 +129,31 @@
 
 		return $codigo;
 	}
-	/* ----------------------------------------------------------------------------------- */
-	function incluidoEnPreorden( $preorden, $idd ){
-		// Devuelve verdadero si item está incluido en la lista pre-orden
-		$incluido 			= false;
-		foreach ( $preorden as $key => $i ) {
-			if( $i["idd"] == $idd ){
-				$incluido 	= true; break;	
-			}
-		}
-		
-		return $incluido;
-	}
+	
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
 	session_start();
 	
 	include( "bd.php" );
-
-	$detalles_productos = obtenerListadoGeneralDetallesProductos( $dbh );
-	$preorden 			= isset( $_SESSION["preorden"] ) ? $_SESSION["preorden"] : array();
+	
+	$data_productos["data"] = array();
+	$detalles_productos = obtenerListadoProductosDesuso( $dbh );
 
 	foreach ( $detalles_productos as $dp ) {
-		$inc_preo = incluidoEnPreorden( $preorden, $dp["d_id"] );
-		$clase_po = $inc_preo ? "inc_lpreo" : "";
 
-		if( !$dp["fagotado"] ) $fagotado = $dp["fcreado"]; else $fagotado = $dp["fagotado"];
-		
 		$tallas 		= obtenerTallasDetalleProducto( $dbh, $dp["d_id"] );
 		$lnk_dp 		= "product-data.php?p=$dp[p_id]#$dp[d_id]";
 		$html_det		= obtenerImagenDetalleProducto( $dbh, $dp["d_id"] );		
 		$html_det 		.= "<div align='center'>
 								<a href='".$lnk_dp."' target='_blank'>#".$dp["p_id"]."-".$dp["d_id"]."</a>
-							</div>
-							<div align='center' style='padding: 4px 0'>
-								<a href='#!' id='oc$dp[d_id]' class='selpre-o' data-idd='$dp[d_id]' 
-								title='Agregar a lista preorden'>
-									<i class='fa fa-2x fa-list-alt $clase_po'></i></i>
-								</a>
 							</div>";
 		$col_cod		= obtenerCodigosProducto( $dbh, $dp );
 		$html_ta		= obtenerColoresDisponibilidadTallas( $dbh, $tallas, $dp );
 
 		/*......................................................................*/
 		
-		$reg_prod["fagotado"] 	= $fagotado;
+		$reg_prod["fdesuso"] 	= $dp["fdesuso"];
 		$reg_prod["codigo"] 	= $col_cod;
 		$reg_prod["nombre"] 	= "<a class='primary' href='".$lnk_dp."'>".$dp["nombre"]."</a>";
 		$reg_prod["desc"] 		= $dp["descripcion"];

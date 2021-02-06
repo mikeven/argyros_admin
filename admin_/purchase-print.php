@@ -14,6 +14,8 @@
     include( "fn/fn-purchase.php" );
    
     checkSession( '' );
+                /*XXX OC#XX mmddyy*/
+    $archivo = "$orden[numero] OC#".$orden["id"]." ".$orden["fecha_mdy"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +26,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Orden de compra <?php echo "#".$orden["id"]; ?></title>
+        <title><?php echo $archivo; ?></title>
 
         <style type="text/css">  
             body{ font-size: 14px; font-family: 'Helvetica' }

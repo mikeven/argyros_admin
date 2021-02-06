@@ -2,9 +2,9 @@
   <thead>
     <tr>
       <th width="5%">Ítem</th>
-      <th width="15%">Códigos</th>
+      <th width="5%">Códigos</th>
       <th width="15%">Producto</th>
-      <th width="40%">Tallas | Cantidades</th>
+      <th width="50%">Tallas | Cantidades</th>
       <th width="25%">Nota</th>
     </tr>
   </thead>
@@ -40,13 +40,13 @@
                       $cl = obtenerIndicadorEstadoItemOC( $it["estado"] );
                   ?>
                     <tr id="<?php echo $it[idd].$it[idt] ?>">
-                      <td align="center" width="30%"><?php echo $it["talla"]." ".$it["unidad"]; ?></td>
-                      <td align="center" width="35%">
+                      <td align="center" width="25%"><?php echo $it["talla"]." ".$it["unidad"]; ?></td>
+                      <td align="center" width="50%">
                         <input class="form-control cnt_preord act_preo" type="text" onkeypress="return isIntegerKey(event)" 
                           name="cantidad" value="<?php echo $it[cant] ?>" maxlength="5" 
                           data-idt="<?php echo $it[idt]; ?>" data-idd="<?php echo $it[idd]; ?>" readonly>
                       </td>
-                      <td align="center" width="35%">
+                      <td align="center" width="25%">
 
                         <table class="tabla_estatus_items">
                           <td align="center">

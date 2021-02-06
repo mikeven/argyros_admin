@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Lista de productos por tallas
+     * Argyros Admin - Lista de productos en desuso
      * 
      */
     session_start();
@@ -20,7 +20,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Productos por talla :: Argyros Admin</title>
+    <title>Productos en desuso :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -73,6 +73,7 @@
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
+        
         <?php include("sections/main-nav.php"); ?>
 
         <?php include("sections/top-nav.php"); ?>
@@ -83,16 +84,7 @@
             <div class="page-title">
               
               <div class="title_left">
-                <h3>Lista de productos por tallas</h3>
-              </div>
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
-                  <div class="input-group" style="float:right;">
-                    <a href="preorder.php" class="btn btn-app">
-                    <i class="fa fa-list-alt"></i> Ir a Lista Pre-Orden
-                </a>
-                  </div>
-                </div>
+                <h3>Lista de productos en desuso</h3>
               </div>
               
             </div>
@@ -106,12 +98,10 @@
                     <h2>Lista de productos</h2>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="instrucciones" align="center">
-                      <p class="text-muted font-13 m-b-30"> Seleccione los productos a agregar a la lista de pre-orden con en el ícono <i class="fa fa-list-alt"></i></p>
-                  </div>
+                  
                   <div id="lista_productos_tallas" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include( "sections/tables/table-data-products-sizes.php" ); ?>
+                    <?php include( "sections/tables/table-data-products-disused.php" ); ?>
                   </div>
                 </div>
               </div>
@@ -200,18 +190,18 @@
     <script src="//cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
 
     <script>
-        //$.fn.dataTable.moment('YYYY/MM/DD HH:mm');
+
         $.fn.dataTable.moment('DD/MM/YYYY hh:mm:ss A');
 
         $(document).ready(function() {
-            $('#dt-unavailable-products').dataTable({
+            $('#dt-disused-products').dataTable({
                 
                 "ajax": { 
                     "method":"POST",
-                    "url":"database/data-table-products-sizes.php"
+                    "url":"database/data-table-products-disused.php"
                 },
                 "columns":[
-                    {"data":"fagotado"},
+                    {"data":"fdesuso"},
                     {"data":"codigo"},
                     {"data":"nombre"},
                     {"data":"desc"},
@@ -246,7 +236,7 @@
                     }
                 }
             });
-            var table = $('#dt-unavailable-products').DataTable();
+            var table = $('#dt-disused-products').DataTable();
             // Ordenar por columna cero, dibujar
             table.order( [ 0, 'desc' ] ).draw();
         });   

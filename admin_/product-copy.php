@@ -1,8 +1,8 @@
 <?php
     /*
-     * Argyros Admin - Nuevo producto
-     * 
-     */
+    * Argyros Admin - Copia de producto
+    * 
+    */
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
@@ -18,9 +18,13 @@
 
     checkSession( '' );
 
-    if( isset( $_POST["P"] ) ){
-      echo $_POST["trabajo"];
-      echo $_POST["linea"];
+    if( isset( $_GET["id"] ) ){
+      $idp            = $_GET["id"];
+      $producto       = obtenerProductoPorId( $dbh, $idp );
+      $lineasp        = obtenerLineasDeProductoPorId( $dbh, $idp );
+      $trabajosp      = obtenerTrabajosDeProductoPorId( $dbh, $idp );
+      $subcategoriap  = obtenerListaSubCategoriasCategoria( $dbh, $producto["cid"] );
+      $proveedores    = obtenerListaProveedores( $dbh );
     }
 ?>
 <!DOCTYPE html>
@@ -51,6 +55,11 @@
     <!-- bootstrap-daterangepicker -->
     <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
     <!-- Datatables -->
     <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
@@ -58,30 +67,21 @@
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
-    <!-- PNotify -->
-    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
     <style type="text/css">
-      .rlist option{
-        color: #5A738E;
-        font-size: 12px;
-      }
+      #cambio_mm{ padding: 8px; margin: 8px; }
       #wrnmessage { display: none; }
       .wrng_prods{ display: inline-block; margin-right: 15px; }
     </style>
   </head>
 
   <?php
-    $lineas       = obtenerListaLineas( $dbh );
-    $trabajos     = obtenerListaTrabajos( $dbh );
-    $materiales   = obtenerListaMateriales( $dbh );
-    $categorias   = obtenerListaCategorias( $dbh );
-    $paises       = obtenerListaPaisesProductores( $dbh );
-    $proveedores  = obtenerListaProveedores( $dbh );
+    $lineas = obtenerListaLineas( $dbh );
+    $trabajos = obtenerListaTrabajos( $dbh );
+    $materiales = obtenerListaMateriales( $dbh );
+    $categorias = obtenerListaCategorias( $dbh );
+    $paises = obtenerListaPaisesProductores( $dbh );
   ?>
 
   <body class="nav-md">
@@ -95,24 +95,15 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
+              
               <div class="title_left">
-                <h3>Nuevo producto</h3>
+                <h3>Nuevo producto - Copia</h3>
               </div>
               <div class="input-group" style="float:right;">
-                <a href="products.php" class="btn btn-app">
-                  <i class="fa fa-arrow-left"></i> Volver a productos
+                <a href="product-data.php?p=<?php echo $idp ?>" class="btn btn-app">
+                  <i class="fa fa-arrow-left"></i> Volver a producto
                 </a>
               </div>
-              <!--<div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div> -->
             
             </div>
 
@@ -122,7 +113,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Datos de nuevo producto</h2>
+                    <h2>Datos de producto</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li> -->
                     </ul>
@@ -131,7 +122,7 @@
                   <div class="x_content">
                     
                     <p class="text-muted font-13 m-b-30"> </p>
-                    
+                        
                     <form id="frm_nproduct" data-parsley-validate class="form-horizontal form-label-left" 
                       action="product-detail.php" method="post">
                       
@@ -139,39 +130,42 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Código *</label>
+                            <input id="idproducto" name="idproducto" type="hidden" value="<?php echo $idp; ?>">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Código </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" name="codigo" id="pcodigo" 
-                              placeholder="Código de producto" required data-parsley-available="">
+                              <input type="text" class="form-control" name="codigo" 
+                              placeholder="Código de producto" value="<?php echo $producto[codigo]; ?>" required>
                             </div>
                           </div>
-
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre *</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <input type="text" class="form-control" id="pnombre" name="nombre" 
-                              placeholder="Nombre de producto" required="">
+                              <input type="text" class="form-control" name="nombre" 
+                              placeholder="Nombre de producto" value="<?php echo $producto[nombre]; ?>" required>
                             </div>
                           </div>
-
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">País de origen *</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">País de origen </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <select name="pais" class="form-control rlist" title="Seleccione" required>
                                 <option></option>
                                 <?php foreach ( $paises as $p ) { ?>
-                                  <option value="<?php echo $p["id"] ?>"><?php echo $p["name"] ?></option>
+                                  <option value="<?php echo $p[id] ?>" <?php echo sop( $p["id"], $producto["idpais"] ); ?>>
+                                    <?php echo $p["name"] ?>
+                                  </option>
                                 <?php } ?>
                               </select>
                             </div>
                           </div>
                           
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Línea *</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Línea </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <select name="linea[]" class="form-control selectpicker" multiple required>
+                              <select id="sline" name="linea[]" class="form-control selectpicker" multiple required>
                                 <?php foreach ( $lineas as $l ) { ?>
-                                  <option value="<?php echo $l["id"] ?>"><?php echo $l["name"] ?></option>
+                                  <option value="<?php echo $l[id] ?>">
+                                    <?php echo $l["name"] ?>
+                                  </option>
                                 <?php } ?>
                               </select>
                             </div>
@@ -181,54 +175,65 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Descripción </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <textarea class="form-control" rows="3" name="descripcion" 
-                              placeholder="Texto descriptivo de producto"></textarea>
+                              placeholder="Texto descriptivo de producto"><?php echo $producto["descripcion"]; ?></textarea>
                             </div>
                           </div>
                           
                         </div>
-
+                      
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoría *</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoría </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <select id="selcateg" name="categoria" class="form-control selectpicker" 
-                              required title="Seleccione">
-                                
+                              title="Seleccione" required>
+                                <option disabled>Seleccione</option>
                                 <?php foreach ( $categorias as $c ) { ?>
-                                  <option value="<?php echo $c["id"] ?>"><?php echo $c["name"] ?></option>
+                                  <option value="<?php echo $c["id"] ?>" <?php echo sop( $c["id"], $producto["cid"] ); ?>>
+                                    <?php echo $c["name"] ?>
+                                  </option>
                                 <?php } ?>
                               </select>
                             </div>
                           </div>
 
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría *</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Subcategoría </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <select id="val_subc" name="subcategoria" 
-                              class="rlist form-control" title="Seleccione" required>
-                              <option value="">Seleccione</option>
-                                
+                              <select id="val_subc" name="subcategoria" class="form-control" required>
+                                <?php foreach ( $subcategoriap as $sc ) { ?>
+                                  <option value="<?php echo $sc[id] ?>" <?php echo sop( $sc["id"], $producto["scid"] ); ?>>
+                                    <?php echo $sc["name"] ?>
+                                  </option>
+                                <?php } ?> 
                               </select>
                             </div>
                           </div>
 
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Material *</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Material </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
+                              
                               <select id="smaterial" name="material" class="rlist form-control" title="Seleccione" required>
                                 <option></option>
                                 <?php foreach ( $materiales as $m ) { ?>
-                                  <option value="<?php echo $m[id] ?>"><?php echo $m["name"] ?></option>
+                                  <option value="<?php echo $m[id] ?>" 
+                                    <?php echo sop( $m["id"], $producto["idmaterial"] ); ?>>
+                                    <?php echo $m["name"] ?>
+                                  </option>
                                 <?php } ?>
                               </select>
+                              <div id="cambio_mm" class="alert-danger" style="display: none;">
+                                Si se cambia el material del producto, se deben reasignar los valores de baño para cada detalle de este producto
+                              </div>
                             </div>
                           </div>
 
                           <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Trabajo *</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Trabajo </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                              <select id="strabajo" name="trabajo[]" class="form-control selectpicker" multiple required>
+                              <select id="streat" name="trabajo[]" class="form-control selectpicker" multiple required>
                                 <?php foreach ( $trabajos as $t ) { ?>
                                   <option value="<?php echo $t["id"] ?>"><?php echo $t["name"] ?></option>
                                 <?php } ?>
@@ -238,7 +243,9 @@
                                                   
                         </div>
                       </div>
+                      
                       <div class="ln_solid"></div>
+
                       <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <div class="form-group">
@@ -247,7 +254,9 @@
                               <select name="proveedor1" class="form-control rlist" title="Seleccione" required>
                                 <option></option>
                                 <?php foreach ( $proveedores as $p ) { ?>
-                                  <option value="<?php echo $p[id] ?>"> <?php echo $p["numero"]." ".$p["nombre"] ?> </option>
+                                  <option value="<?php echo $p[id] ?>" <?php echo sop( $p["id"], $producto["idpvd1"] ); ?>> 
+                                    <?php echo $p["numero"]." ".$p["nombre"] ?> 
+                                  </option>
                                 <?php } ?>
                               </select>
                             </div>
@@ -256,10 +265,12 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Proveedor 2</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <select name="proveedor2" class="form-control rlist" title="Seleccione">
-                              <option></option>
-                              <?php foreach ( $proveedores as $p ) { ?>
-                                <option value="<?php echo $p[id] ?>"> <?php echo $p["numero"]." ".$p["nombre"] ?> </option>
-                              <?php } ?>
+                                <option></option>
+                                <?php foreach ( $proveedores as $p ) { ?>
+                                  <option value="<?php echo $p[id] ?>" <?php echo sop( $p["id"], $producto["idpvd2"] ); ?>> 
+                                    <?php echo $p["numero"]." ".$p["nombre"] ?> 
+                                  </option>
+                                <?php } ?>
                               </select>
                             </div>
                           </div>
@@ -269,7 +280,9 @@
                               <select name="proveedor3" class="form-control rlist" title="Seleccione">
                                 <option></option>
                                 <?php foreach ( $proveedores as $p ) { ?>
-                                  <option value="<?php echo $p[id] ?>"> <?php echo $p["numero"]." ".$p["nombre"] ?> </option>
+                                  <option value="<?php echo $p[id] ?>" <?php echo sop( $p["id"], $producto["idpvd3"] ); ?>> 
+                                    <?php echo $p["numero"]." ".$p["nombre"] ?> 
+                                  </option>
                                 <?php } ?>
                               </select>
                             </div>
@@ -280,56 +293,63 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Cód. fabricante 1</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <input type="text" class="form-control codfab_disp" name="codigof1" id="cdgf1" 
-                              placeholder="Código fabricante 1" data-parsley-available="" data-idp="">
+                              placeholder="Código fabricante 1" data-parsley-available="" 
+                              value="<?php echo $producto[codigof1] ?>" data-idp="<?php echo $producto[id] ?>">
                             </div>
                           </div>
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Cód. fabricante 2</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <input type="text" class="form-control codfab_disp" name="codigof2" id="cdgf2" 
-                              placeholder="Código fabricante 2" data-parsley-available="" data-idp="">
+                              placeholder="Código fabricante 2" data-parsley-available="" 
+                              value="<?php echo $producto[codigof2] ?>" data-idp="<?php echo $producto[id] ?>">
                             </div>
                           </div>
                           <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Cód. fabricante 3</label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <input type="text" class="form-control codfab_disp" name="codigof3" id="cdgf3" 
-                              placeholder="Código fabricante 3" data-parsley-available="" data-idp="">
+                              placeholder="Código fabricante 3" data-parsley-available="" 
+                              value="<?php echo $producto[codigof3] ?>" data-idp="<?php echo $producto[id] ?>">
                             </div>
                           </div>
                         </div>
                       </div>
-                    </form>
 
+                    </form>
+                    
                     <div id="warning_productos">
                       <?php include( "sections/warning.html" ); ?>
                     </div>
                     <?php include( "sections/modals/product-image.php" ); ?>
                     
                     <div class="ln_solid"></div>
-                    
-                    <div class="form-group">
-                      <div align="center">
-                        <button id="bot_guardar_nuevo_producto" type="submit" class="btn btn-success neweditprod">Guardar</button>
-                      </div>
-                      <div id="ghres"></div>
-                      <button type="button" class="btn btn-primary hidden" data-toggle="modal" 
-                      data-target=".bs-example-modal-sm">Respuesta</button>
-                      <?php include( "sections/modals/response_message.php" );?>
-                    </div>
                   
                   </div>
-                
+                  
+                  <div class="form-group">
+                    <div align="center">
+                      <button id="bot_guardar_nuevo_producto" type="button" class="btn btn-success neweditprod">Guardar</button>
+                    </div>
+                    <div id="ghres"></div>
+                    <!--<button type="button" class="btn btn-primary" data-toggle="modal" 
+                    data-target=".bs-example-modal-sm">Respuesta</button>-->
+                    <?php include( "sections/modals/response_message.php" );?>
+                  </div>
+                    
                 </div>
+                
               </div>
             </div>
           </div>
         </div>
-        <!-- /page content -->
+      </div>
+      <!-- /page content -->
 
-        <!-- footer content -->
-        <?php include( "sections/footer.php" ); ?>
-        <!-- /footer content -->
+      <!-- footer content -->
+      <?php include( "sections/footer.php" ); ?>
+      <!-- /footer content -->
+
       </div>
     </div>
 
@@ -391,6 +411,12 @@
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
 
+    <!-- PNotify -->
+    <script src="vendors/pnotify/dist/pnotify.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+
+    <!-- Custom Theme Scripts -->
     <!-- Parsley -->
     <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
     <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
@@ -400,6 +426,12 @@
     <script src="js/fn-ui.js"></script>
     <script src="js/fn-product.js"></script>
     <script src="js/fn-validators.js"></script>
+
+    <script>
+      $("#sline").selectpicker( 'val', <?php sopl( $lineasp, "idlinea" ) ?> );
+      $("#streat").selectpicker( 'val', <?php sopl( $trabajosp, "idtrabajo" ) ?> );
+    </script>
+
     <script>
       
       $(document).ready(function() {
@@ -409,11 +441,6 @@
       });
       
     </script>
-
-    <!-- PNotify -->
-    <script src="vendors/pnotify/dist/pnotify.js"></script>
-    <script src="vendors/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 	
   </body>
 </html>

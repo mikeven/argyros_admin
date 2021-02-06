@@ -29,6 +29,14 @@
 		return $lista_c;	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerIngresosCliente( $dbh, $idc ){
+		//Devuelve la lista de ingresos al sistema de los clientes
+		$q = "select date_format(date,'%d/%m/%Y %h:%i %p') as flogin from client_logins 
+				where fk_client = $idc order by date DESC";
+		
+		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );	
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaGruposClientes( $dbh ){
 		//Devuelve la lista de clientes
 		$q = "select * from client_group order by name ASC";

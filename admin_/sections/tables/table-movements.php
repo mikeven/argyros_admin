@@ -17,7 +17,7 @@
           $lnk = "order-data.php?order-id=$m[id]"; 
     ?>
     <tr>
-      <td class="datesort"><?php echo $m["fcreacion"]; ?></td>
+      <td ><?php echo $m["fcreacion"]; ?></td>
       <td><a href="<?php echo $lnk ?>" target="_blank"><?php echo $m["movimiento"]; ?></a></td>
       <td><?php echo $m["cliente_proveedor"]; ?></td>
       <td><?php echo $m["cant"]; ?></td>

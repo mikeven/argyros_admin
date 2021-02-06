@@ -4,6 +4,7 @@
       <th>Id</th>
       <th>Pedido</th>
       <th>Cliente</th>
+      <th>País</th>
       <th class="datesort">Fecha</th>
       <th>Status</th>
       <th>Total</th>

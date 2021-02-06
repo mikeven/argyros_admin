@@ -363,20 +363,23 @@
     <script src="js/fn-ui.js"></script>
 	<script src="js/fn-product.js"></script>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+
     <script>
-        //$.fn.dataTable.moment('YYYY/MM/DD HH:mm');
-        //$.fn.dataTable.moment('DD/MM/YYYY');
+        $.fn.dataTable.moment('DD/MM/YYYY');
 
         $(document).ready(function() {
             $('#dt_movements').dataTable({
-                
-                
                 "processing": true,
                 "paging": true,
                 "iDisplayLength": 10,
                 "lengthChange": true,
                 "searching": true,
                 "ordering": true,
+                "order": [[ 0, "desc" ]],
+                "columnDefs" : [{"targets":0, "type":"date-eu"}],
                 "info": true,
                 "deferRender": true,
                 "autoWidth": false,
@@ -396,9 +399,7 @@
                     }
                 }
             });
-            var table = $('#dt_movements').DataTable();
-            // Ordenar por columna cero, dibujar
-            table.order( [ 0, 'desc' ] ).draw();
+            
         });   
     </script>
 

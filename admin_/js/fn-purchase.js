@@ -278,13 +278,31 @@ $( document ).ready(function() {
         actualizarPreorden( prm, idd, idt, '', pvd, $(this).val() );
     });
 
+    $("#tabs_items_proveedores").on( "change", ".act_preo", function(){ /* ítem funcional */  
+        var idd = $(this).attr("data-idd");
+        var idt = $(this).attr("data-idt");
+        var prm = $(this).attr("data-prm");
+        var pvd = $(this).attr("data-idpvd-oc");
+        actualizarPreorden( prm, idd, idt, '', pvd, $(this).val() );
+    });
+    
+
     $(".act_preo_d").on( "change", function(){   
         var idd = $(this).attr("data-idd");
         var prm = $(this).attr("data-prm");
         actualizarPreorden( prm, idd, '', '', '', $(this).val() );
     });
     
-    $(".quitar_item").on( "click", function(){   
+    $("#tabs_items_proveedores").on( "click", ".quitar_item", function(){ /* ítem funcional */
+        var idd = $(this).attr("data-idd");
+        var idt = $(this).attr("data-idt");
+        var prm = $(this).attr("data-prm");
+        var btn = $(this).attr("data-bot");
+        var pvd = $(this).attr("data-idpvd-oc");
+        actualizarPreorden( prm, idd, idt, btn, pvd, $(this).val() );
+    });
+
+    $("#lista_items_preorden").on( "click", ".quitar_item", function(){  
         var idd = $(this).attr("data-idd");
         var idt = $(this).attr("data-idt");
         var prm = $(this).attr("data-prm");

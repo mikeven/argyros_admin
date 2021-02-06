@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Productos no disponibles
+     * Argyros Admin - Lista pre orden
      * 
      */
     session_start();
@@ -111,7 +111,7 @@
                     </p>
                   </div>
 
-                  <div id="lista_productos_tallas" class="x_content">
+                  <div id="lista_items_preorden" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
 
                     <?php include( "sections/tables/table-preorder.php" ); ?>

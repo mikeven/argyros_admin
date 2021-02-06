@@ -17,8 +17,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerOrdenesCompraDetalleProducto( $dbh, $idd ){
 		//Devuelve el registro de las órdenes de compra registradas con un detalle de producto
-		$q = "select date_format(oc.created_at,'%d/%m/%y') as fcreacion, oc.id as id, 
-		CONCAT('Compra ', oc.id) as movimiento, CONCAT(p.number, ' ', p.name) as cliente_proveedor, 
+		$q = "select distinct (oc.id) as id, date_format(oc.created_at,'%d/%m/%y') as fcreacion,  
+		concat('compra ', oc.id) as movimiento, concat(p.number, ' ', p.name) as cliente_proveedor, 
 		doc.quantity as cant, 'oc' as tipo_movimiento from purchases oc, purchase_details doc, providers p
 		where doc.purchase_id= oc.id and oc.provider_id = p.id and doc.product_detail_id = $idd";
 		
@@ -31,8 +31,9 @@
 		//Devuelve el registro de una orden de compra por id
 		$q = "select o.id, o.status as estado, o.note as nota, 
 		date_format( o.created_at,'%d/%m/%Y') as fecha, date_format( o.created_at,'%m/%d/%Y') as fecha_en, 
-		o.created_at as creada, p.id as idpvd, p.name as nombre, p.number as numero, 
-		SUM(doc.quantity) AS cantidades, u.first_name as nombre_u, u.last_name as apellido_u 
+		date_format( o.created_at,'%m%d%Y') as fecha_mdy, o.created_at as creada, 
+		p.id as idpvd, p.name as nombre, p.number as numero, SUM(doc.quantity) AS cantidades, 
+		u.first_name as nombre_u, u.last_name as apellido_u 
 		from purchases o, providers p, purchase_details doc, users u  
 		where o.provider_id = p.id and doc.purchase_id = o.id and o.user_id = u.id and o.id = $ido";
 

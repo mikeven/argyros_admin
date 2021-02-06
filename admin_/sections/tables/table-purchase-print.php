@@ -53,13 +53,20 @@
             
           </td>
           <td> 
-            <table id="tallas<?php echo $iddet ?>" class="table tabla_tallas_oc">
+            <table id="tallas<?php echo $iddet ?>" class="table tabla_tallas_oc" style="font-size: 12px">
               <tbody>
-                  <?php foreach ( $items as $it ) { ?>
+                  <?php 
+                    foreach ( $items as $it ) { 
+                      $twgt = number_format( $it["peso"]*$it["cant"], 2, '.', '' );
+                  ?>
                     <tr id="<?php echo $it[idd].$it[idt] ?>">
-                      <td align="left"><?php echo "Size: ".$it["talla"]." ".$it["unidad"]; ?></td>
+                      <td align="left"><?php echo "Size: ".$it["talla"].$it["unidad"]; ?></td>
                       <td align="center"><?php echo "Wt: ".$it["peso"]; ?></td>
                       <td align="right"><?php echo "Qty: ".$it[cant] ?></td>
+                      <td align="right">
+                        <div>TWt: <?php echo $twgt ?></div>
+                        <div></div>
+                      </td>
                     </tr> 
                   <?php } ?>
               </tbody> 

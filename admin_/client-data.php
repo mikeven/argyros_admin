@@ -11,15 +11,15 @@
     include( "database/data-clients.php" );
 
     if( isset( $_GET["id"] ) ){
-        $idc = $_GET["id"];
-        $cliente = obtenerClientePorId( $dbh, $idc );
-        $grupos = obtenerListaGruposClientes( $dbh );
+        $idc        = $_GET["id"];
+        $cliente    = obtenerClientePorId( $dbh, $idc );
+        $grupos     = obtenerListaGruposClientes( $dbh );
     }
     
     checkSession( '' );
-    $idusuario = $_SESSION["user-adm"]["id"];
-    $notas_cliente = obtenerListaNotasClientes( $dbh, $idc );
-
+    $idusuario          = $_SESSION["user-adm"]["id"];
+    $notas_cliente      = obtenerListaNotasClientes( $dbh, $idc );
+    $ingresos_cliente   = obtenerIngresosCliente( $dbh, $idc );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,6 +63,9 @@
 
         <!-- Custom Theme Style -->
         <link href="build/css/custom.min.css" rel="stylesheet">
+        <style type="text/css">
+            #login_list{ display: none; text-align: right; }
+        </style>
   </head>
 
   <body class="nav-md">
@@ -179,7 +182,16 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Fecha último ingreso: </label> 
-                        <?php echo $cliente["flogin"]; ?>
+                        <a href="#!" id="login_hist">
+                            <?php echo $ingresos_cliente[0]["flogin"]; ?> 
+                            <i class="fa fa-toggle-down"></i>
+                        </a>
+                    </div>
+                    <div id="login_list" class="form-group">
+                        <label class="control-label">Historial de ingresos </label>
+                        <?php foreach ( $ingresos_cliente as $reg ) { ?>
+                            <div> <span><?php echo $reg["flogin"]; ?> </span> </div>
+                        <?php } ?>
                     </div>  
 
                     <?php if( $_SESSION["user-adm"]["id"] == 1 ) { ?>
@@ -350,6 +362,11 @@
     <script>
         $.fn.dataTable.moment( 'DD/MM/YY' );
         $(document).ready(function() {
+
+            $('#login_hist').on('click', function() {
+                $("#login_list").fadeToggle();
+            });
+
             $('#datatable-client-notes').dataTable({
                 "processing": true,
                 "paging": true,

@@ -28,6 +28,9 @@
                 <a href="unavailable-products.php">Disponibilidad por tallas</a>
             </li>
             <li>
+                <a href="products-disused.php">Productos en desuso</a>
+            </li>
+            <li>
                 <a href="categories.php">Categorías</a>
             </li>
             <li>

@@ -19,6 +19,14 @@
 		return $lista_c;	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerIngresosCliente( $dbh, $idc ){
+		//Devuelve la lista de ingresos al sistema de los clientes
+		$q = "select date_format(date,'%d/%m/%Y') as flogin from client_logins 
+				where fk_client = $idc order by date DESC";
+		
+		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );	
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaGruposClientes( $dbh ){
 		//Devuelve la lista de clientes
 		$q = "select * from client_group order by name ASC";
@@ -105,13 +113,14 @@
 
         }
 
-        $lista_grupos = obtenerContenidoListaGrupos( $c, $grupos );
+        $ingresos_cliente   		= obtenerIngresosCliente( $dbh, $c["id"] );
+        $lista_grupos 				= obtenerContenidoListaGrupos( $c, $grupos );
 		
 		$reg_cliente["id"] 			= "<a class='primary' href='".$lnk_c."' target='_blank'>".$c["id"]."</a>";
 		$reg_cliente["nombre"] 		= "<a class='primary' href='".$lnk_c."'>".$c["nombre"]." ".$c["apellido"]."</a>";
 		$reg_cliente["email"] 		= $c["email"];
 		$reg_cliente["pais"] 		= $c["pais"];
-		$reg_cliente["flogin"] 		= $c["flogin"];
+		$reg_cliente["flogin"] 		= $ingresos_cliente[0]["flogin"];
 		$reg_cliente["tipo"] 		= $c["tipo"].$nombre_empresa;
 		$reg_cliente["grupo"] 		= $c["grupo"];
 		$reg_cliente["fcreacion"] 	= $c["fcreacion"];

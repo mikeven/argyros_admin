@@ -65,6 +65,9 @@
         <!-- Custom Theme Style -->
         <link href="build/css/custom.min.css" rel="stylesheet">
         <link href="css/custom-styles.css" rel="stylesheet">
+
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
     </head>
     <style>
         .thumb_detailproduct{
@@ -77,17 +80,53 @@
         .data-talla-detalle{
             padding-top: 15px;
         }
-
+        .bloq_refpdu{ display: none; }
+        .lnk_btnpdu{ margin-top: 20px }
         .poculto{ background-color: #f9c7c6 !important; }
         .txubc{ border: 1px solid #f1f1f1; }
+
+        .ref_desuso {
+            padding: 3px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+        }
+
+        .ids-auto-c {
+            float: left;
+            left: 90px;
+            width: 160px;
+            list-style: none;
+            margin-top: 0px;
+            padding: 0;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .ids-auto-c li {
+            padding: 8px 8px 8px 12px;
+            background: #f0f0f0;
+            border-bottom: #bbb9b9 1px solid;
+        }
+
+        .ui-autocomplete-row {
+            padding:8px;
+            background-color: #f4f4f4;
+            border-bottom:1px solid #ccc;
+            font-weight:bold;
+        }
+        .ui-autocomplete-row:hover{
+            background-color: #ddd;
+        }
+
+        .disuse-label{ color: #d58512; }
     </style>
 
   <?php
     if( isset( $idp ) ) {
-        $producto = obtenerProductoPorId( $dbh, $idp );
-        $dproducto = obtenerDetalleProductoPorId( $dbh, $idp );
-        $trabajosp = obtenerTrabajosDeProductoPorId( $dbh, $idp );
-        $lineasp = obtenerLineasDeProductoPorId( $dbh, $idp );
+        $producto       = obtenerProductoPorId( $dbh, $idp );
+        $dproducto      = obtenerDetalleProductoPorId( $dbh, $idp );
+        $trabajosp      = obtenerTrabajosDeProductoPorId( $dbh, $idp );
+        $lineasp        = obtenerLineasDeProductoPorId( $dbh, $idp );
         
         $proveedores    = obtenerDatosProveedores( $dbh, $producto );
     }
@@ -155,6 +194,7 @@
                                 <div class="data-product-label">
                                     <label class="control-label">Categoría: 
                                     </label> <?php echo $producto["categoria"]." > ".$producto["subcategoria"]; ?>
+                                    <input type="hidden" name="idsubctg" id="id_subcat" value="<?php echo $producto[scid]; ?>">
                                 </div>
                                 <div class="data-product-label">
                                     <label class="control-label">Material: </label> <?php echo $producto["material"]; ?>
@@ -214,149 +254,17 @@
                                         <button type="button" class="btn btn-info btn-xs">Editar</button>
                                     </a>
                                 </div>
+                                <div>
+                                    <a href="product-copy.php?id=<?php echo $idp; ?>">
+                                        <button type="button" class="btn btn-info btn-xs">
+                                            Copiar producto
+                                        </button>
+                                    </a>
+                                </div>
                               
                             </div>
 
-                            <div class="col-md-8 col-sm-8 col-xs-12">
-                                <h4>Detalle de producto</h4>      
-                                <?php 
-                                    foreach ( $dproducto as $dp ) {
-                                        $imagenes_detalle = obtenerImagenesDetalleProducto( $dbh, $dp["id"], NULL );
-                                        $tallas_detalle = obtenerTallasDetalleProducto( $dbh, $dp["id"] ); 
-                                        $lnk_mvm = "product-movements.php?p=$producto[id]&dp=$dp[id]";
-                                ?>
-                                <div class="row">
-                                    <div id="<?php echo $dp["id"]; ?>" class="col-md-4 col-sm-4 col-xs-12">
-                                        
-                                        <div class="">
-                                            <label class="control-label">#Reg: </label> <?php echo $dp["id"]; ?>
-                                        </div>
-                                        <div class="">
-                                            <label class="control-label">Color: </label> <?php echo $dp["color"]; ?>
-                                        </div> 
-                                        <div class="">
-                                            <label class="control-label">Baño: </label> <?php echo $dp["bano"]; ?>
-                                        </div>
-                                        <div class="">
-                                            <label class="control-label">Tipo de precio: </label> <?php echo txTipoPeso( $dp["tipo_precio"] ); ?>
-                                        </div>
-
-                                        <?php if( $dp["tipo_precio"] == "p" ) { ?>
-                                        <div class="">
-                                            <label class="control-label">Precio por pieza: </label> <?php echo $dp["precio_pieza"]; ?>
-                                        </div>
-                                        <?php } ?>
-
-                                        <?php if( $dp["tipo_precio"] == "mo" ) { ?>
-                                        <div class="">
-                                            <label class="control-label">Precio mano de obra: </label> <?php echo $dp["precio_mo"]; ?>
-                                        </div>
-                                        <?php } ?>
-                                        
-                                        <?php if( $dp["tipo_precio"] == "g" ) { ?>
-                                        <div class="">
-                                            <label class="control-label">Precio por peso: </label> <?php echo $dp["precio_peso"]; ?>
-                                        </div>
-                                        <?php } ?>
-                                        <div class="">
-                                            <label class="control-label">Fecha última reposición: </label> 
-                                            <span id="data-freposicion<?php echo $dp[id] ?>">
-                                                <?php echo $dp["freposicion"]; ?></span> |
-                                            <button type="button" class="btn btn-info btn-xs act_frepos" 
-                                            data-id="<?php echo $dp[id] ?>">
-                                                <i class="fa fa-arrow-circle-up"></i> Actualizar
-                                            </button>
-                                        </div>
-                                        <div class="">
-                                            <label class="control-label" title="Ubicación">
-                                                <i class="fa fa-archive"></i> Ubicación: 
-                                            </label> 
-                                            <input id="ub<?php echo $dp["id"]; ?>" class="txubc" type="text" 
-                                            value="<?php echo $dp["ubicacion"]; ?>" maxlength="20">
-                                            <button type="button" class="btn btn-info btn-xs act_ubicacion" 
-                                                data-id="<?php echo $dp[id] ?>" title="Cambiar"> <i class="fa fa-save"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <?php 
-                                            foreach ( $imagenes_detalle as $img ) { 
-                                        ?>
-                                            <div class="thumb_detailproduct">
-                                                <a href="#!" class="pop-img-p" data-toggle="modal" data-src="<?php echo $img["path"];?>" 
-                                                data-target="#img-product-pop">
-                                                    <img src="<?php echo $img["path"]; ?>" width="60px">
-                                                </a>
-                                            </div> 
-                                        <?php 
-                                            }
-                                        ?>
-                                        <div class="right" style="float:right;">
-                                            <a href="product-detail-edit.php?id=<?php echo $dp["id"]; ?>">
-                                                <button type="button" class="btn btn-info btn-xs">Editar</button>
-                                            </a>
-                                            <div> 
-                                                <a href="<?php echo $lnk_mvm ?>">
-                                                    <i class="fa fa-exchange"></i> Registro de Movimientos
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php include( "sections/modals/product-image.php" ); ?>
-
-                                </div> <!-- Row -->
-                                
-                                <div class="row"><!-- Tallas de detalle de producto -->
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
-                                    <div class="data-talla-detalle">
-                                        <table class="table table-striped table-bordered">
-                                      <thead>
-                                        <tr><th>Talla</th><th>Peso</th><th>Acción</th></tr>
-                                      </thead>
-                                      <tbody>
-                                        <?php 
-                                            foreach ( $tallas_detalle as $talla ) {
-                                                if( $talla["visible"] == 1 ) $ctble = ""; 
-                                                else $ctble = "poculto"; 
-                                                $n_talla = $talla["talla"];  
-                                                if ( $talla["talla"] == "ajust" )  $n_talla  = "Ajustable";
-                                                if ( $talla["talla"] == "unica" )  $n_talla  = "Única";
-                                        ?>
-                                            <tr class="<?php echo $ctble; ?>">
-                                                <td align="center">
-                                                    <?php echo $n_talla; ?>
-                                                    <?php if ($talla["unidad"]) 
-                                                        echo "(".$talla["unidad"].")"; 
-                                                    ?>
-                                                </td>
-                                                <td><?php echo $talla["peso"]; ?> gr</td>
-                                                <td>
-                                                    <?php if( $talla["visible"] == 1 ) { ?>
-                                                        <i class="fa fa-eye-slash"></i> 
-                                                        <a id="id-dtp<?php echo $talla["idtalla"]; ?>" href="#!" 
-                                                        class="o-tdetp" data-idtalla="<?php echo $talla["idtalla"]; ?>" 
-                                                        data-idpdet="<?php echo $talla["iddetprod"]; ?>" data-st="0">Ocultar</a>
-                                                    <?php } else { ?>
-                                                        <i class="fa fa-eye"></i> 
-                                                        <a id="id-dtp<?php echo $talla["idtalla"]; ?>" href="#!" 
-                                                        class="o-tdetp" data-idtalla="<?php echo $talla["idtalla"]; ?>" 
-                                                        data-idpdet="<?php echo $talla["iddetprod"]; ?>" data-st="1">Mostrar</a>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                      </tbody>
-                                        </table>
-                                    </div> 
-                                    </div>
-                                </div>
-                                
-                                <div class="ln_solid"></div>
-                                
-                                <?php 
-                                    } 
-                                ?>                      
-                            </div>
+                            <?php include( "sections/product-data-detail.php" ); ?>
 
                         </div>
                         <?php } ?>
@@ -380,6 +288,8 @@
     <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="vendors/bootstrap-select-1.12.4/dist/js/bootstrap-select.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
     <!-- FastClick -->
     <script src="vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->

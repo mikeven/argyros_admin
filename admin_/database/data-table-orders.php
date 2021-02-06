@@ -7,8 +7,9 @@
 		//Devuelve el registro de las órdenes registradas
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
 		date_format( o.created_at,'%d/%m/%Y') as fecha, date_format( o.created_at,'YYYYMMDD') as creada, 
-		c.id as cid, c.first_name nombre, c.last_name as apellido 
-		from orders o, clients c where o.user_id = c.id order by o.created_at DESC";
+		c.id as cid, c.first_name nombre, c.last_name as apellido, co.name as pais  
+		from orders o, clients c, countries co 
+		where o.user_id = c.id and c.country_id = co.id order by o.created_at DESC";
 
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -76,6 +77,7 @@
         $reg_pedido["id"] 			= $p["id"];
 		$reg_pedido["pedido"] 		= $link_pedido;
 		$reg_pedido["cliente"] 		= "<a href='$lnk_cliente' target='_blank'>".$p["nombre"]." ".$p["apellido"]."</a>";
+		$reg_pedido["pais"] 		= $p["pais"];
 		$reg_pedido["fecha"] 		= $p["fecha"];
 		$reg_pedido["status"] 		= $iconoe." ".$p["estado"];
 		$reg_pedido["total"] 		= "$".$total_o;

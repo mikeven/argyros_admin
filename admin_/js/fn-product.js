@@ -351,6 +351,23 @@ function actualizarUbicacionDetalleProducto( iddet, ubc ){
     });
 }
 /* --------------------------------------------------------- */
+function autoCompletarRef( ref, idtx ){
+	// Autocompleta el id de un detalle de producto
+	$.ajax({
+		type: "POST",
+		url: "database/data-products.php",
+		data:{ keyword: ref },
+		beforeSend: function(){
+			$("#" + idtx ).css( "background","#FFF url(https://www.argyros.com.pa/admin/images/ajax-loader.gif) no-repeat 165px" );
+		},
+		success: function(data){
+			$("#suggesstion-box").show();
+			$("#suggesstion-box").html(data);
+			$( "#" + idtx ).css("background","#FFF");
+		}
+	});
+}
+/* --------------------------------------------------------- */
 function addCampoImg( valor ){
 	
 	var fld = "<input type='hidden' name='urlimgs[]' value='" + valor + "'>";
@@ -475,6 +492,53 @@ function iniciarPopImagenesProductos(){
     	$("#img-preview").attr( "src", img );
     });
     /*Pop image */
+}
+
+
+function selectCountry(val) {
+	$("#").val(val);
+	$("#suggesstion-box").hide();
+}
+
+/* --------------------------------------------------------- */
+function mostrarVistaPreviaReferencia( idorg, idref ){
+	// Solicita los datos para visualizar la referencia de detalle de producto 
+	$.ajax({
+    	type: 'POST',
+      	url: 'database/data-products.php',
+      	data: { iddet_org: idorg, prevw_iddet_ref: idref },
+      	beforeSend: function () {
+            $("#refpv-" + idorg).html("");
+        },
+      	success: function(response) {
+      		$("#refpv-" + idorg).html( response );
+    	}
+    });
+}
+/* --------------------------------------------------------- */
+function detalleProductoEnDesuso( iddet_org, iddet_ref, val, btn ){
+	// Solicita asignar un producto en desuso y la referencia al producto sustituto.
+	$.ajax({
+    	type: 'POST',
+      	url: 'database/data-products.php',
+      	data: { id_desuso: iddet_org, id_ref: iddet_ref, valor: val },
+      	beforeSend: function () {
+            
+        },
+      	success: function(response) {
+    		console.log(response);
+      		res = jQuery.parseJSON(response);
+			
+			if( res.exito == 1 ){ 
+				notificar( "Producto", res.mje, "success" );
+				setTimeout(function() { location.reload(); }, 3000 );
+			}
+			else{
+				notificar( "Producto", res.mje, "error" );
+				$(btn).attr( "disabled", false );
+			}
+    	}
+    });
 }
 /* --------------------------------------------------------- */
 $( document ).ready(function() {	
@@ -626,10 +690,68 @@ $( document ).ready(function() {
 		verificarCodigosFabricanteRepetidos( $(this).attr("data-idp") );
     });
 
-    /* products.php :: data-table-products.php */
-    /*$("#lista_general_productos").on( "click", ".act_frepos", function(){  
-    	actualizarFechaReposicionDetalle( $(this).attr("data-id"), $(this) );
-    });*/
+    $(".pdisuse").on( "click", function(){
+    	var iddet 		= $(this).attr("data-id");
+		$("#pdu" + iddet ).fadeToggle();
+    });
+
+    /*.....................................................................*/
+    // función autocompletar referencias de detalles para productos en desuso
+	if( $(".ref_desuso").length > 0 ){
+
+		$(".ref_desuso").on( "click", function(){
+	    	$("#selected_ref").val( $(this).attr("data-idd") );
+	    });
+
+		$('.ref_desuso').autocomplete({
+
+	    	source: function( request, response ) {
+	    		var dcat = $("#id_subcat").val();
+	    		var iddet = $("#selected_ref").val();
+		        $.ajax({
+		        	type: 'GET',
+		          	url: 'database/data-products.php',
+		          	dataType: 'json',
+		          	data: { term: request.term, cat: dcat, idactual: iddet },
+		          	success: function(data) {
+		          		response( $.map(data, function(item) {
+		            		return {
+		              			label: item.value
+		            		}
+		          		}));
+		        	}
+		        });
+	      	},
+	      	minLength: 3,
+	      	select: function(event, ui){
+	        	$(this).val(ui.item.value);
+	        	mostrarVistaPreviaReferencia( $("#selected_ref").val(), ui.item.value );
+	      	}
+	    }).data('ui-autocomplete')._renderItem = function(ul, item){
+	    	return $("<li class='ui-autocomplete-row'></li>")
+	        .data("item.autocomplete", item)
+	        .append(item.label)
+	        .appendTo(ul);
+	    };
+
+	    $(".btn-ref-du").on( "click", function(){
+	    	var iddet_org = $(this).attr("data-id");
+	    	var iddet_ref = $("#refdu-" + iddet_org ).val();
+	    	$(this).attr( "disabled", true );
+
+	    	detalleProductoEnDesuso( iddet_org, iddet_ref, true, $(this) );
+	    });
+
+	    $(".btn_not_disuse").on( "click", function(){
+	    	var iddet_org = $(this).attr("data-id");
+	    	$(this).attr( "disabled", true );
+
+	    	detalleProductoEnDesuso( iddet_org, '', false, $(this) );
+	    });
+
+	}
+    /*.....................................................................*/
+
 });
 
 /* --------------------------------------------------------- */
