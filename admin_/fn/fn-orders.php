@@ -55,6 +55,28 @@
 		return $monto;		
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerTotalPesoItemOrden( $item, $estado ){
+		//Devuelve el peso total de un ítem de acuerdo a la disponibilidad del mismo y el estatus del pedido
+
+		if( $estado == "pendiente" || $estado == "cancelado" ){
+			$tpeso = $item["quantity"] * $item["peso"];
+		}else
+			$tpeso = $item["disponible"] * $item["peso"];
+		
+		return $tpeso;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerPesoTotalOrden( $orden, $detalle ){
+		//Devuelve el peso total de un pedido
+
+		$tpeso = 0;
+		foreach ( $detalle as $i ) {
+			$tpeso += obtenerTotalPesoItemOrden( $i, $orden["estado"] );
+		}
+		
+		return $tpeso;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerOrdenActualizada( $orden, $detalle ){
 		//Devuelve los datos actualizados de una orden dependiendo del estado
 		$orden["procesada"] = false;
@@ -83,12 +105,14 @@
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_GET["order-id"] ) ){
 		
-        $ido = $_GET["order-id"];
-        $data_o = obtenerOrdenPorId( $dbh, $ido, "full" );
+        $ido 				= $_GET["order-id"];
+        $data_o 			= obtenerOrdenPorId( $dbh, $ido, "full" );
+        
         if( $data_o["orden"] ){
-	        $dorden = $data_o["detalle"];
-	        $orden 	= obtenerOrdenActualizada( $data_o["orden"], $dorden );
-	        $iconoe = obtenerIconoEstado( $orden["estado"], "fa-2x" );
+	        $dorden 		= $data_o["detalle"];
+	        $orden 			= obtenerOrdenActualizada( $data_o["orden"], $dorden );
+	        $iconoe 		= obtenerIconoEstado( $orden["estado"], "fa-2x" );
+	        $orden["tpeso"]	= obtenerPesoTotalOrden( $data_o["orden"], $dorden );
     	}
     }
 ?>

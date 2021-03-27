@@ -119,6 +119,7 @@
         }
 
         .disuse-label{ color: #d58512; }
+        .lab_sust{ font-size: 10px; }
     </style>
 
   <?php

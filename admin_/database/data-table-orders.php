@@ -5,11 +5,18 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerOrdenesUsuarios( $dbh ){
 		//Devuelve el registro de las órdenes registradas
+		
+		$cond = "";
+		$idua = $_SESSION["user-adm"]["id"];
+		
+		if( $idua == 17 ) $cond = " and co.id = 25";
+
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
 		date_format( o.created_at,'%d/%m/%Y') as fecha, date_format( o.created_at,'YYYYMMDD') as creada, 
+		date_format( o.created_at,'%d/%m/%Y %h:%i:%s %p') as fecha_hora, 
 		c.id as cid, c.first_name nombre, c.last_name as apellido, co.name as pais  
 		from orders o, clients c, countries co 
-		where o.user_id = c.id and c.country_id = co.id order by o.created_at DESC";
+		where o.user_id = c.id and c.country_id = co.id $cond order by o.created_at DESC";
 
 		$data = mysqli_query( $dbh, $q );
 		$lista = obtenerListaRegistros( $data );
@@ -20,7 +27,7 @@
 		//Devuelve los registros correspondientes a un detalle de pedido dado su id
 		$q = "select od.id, od.order_id, od.product_id, od.product_detail_id, 
 		od.available as disponible, od.item_status as istatus, od.check_revision as revision, od.quantity, 
-		od.price, p.name as producto, p.description, s.name as talla, s.unit 
+		od.price, p.name as producto, p.description, s.name as talla, s.unit, sd.weight as peso 
 		from orders o, order_details od, products p, sizes s, size_product_detail sd, product_details pd 
 		where od.order_id = o.id and od.product_id = p.id and od.product_detail_id = pd.id and 
 		od.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and o.id = $ido";
@@ -33,17 +40,25 @@
 	function calcularTotalOrden( $orden, $detalle ){
 		// Devuelve el total de una orden después de haber sido revisado/confirmado
 		$monto = 0;
+		$tpeso = 0;
 
 		foreach ( $detalle as $item ){
-			if( $orden["estado"] == "pendiente" || $orden["estado"] == "cancelado" )
+			if( $orden["estado"] == "pendiente" || $orden["estado"] == "cancelado" ){
 				$monto += $item["quantity"] * $item["price"];
+				$tpeso += $item["quantity"] * $item["peso"];
+			}
 			else{
-				if( $item["istatus"] != "retirado" )
+				if( $item["istatus"] != "retirado" ){
 					$monto += $item["disponible"] * $item["price"];
+					$tpeso += $item["disponible"] * $item["peso"];
+				}
 			}
 		}
 
-		return number_format( $monto, 2, ".", "" );		
+		$total["monto"] 	= number_format( $monto, 2, ".", "" );
+		$total["peso"] 		= number_format( $tpeso, 2, ".", "" );
+		
+		return $total;		
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerIconoEstado( $estado, $x ){
@@ -61,6 +76,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Clientes */
 	/* ----------------------------------------------------------------------------------- */
+	session_start();
 	include( "bd.php" );
 
 	$pedidos = obtenerOrdenesUsuarios( $dbh );
@@ -69,7 +85,9 @@
 
 		$iconoe 					= obtenerIconoEstado( $p["estado"], "" );
         $dorden 					= obtenerDetalleOrden( $dbh, $p["id"] );
-        $total_o 					= calcularTotalOrden( $p, $dorden ); 
+        $totales 					= calcularTotalOrden( $p, $dorden );
+        $total_o 					= $totales["monto"];
+        $total_p 					= $totales["peso"];
         $lnk_cliente 				= "client-data.php?id=$p[idu]";
         $link_pedido 				= "<a href='order-data.php?order-id=$p[id]'>Pedido N° $p[id]</a>"." | ".
         							"<a href='order-data.php?order-id=$p[id]' target='_blank'><i class='fa fa-external-link'></i></a>";
@@ -78,9 +96,10 @@
 		$reg_pedido["pedido"] 		= $link_pedido;
 		$reg_pedido["cliente"] 		= "<a href='$lnk_cliente' target='_blank'>".$p["nombre"]." ".$p["apellido"]."</a>";
 		$reg_pedido["pais"] 		= $p["pais"];
-		$reg_pedido["fecha"] 		= $p["fecha"];
+		$reg_pedido["fecha"] 		= $p["fecha_hora"];
 		$reg_pedido["status"] 		= $iconoe." ".$p["estado"];
 		$reg_pedido["total"] 		= "$".$total_o;
+		$reg_pedido["tpeso"] 		= $total_p."gr";
 		$reg_pedido["creado"] 		= $p["creada"];
 		
 		$data_pedidos["data"][] 	= $reg_pedido;

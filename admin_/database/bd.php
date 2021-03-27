@@ -38,6 +38,12 @@
 		return $lista_c;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function escaparTexto( $dbh, $texto ){
+		// Devuelve un texto escapado
+		
+		return mysqli_real_escape_string( $dbh, $texto );
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function escaparCampos( $dbh, $registro ){
 		// Devuelve un arreglo con los valores escapados de sus  
 		// campos de tipo string

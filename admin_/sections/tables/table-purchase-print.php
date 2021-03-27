@@ -15,7 +15,8 @@
             <tr>
                 <td><img src="https://argyros.com.pa/admin/images/alogo.png" height="26"></td>
                 <td align="left"> 
-                    Order: <?php echo "#".$orden["id"]." ( $orden[numero] ) "; ?> 
+                    Order: <?php echo "#".$orden["id"]." ( $orden[numero] ) "; ?> - 
+                    Total W.: <?php echo $totales["peso"]." gr"; ?> 
                 </td>
                 <td align="right"> Date: <?php echo $orden["fecha_en"]; ?></td>
             </tr>
@@ -57,14 +58,15 @@
               <tbody>
                   <?php 
                     foreach ( $items as $it ) { 
-                      $twgt = number_format( $it["peso"]*$it["cant"], 2, '.', '' );
+                      $wt   = number_format( $it["peso"], 1, '.', '' );
+                      $twgt = number_format( $it["peso"]*$it["cant"], 1, '.', '' );
                   ?>
                     <tr id="<?php echo $it[idd].$it[idt] ?>">
                       <td align="left"><?php echo "Size: ".$it["talla"].$it["unidad"]; ?></td>
-                      <td align="center"><?php echo "Wt: ".$it["peso"]; ?></td>
+                      <td align="center"><?php echo "Wt: ".$wt; ?></td>
                       <td align="right"><?php echo "Qty: ".$it[cant] ?></td>
                       <td align="right">
-                        <div>TWt: <?php echo $twgt ?></div>
+                        <div>T: <?php echo $twgt." gr"; ?></div>
                         <div></div>
                       </td>
                     </tr> 

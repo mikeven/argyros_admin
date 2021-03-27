@@ -6,13 +6,18 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaClientes( $dbh ){
 		//Devuelve la lista de clientes
+		$cond = "";
+		$idua = $_SESSION["user-adm"]["id"];
+		
+		if( $idua == 17 ) $cond = " and p.id = 25";
+		
 		$q = "Select c.id, c.first_name as nombre, c.last_name as apellido, c.email, c.phone,  
 		ug.name as grupo, p.name as pais, c.city as ciudad, c.verified as verificado, 
 		c.company_type as tipo, c.company as esempresa, c.company_name as nempresa, ug.name as grupo,  
 		date_format(c.created_at,'%d/%m/%Y') as fcreacion,
 		date_format(c.last_login,'%d/%m/%Y') as flogin,
 		c.blocked as bloqueado from clients c, client_group ug, countries p 
-		where c.client_group_id = ug.id and c.country_id = p.id order by c.id DESC";
+		where c.client_group_id = ug.id and c.country_id = p.id $cond order by c.id DESC";
 		
 		$data = mysqli_query( $dbh, $q );
 		$lista_c = obtenerListaRegistros( $data );
@@ -89,6 +94,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Clientes */
 	/* ----------------------------------------------------------------------------------- */
+	session_start();
 	ini_set( 'display_errors', 1 );
 	include( "bd.php" );
 	$clientes 	= obtenerListaClientes( $dbh );

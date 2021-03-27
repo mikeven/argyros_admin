@@ -129,7 +129,7 @@ function buscarImagenesCatalogo( form_r, param ){
         },
         success: function( response ){
             request.abort();
-            //console.log(response);
+            console.log(response);
             posteriorVisualCargaImgs( param, si, response );  
         }
     });

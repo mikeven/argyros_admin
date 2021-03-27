@@ -327,6 +327,16 @@
 		return $sq;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerSubQueryProveedor( $idprv ){
+		// Devuelve el subquery para filtrar proveedor
+		$sq = "";
+
+		if( count( $idprv ) > 0 )
+			$sq = "and (p.provider_id1 = $idprv or p.provider_id2 = $idprv or p.provider_id3 = $idprv)";
+
+		return $sq;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerSubQueryFechas( $campo, $rango_fechas ){
 		// Devuelve el subquery para filtrar búsqueda en un rango de fechas
 		
@@ -352,12 +362,12 @@
 		$q_jta 	= "";	//sub-query: unión talla - detalle_producto 
 		$qdet 	= "";	//sub-query: condiciones para detalle de producto 
 		$q_sc 	= "";	//sub-query: subcategoría
+		$q_m	= "";	//sub-query: material
 		$q_pa	= "";	//sub-query: país de origen
 		$q_kw	= "";	//sub-query: palabras claves
 		$q_fr	= "";	//sub-query: fecha reposición
+		$q_prv	= "";	//sub-query: proveedor
 
-		
-		
 		$idc 	= $form["categoria"];
 		$idsc 	= $form["subcategoria"];
 
@@ -365,6 +375,9 @@
 		$q_t 	= obtenerSubQueryParam( "tp.product_id = p.id", "tp.making_id", $form["trabajo"] );
 
 		$q_m 	= obtenerSubQueryValorUnico( "p.material_id", $form["material"] );
+
+		$q_prv 	= obtenerSubQueryProveedor( $form["proveedor"] );
+
 		if( $form["subcategoria"] != "todos" )
 			$q_sc = obtenerSubQueryValorUnico( "p.subcategory_id", $form["subcategoria"] );
 
@@ -396,7 +409,10 @@
 
 		$query 	= "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det $idt  
 					from products p, $t_spd $t_mp $t_lp product_details dp 
-					where p.category_id = $idc $q_sc $q_pa $q_m $q_l $q_t $q_kw $q_fr and dp.product_id = p.id $qdet";
+					where p.category_id = $idc $q_sc $q_pa $q_m $q_prv $q_l $q_t $q_kw $q_fr 
+					and dp.product_id = p.id $qdet";
+		
+		//echo $query;
 
 		return $query;
 	}
@@ -425,7 +441,8 @@
 		
 		if( $idp != "" && $iddet != "" ){
 			$query = "select p.id, p.code, p.name, p.description, p.visible, dp.id as id_det 
-						from products p, product_details dp where p.id = $idp and dp.id = $iddet";
+						from products p, product_details dp 
+						where dp.product_id = p.id and p.id = $idp and dp.id = $iddet";
 
 			$data = mysqli_query( $dbh, $query );
 			$lista = obtenerListaRegistros( $data );
@@ -458,6 +475,7 @@
 		
 		if( $datos["material"] == "" )		$datos["material"]		= array();
 		if( $datos["subcategoria"] == "" )	$datos["subcategoria"]	= array();
+		if( $datos["proveedor"] == "" )		$datos["proveedor"]		= array();
 
 		return $datos;
 	}
@@ -593,8 +611,8 @@
 		include( "data-clients.php" );
 		ini_set( 'display_errors', 1 );
 		
-		$datos = ajustarValores( $form );
-		$varg = obtenerVARG( $dbh, $form );
+		$datos 				= ajustarValores( $form );
+		$varg 				= obtenerVARG( $dbh, $form );
 		
 		if( isset ( $form["ch_busq_id"] ) ){
 			
@@ -606,6 +624,7 @@
 		}
 		
 		$lproductos = obtenerListadoProductosConsulta( $dbh, $registros_base, $form, $varg );
+
 		$lproductos = filtrarProductosConsulta( $form, $lproductos );
 
 		return $lproductos; 

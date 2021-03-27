@@ -102,7 +102,8 @@
 		//Devuelve los registros detalles asociados a un producto dado su id
 		$q = "select dp.id as id, c.name as color, t.name as bano, dp.price_type as tipo_precio, 
 		dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, dp.location as ubicacion, 
-		dp.disused as en_desuso, dp.reference_id as idref, date_format(dp.disused_at,'%d/%m/%Y') as fdesuso, 
+		dp.disused as en_desuso, dp.reference_id as idref, dp.is_substitute as sustituto, 
+		date_format(dp.disused_at,'%d/%m/%Y') as fdesuso, 
 		date_format(dp.repositioned_at,'%d/%m/%Y') as freposicion, dp.weight_price_value as precio_peso 
 		FROM product_details dp LEFT JOIN treatments t ON t.id = dp.treatment_id 
 		LEFT JOIN colors c ON dp.color_id = c.id WHERE dp.product_id = $idp ORDER BY dp.id DESC";
@@ -116,7 +117,7 @@
 		//Devuelve un registro de detalle de producto dado id de detalle
 		$q = "select dp.id as id, dp.product_id as idp, c.id as color, t.id as bano, 
 		dp.price_type as tipo_precio, dp.piece_price_value as precio_pieza, dp.disused as desuso,  
-		date_format(dp.created_at,'%d/%m/%Y %h:%i:%s %p') as fcreado,      
+		date_format(dp.created_at,'%d/%m/%Y %h:%i:%s %p') as fcreado, dp.location as ubicacion, 
 		date_format(dp.unavailable_at,'%d/%m/%Y %h:%i:%s %p') as fagotado,
 		dp.manufacture_value as precio_mo, dp.product_id as pid, dp.weight_price_value as precio_peso 
 		FROM product_details dp LEFT JOIN treatments t ON t.id = dp.treatment_id 
@@ -750,15 +751,20 @@
 		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function asignarDetalleProductoDesuso( $dbh, $valor, $id_desuso, $id_detref ){
+	function asignarDetalleProductoDesuso( $dbh, $valor, $id_desuso, $id_detref, $sust ){
 		// Asigna un detalle de producto en desuso, registra una referencia si es indicada
 
-		if( $id_detref == "" ) $id_detref = 'NULL';
-		if( $valor == "false" ) { $valor = 'NULL'; $fecha_dsu = 'NULL'; } 
+		if( $id_detref == "" ) { $id_detref = 'NULL'; $sust = 'NULL'; }
+		
+		if( $valor == "false" ) { $valor = 'NULL'; $fecha_dsu = 'NULL'; $sust = 'NULL'; } 
 		else { $valor = true; $fecha_dsu = 'NOW()'; };
+		
+		if( $sust == "false" ) $sust = 'NULL'; 
+		
+		/*.................................................................................*/
 
 		$q = "update product_details set disused = $valor, reference_id = $id_detref, 
-				disused_at = $fecha_dsu where id = $id_desuso";
+				disused_at = $fecha_dsu, is_substitute = $sust where id = $id_desuso";
 		
 		return mysqli_query( $dbh, $q );
 	}
@@ -1165,12 +1171,13 @@
 		$val 	= $_POST["valor"];
 		$id_org = $_POST["id_desuso"];
 		$id_ref = $_POST["id_ref"];
+		$sust 	= $_POST["sustitucion"];
 
 		$ref_valida = validarReferenciaProductoDesuso( $dbh, $val, $id_org, $id_ref );
 		
 		if( $ref_valida["val"] ){
 
-			$r = asignarDetalleProductoDesuso( $dbh, $val, $id_org, $id_ref );
+			$r = asignarDetalleProductoDesuso( $dbh, $val, $id_org, $id_ref, $sust );
 			
 			if( ( $r != 0 ) && ( $r != "" ) ) {
 				$res["exito"] 	= 1;

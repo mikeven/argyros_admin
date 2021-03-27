@@ -187,6 +187,7 @@
                 {"data":"fecha"},
                 {"data":"status"},
                 {"data":"total"},
+                {"data":"tpeso"},
             ],
             "processing": true,
             "paging": true,

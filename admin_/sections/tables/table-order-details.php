@@ -3,10 +3,12 @@
   <div id="leyenda" align="right">
       <i class="fa-circle fa iley_dsp"></i> Retirado por disponibilidad
       | <i class="fa-circle fa iley_cli"></i> Retirado por cliente
+      | <div class="leyenda_prd_dsuso"></div> Producto en desuso
   </div>
   <table id="datatable_do" class="table table-bordered">
     <thead>
       <tr>
+        <th>N°</th>
         <th> </th>
         <th>Producto</th>
         <th class="tx_al_c">Cant. Solic.</th>
@@ -20,6 +22,7 @@
         <?php } ?>
         <th class="tx_al_c">Precio unit</th>
         <th class="tx_al_c">Total</th>
+        <th class="tx_al_c">Peso</th>
         <th class="dcol"></th>
         <th class="dcol"></th>
         <th class="dcol"></th>
@@ -33,22 +36,31 @@
 
     <tbody>
       <?php
-        
+        $item_nro         = 0;
         foreach ( $dorden as $r ) {
-          $clase_item = "item_orden";
-          $total_item = $r["quantity"] * $r["price"];
+          $item_nro++;
+          $clase_item     = "item_orden";
+          $clase_pcol     = "";
+          $total_item     = $r["quantity"] * $r["price"];
+          $tot_peso_item  = obtenerTotalPesoItemOrden( $r, $orden["estado"] );
+          
           if ( ( $orden["estado"] != "pendiente" ) && ( $orden["estado"] != "cancelado" ) )
              $total_item = $r["disponible"] * $r["price"];
 
           if( $r["istatus"] == "retirado" ) 
             $clase_item = "item_retirado";          // Retirado por estar no disponible
+          
           if( $r["istatus"] == "retirado" && $r["revision"] != "nodisp" ) 
             $clase_item = "item_retirado_cliente";  // Retirado por por cliente
+
+          if( $r["desuso"] == true ) 
+            $clase_pcol = "prd_dsuso";             // Producto en desuso
 
           $lnk_p = "product-data.php?p=".$r["product_id"]."#".$r["product_detail_id"];
       ?>
       <tr class="<?php echo $clase_item; ?>">
         
+        <td align="center"><?php echo $item_nro ?></td>
         <td align="center">
 
           <a href='#!' class="pop-img-p" data-toggle="modal" 
@@ -58,7 +70,7 @@
           
         </td>
 
-        <td>
+        <td class="<?php echo $clase_pcol ?>">
           <a target="_blank" href="<?php echo $lnk_p; ?>">
             <?php echo "P:".$r["product_id"]." - ".$r["producto"]." (#".$r["product_detail_id"].")"." | "."Talla: ".$r["talla"]; ?>
           </a>
@@ -74,7 +86,8 @@
           <input id="cd<?php echo $r["id"]; ?>" name="cant" class="qdisp_orden" type="text" disabled 
           onKeyPress="return isIntegerKey(event);">
 
-          <!--<input id="do<?php echo $r["id"]; ?>" name="iddo" type="hidden" value="<?php echo $r["id"]; ?>">-->
+          <input id="pesoi<?php echo $r[id] ?>" type="hidden" value="<?php echo $r[peso]; ?>">
+          
           <input class="qini" id="qocd<?php echo $r["id"]; ?>" type="hidden" 
           data-ti="ti<?php echo $r["id"]; ?>" value="<?php echo $r["quantity"]; ?>">
           
@@ -92,6 +105,9 @@
         </td>
         <td align="right">
           $<span id="ti<?php echo $r["id"]; ?>"> <?php echo $total_item; ?> </span>
+        </td>
+        <td align="right">
+          <span id="tpi<?php echo $r["id"]; ?>"> <?php echo $tot_peso_item; ?> </span>gr
         </td>
         
         <td align="center" class="dcol">

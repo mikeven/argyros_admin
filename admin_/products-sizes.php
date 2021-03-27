@@ -64,6 +64,7 @@
         .it_oc_nor{ color: #ac2925; } /* rojo:      no recibido */
 
         .inc_lpreo{ color: #28a745 }
+        .lab_sust{ font-size: 10px; }
     </style>
 
 </head>
@@ -85,15 +86,6 @@
               <div class="title_left">
                 <h3>Lista de productos por tallas</h3>
               </div>
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
-                  <div class="input-group" style="float:right;">
-                    <a href="preorder.php" class="btn btn-app">
-                    <i class="fa fa-list-alt"></i> Ir a Lista Pre-Orden
-                </a>
-                  </div>
-                </div>
-              </div>
               
             </div>
 
@@ -106,12 +98,12 @@
                     <h2>Lista de productos</h2>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="instrucciones" align="center">
-                      <p class="text-muted font-13 m-b-30"> Seleccione los productos a agregar a la lista de pre-orden con en el ícono <i class="fa fa-list-alt"></i></p>
-                  </div>
+                  
                   <div id="lista_productos_tallas" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include( "sections/tables/table-data-products-sizes.php" ); ?>
+                    <?php $memory_limit = ini_get('memory_limit');
+                    echo "ML ".$memory_limit;
+                    include( "sections/tables/table-data-unavailable-products.php" ); ?>
                   </div>
                 </div>
               </div>
@@ -208,7 +200,7 @@
                 
                 "ajax": { 
                     "method":"POST",
-                    "url":"database/data-table-products-sizes.php"
+                    "url":"database/data-table-products-availability-sizes.php"
                 },
                 "columns":[
                     {"data":"fagotado"},

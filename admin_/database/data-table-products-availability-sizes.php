@@ -63,43 +63,11 @@
 		return $html_img;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerUltimaOCTallaProducto( $dbh, $dp, $idt ){
-		// Devuelve la última orden de compra donde fue incluida una talla de producto
-		$q = "select o.id as ido, doc.status as estado 
-				from purchases o, purchase_details doc 
-				where doc.size_id = $idt and product_detail_id = $dp[d_id] 
-				and doc.purchase_id = o.id and o.status <> 'recibida' and o.status <> 'cancelada'
-				group by o.id, doc.status order by o.created_at desc LIMIT 1";
-
-		return mysqli_fetch_array( mysqli_query( $dbh, $q ) );
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function obtenerEnlaceOCPorTalla( $oc ){
-		// Devuelve el enlace a una orden de compra donde fue incluida una talla
-		$lnk = "";
-
-		$clase_st = array( 
-			"pendiente" 	=> "it_oc_pen",
-			"recibido"		=> "it_oc_rec",
-			"no-recibido"	=> "it_oc_nor" 
-		);
-
-		if( $oc["ido"] != "" ){
-			$clase = $clase_st[ $oc["estado"] ];
-			$url = "purchase-data.php?purchase-id=$oc[ido]";
-			$lnk = "<a href='$url' class='$clase' target='_blank'>#".$oc['ido']."</a>";
-		}
-
-		return $lnk;
-	}
-	/* ----------------------------------------------------------------------------------- */
 	function obtenerColoresDisponibilidadTallas( $dbh, $tallas, $dp ){
 		// Devuelve la clase de color según nivel de disponibilidad de un detalle de producto
 		$html_ta 	= "";
 
 		foreach ( $tallas as $t ) {
-			$oc = obtenerUltimaOCTallaProducto( $dbh, $dp, $t["idtalla"] );
-			$lnk_oc = obtenerEnlaceOCPorTalla( $oc );
 
 			if( $t["visible"] == 1 )  $class = "dsp_total"; else $class = "dsp_agotado";
 
@@ -137,27 +105,12 @@
 
 		return $codigo;
 	}
-	/* ----------------------------------------------------------------------------------- */
-	function incluidoEnPreorden( $preorden, $idd ){
-		// Devuelve verdadero si item está incluido en la lista pre-orden
-		$incluido 			= false;
-		foreach ( $preorden as $key => $i ) {
-			if( $i["idd"] == $idd ){
-				$incluido 	= true; break;	
-			}
-		}
-		
-		return $incluido;
-	}
-
-	function jscriptClaseDesuso(){
-		return "<script>$('tbody').closest('tr').css('color', 'red')</script>";
-	}
+	
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
 	session_start();
-	//ini_set( 'display_errors', 1 );
+	ini_set( 'display_errors', 1 );
 	
 	include( "bd.php" );
 
@@ -166,19 +119,12 @@
 
 	foreach ( $detalles_productos as $dp ) {
 		$desuso 	= "";
-		$val_desu 	= false;
-		$inc_preo 	= incluidoEnPreorden( $preorden, $dp["d_id"] );
-		$clase_po 	= $inc_preo ? "inc_lpreo" : "";
 
 		if( !$dp["fagotado"] ) $fagotado = $dp["fcreado"]; else $fagotado = $dp["fagotado"];
 
 		if( isset( $dp["desuso"] ) ){
 			$desuso 		= "<span class='badge badge-secondary lab_sust' title='en desuso'>
 								<i class='fa fa-history'></i></span>";
-			$val_desu 		= true;
-			/*if( isset( $dp["sustituto"] ) )
-				$desuso 	= "<span class='badge badge-secondary lab_sust' title='sustituto'>
-								<i class='fa fa-history'></i> SUST </span>";*/
 		}
 		
 		$tallas 		= obtenerTallasDetalleProducto( $dbh, $dp["d_id"] );
@@ -186,12 +132,6 @@
 		$html_det		= obtenerImagenDetalleProducto( $dbh, $dp["d_id"] );		
 		$html_det 		.= "<div align='center'>
 								<a href='".$lnk_dp."' target='_blank'>#".$dp["p_id"]."-".$dp["d_id"]."</a> $desuso
-							</div>
-							<div align='center' style='padding: 4px 0'>
-								<a href='#!' id='oc$dp[d_id]' class='selpre-o' data-idd='$dp[d_id]' 
-								title='Agregar a lista preorden'>
-									<i class='fa fa-2x fa-list-alt $clase_po'></i></i>
-								</a>
 							</div>";
 		$col_cod		= obtenerCodigosProducto( $dbh, $dp );
 		$html_ta		= obtenerColoresDisponibilidadTallas( $dbh, $tallas, $dp );
@@ -205,8 +145,6 @@
 		$reg_prod["categ"] 		= $dp["categoria"]." > ".$dp["subcategoria"];
 		$reg_prod["detalle"]	= $html_det;
 		$reg_prod["tallas"] 	= $html_ta;
-
-		$reg_prod["desuso"] 	= $val_desu;
 	
 		/*......................................................................*/
 		$data_productos["data"][] = $reg_prod;

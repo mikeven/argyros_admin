@@ -8,6 +8,7 @@
       <th class="datesort">Fecha</th>
       <th>Status</th>
       <th>Total</th>
+      <th>Peso</th>
       <th class="hidden"></th>
     </tr>
   </thead>

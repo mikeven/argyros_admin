@@ -16,6 +16,7 @@
     include( "database/data-materials.php" );
     include( "database/data-treatments.php" );
     include( "database/data-categories.php" );
+    include( "database/data-providers.php" );
 
     checkSession( '' );
 ?>
@@ -83,14 +84,15 @@
 
   <?php
 
-    $banos      = obtenerListaBanos( $dbh );
-    $lineas     = obtenerListaLineas( $dbh );
-    $colores    = obtenerListaColores( $dbh );
-    $trabajos   = obtenerListaTrabajos( $dbh );
-    $materiales = obtenerListaMateriales( $dbh );
-    $categorias = obtenerListaCategorias( $dbh );
-    $grupos     = obtenerListaGruposClientes( $dbh );
-    $paises     = obtenerListaPaisesProductores( $dbh );
+    $banos        = obtenerListaBanos( $dbh );
+    $lineas       = obtenerListaLineas( $dbh );
+    $colores      = obtenerListaColores( $dbh );
+    $trabajos     = obtenerListaTrabajos( $dbh );
+    $materiales   = obtenerListaMateriales( $dbh );
+    $categorias   = obtenerListaCategorias( $dbh );
+    $grupos       = obtenerListaGruposClientes( $dbh );
+    $paises       = obtenerListaPaisesProductores( $dbh );
+    $proveedores  = obtenerListaProveedores( $dbh );
     
   ?>
 
@@ -164,6 +166,19 @@
                           </div>
                           
                           <div class="ln_solid"></div>
+
+                          <div class="form-group"><!-- Proveedores -->
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Proveedor </label>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                              <select id="selprov_fr" name="proveedor" class="form-control selectpicker" 
+                              required title="Seleccione">
+                                <?php foreach ( $proveedores as $p ) { ?>
+                                  <option value="<?php echo $p[id] ?>"><?php echo $p["numero"] ?></option>
+                                <?php } ?>
+                              </select>
+                              <div id="rprovr"></div>
+                            </div>
+                          </div>
 
                           <div class="form-group"><!-- Tallas -->
                             <label class="control-label col-md-4 col-sm-4 col-xs-12">Tallas </label>
@@ -389,6 +404,9 @@
                           </div>
                           <div>
                             <input type="checkbox" name="p_tal" class="flat"> Tallas 
+                          </div>
+                          <div>
+                            <input type="checkbox" name="p_ubc" class="flat"> Ubicación 
                           </div>
                         </div>
                       </div>

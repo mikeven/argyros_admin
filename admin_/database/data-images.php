@@ -22,13 +22,14 @@
 		return $h + ( $a_l / 2 );
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function vectorDI( $nombre, $id, $precio, $peso, $tallas ){
+	function vectorDI( $nombre, $id, $precio, $peso, $tallas, $ubicacion ){
 		// 
-		$dv["peso"] 	= $peso;
-		$dv["id"] 		= $id;
-		$dv["nombre"] 	= $nombre;
-		$dv["tallas"] 	= $tallas;
-		$dv["precio"] 	= $precio;
+		$dv["peso"] 		= $peso;
+		$dv["id"] 			= $id;
+		$dv["nombre"] 		= $nombre;
+		$dv["tallas"] 		= $tallas;
+		$dv["precio"] 		= $precio;
+		$dv["ubicacion"] 	= $ubicacion;
 		
 		return $dv;
 	}
@@ -44,32 +45,38 @@
 		return $imagen;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip ){
+	function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas, $ubicacion, $zip ){
 		
 		ini_set( "memory_limit", "200M" );
 		ini_set('MAX_EXECUTION_TIME', '900');
-		
-		$ai 				= alturaInfo( vectorDI( $nombre, $id, $precio, $peso, $tallas ) );
+		$alin 				= 20;												// Altura de línea
+		//$ai 				= alturaInfo( vectorDI( $nombre, $id, $precio, $peso, $tallas, $ubicacion ) );
+		$ai 				= $alin * 3;
 		$orig 				= imagecreatefromjpeg( $img );
 		$ancho_o 			= imagesx( $orig ); 
 		$alto_o 			= imagesy( $orig ); 
-		$nw 				= 500;
-		$nh 				= intval( ( $alto_o / $ancho_o ) * $nw ) + $ai;
+		$nw 				= 500;												// Ancho imagen nueva
+		$nh 				= intval( ( $alto_o / $ancho_o ) * $nw ) + $ai;		// Alto: proporcional al ancho con respecto 
+																				// a la original + espacio para texto 
 
-		$nva 				= imagecreatetruecolor( $nw, $nh ); 	
-		$color_1 			= imagecolorallocate( $nva, 0, 0, 0 );
-		$color_2 			= imagecolorallocatealpha( $nva, 255, 255, 255, 10 );
+		$nva 				= imagecreatetruecolor( $nw, $nh+10 ); 						// Creación de nueva imagen	
+		$color_1 			= imagecolorallocate( $nva, 0, 0, 0 );						// Color negro
+		$color_2 			= imagecolorallocatealpha( $nva, 255, 255, 255, 10 );		// Color blanco
 
 		$x1 = 0; 	$x2 = $nw;
 		$y1 = $nh; 	$y2 = $nh - $ai;
 		
-		imagecopyresampled( $nva, $orig, 0, 0, 0, 0, $nw, $nh-$ai, $ancho_o, $alto_o );
-		imagefilledrectangle ( $nva , $x1 , $y1 , $x2 , $y2 , $color_2 );
-		//img, tam, ang, x, y, color, font, texto
+		// Copiar imagen de producto en la nueva
+		imagecopyresampled( $nva, $orig, 0, 0, 0, 0, $nw, $nh-$ai, $ancho_o, $alto_o );		
+		// Área de texto
+		imagefilledrectangle ( $nva , $x1 , $y1+10 , $x2 , $y2 , $color_2 );				
+		
 		$tam = 12; $typ = '../fonts/futura medium bt.ttf';
-		$lin = $y2 + 20;
+		$lin = $y2 + $alin;
+		$p_x = 20; $p_y = $y2 + $alin;
 
-		if( $peso != NULL ){
+		// imagettftext (img, tam, ang, x, y, color, font, texto)
+		/*if( $peso != NULL ){
 			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $peso );
 			$lin += 20;
 		}
@@ -91,7 +98,32 @@
 			if( $id == NULL ) $lin = $y2 + 20;
 			$x = $nw / 2;
 			imagettftext( $nva, $tam-2, 0, $x, $lin, $color_1, $typ, $tallas );
+		}*/
+
+		if( $peso != NULL ){		// F1,C1
+			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $peso );
 		}
+		if( $precio != NULL ){		// F2,C1
+			$p_y = $y2 + ( $alin*2 );
+			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $precio );
+		}
+		if( $nombre != NULL ){		// F3,C1
+			$p_y = $y2 + ( $alin*3 );
+			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $nombre );
+		}
+		if( $id != NULL ){			// F1,C2
+			$p_x = $nw / 2;  $p_y = $y2 + $alin;
+			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $id );
+		}
+		if( $tallas != NULL ){ 		// F2,C2
+			$p_x = $nw / 2;    $p_y = $y2 + ( $alin*2 );
+			imagettftext( $nva, $tam-2, 0, $p_x, $p_y, $color_1, $typ, $tallas );
+		}
+		if( $ubicacion != NULL ){	// F3,C2
+			$p_x = $nw / 2;    $p_y = $y2 + ( $alin*3 );
+			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $ubicacion );
+		}
+
 
 		$archivo = substr( $id_p, 1 );
 		imagepng( $nva, "../salidas/$archivo.png", 9 ); 
@@ -170,6 +202,16 @@
 		return substr( $v_tallas, 0, -2 ); 
 	}
 	/* ---------------------------------------- */
+	function ubicacionP( $r, $f ){
+		$ubicacion = NULL;
+		if( isset( $f["p_ubc"] ) ){
+			$det 		= $r["detalle"];
+			$ubicacion 	= $det["ubicacion"];
+		}
+		
+		return $ubicacion;
+	}
+	/* ---------------------------------------- */
 	function linkImg( $n ){
 		//download='$n.png'
 		$lnk = "<a class='lnkig' href='salidas/$n.png'  target='_blank'>IMG</a>";
@@ -229,13 +271,17 @@
 			$id_p 		= 	idP( $p, $frm, true ); 	
 			$precio 	= 	precioP( $p, $frm );
 			$tallas 	= 	tallasP( $p, $frm );
+			$ubicacion 	= 	ubicacionP( $p, $frm );
+
 			$enl 		.= 	linkImg( substr( $id_p, 1 ) );
 			$enl 		= 	linkZip( $archivo_zip );
+
 			if( $img != "" ){
 				actualizarProgreso( $nregs, $nombre_i );
-				GI( $img, $nombre_i, $nombre, $id_p, $id, $precio, $peso, $tallas, $zip );
+				GI( $img, $nombre_i, $nombre, $id_p, $id, $precio, $peso, $tallas, $ubicacion, $zip );
 			}
 		}
+
 		$zip->close();
 		echo $enl;
 	}

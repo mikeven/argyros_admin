@@ -12,11 +12,14 @@ function obtenerPrecioUnitarioItemMarcado( elem ){
 	return monto;
 }
 /* --------------------------------------------------------- */	
-function mostrarMontoPrevio( monto ){
+function mostrarMontoPrevio( monto, peso ){
     //Muestra el monto previo después de marcar/desmarcar ítems en la revisión de pedido
-    //Guarda el monto en campo oculto ( #previo_total_orden )
+    //Guarda el monto en campo oculto ( #previo_total_orden, #previo_peso_orden )
     $("#monto_total_orden").html( monto );
     $("#previo_total_orden").html( monto );
+
+    $("#peso_total_orden").html( peso );
+    $("#previo_peso_orden").html( peso );
 }
 /* --------------------------------------------------------- */
 function actualizarTotalItem( elem, c, p ){
@@ -25,20 +28,41 @@ function actualizarTotalItem( elem, c, p ){
 	var trg = $(elem).attr("data-ti");
 	var titem = parseFloat( c * p ).toFixed(2);
 	$("#" + trg).html( titem );
+
+	return titem;
+}
+/* --------------------------------------------------------- */
+function actualizarPesoTotalItem( elem, cant ){
+	//Actualiza el total de peso en ítem en tabla de pedido al modificar ítem
+	//elem (class:qini)
+	var idr 	= $(elem).attr("data-ti").substring(2);		//tixx..x substring(2):xx..x
+	var trg		= $("#tpi" + idr);
+	var pdet  	= $("#pesoi" + idr).val(); 
+
+	var pitem 	= parseFloat( cant * pdet ).toFixed(2);
+	$(trg).html( pitem );
+
+	return pitem;
 }
 /* --------------------------------------------------------- */	
 function calcularTotalOrdenPrevio(){
     //Calcula el monto total del pedido después de modificar ítems
-    monto = 0.00;
+    monto 			= 0.00;
+	peso_total 		= 0.00;
 
     $(".qini").each( function() {
-        cant = $( this ).val(); 
-        punit = obtenerPrecioUnitarioItemMarcado( $( this ) );
-        actualizarTotalItem( $( this ), punit, cant );
-        monto = parseFloat( punit * cant ) + parseFloat( monto );
-        monto = parseFloat( monto ).toFixed(2);
+        cant 		= $( this ).val(); 
+        punit 		= obtenerPrecioUnitarioItemMarcado( $( this ) );
+        titem 		= actualizarTotalItem( $( this ), punit, cant );
+        pitem 		= actualizarPesoTotalItem( $( this ), cant );
+        
+        monto 		= parseFloat( titem ) + parseFloat( monto );
+        monto 		= parseFloat( monto ).toFixed(2);
+        peso_total 	= parseFloat( pitem ) + parseFloat( peso_total );
+        peso_total 	= parseFloat( peso_total ).toFixed(2);
     });
-    mostrarMontoPrevio( monto );
+    
+    mostrarMontoPrevio( monto, peso_total );
 }
 /* --------------------------------------------------------- */
 function asignarValorRegistro( status_rev, id ){

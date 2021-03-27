@@ -1,6 +1,6 @@
 <?php
     /*
-     * Argyros Admin - Productos no disponibles
+     * Argyros Admin - Lista de productos por tallas para lista pre-orden
      * 
      */
     session_start();
@@ -20,7 +20,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Productos disponibilidad por talla :: Argyros Admin</title>
+    <title>Productos por talla para pre-orden :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -58,13 +58,19 @@
         .dsp_total{ background-color: #28a745 }
         .dsp_parcial{ background-color: #ffc107; }
         .dsp_agotado{ background-color: #dc3545; }
+
+        .it_oc_rec{ color: #5cb85c; } /* verde:     recibido */
+        .it_oc_pen{ color: #f0ad4e; } /* amarillo:  pendiente */
+        .it_oc_nor{ color: #ac2925; } /* rojo:      no recibido */
+
+        .inc_lpreo{ color: #28a745 }
+        .lab_sust{ font-size: 10px; }
+        .prd_dsuso{ border-left: 5px solid #777777 !important; }
     </style>
 
 </head>
 
-  <?php
-    $productos = obtenerListaProductos( $dbh );
-  ?>
+  <?php $productos = obtenerListaProductos( $dbh ); ?>
 
   <body class="nav-md">
     <div class="container body">
@@ -77,9 +83,20 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
+              
               <div class="title_left">
-                <h3>Disponibilidad de productos por tallas</h3>
+                <h3>Lista de productos por tallas para pre-orden</h3>
               </div>
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
+                  <div class="input-group" style="float:right;">
+                    <a href="preorder.php" class="btn btn-app">
+                    <i class="fa fa-list-alt"></i> Ir a Lista Pre-Orden
+                </a>
+                  </div>
+                </div>
+              </div>
+              
             </div>
 
             <div class="clearfix"></div>
@@ -89,22 +106,14 @@
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Lista de productos</h2>
-                    <div style="float: right;" class="hidden">
-                        <?php if( isset( $_GET["imagenes"] ) ) { ?>
-                            <a href="products.php">
-                                <i class="fa fa-file-image-o"></i> No mostrar imágenes
-                            </a>
-                        <?php } else { ?>
-                            <a href="products.php?imagenes">
-                                <i class="fa fa-file-image-o"></i> Mostrar imágenes
-                            </a>
-                        <?php } ?>
-                    </div>
                     <div class="clearfix"></div>
                   </div>
-                  <div id="lista_general_productos" class="x_content">
+                  <div class="instrucciones" align="center">
+                      <p class="text-muted font-13 m-b-30"> Seleccione los productos a agregar a la lista de pre-orden con en el ícono <i class="fa fa-list-alt"></i></p>
+                  </div>
+                  <div id="lista_productos_tallas" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
-                    <?php include( "sections/tables/table-data-unavailable-products.php" ); ?>
+                    <?php include( "sections/tables/table-data-products-sizes.php" ); ?>
                   </div>
                 </div>
               </div>
@@ -116,6 +125,7 @@
         <!-- footer content -->
         <?php include( "sections/footer.php" ); ?>
         <!-- /footer content -->
+        
       </div>
     </div>
 
@@ -182,7 +192,7 @@
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="js/fn-product.js"></script>
+    <script src="js/fn-purchase.js"></script>
     <script src="js/custom.js"></script>
     
     <script src="js/fn-ui.js"></script>
@@ -200,7 +210,7 @@
                 
                 "ajax": { 
                     "method":"POST",
-                    "url":"database/data-table-products-availability-sizes.php"
+                    "url":"database/data-table-products-sizes.php"
                 },
                 "columns":[
                     {"data":"fagotado"},
@@ -211,8 +221,13 @@
                     {"data":"detalle"},
                     {"data":"tallas"}
                 ],
-                "columnDefs" : [
-                                { "targets":[1,3,4,5,6], "orderable": false }],
+                "columnDefs" : [{ "targets":[1,3,4,5,6], "orderable": false }],
+                "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                    if(aData["desuso"] == true ){
+                        /* Col 5: adquiere la clase prd_dsuso (prod en desuso)*/
+                        $('td:eq(5)', nRow).addClass( "prd_dsuso" ); 
+                    }
+                },
                 "processing": true,
                 "paging": true,
                 "iDisplayLength": 10,

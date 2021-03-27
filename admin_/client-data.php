@@ -64,7 +64,13 @@
         <!-- Custom Theme Style -->
         <link href="build/css/custom.min.css" rel="stylesheet">
         <style type="text/css">
-            #login_list{ display: none; text-align: right; }
+            #login_list{ 
+                display: none; 
+                text-align: right; 
+                max-height: 300px; 
+                overflow-y: scroll; 
+                padding-right: 20px 
+            }
         </style>
   </head>
 
@@ -194,7 +200,7 @@
                         <?php } ?>
                     </div>  
 
-                    <?php if( $_SESSION["user-adm"]["id"] == 1 ) { ?>
+                    <?php if( in_array( $uargyros["id"], array( 1, 7 ) ) ) { ?>
                         <div class="ln_solid"></div>
                         <form id="frm_nvapasswd_cliente" data-parsley-validate 
                         class="form-horizontal form-label-left" action="database/data-clients.php?mpassword" method="post">

@@ -68,6 +68,9 @@
             .btn_accion_pedido{ float: left; }
             .accion_observaciones{ margin-bottom: 20px; }
             .tx_al_c{ text-align: center;}
+
+            .prd_dsuso{ border-left: 5px solid #777777 !important; }
+            .leyenda_prd_dsuso{ height: 14px; border-right: 5px solid #777777; display: inline-block; }
         </style>
     </head>
 
@@ -128,11 +131,19 @@
                                             <label class="control-label">Pedido: </label> <?php echo "#".$orden["id"]; ?>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Fecha: </label> <?php echo $orden["fecha"]; ?>
+                                            <label class="control-label">Fecha: </label> <?php echo $orden["fecha_hora"]; ?>
                                         </div>
 
                                         <div class="form-group">
                                             <label class="control-label">Ítems: </label> <?php echo $orden["ncant_items"]; ?>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">Peso total estimado: </label> 
+                                            <span id="peso_total_orden">
+                                                <?php echo number_format( $orden["tpeso"], 2, ".", " " ); ?>
+                                            </span> gr
+                                            <input type="hidden" id="previo_peso_orden" value="<?php echo $orden[tpeso]; ?>">
                                         </div>
                                         
                                         <div class="form-group">

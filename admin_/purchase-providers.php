@@ -71,7 +71,8 @@
 <?php 
     $proveedores    = obtenerProveedoresOrdenCompra();
     $preorden       = isset( $_SESSION["preorden"] ) ? $_SESSION["preorden"] : array();
-    $ids_preo       = obtenerIdsDetallesEnPreorden( $preorden );
+    $ids_pro_preo   = obtenerIdsProductoEnPreorden( $preorden );
+    //$ids_preo       = obtenerIdsDetallesEnPreorden( $preorden );
 ?>
 
   <body class="nav-md">
@@ -219,7 +220,7 @@
                     }
                 }
             });
-            var table = $('#datatable-preorder').DataTable();
+            var table = $('.datatable-preorder-provider').DataTable();
             // Ordenar por columna cero, dibujar
             table.order( [ 0, 'desc' ] ).draw();
         });   

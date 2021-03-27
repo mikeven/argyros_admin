@@ -58,6 +58,7 @@ function verificarCodigosFabricanteRepetidos( idp ){
         beforeSend: function () {
             $("#wrnmessage").fadeOut();
             $(".neweditprod").prop( 'disabled', true );
+            $(".neweditprod").css( 'display', 'none' );
         },
         success: function( response ){
         	console.log( response );
@@ -516,12 +517,12 @@ function mostrarVistaPreviaReferencia( idorg, idref ){
     });
 }
 /* --------------------------------------------------------- */
-function detalleProductoEnDesuso( iddet_org, iddet_ref, val, btn ){
+function detalleProductoEnDesuso( iddet_org, iddet_ref, val, es_sust, btn ){
 	// Solicita asignar un producto en desuso y la referencia al producto sustituto.
 	$.ajax({
     	type: 'POST',
       	url: 'database/data-products.php',
-      	data: { id_desuso: iddet_org, id_ref: iddet_ref, valor: val },
+      	data: { id_desuso: iddet_org, id_ref: iddet_ref, valor: val, sustitucion: es_sust },
       	beforeSend: function () {
             
         },
@@ -736,17 +737,18 @@ $( document ).ready(function() {
 
 	    $(".btn-ref-du").on( "click", function(){
 	    	var iddet_org = $(this).attr("data-id");
-	    	var iddet_ref = $("#refdu-" + iddet_org ).val();
+	    	var iddet_ref = $( "#refdu-" + iddet_org ).val();
+	    	var sustituto = $( "#chk_sust" + iddet_org ).prop('checked');
 	    	$(this).attr( "disabled", true );
 
-	    	detalleProductoEnDesuso( iddet_org, iddet_ref, true, $(this) );
+	    	detalleProductoEnDesuso( iddet_org, iddet_ref, true, sustituto, $(this) );
 	    });
 
 	    $(".btn_not_disuse").on( "click", function(){
 	    	var iddet_org = $(this).attr("data-id");
 	    	$(this).attr( "disabled", true );
 
-	    	detalleProductoEnDesuso( iddet_org, '', false, $(this) );
+	    	detalleProductoEnDesuso( iddet_org, '', false, '', $(this) );
 	    });
 
 	}

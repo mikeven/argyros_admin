@@ -33,7 +33,7 @@ function agregarProductoPreorden( idd ){
         url:"fn/fn-purchase.php",
         data:{ agregar_prod_preorden: idd },
         success: function( response ){
-        	console.log( response );
+        	
 			res = jQuery.parseJSON( response );
 			if( res.exito == 1 ){
 				tNotificar( "Lista preorden", res.mje, "success", 2200 );
@@ -55,12 +55,16 @@ function actualizarPreorden( param, id_d, id_t, obj, id_pvd, val ){
         url:"fn/fn-purchase.php",
         data:{ act_preorden: param, idd: id_d, idt: id_t, valor: val },
         success: function( response ){
-            console.log( response );
-            if( response == "eliminar" ){
-                quitarFilaItem( fila, id_d, obj, id_pvd, param );
+            res = jQuery.parseJSON( response );
+            if( res.exito == 1 ){
+                if( res.accion == "eliminar" ){
+                    quitarFilaItem( fila, id_d, obj, id_pvd, param );
+                }
+                else
+                    tNotificar( "Lista preorden", res.mje, "success", 500 );
+            }else{
+                tNotificar( "Lista preorden", res.mje, "warning", 1000 );
             }
-            else
-                tNotificar( "Lista preorden", response, "success", 500 );
         }
     });
 }
@@ -135,6 +139,25 @@ function actualizarNotaOC( ido, nota ){
     });
 }
 /* --------------------------------------------------------- */
+function vaciarListaPreorden(){
+    // Invoca al servidor para vaciar la lista preorden
+    $.ajax({
+        type:"POST",
+        url:"fn/fn-purchase.php",
+        data:{ vaciar_preorden: 1 },
+        success: function( response ){
+            console.log( response );
+            res = jQuery.parseJSON( response );
+            if( res.exito == 1 ){
+                tNotificar( "Lista preorden", res.mje, "success", 2200 );
+                setTimeout( function() { location.reload(); }, 3000 );
+            }
+            else
+                tNotificar( "Lista preorden", res.mje, "info", 2200 );
+        }
+    });
+}
+/* --------------------------------------------------------- */
 function iniciarPopImagenesProductos(){
 	// Inicializa los enlaces para mostrar las imágenes de productos en ventanas emergentes
 
@@ -204,6 +227,14 @@ function iniciarBotonConfirmacionOC( estado ){        //purchase-data.php
                          "Estado de orden de compra", "", 
                          "¿Confirma marcar orden de compra como " + estado + "?", 
                          "Confimar" );  
+}
+/* --------------------------------------------------------- */
+function iniciarBotonVaciarPreorden(){
+    //Asigna los textos de la ventana de confirmación para vaciar lista preorden
+    iniciarVentanaModal( "btn_vaciar_preorden", "btn_canc_vaciar", 
+                         "Vaciar Lista Preorden", "", 
+                         "¿Confirma que desea vaciar lista preorden?", 
+                         "Confirmar acción" );
 }
 /* --------------------------------------------------------- */
 function desactivarBotonesEstadoItems(){
@@ -320,6 +351,10 @@ $( document ).ready(function() {
         }
     });
 
+    $("#ordenes_p_proveedor").on( "blur", ".not_preord", function(){ 
+        console.log( $(this).val().length );
+    });
+
     $(".item_oc_estado").on( "click", function(){    
         var iddo    = $(this).attr("data-iddo");
         var edo     = $(this).attr("data-valor");
@@ -343,6 +378,15 @@ $( document ).ready(function() {
         iniciarBotonConfirmacionOC( estado );
         $('#btn_confirm_oc').on('click', function() {
             actualizarEstadoOC( ido, estado ); 
+        });
+    });
+    /*.......................................................*/
+    //Clic: Vaciado de lista preorden
+    $("body").on( "click", "#vaciar-preorden", function(){
+        iniciarBotonVaciarPreorden();
+        $('#btn_vaciar_preorden').on('click', function(){
+            $("#confirmar-accion .btn-canc").click();
+            vaciarListaPreorden();
         });
     });
 

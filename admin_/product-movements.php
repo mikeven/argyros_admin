@@ -379,7 +379,7 @@
                 "searching": true,
                 "ordering": true,
                 "order": [[ 0, "desc" ]],
-                "columnDefs" : [{"targets":0, "type":"date-eu"}],
+                "columnDefs" : [{"targets":0, "type":"date-eu"}, {"targets":3, "orderable": false }],
                 "info": true,
                 "deferRender": true,
                 "autoWidth": false,

@@ -67,7 +67,8 @@
 
 <?php     
     $preorden = isset( $_SESSION["preorden"] ) ? $_SESSION["preorden"] : array();
-    $ids_preo = obtenerIdsDetallesEnPreorden( $preorden );
+    $ids_pro_preo = obtenerIdsProductoEnPreorden( $preorden );
+    //$ids_preo = obtenerIdsDetallesEnPreorden( $preorden );
     incluirItemsGeneracionOrdenes();
 ?>
 
@@ -87,11 +88,20 @@
               </div>
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right">
-                  <div class="input-group" style="float:right;">
-                    <a href="products-sizes.php" class="btn btn-app">
-                      <i class="fa fa-arrow-left"></i> Volver a productos por talla
-                    </a>
-                  </div>
+                    <?php if( count( $preorden ) > 0 ) { ?>
+                        <div class="input-group" style="float:right;">
+                            <a id="vaciar-preorden" href="#!" class="btn btn-app" 
+                                data-toggle="modal" data-target="#confirmar-accion">
+                                <i class="fa fa-times"></i> Vaciar lista pre-orden
+                            </a>
+                        </div>
+                    <?php } ?>
+                    <div class="input-group" style="float:right;">
+                        <a href="products-sizes-preorder.php" class="btn btn-app">
+                          <i class="fa fa-arrow-left"></i> Ir a productos por talla
+                        </a>
+                    </div>
+                  
                 </div>
               </div>
             </div>
@@ -115,6 +125,7 @@
                     <p class="text-muted font-13 m-b-30"> </p>
 
                     <?php include( "sections/tables/table-preorder.php" ); ?>
+                    <?php include( "sections/modals/confirm_action.php" ); ?>
 
                     <div class="ln_solid"></div>
 
@@ -244,7 +255,7 @@
                 }
             });
             var table = $('#datatable-preorder').DataTable();
-            // Ordenar por columna cero, dibujar
+            // Ordenar por columna cero
             table.order( [ 0, 'desc' ] ).draw();
         });   
     </script>

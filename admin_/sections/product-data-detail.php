@@ -2,9 +2,10 @@
     <h4>Detalle de producto</h4>      
     <?php 
         foreach ( $dproducto as $dp ) {
-            $imagenes_detalle = obtenerImagenesDetalleProducto( $dbh, $dp["id"], NULL );
-            $tallas_detalle = obtenerTallasDetalleProducto( $dbh, $dp["id"] ); 
-            $lnk_mvm = "product-movements.php?p=$producto[id]&dp=$dp[id]";
+            $disponible         = false;
+            $imagenes_detalle   = obtenerImagenesDetalleProducto( $dbh, $dp["id"], NULL );
+            $tallas_detalle     = obtenerTallasDetalleProducto( $dbh, $dp["id"] ); 
+            $lnk_mvm            = "product-movements.php?p=$producto[id]&dp=$dp[id]";
     ?>
     <div class="row">
         <div id="<?php echo $dp["id"]; ?>" class="col-md-4 col-sm-4 col-xs-12">
@@ -99,8 +100,11 @@
                   <tbody>
                     <?php 
                         foreach ( $tallas_detalle as $talla ) {
-                            if( $talla["visible"] == 1 ) $ctble = ""; 
-                            else $ctble = "poculto"; 
+                            if( $talla["visible"] == 1 ) { 
+                                $ctble = ""; $disponible = true; 
+                            }
+                            else $ctble = "poculto";
+                            
                             $n_talla = $talla["talla"];  
                             if ( $talla["talla"] == "ajust" )  $n_talla  = "Ajustable";
                             if ( $talla["talla"] == "unica" )  $n_talla  = "Única";
@@ -132,7 +136,7 @@
                 </table>
             </div>
             <div>
-                <?php if( $uargyros["id"] == 2 ) { ?>
+                <?php if( !$disponible ) { ?>
                 
                     <?php 
                         if( $dp["en_desuso"] ) { 
@@ -146,8 +150,11 @@
                                 $lnk_ref = "product-data.php?p=$ref_pid#$ref_idet";
                         ?>
                             Ref: <a href="<?php echo $lnk_ref ?>" target="_blank">
-                                (#<?php echo $ref_pid." - ".$ref_idet ?>)</a>
-                        
+                                    (#<?php echo $ref_pid." - ".$ref_idet ?>)
+                                </a>
+                                <?php if( $dp["sustituto"] ) { ?>
+                                    <span class="badge badge-secondary lab_sust">Sustituto</span>
+                                <?php } ?>
                         <?php } ?>
                         
                         <div id="ref_du">Fecha desuso: <?php echo $dp["fdesuso"] ?> </div>
@@ -182,10 +189,15 @@
                             <input id="refdu-<?php echo $dp[id]; ?>" class="ref_desuso" type="text" 
                             value="" maxlength="20" data-ctg="<?php echo $producto[scid] ?>" 
                             data-idd="<?php echo $dp[id] ?>">
-                            <button type="button" class="btn btn-info btn-xs btn-ref-du" 
-                                data-id="<?php echo $dp[id] ?>" title="Guardar">
-                                <i class="fa fa-save"></i>
-                            </button>
+                            <input id="chk_sust<?php echo $dp[id]; ?>" type="checkbox" class="flat" name="ch_sust"> 
+                                    Sustitución
+                            <div class="form-group">
+                                
+                                <button type="button" class="btn btn-info btn-xs btn-ref-du" 
+                                    data-id="<?php echo $dp[id] ?>" title="Guardar">
+                                    <i class="fa fa-save"></i> Guardar
+                                </button>
+                            </div>
                             <div id="suggesstion-box"></div>
                                      
                         </form>

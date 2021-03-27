@@ -106,12 +106,37 @@
         return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerIdsProductoEnPreorden( $preorden ){
+		// Devuelve un vector con los ids de los productos en la lista pre-orden
+		$ids_prd		= array();
+		
+		foreach ( $preorden as $i )
+			$ids_prd[] = $i["idp"];
+
+		// Ids sin repeticiones ordenados por orden inverso en que fueron agregados
+		$ids_pids_reord = array_reverse( array_unique( array_reverse( $ids_prd ) ) );
+		
+		return $ids_pids_reord;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerIdsDetallesEnPreorden( $preorden ){
 		// Devuelve un vector con los ids de los detalles de productos en la lista pre-orden
 		$ids_det		= array();
 		
 		foreach ( $preorden as $i ) {
 			if( !in_array( $i["idd"], $ids_det ) ) $ids_det[] = $i["idd"];
+		}
+
+		return $ids_det;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerIdsDetallesPorProductoEnPreorden( $preorden, $idp ){
+		// Devuelve un vector con los ids de los detalles de productos en la lista pre-orden asociados a un producto
+		$ids_det		= array();
+		
+		foreach ( $preorden as $i ) {
+			if( $i["idp"] == $idp )
+				if( !in_array( $i["idd"], $ids_det ) ) $ids_det[] = $i["idd"];
 		}
 
 		return $ids_det;
@@ -126,6 +151,17 @@
 		}
 
 		return $ids_det;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerItemsPorProducto( $idp ){
+		// Devuelve un vector con los ítems en la lista pre-orden pertenecientes a un detalle de producto
+		$preorden 		= $_SESSION["preorden"];
+		$items			= array();
+
+		foreach ( $preorden as $i )
+			if( $i["idp"] == $idp ) $items[] = $i;
+		
+		return $items;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerItemsPorDetalle( $iddet ){
@@ -198,8 +234,10 @@
 		// Actualiza un valor de un producto en la lista pre-orden identidicado por $idd y $idt
 		$index = obtenerPosicionItem( $idd, $idt );
 		if( $valor == "" ) $valor = 0;
+		if( $campo == 'cant' ) 
+			$valor = intval( $valor );
+
 		$_SESSION["preorden"][$index][$campo] = $valor;
-		//print_r($_SESSION["preorden"][$index]);
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function actualizarValorListaPreordenDetalle( $campo, $idd, $valor ){
@@ -272,7 +310,8 @@
 	/* ----------------------------------------------------------------------------------- */
 	function tieneItemsEnOC( $items ){
 		// Devuelve verdadero si al menos un ítem está marcado para ser incluido en una orden de compra
-		$items_enoc = false;
+		$items_enoc 	= false;
+		
 		foreach ( $items as $it ) {
 			if( $it["en_oc"] == true ) $items_enoc = true;
         }
@@ -280,10 +319,23 @@
         return $items_enoc;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerDataMovimientoPedidos( $dbh, $idd ){
+		// Devuelve los registros de pedido para mostrar en la tabla de movimientos 
+		$pedidos 		= obtenerPedidosDetalleProducto( $dbh, $idd );
+		$movimientos 	= array();
+		foreach ( $pedidos as $p ) {
+			if( $p["revision"] )
+				$p["cant"] = $p["cant"]." / ".$p["disp"];
+
+			$movimientos[] = $p;
+		}
+		return $movimientos;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerMovimientosProducto( $dbh, $idd ){
 		// Devuelve los movimientos de compra y venta de un detalle de pedido
 		$regs_oc 		= obtenerOrdenesCompraDetalleProducto( $dbh, $idd );
-		$regs_p 		= obtenerPedidosDetalleProducto( $dbh, $idd );
+		$regs_p 		= obtenerDataMovimientoPedidos( $dbh, $idd );
 		
 		$movimientos 	= array_merge( $regs_oc, $regs_p ); 
 		
@@ -336,24 +388,52 @@
 		$idd 		= $_POST["idd"]; 	$idt 	= $_POST["idt"];
 		$valor  	= $_POST["valor"];
 		
-		if( $objetivo != "eliminar" && $objetivo != "eliminar_oc" ){
-			$mensaje = "Lista actualizada";
-			if( $idt != "" )	// Actualiza el valor de un item particular (id_detalle, id_talla )
-				actualizarValorListaPreorden( $objetivo, $idd, $idt, $valor );	
-			else 				// Actualiza el valor todos los ítems asociados al id_detalle
-				actualizarValorListaPreordenDetalle( $objetivo, $idd, $valor );
-		}
-		else{
-			$mensaje = "eliminar";
-			if( $objetivo == "eliminar")
-				eliminarItemListaPreorden( $idd, $idt );
-			if( $objetivo == "eliminar_oc")
-				actualizarValorListaPreorden( "en_oc", $idd, $idt, false );
+		if( count( $_SESSION["preorden"] ) > 0 ){
+
+			if( $objetivo != "eliminar" && $objetivo != "eliminar_oc" ){
+				$accion = "actualizar";
+				if( $idt != "" )	// Actualiza el valor de un item particular (id_detalle, id_talla )
+					actualizarValorListaPreorden( $objetivo, $idd, $idt, $valor );	
+				else 				// Actualiza el valor todos los ítems asociados al id_detalle
+					actualizarValorListaPreordenDetalle( $objetivo, $idd, $valor );
+			}
+			else{
+				$accion = "eliminar";
+				if( $objetivo == "eliminar")
+					eliminarItemListaPreorden( $idd, $idt );
+				if( $objetivo == "eliminar_oc")
+					actualizarValorListaPreorden( "en_oc", $idd, $idt, false );
+			}
+			$res["exito"] 	= 1;
+			$res["accion"] 	= $accion;
+			$res["mje"] 	= "Lista actualizada";
+		}else{
+			// Preorden vacía
+			$res["exito"] 	= -1;
+			$res["mje"] 	= "No existen registros en la lista preorden";
 		}
 
 		guardarEstadoLista( $_SESSION["preorden"], "" );
 
-		echo $mensaje;
+		echo json_encode( $res );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_POST["vaciar_preorden"] ) ){
+		//Invoca a función para vaciar lista de pre-orden
+		session_start();
+		
+		$_SESSION["preorden"] = array();
+		if( count( $_SESSION["preorden"] ) == 0 ){
+			$res["exito"] = 1;
+			$res["mje"] = "Lista pre-orden vaciada";
+		}else{
+			$res["exito"] = -1;
+			$res["mje"] = "No hay elementos que vaciar";
+		}
+
+		guardarEstadoLista( $_SESSION["preorden"], "" );
+
+		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */
 	if( isset( $_GET["purchase-id"] ) ){

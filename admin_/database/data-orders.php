@@ -21,7 +21,8 @@
 		$data_orden = NULL;
 		
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
-		o.client_note, o.admin_note, o.revision_note, date_format( o.created_at,'%d/%m/%Y') as fecha, c.id as cid, 
+		o.client_note, o.admin_note, o.revision_note, date_format( o.created_at,'%d/%m/%Y') as fecha, 
+		date_format( o.created_at,'%d/%m/%Y %h:%i:%s %p') as fecha_hora, c.id as cid, 
 		c.first_name nombre, c.last_name as apellido, c.email as email, g.name as grupo_cliente 
 		from orders o, clients c, client_group g 
 		where o.user_id = c.id and c.client_group_id = g.id and o.id = $ido";
@@ -35,9 +36,9 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDetalleOrden( $dbh, $ido ){
 		//Devuelve los registros correspondientes a un detalle de pedido dado su id
-		$q = "select od.id, od.order_id, od.product_id, od.product_detail_id, 
-		od.available as disponible, od.item_status as istatus, od.check_revision as revision, od.quantity, 
-		od.price, p.name as producto, p.description, s.name as talla, s.unit, pd.location as ubicacion 
+		$q = "select od.id, od.order_id, od.product_id, od.product_detail_id, od.available as disponible, 
+		od.item_status as istatus, od.check_revision as revision, od.quantity, od.price, p.name as producto, 
+		p.description, s.name as talla, s.unit, sd.weight as peso, pd.location as ubicacion, pd.disused as desuso 
 		from orders o, order_details od, products p, sizes s, size_product_detail sd, product_details pd 
 		where od.order_id = o.id and od.product_id = p.id and od.product_detail_id = pd.id and 
 		od.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and o.id = $ido";
@@ -51,7 +52,8 @@
 		//Devuelve el registro de los pedidos registrados con un detalle de producto
 		$q = "select distinct o.id, date_format(o.created_at,'%d/%m/%y') as fcreacion, o.id as id,  
 		CONCAT('Pedido ', o.id) as movimiento, CONCAT(c.last_name, ' ', c.first_name) as cliente_proveedor, 
-		od.quantity as cant, 'pedido' as tipo_movimiento from orders o, order_details od, clients c 
+		od.check_revision as revision, od.available as disp, od.quantity as cant, 'pedido' as tipo_movimiento 
+		from orders o, order_details od, clients c 
 		where od.order_id = o.id and o.user_id = c.id and od.product_detail_id = $idd";
 
 		$data 	= mysqli_query( $dbh, $q );

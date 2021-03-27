@@ -43,11 +43,12 @@
 	function obtenerDetalleOrdenCompra( $dbh, $ido ){
 		// Devuelve los registros de detalle de orden de compra indicado por id
 		$q = "select doc.id, doc.product_id as idp, doc.product_detail_id as idd, doc.status as estado,  
-		doc.quantity as cant, doc.detail_note as nota, p.name as producto, p.name as producto, s.id as idt, s.name as talla, 
-		s.unit as unidad, sd.weight as peso, pd.location as ubicacion 
+		doc.quantity as cant, doc.detail_note as nota, p.name as producto, p.name as producto, 
+		s.id as idt, s.name as talla, s.unit as unidad, sd.weight as peso, pd.location as ubicacion 
 		from purchases oc, purchase_details doc, products p, sizes s, size_product_detail sd, product_details pd 
 		where doc.purchase_id = oc.id and pd.product_id = p.id and doc.product_detail_id = pd.id and 
-		doc.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and oc.id = $ido";
+		doc.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and oc.id = $ido 
+		ORDER BY doc.product_id, doc.product_detail_id";
 
 		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
 	}
@@ -74,9 +75,10 @@
 	/* ----------------------------------------------------------------------------------- */
 	function guardarRegistroDetalleOrdenCompra( $dbh, $orden, $item ){
 		//Guarda un registro de detalle de orden de compra
+		$nota_item = escaparTexto( $dbh, $item["nota"] );
 		$q = "insert into purchase_details ( purchase_id, product_id, product_detail_id, size_id, 
 				quantity, status, detail_note, created_at ) values ( $orden[id], $item[idp], $item[idd], 
-				$item[idt], $item[cant], 'pendiente', '$item[nota]', NOW() )";
+				$item[idt], $item[cant], 'pendiente', '$nota_item', NOW() )";
 		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
