@@ -200,7 +200,7 @@
                 
                 "ajax": { 
                     "method":"POST",
-                    "url":"database/data-table-products-availability-sizes.php"
+                    "url":"database/data-table-unav-products.php"
                 },
                 "columns":[
                     {"data":"fagotado"},

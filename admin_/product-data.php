@@ -195,7 +195,7 @@
                                 <div class="data-product-label">
                                     <label class="control-label">Categoría: 
                                     </label> <?php echo $producto["categoria"]." > ".$producto["subcategoria"]; ?>
-                                    <input type="hidden" name="idsubctg" id="id_subcat" value="<?php echo $producto[scid]; ?>">
+                                    <input type="hidden" name="idsubctg" id="id_subcat" value="<?php echo $producto['scid']; ?>">
                                 </div>
                                 <div class="data-product-label">
                                     <label class="control-label">Material: </label> <?php echo $producto["material"]; ?>

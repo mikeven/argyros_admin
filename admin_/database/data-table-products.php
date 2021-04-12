@@ -64,7 +64,7 @@
 			        </div>
 			        <hr>
 			        <div align='center'>
-			            <a href='#!' class='bt-prod-act' data-idp='".$p[id]."' data-op='".$p[visible]."' 
+			            <a href='#!' class='bt-prod-act' data-idp='".$p['id']."' data-op='".$p['visible']."' 
 			            data-toggle='modal' data-target='#confirmar-accion'>".$accion."</a>
 			        </div>";
 
@@ -106,9 +106,9 @@
 		if( $p["idpvd1"] != "" ){
 			$proveedor = obtenerDatosProveedorPorId( $dbh, $p["idpvd1"] );
 		}
-		else $proveedor[number] = "";
+		else $proveedor["number"] = "";
 
-		$codigo =	"<div>$p[codigo]</div>";
+		$codigo =	"<div>".$p['codigo']."</div>";
 		$codigo .=	"<div>$proveedor[number]-$p[codigof1]</div>"; 
 
 		return $codigo;

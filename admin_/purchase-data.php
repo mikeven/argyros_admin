@@ -145,7 +145,7 @@
 
                                         <div class="form-group">
                                             <label class="control-label">Proveedor: </label> 
-                                            <a href="provider.php?id=<?php echo $orden[idpvd] ?>" target="_blank">
+                                            <a href="provider.php?id=<?php echo $orden['idpvd'] ?>" target="_blank">
                                                 <?php echo "#".$orden["idpvd"]; ?>
                                                 <?php echo $orden["nombre"]." ".$orden["numero"]; ?>
                                             </a>
@@ -156,7 +156,7 @@
                                         <?php include( "sections/purchase-options.php" ); ?>
 
                                         <div class="form-group">
-                                            <a href="purchase-print.php?purchase-id=<?php echo $orden[id] ?>" 
+                                            <a href="purchase-print.php?purchase-id=<?php echo $orden['id'] ?>" 
                                                 class="btn btn-app" target="_blank">
                                               <i class="fa fa-file-text-o"></i> Imprimir
                                             </a>

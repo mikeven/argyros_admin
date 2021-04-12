@@ -19,8 +19,12 @@ function guardarOrdenCompra( idpvd ){
                     $( "#alerta_exito_oc" + idpvd ).show( 300 );
                 });
             }
-            else
-                tNotificar( "Orden de compra", res.mje, "error", 3000 );
+            else{
+                if( res.exito == -1 )
+                    tNotificar( "Orden de compra", res.mje, "error", 3000 );
+                if( res.exito == -2 )
+                    tNotificar( "Orden de compra", res.mje, "warning", 2200 );
+            }
         }
     });
 }
@@ -298,6 +302,10 @@ function editarCantidadesItemOC( cantidades ){
         type:"POST",
         url:"database/data-purchase.php",
         data:{ editar_cants: items_oc, ido: id_oc },
+        beforeSend: function () {
+            $( this ).prop( "disabled", true );
+            $(".cnt_preord").prop( "readonly", true );
+        },
         success: function( response ){
             console.log( response );
             res = jQuery.parseJSON( response );
@@ -313,16 +321,23 @@ function editarCantidadesItemOC( cantidades ){
 /* --------------------------------------------------------- */
 function editarCantidadesOC(){
     //Invoca la edición de todas las cantidades de una orden de compra
-    var cantidades = new Array();
+    var cantidades          = new Array();
+    var cantidades_cero     = false;
 
     $( ".cnt_preord" ).each(function() {
         var item = new Object();
         item.iddoc  = $(this).attr("data-id-detoc");
         item.cant   = $(this).val();
-        cantidades.push( item );
+        if( item.cant != 0 )
+            cantidades.push( item );
+        else
+            cantidades_cero = true;
     });
 
-    editarCantidadesItemOC( cantidades );
+    if( cantidades_cero == false )
+        editarCantidadesItemOC( cantidades );
+    else
+        tNotificar( "Orden de compra", "No deben haber cantidades en cero", "warning", 2200 );
 }
 
 $( document ).ready(function() {	
@@ -337,25 +352,26 @@ $( document ).ready(function() {
 	});
 	/* ---------------------------------------------------------------- */
 	$(".act_preo").on( "change", function(){   
-        var idd = $(this).attr("data-idd");
-        var idt = $(this).attr("data-idt");
-        var prm = $(this).attr("data-prm");
-        var pvd = $(this).attr("data-idpvd-oc");
+        var idd = $(this).attr("data-idd");         // id detalle de producto
+        var idt = $(this).attr("data-idt");         // id talla
+        var prm = $(this).attr("data-prm");         // dato a actualizar
+        var pvd = $(this).attr("data-idpvd-oc");    // id de proveedor
+
         actualizarPreorden( prm, idd, idt, '', pvd, $(this).val() );
     });
 
     $("#tabs_items_proveedores").on( "change", ".act_preo", function(){ /* ítem funcional */  
-        var idd = $(this).attr("data-idd");
-        var idt = $(this).attr("data-idt");
-        var prm = $(this).attr("data-prm");
-        var pvd = $(this).attr("data-idpvd-oc");
+        var idd = $(this).attr("data-idd");         // id detalle de producto
+        var idt = $(this).attr("data-idt");         // id talla
+        var prm = $(this).attr("data-prm");         // dato a actualizar
+        var pvd = $(this).attr("data-idpvd-oc");    // id de proveedor
         actualizarPreorden( prm, idd, idt, '', pvd, $(this).val() );
     });
     
 
     $(".act_preo_d").on( "change", function(){   
-        var idd = $(this).attr("data-idd");
-        var prm = $(this).attr("data-prm");
+        var idd = $(this).attr("data-idd");         // id detalle de producto
+        var prm = $(this).attr("data-prm");         // dato a actualizar
         actualizarPreorden( prm, idd, '', '', '', $(this).val() );
     });
     
@@ -379,11 +395,12 @@ $( document ).ready(function() {
     /* ---------------------------------------------------------------- */
     $("#ordenes_p_proveedor").on( "click", ".guardar_oc", function(){ 
         var idpvd = $(this).attr("data-idpvd");
-        if( cantidadesValidas( "dp" + idpvd ) )
-            guardarOrdenCompra( idpvd );
+        /*if( cantidadesValidas( "dp" + idpvd ) )
+            alert("exito");//guardarOrdenCompra( idpvd );
         else{
             tNotificar( "Lista preorden", "Las cantidades en la orden no deben cero", "warning", 2200 );
-        }
+        }*/
+        guardarOrdenCompra( idpvd );
     });
 
     $("#ordenes_p_proveedor").on( "blur", ".not_preord", function(){ 
@@ -441,8 +458,7 @@ $( document ).ready(function() {
 
     //Clic: Invoca el proceso para editar las cantidades de una orden de compra 
     $("#btn_guardar_cants").on( "click", function(){
-        $( this ).prop( "disabled", true );
-        $(".cnt_preord").prop( "readonly", true );
+        
         editarCantidadesOC();
     });
 

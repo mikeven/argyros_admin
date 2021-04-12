@@ -7,33 +7,6 @@
 	ini_set( 'display_errors', 1 );
 
 	/* ----------------------------------------------------------------------------------- */
-	function alturaInfo( $valores ){
-		$a_l = 20; $h = 0;
-
-		if( $valores["peso"] != NULL ) $h += $a_l;
-		if( $valores["precio"] != NULL ) $h += $a_l;
-		if( $valores["nombre"] != NULL ) $h += $a_l;
-		if( $valores["id"] != NULL && $h == 0 ) $h += $a_l;
-		if( $valores["tallas"] != NULL ){
-			if( $h == 0 || ( $h == $a_l && $valores["id"] != NULL ) )
-				$h += $a_l; 
-		} 
-
-		return $h + ( $a_l / 2 );
-	}
-	/* ----------------------------------------------------------------------------------- */
-	function vectorDI( $nombre, $id, $precio, $peso, $tallas, $ubicacion ){
-		// 
-		$dv["peso"] 		= $peso;
-		$dv["id"] 			= $id;
-		$dv["nombre"] 		= $nombre;
-		$dv["tallas"] 		= $tallas;
-		$dv["precio"] 		= $precio;
-		$dv["ubicacion"] 	= $ubicacion;
-		
-		return $dv;
-	}
-	/* ----------------------------------------------------------------------------------- */
 	function crearImagenDesdeArchivo( $img ){
 		// Devuelve la creación de imagen a partir de la imagen original de acuerdo a su formato.
 		$formato = substr( $img, -3 );
@@ -45,13 +18,39 @@
 		return $imagen;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas, $ubicacion, $zip ){
+	function alturaInfoImagen( $dataf, $alt_lin ){
+		// Devuelve la altura del bloque de datos de acuerdo al número de elementos a imprimir
+		$nelems = 0;
+		$altura = 0;
+		foreach ( $dataf as $dato ) 
+			if( $dato != NULL ) $nelems++;
+		
+		if( $nelems == 1 || $nelems == 2 ) $altura = $alt_lin * 1; 
+		if( $nelems == 3 || $nelems == 4 ) $altura = $alt_lin * 2;
+		if( $nelems == 5 || $nelems == 6 ) $altura = $alt_lin * 3; 
+
+		return $altura;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function xyDato( $n, $px, $py, $nw, $al ){
+		// Devuelve los parámetros de impresión por cada dato de la imagen
+		if ( $n%2 == 0 ) $xy["x"] = $nw / 2; else $xy["x"] = $px;
+		
+		if ( $n == 1 || $n == 2 ) $xy["y"] = $py;				// Línea 1
+		if ( $n == 3 || $n == 4 ) $xy["y"] = $py + $al;			// Línea 2
+		if ( $n == 5 || $n == 6 ) $xy["y"] = $py + ($al * 2);	// Línea 3
+		
+		return $xy;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	//function GI( $img, $nombre_img, $nombre, $id_p, $id, $precio, $peso, $tallas, $ubicacion, $zip ){
+	function generarImagen( $img, $nombre_i, $id_p, $dataf, $zip ){	
 		
 		ini_set( "memory_limit", "200M" );
 		ini_set('MAX_EXECUTION_TIME', '900');
-		$alin 				= 20;												// Altura de línea
-		//$ai 				= alturaInfo( vectorDI( $nombre, $id, $precio, $peso, $tallas, $ubicacion ) );
-		$ai 				= $alin * 3;
+		$alt_lin 			= 20;												// Altura de línea
+		
+		$ai 				= alturaInfoImagen( $dataf, $alt_lin );				//Altura de espacio para impresión
 		$orig 				= imagecreatefromjpeg( $img );
 		$ancho_o 			= imagesx( $orig ); 
 		$alto_o 			= imagesy( $orig ); 
@@ -61,7 +60,7 @@
 
 		$nva 				= imagecreatetruecolor( $nw, $nh+10 ); 						// Creación de nueva imagen	
 		$color_1 			= imagecolorallocate( $nva, 0, 0, 0 );						// Color negro
-		$color_2 			= imagecolorallocatealpha( $nva, 255, 255, 255, 10 );		// Color blanco
+		$color_2 			= imagecolorallocatealpha( $nva, 167, 178, 57, 0 );		// Color blanco
 
 		$x1 = 0; 	$x2 = $nw;
 		$y1 = $nh; 	$y2 = $nh - $ai;
@@ -72,58 +71,18 @@
 		imagefilledrectangle ( $nva , $x1 , $y1+10 , $x2 , $y2 , $color_2 );				
 		
 		$tam = 12; $typ = '../fonts/futura medium bt.ttf';
-		$lin = $y2 + $alin;
-		$p_x = 20; $p_y = $y2 + $alin;
+		$lin = $y2 + $alt_lin;
+		$p_x = 20; $p_y = $y2 + $alt_lin;
 
-		// imagettftext (img, tam, ang, x, y, color, font, texto)
-		/*if( $peso != NULL ){
-			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $peso );
-			$lin += 20;
+		$nelem = 1;
+		foreach ( $dataf as $dato ) {
+			if( $dato != NULL ){
+				$xy = xyDato( $nelem, $p_x, $p_y, $nw, $alt_lin );
+				if( $dato[0] == "T" ) $tam = $tam - 2;				// Tamaño de letra reducido para tallas
+				imagettftext( $nva, $tam, 0, $xy["x"], $xy["y"], $color_1, $typ, $dato );
+				$nelem++;
+			}
 		}
-		if( $precio != NULL ){
-			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $precio );
-			$lin += 20;
-		}
-		if( $nombre != NULL ){
-			imagettftext( $nva, $tam, 0, 20, $lin, $color_1, $typ, $nombre );
-			$lin += 20;
-		}
-		if( $id != NULL ){
-			$lin = $y2 + 20;
-			$x = $nw / 2;
-			imagettftext( $nva, $tam, 0, $x, $lin, $color_1, $typ, $id );
-			$lin += 20;
-		}
-		if( $tallas != NULL ){
-			if( $id == NULL ) $lin = $y2 + 20;
-			$x = $nw / 2;
-			imagettftext( $nva, $tam-2, 0, $x, $lin, $color_1, $typ, $tallas );
-		}*/
-
-		if( $peso != NULL ){		// F1,C1
-			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $peso );
-		}
-		if( $precio != NULL ){		// F2,C1
-			$p_y = $y2 + ( $alin*2 );
-			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $precio );
-		}
-		if( $nombre != NULL ){		// F3,C1
-			$p_y = $y2 + ( $alin*3 );
-			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $nombre );
-		}
-		if( $id != NULL ){			// F1,C2
-			$p_x = $nw / 2;  $p_y = $y2 + $alin;
-			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $id );
-		}
-		if( $tallas != NULL ){ 		// F2,C2
-			$p_x = $nw / 2;    $p_y = $y2 + ( $alin*2 );
-			imagettftext( $nva, $tam-2, 0, $p_x, $p_y, $color_1, $typ, $tallas );
-		}
-		if( $ubicacion != NULL ){	// F3,C2
-			$p_x = $nw / 2;    $p_y = $y2 + ( $alin*3 );
-			imagettftext( $nva, $tam, 0, $p_x, $p_y, $color_1, $typ, $ubicacion );
-		}
-
 
 		$archivo = substr( $id_p, 1 );
 		imagepng( $nva, "../salidas/$archivo.png", 9 ); 
@@ -260,7 +219,6 @@
 		    if( is_file( $file ) )
 		    unlink( $file );
 		}
-		
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function escribirImagenes( $productos, $frm ){
@@ -284,23 +242,24 @@
 		
 		foreach ( $productos as $p ) {
 			
-			$img 		= 	imgP( $p ); 	
-			$nombre 	= 	nombreP( $p, $frm, false ); 
-			$nombre_i	=	nombreP( $p, $frm, true );
-			$peso 		= 	pesoP( $p, $frm ); 
-			$id 		= 	idP( $p, $frm, false );
-			$id_p 		= 	idP( $p, $frm, true ); 	
-			$precio 	= 	precioP( $p, $frm );
-			$tallas 	= 	tallasP( $p, $frm );
-			$ubicacion 	= 	ubicacionP( $p, $frm );
-			$enl 		= 	linkZip( $archivo_zip );
+			$img 					= 	imgP( $p ); 
+			$nombre_i				=	nombreP( $p, $frm, true );
+			$id_p 					= 	idP( $p, $frm, true );
+			
+			$dataf["peso"] 			= 	pesoP( $p, $frm );	
+			$dataf["id"] 			= 	idP( $p, $frm, false );
+			$dataf["precio"] 		= 	precioP( $p, $frm );
+			$dataf["tallas"] 		= 	tallasP( $p, $frm );
+			$dataf["nombre"] 		= 	nombreP( $p, $frm, false ); 
+			$dataf["ubicacion"] 	= 	ubicacionP( $p, $frm );
 
 			if( $img != "" ){
 				actualizarProgreso( $nregs, $nombre_i );
-				GI( $img, $nombre_i, $nombre, $id_p, $id, $precio, $peso, $tallas, $ubicacion, $zip );
+				generarImagen( $img, $nombre_i, $id_p, $dataf, $zip );
 			}
 		}
 
+		$enl 						= 	linkZip( $archivo_zip );
 		$zip->close();
 		eliminarImagenesGeneradas();
 		eliminarZipsGenerados();

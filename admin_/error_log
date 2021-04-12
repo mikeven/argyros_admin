@@ -1,0 +1,585 @@
+[07-Jul-2020 20:03:45 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/argyrosadmin/public_html/admin/database/bd.php on line 10
+[07-Jul-2020 20:03:45 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_error() in /home/argyrosadmin/public_html/admin/database/bd.php:11
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/catalog-report.php(8): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/bd.php on line 11
+[07-Jul-2020 20:03:46 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/argyrosadmin/public_html/admin/database/bd.php on line 10
+[07-Jul-2020 20:03:46 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_error() in /home/argyrosadmin/public_html/admin/database/bd.php:11
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/product-data.php(8): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/bd.php on line 11
+[09-Jul-2020 13:11:25 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/tzone.php on line 12
+[27-Jul-2020 22:06:34 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/argyrosadmin/public_html/admin/database/bd.php on line 10
+[27-Jul-2020 22:06:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_error() in /home/argyrosadmin/public_html/admin/database/bd.php:11
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/product-data.php(8): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/bd.php on line 11
+[01-Aug-2020 22:40:39 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/user-data.php on line 133
+[01-Aug-2020 23:00:14 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-user.php on line 70
+[01-Aug-2020 23:00:17 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-user.php on line 70
+[01-Aug-2020 23:00:27 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-user.php on line 70
+[01-Aug-2020 23:01:00 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-user.php on line 70
+[01-Aug-2020 23:01:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-user.php on line 70
+[05-Aug-2020 15:43:05 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/klient-data.php on line 328
+[05-Aug-2020 15:43:05 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/klient-data.php on line 328
+[05-Aug-2020 15:43:06 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/klient-data.php on line 328
+[05-Aug-2020 15:43:06 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/klient-data.php on line 328
+[05-Aug-2020 16:15:44 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-clients.php on line 97
+[05-Aug-2020 18:55:08 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-clients.php on line 97
+[10-Aug-2020 14:58:22 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/argyrosadmin/public_html/admin/database/bd.php on line 10
+[10-Aug-2020 14:58:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_error() in /home/argyrosadmin/public_html/admin/database/bd.php:11
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/product-data.php(8): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/bd.php on line 11
+[10-Aug-2020 14:58:23 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/argyrosadmin/public_html/admin/database/bd.php on line 10
+[10-Aug-2020 14:58:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_error() in /home/argyrosadmin/public_html/admin/database/bd.php:11
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/product-data.php(8): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/bd.php on line 11
+[10-Aug-2020 14:58:23 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/argyrosadmin/public_html/admin/database/bd.php on line 10
+[10-Aug-2020 14:58:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_error() in /home/argyrosadmin/public_html/admin/database/bd.php:11
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/catalog-report.php(8): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/bd.php on line 11
+[10-Aug-2020 14:58:23 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/argyrosadmin/public_html/admin/database/bd.php on line 10
+[10-Aug-2020 14:58:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_error() in /home/argyrosadmin/public_html/admin/database/bd.php:11
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/orders.php(8): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/bd.php on line 11
+[18-Aug-2020 16:01:24 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/argyrosadmin/public_html/admin/database/bd.php on line 10
+[18-Aug-2020 16:01:24 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_error() in /home/argyrosadmin/public_html/admin/database/bd.php:11
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/product-data.php(8): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/bd.php on line 11
+[21-Sep-2020 17:33:25 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/argyrosadmin/public_html/admin/database/bd.php on line 10
+[21-Sep-2020 17:33:25 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_error() in /home/argyrosadmin/public_html/admin/database/bd.php:11
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/product-data.php(8): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/bd.php on line 11
+[17-Nov-2020 20:33:26 UTC] PHP Warning:  include(sections/tables/table-providers.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/providers.php on line 143
+[17-Nov-2020 20:33:26 UTC] PHP Warning:  include(): Failed opening 'sections/tables/table-providers.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/providers.php on line 143
+[20-Nov-2020 21:57:50 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/database/data-products.php on line 764
+[20-Nov-2020 21:58:24 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 348
+[24-Nov-2020 01:31:50 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerListaProveedores() in /home/argyrosadmin/public_html/admin/product-edit.php:26
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/product-edit.php on line 26
+[24-Nov-2020 05:38:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 19
+[24-Nov-2020 05:38:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 19
+[24-Nov-2020 05:38:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 19
+[24-Nov-2020 05:55:04 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 18
+[24-Nov-2020 05:55:04 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 19
+[24-Nov-2020 05:55:04 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 18
+[24-Nov-2020 05:55:04 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 19
+[24-Nov-2020 05:55:04 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 18
+[24-Nov-2020 05:55:04 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 19
+[24-Nov-2020 06:01:30 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 19
+[24-Nov-2020 06:01:30 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[24-Nov-2020 06:01:30 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 19
+[24-Nov-2020 06:01:30 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[24-Nov-2020 06:01:30 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 19
+[24-Nov-2020 06:01:30 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[24-Nov-2020 06:08:02 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerProveedorPorId() in /home/argyrosadmin/public_html/admin/fn/fn-products.php:156
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/product-data.php(91): obtenerDatosProveedores(Object(mysqli), Array)
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/fn/fn-products.php on line 156
+[24-Nov-2020 13:46:12 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:12 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:13 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:14 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:16 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:30 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:34 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:35 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:36 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:44 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:45 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:46:47 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 605
+[24-Nov-2020 13:59:22 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ')' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 334
+[25-Nov-2020 16:07:55 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerProductoPorId() in /home/argyrosadmin/public_html/admin/product-data.php:87
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/product-data.php on line 87
+[25-Nov-2020 16:07:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerProductoPorId() in /home/argyrosadmin/public_html/admin/product-data.php:87
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/product-data.php on line 87
+[25-Nov-2020 16:44:02 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/database/data-products.php on line 715
+[25-Nov-2020 18:42:02 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/database/data-products.php on line 715
+[26-Nov-2020 13:29:57 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerProductoPorId() in /home/argyrosadmin/public_html/admin/product-data.php:87
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/product-data.php on line 87
+[27-Nov-2020 23:43:20 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerDisponibilidadTallaDetallePorIds() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php:51
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/sections/tables/table-preorder.php(16): obtenerColorDisponibilidadTalla(Object(mysqli), Array)
+#1 /home/argyrosadmin/public_html/admin/preorder.php(95): include('/home/argyrosad...')
+#2 {main}
+  thrown in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 51
+[28-Nov-2020 05:22:05 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 202
+[28-Nov-2020 05:22:05 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[28-Nov-2020 05:22:47 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 202
+[28-Nov-2020 05:22:47 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[28-Nov-2020 05:23:10 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 202
+[28-Nov-2020 05:23:10 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[28-Nov-2020 05:24:36 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 202
+[28-Nov-2020 05:24:36 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[28-Nov-2020 05:25:10 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 202
+[28-Nov-2020 05:25:10 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[28-Nov-2020 05:26:34 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 202
+[28-Nov-2020 05:26:34 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[29-Nov-2020 02:25:59 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder.php on line 16
+[30-Nov-2020 19:17:30 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tabs-purchase-orders.php on line 3
+[30-Nov-2020 19:17:47 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tabs-purchase-orders.php on line 3
+[30-Nov-2020 19:18:06 UTC] PHP Warning:  Illegal string offset 'id' in /home/argyrosadmin/public_html/admin/sections/tabs-purchase-orders.php on line 7
+[30-Nov-2020 19:18:06 UTC] PHP Warning:  Illegal string offset 'id' in /home/argyrosadmin/public_html/admin/sections/tabs-purchase-orders.php on line 7
+[30-Nov-2020 19:20:46 UTC] PHP Fatal error:  Uncaught Error: Function name must be a string in /home/argyrosadmin/public_html/admin/sections/tabs-purchase-orders.php:4
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/purchase-preview.php(106): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/sections/tabs-purchase-orders.php on line 4
+[30-Nov-2020 19:29:44 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/argyrosadmin/public_html/admin/sections/tabs-purchase-orders.php on line 13
+[01-Dec-2020 03:12:17 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/purchase-providers.php on line 110
+[01-Dec-2020 03:12:17 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/purchase-providers.php on line 124
+[01-Dec-2020 14:48:00 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 99
+[01-Dec-2020 14:49:16 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 99
+[02-Dec-2020 01:39:23 UTC] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 71
+[02-Dec-2020 01:39:40 UTC] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 71
+[02-Dec-2020 01:39:42 UTC] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 71
+[02-Dec-2020 01:39:57 UTC] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 71
+[02-Dec-2020 01:40:30 UTC] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 71
+[02-Dec-2020 01:50:01 UTC] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 72
+[02-Dec-2020 01:50:57 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 01:50:57 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 01:56:48 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 01:56:48 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 02:03:25 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 02:03:25 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 02:07:03 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 02:07:03 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 03:50:38 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 03:50:38 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[02-Dec-2020 04:46:56 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 12
+[02-Dec-2020 04:46:56 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 12
+[02-Dec-2020 05:05:22 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 141
+[02-Dec-2020 05:05:31 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 141
+[02-Dec-2020 05:06:36 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 141
+[02-Dec-2020 05:07:10 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 141
+[02-Dec-2020 12:31:55 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 84
+[02-Dec-2020 12:31:58 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 84
+[02-Dec-2020 19:03:34 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 84
+[02-Dec-2020 19:26:36 UTC] PHP Warning:  include(fn/fn-providers.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/providers.php on line 230
+[02-Dec-2020 19:26:36 UTC] PHP Warning:  include(): Failed opening 'fn/fn-providers.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/providers.php on line 230
+[02-Dec-2020 20:15:55 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 84
+[03-Dec-2020 12:38:24 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 84
+[03-Dec-2020 12:38:30 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 84
+[03-Dec-2020 12:54:33 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 84
+[03-Dec-2020 13:31:30 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function obtenerIdsDetallesEnPreorden(), 0 passed in /home/argyrosadmin/public_html/admin/purchase-providers.php on line 71 and exactly 1 expected in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php:79
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/purchase-providers.php(71): obtenerIdsDetallesEnPreorden()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 79
+[04-Dec-2020 05:16:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 130
+[05-Dec-2020 11:44:29 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 138
+[05-Dec-2020 22:57:02 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 150
+[05-Dec-2020 23:07:45 UTC] PHP Warning:  include(database/data-purchases.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/purchases.php on line 11
+[05-Dec-2020 23:07:45 UTC] PHP Warning:  include(): Failed opening 'database/data-purchases.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/purchases.php on line 11
+[05-Dec-2020 23:07:45 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerOrdenesCompra() in /home/argyrosadmin/public_html/admin/purchases.php:56
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/purchases.php on line 56
+[06-Dec-2020 13:22:11 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 102
+[06-Dec-2020 13:22:23 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 102
+[06-Dec-2020 13:23:47 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 102
+[06-Dec-2020 13:24:53 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 102
+[06-Dec-2020 13:26:36 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerProveedorPorId() in /home/argyrosadmin/public_html/admin/sections/tables/table-purchase-details.php:18
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/purchase-data.php(190): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/sections/tables/table-purchase-details.php on line 18
+[06-Dec-2020 14:10:37 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 291
+[07-Dec-2020 20:55:16 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 171
+[08-Dec-2020 02:48:55 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 171
+[08-Dec-2020 04:24:08 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/argyrosadmin/public_html/admin/sections/tables/table-purchase-print.php on line 53
+[11-Dec-2020 05:32:54 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-purchase.php on line 24
+[11-Dec-2020 05:32:54 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 102
+[11-Dec-2020 05:33:32 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-purchase.php on line 24
+[11-Dec-2020 05:33:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 102
+[11-Dec-2020 15:25:55 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 171
+[16-Dec-2020 04:49:27 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 171
+[16-Dec-2020 04:49:47 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 171
+[16-Dec-2020 05:17:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[16-Dec-2020 05:17:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[16-Dec-2020 05:17:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[16-Dec-2020 05:17:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[16-Dec-2020 05:17:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[16-Dec-2020 05:17:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[16-Dec-2020 05:17:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[16-Dec-2020 05:17:37 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[08-Jan-2021 22:39:00 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerProveedoresOrdenCompra() in /home/argyrosadmin/public_html/admin/purchase-providers.php:72
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/purchase-providers.php on line 72
+[12-Jan-2021 07:20:57 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 137
+[12-Jan-2021 07:21:45 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 137
+[12-Jan-2021 15:07:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerDatosProveedores() in /home/argyrosadmin/public_html/admin/product-movements.php:92
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/product-movements.php on line 92
+[12-Jan-2021 15:08:34 UTC] PHP Warning:  include(sections/tables/product-image.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/product-movements.php on line 279
+[12-Jan-2021 15:08:34 UTC] PHP Warning:  include(): Failed opening 'sections/tables/product-image.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/product-movements.php on line 279
+[12-Jan-2021 15:09:27 UTC] PHP Warning:  include(sections/tables/product-image.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/product-movements.php on line 279
+[12-Jan-2021 15:09:27 UTC] PHP Warning:  include(): Failed opening 'sections/tables/product-image.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/product-movements.php on line 279
+[12-Jan-2021 15:09:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 15
+[12-Jan-2021 15:13:51 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 12
+[12-Jan-2021 15:40:18 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerPedidosDetalleProducto() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php:283
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/product-movements.php(98): obtenerMovimientosProducto(Object(mysqli), '19206')
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 283
+[12-Jan-2021 22:37:05 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 47
+[12-Jan-2021 22:37:05 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 48
+[13-Jan-2021 19:39:12 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/product-movements.php on line 265
+[13-Jan-2021 19:39:12 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 13
+[13-Jan-2021 21:06:18 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerListaNotasOrden() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php:363
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/purchase-data.php(14): include()
+#1 {main}
+  thrown in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 363
+[13-Jan-2021 21:48:15 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 124
+[13-Jan-2021 21:59:41 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerIdsDetallesEnOrdenCompra() in /home/argyrosadmin/public_html/admin/purchase-data.php:76
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/purchase-data.php on line 76
+[16-Jan-2021 04:27:37 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 47
+[16-Jan-2021 04:27:37 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 48
+[16-Jan-2021 04:29:59 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 47
+[16-Jan-2021 04:29:59 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 48
+[16-Jan-2021 14:23:57 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 47
+[16-Jan-2021 14:23:57 UTC] PHP Warning:  A non-numeric value encountered in /home/argyrosadmin/public_html/admin/sections/tables/table-preorder-provider.php on line 48
+[18-Jan-2021 22:14:15 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[18-Jan-2021 22:14:15 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 214
+[18-Jan-2021 22:14:29 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[18-Jan-2021 22:14:29 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[18-Jan-2021 22:14:29 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[18-Jan-2021 22:14:29 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 214
+[18-Jan-2021 22:14:34 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[18-Jan-2021 22:14:34 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 214
+[29-Jan-2021 22:06:28 UTC] PHP Warning:  include(sections/data-product-detail.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[29-Jan-2021 22:06:28 UTC] PHP Warning:  include(): Failed opening 'sections/data-product-detail.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[29-Jan-2021 22:06:33 UTC] PHP Warning:  include(sections/data-product-detail.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[29-Jan-2021 22:06:33 UTC] PHP Warning:  include(): Failed opening 'sections/data-product-detail.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[29-Jan-2021 22:06:49 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/sections/data-product-detail.php on line 153
+[29-Jan-2021 22:06:50 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/sections/data-product-detail.php on line 153
+[29-Jan-2021 22:06:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/sections/data-product-detail.php on line 153
+[29-Jan-2021 22:06:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/sections/data-product-detail.php on line 153
+[29-Jan-2021 22:06:56 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/sections/data-product-detail.php on line 153
+[29-Jan-2021 22:07:02 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/sections/data-product-detail.php on line 153
+[29-Jan-2021 22:07:02 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/sections/data-product-detail.php on line 153
+[29-Jan-2021 22:07:18 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/sections/data-product-detail.php on line 153
+[29-Jan-2021 22:08:04 UTC] PHP Warning:  include(sections/data-product-detail.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[29-Jan-2021 22:08:04 UTC] PHP Warning:  include(): Failed opening 'sections/data-product-detail.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[29-Jan-2021 22:08:10 UTC] PHP Warning:  include(sections/data-product-detail.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[29-Jan-2021 22:08:10 UTC] PHP Warning:  include(): Failed opening 'sections/data-product-detail.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[29-Jan-2021 22:08:13 UTC] PHP Warning:  include(sections/data-product-detail.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[29-Jan-2021 22:08:13 UTC] PHP Warning:  include(): Failed opening 'sections/data-product-detail.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/product-data.php on line 227
+[30-Jan-2021 04:33:44 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1077
+[30-Jan-2021 04:34:07 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1077
+[30-Jan-2021 06:03:41 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1100
+[01-Feb-2021 15:24:14 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/database/data-products.php on line 703
+[01-Feb-2021 15:24:16 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:17 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:18 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:19 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:19 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:20 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:20 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:21 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:21 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:21 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:22 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:22 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:22 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:25 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:28 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:29 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:30 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:30 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:31 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:32 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:33 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1088
+[01-Feb-2021 15:24:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerProductoPorId() in /home/argyrosadmin/public_html/admin/product-data.php:126
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/product-data.php on line 126
+[03-Feb-2021 19:42:48 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerProductoPorId() in /home/argyrosadmin/public_html/admin/product-data.php:126
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/product-data.php on line 126
+[03-Feb-2021 22:23:48 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerListaProductos() in /home/argyrosadmin/public_html/admin/products-sizes.php:71
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/products-sizes.php on line 71
+[03-Feb-2021 22:23:54 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE), expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1128
+[03-Feb-2021 22:23:55 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE), expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1128
+[03-Feb-2021 22:23:56 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE), expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1128
+[03-Feb-2021 22:24:04 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE), expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1128
+[03-Feb-2021 22:24:04 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE), expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1128
+[03-Feb-2021 22:24:15 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE), expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1128
+[03-Feb-2021 22:24:16 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE), expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1128
+[03-Feb-2021 22:24:18 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE), expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1128
+[03-Feb-2021 22:24:19 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerListaProductos() in /home/argyrosadmin/public_html/admin/products.php:68
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/products.php on line 68
+[06-Feb-2021 05:41:31 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 761
+[06-Feb-2021 05:42:16 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or ${ (T_DOLLAR_OPEN_CURLY_BRACES) or {$ (T_CURLY_OPEN) in /home/argyrosadmin/public_html/admin/database/data-products.php on line 700
+[08-Feb-2021 19:00:44 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/argyrosadmin/public_html/admin/database/data-products.php on line 1194
+[09-Feb-2021 20:40:32 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[09-Feb-2021 20:40:32 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 216
+[09-Feb-2021 20:41:28 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[09-Feb-2021 20:41:28 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 216
+[10-Feb-2021 20:54:21 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/product-movements.php on line 265
+[10-Feb-2021 20:54:21 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 13
+[10-Feb-2021 20:54:31 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/product-movements.php on line 265
+[10-Feb-2021 20:54:31 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 13
+[10-Feb-2021 20:54:35 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/product-movements.php on line 265
+[10-Feb-2021 20:54:35 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 13
+[10-Feb-2021 20:54:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/product-movements.php on line 265
+[10-Feb-2021 20:54:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 13
+[10-Feb-2021 20:54:47 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/product-movements.php on line 265
+[10-Feb-2021 20:54:47 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 13
+[18-Feb-2021 07:42:01 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[18-Feb-2021 07:42:01 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 216
+[18-Feb-2021 07:42:22 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[18-Feb-2021 07:42:22 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 216
+[18-Feb-2021 07:42:51 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 20
+[18-Feb-2021 07:42:51 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 216
+[10-Mar-2021 23:26:34 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/product-movements.php on line 265
+[10-Mar-2021 23:26:34 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 13
+[10-Mar-2021 23:26:50 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/product-movements.php on line 265
+[10-Mar-2021 23:26:50 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 13
+[10-Mar-2021 23:27:08 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/product-movements.php on line 265
+[10-Mar-2021 23:27:08 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/sections/tables/table-movements.php on line 13
+[15-Mar-2021 00:41:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerIdsDetallesEnPreorden() in /home/argyrosadmin/public_html/admin/printpo.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/printpo.php on line 8
+[29-Mar-2021 13:17:47 America/Panama] PHP Warning:  date_diff() expects parameter 1 to be DateTimeInterface, string given in /home/argyrosadmin/public_html/admin/seef.php on line 9
+[29-Mar-2021 13:22:10 America/Panama] PHP Warning:  date_diff() expects parameter 1 to be DateTimeInterface, string given in /home/argyrosadmin/public_html/admin/seef.php on line 12
+[29-Mar-2021 13:22:29 America/Panama] PHP Warning:  date_diff() expects parameter 1 to be DateTimeInterface, string given in /home/argyrosadmin/public_html/admin/seef.php on line 12
+[29-Mar-2021 13:22:31 America/Panama] PHP Warning:  date_diff() expects parameter 1 to be DateTimeInterface, string given in /home/argyrosadmin/public_html/admin/seef.php on line 12
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51
+[30-Mar-2021 22:48:07 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-providers.php on line 51

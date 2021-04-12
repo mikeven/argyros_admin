@@ -48,8 +48,8 @@
           <td>
             <div align='center'>
               <a href='#!' class='pop-img-p' data-toggle='modal' 
-              data-src="<?php echo $imagen[0][path]; ?>" data-target='#img-product-pop'>
-              <img src="<?php echo $imagen[0][path]; ?>" width='225px'></a>
+              data-src="<?php echo $imagen[0]['path']; ?>" data-target='#img-product-pop'>
+              <img src="<?php echo $imagen[0]['path']; ?>" width='225px'></a>
             </div>
             
           </td>
@@ -61,10 +61,10 @@
                       $wt   = number_format( $it["peso"], 1, '.', '' );
                       $twgt = number_format( $it["peso"]*$it["cant"], 1, '.', '' );
                   ?>
-                    <tr id="<?php echo $it[idd].$it[idt] ?>">
+                    <tr id="<?php echo $it['idd'].$it['idt'] ?>">
                       <td align="left"><?php echo "Size: ".$it["talla"].$it["unidad"]; ?></td>
                       <td align="center"><?php echo "Wt: ".$wt; ?></td>
-                      <td align="right"><?php echo "Qty: ".$it[cant] ?></td>
+                      <td align="right"><?php echo "Qty: ".$it['cant'] ?></td>
                       <td align="right">
                         <div>T: <?php echo $twgt." gr"; ?></div>
                         <div></div>

@@ -17,10 +17,10 @@
       <tr>
         <td><?php echo $p["nombre"]; ?></td>
         <td><?php echo $p["numero"]; ?></td>
-        <td><a href="provider-edit.php?id=<?php echo $p[id] ?>">Editar</a></td>
+        <td><a href="provider-edit.php?id=<?php echo $p['id'] ?>">Editar</a></td>
         <td>
           <?php if( !$prod_asoc ){ ?>
-            <a href="#!" class="elim-proveedor" data-toggle="modal" data-idp="<?php echo $p[id] ?>" 
+            <a href="#!" class="elim-proveedor" data-toggle="modal" data-idp="<?php echo $p['id'] ?>" 
               data-target="#confirmar-accion" disabled>Borrar
             </a>
           <?php } ?>

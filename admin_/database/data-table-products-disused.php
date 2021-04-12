@@ -114,10 +114,15 @@
 		// Devuelve los datos para la columna de código
 		if( $dp["idpvd1"] != "" ){
 			$proveedor = obtenerDatosProveedorPorId( $dbh, $dp["idpvd1"] );
+		}else $proveedor["number"] = "";
+		
+		if( $dp["idpvd2"] != "" ){
 			$proveedor2 = obtenerDatosProveedorPorId( $dbh, $dp["idpvd2"] );
+		}else $proveedor2["number"] = "";
+		
+		if( $dp["idpvd3"] != "" ){
 			$proveedor3 = obtenerDatosProveedorPorId( $dbh, $dp["idpvd3"] );
-		}
-		else $proveedor[number] = "";
+		}else $proveedor3["number"] = "";
 
 		$codigo =	"<div>$dp[codigo]</div>";
 		$codigo .=	"<div>$proveedor[number]-$dp[codigof1]</div>";

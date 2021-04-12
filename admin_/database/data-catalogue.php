@@ -241,7 +241,7 @@
 		
 		$resultados = $registros;
 
-		if( count( $form["tallas"] ) > 0 ){								// Filtrar por tallas
+		if( isset( $form["tallas"] ) && count( $form["tallas"] ) > 0 ){								// Filtrar por tallas
 			$resultados = filtrarProductosTalla( $registros, $form );	
 		}
 

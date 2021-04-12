@@ -32,6 +32,17 @@
 		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );	
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerUltimoIngreso( $dbh, $idc ){
+		//Devuelve la fecha de último ingreso de un cliente
+		$ultimo_ingreso = "";
+
+		$ingresos = obtenerIngresosCliente( $dbh, $idc );
+		if( isset( $ingresos[0] ) )
+			$ultimo_ingreso = $ingresos[0]["flogin"];
+
+		return $ultimo_ingreso;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	function obtenerListaGruposClientes( $dbh ){
 		//Devuelve la lista de clientes
 		$q = "select * from client_group order by name ASC";
@@ -119,14 +130,14 @@
 
         }
 
-        $ingresos_cliente   		= obtenerIngresosCliente( $dbh, $c["id"] );
+        $fecha_ult_ingreso   		= obtenerUltimoIngreso( $dbh, $c["id"] );
         $lista_grupos 				= obtenerContenidoListaGrupos( $c, $grupos );
 		
 		$reg_cliente["id"] 			= "<a class='primary' href='".$lnk_c."' target='_blank'>".$c["id"]."</a>";
 		$reg_cliente["nombre"] 		= "<a class='primary' href='".$lnk_c."'>".$c["nombre"]." ".$c["apellido"]."</a>";
 		$reg_cliente["email"] 		= $c["email"];
 		$reg_cliente["pais"] 		= $c["pais"];
-		$reg_cliente["flogin"] 		= $ingresos_cliente[0]["flogin"];
+		$reg_cliente["flogin"] 		= $fecha_ult_ingreso;
 		$reg_cliente["tipo"] 		= $c["tipo"].$nombre_empresa;
 		$reg_cliente["grupo"] 		= $c["grupo"];
 		$reg_cliente["fcreacion"] 	= $c["fcreacion"];

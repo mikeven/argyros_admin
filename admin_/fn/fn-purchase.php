@@ -85,7 +85,7 @@
 		if( $disponibilidad["visible"] == 1 )  $class = "dsp_total"; else $class = "dsp_agotado";
 
 		$html_ta = "<div align='center'>
-						<a href='#!' class='badge $class'>".$item[talla]." ".$t['unidad']."</a>
+						<a href='#!' class='badge $class'>".$item["talla"]." "."</a>
 						<span>".$item["peso"]."</span>
 					</div>";
 
@@ -96,9 +96,9 @@
 		// Devuelve la lista de proveedores, con el proveedor del producto preseleccionado
 		$lista = "<select class='form-control selec_pvd selectpicker act_preo_d' data-idd='$idd' data-prm='idpvd'>
             		<option disabled>Seleccione</option>";
-        foreach ( $proveedores as $p ) {
+        foreach ( $proveedores as $p ){
         	$sel = sop( $p["id"], $idpvd );
-            $lista .= "<option $sel class='cambio_pvd' data-trg='".$idp."' value='".$p["id"]."'>$p[numero]</option>";
+            $lista .= "<option $sel class='cambio_pvd' value='".$p["id"]."'>$p[numero]</option>";
         }
 
         $lista .= "</select>";
@@ -186,14 +186,22 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerItemsPorProveedorOC( $idpvd ){
-		// Devuelve un vector con los ítems en pre-orden dado un id de detalle y un id de proveedor
+		// Devuelve un vector con los ítems en pre-orden de un proveedor y si existen cantidades en cero asociadas
 		$preorden 		= $_SESSION["preorden"];
 		$items			= array();
+		$ceros			= false;
 
-		foreach ( $preorden as $i )
-			if( $i["idpvd"] == $idpvd && $i["en_oc"] ) $items[] = $i;
+		foreach ( $preorden as $i ){
+			if( $i["idpvd"] == $idpvd && $i["en_oc"] ) {
+				$items[] = $i;
+				if( $i["cant"] == 0 ) $ceros = true;
+			}
+		}
 		
-		return $items;
+		$data["registros"] = $items;
+		$data["cants_en0"] = $ceros;
+
+		return $data;
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerPosicionItem( $idd, $idt ){

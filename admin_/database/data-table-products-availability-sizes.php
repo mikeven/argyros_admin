@@ -72,7 +72,6 @@
 			if( $t["visible"] == 1 )  $class = "dsp_total"; else $class = "dsp_agotado";
 
 			$html_ta .= "<div align='center'>
-							$lnk_oc
 							<a href='#!' class='badge $class'>".$t['talla']." ".$t['unidad']."</a>
 							<span>".$t['peso']."</span>
 						</div>";

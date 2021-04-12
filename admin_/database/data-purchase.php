@@ -44,11 +44,12 @@
 		// Devuelve los registros de detalle de orden de compra indicado por id
 		$q = "select doc.id, doc.product_id as idp, doc.product_detail_id as idd, doc.status as estado,  
 		doc.quantity as cant, doc.detail_note as nota, p.name as producto, p.name as producto, s.id as idt, 
-		s.name as talla, s.unit as unidad, sd.weight as peso, pd.location as ubicacion, pd.disused as desuso 
+		s.name as talla, convert(s.name, decimal(4,2)) as vsize, s.unit as unidad, 
+		sd.weight as peso, pd.location as ubicacion, pd.disused as desuso 
 		from purchases oc, purchase_details doc, products p, sizes s, size_product_detail sd, product_details pd 
 		where doc.purchase_id = oc.id and pd.product_id = p.id and doc.product_detail_id = pd.id and 
 		doc.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and oc.id = $ido 
-		ORDER BY doc.product_id, doc.product_detail_id";
+		ORDER BY doc.product_id, doc.product_detail_id, vsize";
 
 		return obtenerListaRegistros( mysqli_query( $dbh, $q ) );
 	}
@@ -163,8 +164,11 @@
 		$preorden 	= isset( $_SESSION["preorden"] ) ? $_SESSION["preorden"] : array();
 		$items_pvd  = obtenerItemsPorProveedorOC( $idpvd );
 		
-		if ( count( $items_pvd ) > 0 ) {
+		if ( ( count( $items_pvd["registros"] ) > 0 ) && $items_pvd["cants_en0"] == false ) {
+			//Existen registros del proveedor y no hay cantidades en cero
+			
 			$orden["id"] 		= registrarOrdenCompra( $dbh, $idpvd, $idu );
+			
 			if( $orden["id"] != 0 ){
 				$n = registrarDetalleOrdenCompra( $dbh, $orden, $preorden, $idpvd );
 				if( $n > 0 ){
@@ -173,12 +177,20 @@
 					$res["mje"] 	= "Orden registrada con éxito";
 				}
 			}else{
-				$res["exito"] 	= 1;
+				$res["exito"] 	= -1;
 				$res["mje"] 	= "Error al registrar orden";
 			}
+
 		}else{
-			$res["exito"] 	= -1;
-			$res["mje"] 	= "No hay registros para crear orden";
+			if ( $items_pvd["cants_en0"] ){
+				// Existen ítems con cantidades en cero
+				$res["exito"] 	= -2;
+				$res["mje"] 	= "Las cantidades en la orden no deben cero";
+			}else{
+				// no existen ítems del proveedor marcados para orden de compra 
+				$res["exito"] 	= -1;
+				$res["mje"] 	= "No hay registros para crear orden";
+			}
 		}
 
 		echo json_encode( $res );

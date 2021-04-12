@@ -86,7 +86,7 @@
           <input id="cd<?php echo $r["id"]; ?>" name="cant" class="qdisp_orden" type="text" disabled 
           onKeyPress="return isIntegerKey(event);">
 
-          <input id="pesoi<?php echo $r[id] ?>" type="hidden" value="<?php echo $r[peso]; ?>">
+          <input id="pesoi<?php echo $r['id'] ?>" type="hidden" value="<?php echo $r['peso']; ?>">
           
           <input class="qini" id="qocd<?php echo $r["id"]; ?>" type="hidden" 
           data-ti="ti<?php echo $r["id"]; ?>" value="<?php echo $r["quantity"]; ?>">

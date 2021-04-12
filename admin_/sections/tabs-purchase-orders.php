@@ -6,8 +6,8 @@
     ?>
       <li class="nav-item">
         <a class="nav-link<?php echo $active ?>" id="prov<?php echo $idpvd ?>" data-toggle="tab" 
-          href="#dp<?php echo $idpvd ?>" role="tab" aria-controls="<?php echo $p[number] ?>" aria-selected="<?php echo $a_sel ?>">
-          <?php echo $p[number]." ".$p[name] ?>
+          href="#dp<?php echo $idpvd ?>" role="tab" aria-controls="<?php echo $p['number'] ?>" aria-selected="<?php echo $a_sel ?>">
+          <?php echo $p["number"]." ".$p["name"] ?>
         </a>
       </li>
     <?php $active = ""; $a_sel = "false"; } ?>
@@ -20,7 +20,7 @@
     ?>
         <div class="tab-pane fade<?php echo $active ?>" id="dp<?php echo $idpvd ?>" role="tabpanel"
          aria-labelledby="prov<?php echo $idpvd ?>">
-            <div align="center"><h3><?php echo $p[number]." ".$p[name] ?></h3></div>
+            <div align="center"><h3><?php echo $p["number"]." ".$p["name"] ?></h3></div>
             <input type="hidden" class="tabpvd" value="<?php echo $idpvd ?>">
             <?php include( "tables/table-preorder-provider.php" ); ?>
             

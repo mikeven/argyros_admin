@@ -74,7 +74,7 @@
                 }
             ?>
             <div class="right" style="float:right;">
-                <a href="product-detail-edit.php?id=<?php echo $dp[id]; ?>">
+                <a href="product-detail-edit.php?id=<?php echo $dp['id']; ?>">
                     <button type="button" class="btn btn-info btn-xs">Editar</button>
                 </a>
 

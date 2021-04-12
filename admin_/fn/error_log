@@ -1,0 +1,43 @@
+[27-Nov-2020 19:39:23 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 122
+[27-Nov-2020 19:39:23 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 123
+[27-Nov-2020 19:39:23 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 191
+[27-Nov-2020 19:39:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerListaRegistros() in /home/argyrosadmin/public_html/admin/database/data-products.php:192
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/database/data-products.php(199): obtenerTallasDetalleProducto(NULL, '17639')
+#1 /home/argyrosadmin/public_html/admin/fn/fn-purchase.php(28): obtenerDatosDetalleProductoPorId(NULL, '17639')
+#2 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/data-products.php on line 192
+[27-Nov-2020 19:40:25 UTC] PHP Warning:  include(database/data-products.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 25
+[27-Nov-2020 19:40:25 UTC] PHP Warning:  include(): Failed opening 'database/data-products.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 25
+[27-Nov-2020 19:40:25 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerDatosDetalleProductoPorId() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php:28
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 28
+[27-Nov-2020 19:40:54 UTC] PHP Warning:  include(database/data-products.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 25
+[27-Nov-2020 19:40:54 UTC] PHP Warning:  include(): Failed opening 'database/data-products.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 25
+[27-Nov-2020 19:41:24 UTC] PHP Warning:  include(database/data-products.php): failed to open stream: No such file or directory in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 25
+[27-Nov-2020 19:41:24 UTC] PHP Warning:  include(): Failed opening 'database/data-products.php' for inclusion (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 25
+[27-Nov-2020 19:41:24 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerDatosDetalleProductoPorId() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php:29
+Stack trace:
+#0 {main}
+  thrown in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 29
+[27-Nov-2020 19:43:11 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 122
+[27-Nov-2020 19:43:11 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 123
+[27-Nov-2020 19:43:11 UTC] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 191
+[27-Nov-2020 19:43:11 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function obtenerListaRegistros() in /home/argyrosadmin/public_html/admin/database/data-products.php:192
+Stack trace:
+#0 /home/argyrosadmin/public_html/admin/database/data-products.php(199): obtenerTallasDetalleProducto(NULL, '17639')
+#1 /home/argyrosadmin/public_html/admin/fn/fn-purchase.php(29): obtenerDatosDetalleProductoPorId(NULL, '17639')
+#2 {main}
+  thrown in /home/argyrosadmin/public_html/admin/database/data-products.php on line 192
+[27-Nov-2020 21:16:57 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given in /home/argyrosadmin/public_html/admin/database/data-products.php on line 123
+[01-Dec-2020 14:49:40 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 85
+[01-Dec-2020 15:11:09 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 85
+[02-Dec-2020 12:32:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 117
+[02-Dec-2020 20:16:06 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 117
+[03-Dec-2020 13:00:04 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 116
+[03-Dec-2020 16:13:26 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 116
+[04-Dec-2020 12:37:20 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 124
+[05-Dec-2020 11:47:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 124
+[06-Dec-2020 06:50:30 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/argyrosadmin/public_html/admin/fn/fn-purchase.php on line 124
+[06-Feb-2021 05:41:33 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/argyrosadmin/public_html/admin/database/data-products.php on line 761

@@ -143,7 +143,7 @@
                                             <span id="peso_total_orden">
                                                 <?php echo number_format( $orden["tpeso"], 2, ".", " " ); ?>
                                             </span> gr
-                                            <input type="hidden" id="previo_peso_orden" value="<?php echo $orden[tpeso]; ?>">
+                                            <input type="hidden" id="previo_peso_orden" value="<?php echo $orden['tpeso']; ?>">
                                         </div>
                                         
                                         <div class="form-group">
@@ -185,7 +185,7 @@
                                         <hr>
                                         <div class="form-group">
                                             <label class="control-label">Cliente: </label> 
-                                            <a href="client-data.php?id=<?php echo $orden[cid] ?>" target="_blank">
+                                            <a href="client-data.php?id=<?php echo $orden['cid'] ?>" target="_blank">
                                                 <?php echo "#".$orden["cid"]; ?>
                                                 <?php echo $orden["nombre"]." ".$orden["apellido"]; ?>
                                             </a>

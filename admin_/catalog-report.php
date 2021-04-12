@@ -174,7 +174,7 @@
                               required title="Seleccione">
                                 <option value="">Seleccione</option>
                                 <?php foreach ( $proveedores as $p ) { ?>
-                                  <option value="<?php echo $p[id] ?>"><?php echo $p["numero"] ?></option>
+                                  <option value="<?php echo $p['id'] ?>"><?php echo $p["numero"] ?></option>
                                 <?php } ?>
                               </select>
                               <div id="rprovr"></div>
