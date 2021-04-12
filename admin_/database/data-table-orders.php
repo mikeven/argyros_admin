@@ -41,6 +41,7 @@
 		// Devuelve el total de una orden después de haber sido revisado/confirmado
 		$monto = 0;
 		$tpeso = 0;
+		$retir = false;
 
 		foreach ( $detalle as $item ){
 			if( $orden["estado"] == "pendiente" || $orden["estado"] == "cancelado" ){
@@ -51,12 +52,16 @@
 				if( $item["istatus"] != "retirado" ){
 					$monto += $item["disponible"] * $item["price"];
 					$tpeso += $item["disponible"] * $item["peso"];
+				}else{
+					if( $item["revision"] != "nodisp" )
+						$retir = true;
 				}
 			}
 		}
 
 		$total["monto"] 	= number_format( $monto, 2, ".", "" );
 		$total["peso"] 		= number_format( $tpeso, 2, ".", "" );
+		$total["retir"] 	= $retir;
 		
 		return $total;		
 	}
@@ -74,6 +79,15 @@
 		return $iconos[$estado];
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function pedidoAlterado( $estado, $item_retirado ){
+		//Devuelve verdadero si orden esta en estado confirmado y alguno de sus ítems fue retirado
+		$alterado = false;
+		if( $estado == "confirmado" && $item_retirado )
+			$alterado = true;
+		
+		return $alterado;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Clientes */
 	/* ----------------------------------------------------------------------------------- */
 	session_start();
@@ -88,6 +102,8 @@
         $totales 					= calcularTotalOrden( $p, $dorden );
         $total_o 					= $totales["monto"];
         $total_p 					= $totales["peso"];
+        $item_re 					= pedidoAlterado( $p["estado"], $totales["retir"] );;
+   
         $lnk_cliente 				= "client-data.php?id=$p[idu]";
         $link_pedido 				= "<a href='order-data.php?order-id=$p[id]'>Pedido N° $p[id]</a>"." | ".
         							"<a href='order-data.php?order-id=$p[id]' target='_blank'><i class='fa fa-external-link'></i></a>";
@@ -101,6 +117,7 @@
 		$reg_pedido["total"] 		= "$".$total_o;
 		$reg_pedido["tpeso"] 		= $total_p."gr";
 		$reg_pedido["creado"] 		= $p["creada"];
+		$reg_pedido["alterado"] 	= $item_re;
 		
 		$data_pedidos["data"][] 	= $reg_pedido;
 	}

@@ -119,12 +119,14 @@
 
 	foreach ( $detalles_productos as $dp ) {
 		$desuso 	= "";
+		$val_desu 	= false;
 
 		if( !$dp["fagotado"] ) $fagotado = $dp["fcreado"]; else $fagotado = $dp["fagotado"];
 
 		if( isset( $dp["desuso"] ) ){
 			$desuso 		= "<span class='badge badge-secondary lab_sust' title='en desuso'>
 								<i class='fa fa-history'></i></span>";
+			$val_desu 		= true;
 		}
 		
 		$tallas 		= obtenerTallasDetalleProducto( $dbh, $dp["d_id"] );
@@ -145,6 +147,8 @@
 		$reg_prod["categ"] 		= $dp["categoria"]." > ".$dp["subcategoria"];
 		$reg_prod["detalle"]	= $html_det;
 		$reg_prod["tallas"] 	= $html_ta;
+
+		$reg_prod["desuso"] 	= $val_desu;
 	
 		/*......................................................................*/
 		$data_productos["data"][] = $reg_prod;

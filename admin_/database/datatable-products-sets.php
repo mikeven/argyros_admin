@@ -20,7 +20,7 @@
 	function obtenerDetalleProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
 		$q = "select dp.id as id, c.name as color, t.name as bano, dp.price_type as tipo_precio, 
-		dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, 
+		dp.piece_price_value as precio_pieza, dp.manufacture_value as precio_mo, dp.disused as desuso, 
 		dp.weight_price_value as precio_peso FROM product_details dp
 		LEFT JOIN treatments t ON t.id = dp.treatment_id LEFT JOIN colors c ON dp.color_id = c.id 
 		WHERE dp.product_id = $idp ORDER BY dp.id DESC";
@@ -42,7 +42,7 @@
 		return $lista;
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function obtenerTablaDetallesProducto( $p, $dp, $lnk_dp, $url_img ){
+	function obtenerTablaDetallesProducto( $p, $dp, $lnk_dp, $url_img, $duso ){
 		// Devuelve la tabla con los detalles de un producto
 
 		$html_tabla = "<div>
@@ -56,6 +56,7 @@
 										data-src='".$url_img."' data-target='#img-product-pop'>
                     					<img id='img".$dp["id"]."' src='".$url_img."' width='60px'>
                     				</a>
+                    				$duso
                   				</th>
                   				<th width='33.3%'>
                     				<a href='#!' class='sel-pj' data-idd='".$dp["id"]."'>
@@ -69,6 +70,17 @@
         return $html_tabla;
 	}
 	/* ----------------------------------------------------------------------------------- */
+	function obtenerEtiquetaProductoDesuso( $detalle ){
+		// Devuelve los datos para la columna de código
+		$etiqueta = "";
+
+		if( $detalle["desuso"] )
+			$etiqueta = "<div align='left'><span class='badge badge-secondary' title='En desuso'>
+								<i class='fa fa-history'></i>desuso</span></div>";
+
+		return $etiqueta;
+	}
+	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
 	/* ----------------------------------------------------------------------------------- */
 	include( "bd.php" );
@@ -80,7 +92,9 @@
 
     	$detalles = "";
 		foreach ( $drdet as $dp ) {
+			
 			$lnk_dp = "product-data.php?p=$p[id]#$dp[id]"; 
+			$etq_desuso = obtenerEtiquetaProductoDesuso( $dp );
 			$imgs = obtenerImagenesDetalleProducto( $dbh, $dp["id"], "" );
 			$url_img = "";
 			
@@ -88,7 +102,7 @@
 				$url_img = $imgs[0]["path"];
 			}
 
-			$detalles .= obtenerTablaDetallesProducto( $p, $dp, $lnk_dp, $url_img );
+			$detalles .= obtenerTablaDetallesProducto( $p, $dp, $lnk_dp, $url_img, $etq_desuso );
 		}
 		/*......................................................................*/
 		$reg_prod["categoria"] 		= $p["categoria"];

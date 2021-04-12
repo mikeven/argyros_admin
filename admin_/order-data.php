@@ -162,6 +162,11 @@
                                         <?php } ?>
                                         <hr>
 
+                                        <?php if( $orden["nota_compra_cliente"] != "" ) { ?>
+                                            <div><b>Nota del cliente: </b></div>
+                                            <div><?php echo $orden["nota_compra_cliente"]?> </div>
+                                        <?php } ?>
+
                                         <?php if( $orden["estado"] == "revisado" ) { ?>
                                             <div><b>Observaciones de revisión: </b></div>
                                             <div><?php echo $orden["revision_note"]?> </div>

@@ -404,7 +404,7 @@
       
       $(document).ready(function() {
         $('#frm_nproduct').parsley().on('form:success', function() {
-          agregarProducto(); 
+          agregarRegistroProducto(); 
         });
       });
       

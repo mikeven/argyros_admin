@@ -28,7 +28,7 @@
 	/* ----------------------------------------------------------------------------------- */
 	function obtenerDetalleProductoPorId( $dbh, $idp ){
 		//Devuelve los registros detalles asociados a un producto dado su id
-		$q = "select dp.id as id, location as ubicacion FROM product_details dp 
+		$q = "select dp.id as id, location as ubicacion, disused as desuso FROM product_details dp 
 				WHERE dp.product_id = $idp ORDER BY dp.id DESC";
 		
 		$data = mysqli_query( $dbh, $q );
@@ -113,6 +113,17 @@
 
 		return $codigo;
 	}
+	/* ----------------------------------------------------------------------------------- */
+	function obtenerEtiquetaProductoDesuso( $detalle ){
+		// Devuelve los datos para la columna de código
+		$etiqueta = "";
+
+		if( $detalle["desuso"] )
+			$etiqueta = "<div align='center'><span class='badge badge-secondary' title='En desuso'>
+								<i class='fa fa-history'></i> En desuso</span></div>";
+
+		return $etiqueta;
+	}
 
 	/* ----------------------------------------------------------------------------------- */
 	/* Solicitudes asíncronas al servidor para procesar información de Productos */
@@ -129,27 +140,20 @@
 
 		$col_cod		= obtenerCodigosProducto( $dbh, $p );
 
-		/*if( $p["visible"] == 1 ) {
-			$clp = ""; $accion = "Ocultar"; $ccol = "pstat_";
-		}else{ 
-			$clp = "-slash"; $accion = "Mostrar"; $ccol = "pstat_o"; 
-		}
-		$visibilidad = obtenerAccionVisibilidad( $p, $clp, $ccol, $accion );
-		<a href='#!' class='badge act_frepos' data-id='$dp[id]' title='Actualizar fecha de reposición'>
-			<i class='fa fa-arrow-circle-up'></i> RE
-		</a>
-		*/
-
 		$html_det = "";
 
 		foreach ( $drdet as $dp ) {
+
 			$cod_color 	= obtenerCodigoDisponibilidad( $dbh, $dp["id"] );
 			$lnk_dp 	= "product-data.php?p=$p[id]#$dp[id]";
+			$etq_desuso = obtenerEtiquetaProductoDesuso( $dp );
 			$html_det	.= obtenerImagenDetalleProducto( $dbh, $dp["id"] );		
 			$html_det 	.= "<div align='center'>
 								<a href='".$lnk_dp."' class='badge $cod_color'>#".$dp['id']."</a>
 							</div>";
-			$html_det 	.= "<div align='center'><i class='fa fa-archive'></i> $dp[ubicacion]</div>";							
+			$html_det 	.= $etq_desuso;
+			
+			$html_det 	.= "<div align='center'><i class='fa fa-archive'></i> $dp[ubicacion]</div>";
 		}
 		/*......................................................................*/
 		$reg_prod["id"]			= "<a class='primary' href='".$lnk_p."' target='_blank'>".$p["id"]."</a>";

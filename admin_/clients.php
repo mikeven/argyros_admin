@@ -59,6 +59,7 @@
         <style>
             .blocked_user{ color: rgba( 231, 76, 60, 1 ); }
         </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
   </head>
 
   <?php

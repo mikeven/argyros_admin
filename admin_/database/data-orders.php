@@ -21,7 +21,8 @@
 		$data_orden = NULL;
 		
 		$q = "select o.id, o.user_id as idu, o.total_price as total, o.order_status as estado, 
-		o.client_note, o.admin_note, o.revision_note, date_format( o.created_at,'%d/%m/%Y') as fecha, 
+		o.client_note, o.admin_note, o.revision_note, o.client_buy_note as nota_compra_cliente, 
+		date_format( o.created_at,'%d/%m/%Y') as fecha, 
 		date_format( o.created_at,'%d/%m/%Y %h:%i:%s %p') as fecha_hora, c.id as cid, 
 		c.first_name nombre, c.last_name as apellido, c.email as email, g.name as grupo_cliente 
 		from orders o, clients c, client_group g 

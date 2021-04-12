@@ -51,6 +51,9 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+    <style type="text/css">
+        .pedido_alt{ background-color: #fdf2e4 !important; }
+    </style>
   </head>
 
   <?php
@@ -198,6 +201,12 @@
             "info": true,
             "deferRender": true,
             "autoWidth": false,
+            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                if( aData["alterado"] == true ){
+                    /* Pedido alterado en estado 'Confirmado' */
+                    $(nRow).addClass( "pedido_alt" ); 
+                }
+            },
             "language": {
                 "lengthMenu": "Mostrar _MENU_ regs por página",
                 "zeroRecords": "No se encontraron resultados",

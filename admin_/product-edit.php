@@ -328,7 +328,8 @@
                   
                   <div class="form-group">
                     <div align="center">
-                      <button id="bot_editar_producto" type="button" class="btn btn-success neweditprod">Guardar</button>
+                      <button id="bot_editar_producto" type="button" 
+                      class="btn btn-success neweditprod">Guardar</button>
                     </div>
                     <div id="ghres"></div>
                     <!--<button type="button" class="btn btn-primary" data-toggle="modal" 

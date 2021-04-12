@@ -138,11 +138,11 @@
                     </ul>-->
                     <div class="clearfix"></div>
                   </div>
-                  <div id="tabla_datos-lineas" class="x_content">
+                  <div id="tabla_datos-proveedores" class="x_content">
                     <p class="text-muted font-13 m-b-30"> </p>
                     <?php include( "sections/tables/table-providers.php" );?>
                     <?php include( "sections/modals/confirm_action.php" ); ?>
-                    <input id="id-linea-e" type="hidden">
+                    <input id="id-proveedor-e" type="hidden">
                   </div>
                 </div>
               </div>
@@ -224,7 +224,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="js/custom.js"></script>
-    <script src="js/fn-lines.js"></script>
+    <script src="js/fn-providers.js"></script>
     <script src="js/fn-ui.js"></script>
 
     <?php include( "fn/fn-providers.php" ); ?>

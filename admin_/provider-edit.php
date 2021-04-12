@@ -1,26 +1,32 @@
 <?php
     /*
-     * Argyros Admin - Lista de productos por tallas
+     * Argyros Admin - Edición de datos de proveedor
      * 
      */
     session_start();
     ini_set( 'display_errors', 1 );
     include( "database/bd.php" );
     include( "database/data-user.php" );
-    include( "fn/common-functions.php" );
-    include( "database/data-products.php" );
+    include( "database/data-providers.php" );
     checkSession( '' );
+  
+    if( isset( $_GET["id"] ) && $_GET["id"] != "" ){
+      $idp        = $_GET["id"];
+      $proveedor  = obtenerProveedorPorId( $dbh, $idp );
+    }else{
+      redireccionar( "providers.php" );  
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Productos por talla :: Argyros Admin</title>
+    <title>Editar proveedor :: Argyros Admin</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -39,11 +45,6 @@
     <!-- bootstrap-daterangepicker -->
     <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
-    <!-- PNotify -->
-    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-
     <!-- Datatables -->
     <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
@@ -54,23 +55,12 @@
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
     <link href="css/custom-styles.css" rel="stylesheet">
-    <style type="text/css">
-        .dsp_total{ background-color: #28a745 }
-        .dsp_parcial{ background-color: #ffc107; }
-        .dsp_agotado{ background-color: #dc3545; }
 
-        .it_oc_rec{ color: #5cb85c; } /* verde:     recibido */
-        .it_oc_pen{ color: #f0ad4e; } /* amarillo:  pendiente */
-        .it_oc_nor{ color: #ac2925; } /* rojo:      no recibido */
-
-        .inc_lpreo{ color: #28a745 }
-        .lab_sust{ font-size: 10px; }
-        .prd_dsuso{ border-left: 5px solid #777777 !important; }
-    </style>
-
-</head>
-
-  <?php $productos = obtenerListaProductos( $dbh ); ?>
+    <!-- PNotify -->
+    <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+  </head>
 
   <body class="nav-md">
     <div class="container body">
@@ -83,28 +73,78 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
-              
               <div class="title_left">
-                <h3>Lista de productos por tallas</h3>
+                <h3>Proveedores</h3>
               </div>
-              
+
+              <!--<div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>-->
+            
             </div>
 
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Lista de productos</h2>
+                    <h2>Editar proveedor</h2>
+                    <div class="input-group" style="float:right;">
+                      <a href="providers.php" class="btn btn-app">
+                        <i class="fa fa-arrow-left"></i> Volver a proveedores
+                      </a>
+                    </div>
                     <div class="clearfix"></div>
                   </div>
-                  
-                  <div id="lista_productos_tallas" class="x_content">
-                    <p class="text-muted font-13 m-b-30"> </p>
-                    <?php $memory_limit = ini_get('memory_limit');
-                    echo "ML ".$memory_limit;
-                    include( "sections/tables/table-data-unavailable-products.php" ); ?>
+                  <div class="x_content">
+                    <form id="frm_mlinea" data-parsley-validate class="form-horizontal form-label-left" 
+                      action="database/data-lines.php?line-edit" method="post">
+                      
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input id="idproveedor" name="idproveedor" type="hidden" value="<?php echo $idl; ?>">
+                          <input type="text" class="form-control" placeholder="Nombre de proveedor" 
+                          name="nombre" value="<?php echo $proveedor[name]; ?>" required="">
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Número </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" placeholder="Número de proveedor" name="numero" required 
+                          value="<?php echo $proveedor[number]; ?>">
+                        </div>
+                      </div>
+                      
+                      <div class="ln_solid"></div>
+
+                      <div class="form-group">
+                        <div align="center">
+                          <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                      </div>
+
+                    </form>  
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8 col-sm-5 col-xs-12 hidden">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Productos asociados a proveedor</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div id="tabla_datos-proveedor" class="x_content">
+                    
                   </div>
                 </div>
               </div>
@@ -112,11 +152,9 @@
           </div>
         </div>
         <!-- /page content -->
-
         <!-- footer content -->
         <?php include( "sections/footer.php" ); ?>
         <!-- /footer content -->
-        
       </div>
     </div>
 
@@ -175,7 +213,10 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/plug-ins/1.10.19/filtering/type-based/accent-neutralise.js"></script>
+
+    <!-- Parsley -->
+    <script src="vendors/parsleyjs/dist/parsley.min.js"></script>
+    <script src="vendors/parsleyjs/dist/i18n/es.js"></script>
 
     <!-- PNotify -->
     <script src="vendors/pnotify/dist/pnotify.js"></script>
@@ -183,71 +224,13 @@
     <script src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="js/fn-purchase.js"></script>
     <script src="js/custom.js"></script>
-    
+    <script src="js/fn-providers.js"></script>
     <script src="js/fn-ui.js"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
-    <script src="//cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
-
+    <?php include( "fn/fn-providers.php" ); ?>
     <script>
-        //$.fn.dataTable.moment('YYYY/MM/DD HH:mm');
-        $.fn.dataTable.moment('DD/MM/YYYY hh:mm:ss A');
-
-        $(document).ready(function() {
-            $('#dt-unavailable-products').dataTable({
-                
-                "ajax": { 
-                    "method":"POST",
-                    "url":"database/data-table-products-availability-sizes.php"
-                },
-                "columns":[
-                    {"data":"fagotado"},
-                    {"data":"codigo"},
-                    {"data":"nombre"},
-                    {"data":"desc"},
-                    {"data":"categ"},
-                    {"data":"detalle"},
-                    {"data":"tallas"}
-                ],
-                "columnDefs" : [{ "targets":[1,3,4,5,6], "orderable": false }],
-                "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                    if(aData["desuso"] == true ){
-                        /* Col 5: adquiere la clase prd_dsuso (prod en desuso)*/
-                        $('td:eq(5)', nRow).addClass( "prd_dsuso" ); 
-                    }
-                },
-                "processing": true,
-                "paging": true,
-                "iDisplayLength": 10,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "deferRender": true,
-                "autoWidth": false,
-                "language": {
-                    "lengthMenu": "Mostrar _MENU_ regs por página",
-                    "zeroRecords": "No se encontraron resultados",
-                    "info": "Mostrando pág _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros",
-                    "infoFiltered": "(filtrados de _MAX_ regs)",
-                    "search": "Buscar:",
-                    "processing": "<img src='https://www.argyros.com.pa/admin/images/ajax-loader.gif' width='20'>",
-                    "paginate": {
-                        "first":      "Primero",
-                        "last":       "Último",
-                        "next":       "Próximo",
-                        "previous":   "Anterior"
-                    }
-                }
-            });
-            var table = $('#dt-unavailable-products').DataTable();
-            // Ordenar por columna cero, dibujar
-            table.order( [ 0, 'desc' ] ).draw();
-        });   
+      
     </script>
 	
   </body>

@@ -255,6 +255,16 @@ $( document ).ready(function() {
         ],"defaultContent": "<button>Edit</button>",
         "columnDefs" : [{"targets":6, "type":"date-eu"},
                         {"targets":7, "type":"date-eu", "defaultContent": ""}],
+        dom: 'Bfrtip',
+        buttons: [{
+            extend: 'excelHtml5',
+            text: 'Exportar a Excel',
+            exportOptions: {
+                modifier: {
+                    page: 'all'
+                }
+            }
+        },'pageLength' ],
         "processing": true,
         "paging": true,
         "iDisplayLength": 10,
@@ -277,6 +287,11 @@ $( document ).ready(function() {
                 "last":       "Último",
                 "next":       "Próximo",
                 "previous":   "Anterior"
+            },
+            "buttons": {
+                "pageLength": {
+                    _: "Mostrar %d regs"
+                }
             }
         }
     });

@@ -289,6 +289,41 @@ function calcularPreTotalOrdenes(){
     });
 }
 /* --------------------------------------------------------- */
+function editarCantidadesItemOC( cantidades ){
+    //Invoca la edición de la cantidad de un ítem de orden de compra
+    var items_oc    = JSON.stringify( cantidades );
+    var id_oc       = $("#idordenc").val();
+
+    $.ajax({
+        type:"POST",
+        url:"database/data-purchase.php",
+        data:{ editar_cants: items_oc, ido: id_oc },
+        success: function( response ){
+            console.log( response );
+            res = jQuery.parseJSON( response );
+            if( res.exito == 1 ){
+                tNotificar( "Orden de compra", res.mje, "success", 2200 );
+                setTimeout( function() { location.reload(); }, 3000 );
+            }
+            else
+                tNotificar( "Orden de compra", res.mje, "info", 2200 );
+        }
+    });
+}
+/* --------------------------------------------------------- */
+function editarCantidadesOC(){
+    //Invoca la edición de todas las cantidades de una orden de compra
+    var cantidades = new Array();
+
+    $( ".cnt_preord" ).each(function() {
+        var item = new Object();
+        item.iddoc  = $(this).attr("data-id-detoc");
+        item.cant   = $(this).val();
+        cantidades.push( item );
+    });
+
+    editarCantidadesItemOC( cantidades );
+}
 
 $( document ).ready(function() {	
     // ============================================================================ //
@@ -388,6 +423,27 @@ $( document ).ready(function() {
             $("#confirmar-accion .btn-canc").click();
             vaciarListaPreorden();
         });
+    });
+
+    //Clic: Habilita la opción de editar las cantidades de una orden de compra y el botón de guardar
+    $("#btn_edit_cants").on( "click", function(){
+        $(this).fadeToggle();
+        $(".cnt_preord").prop( "readonly", false );
+        $(".btn-opc-editcants").fadeToggle();
+    });
+
+    //Clic: Deshabilita la opción de editar las cantidades de una orden de compra y el botón de guardar 
+    $("#btn_cancelar_edit_cants").on( "click", function(){
+        $(".btn-opc-editcants").fadeToggle();
+        $(".cnt_preord").prop( "readonly", true );
+        $("#btn_edit_cants").fadeToggle();
+    });
+
+    //Clic: Invoca el proceso para editar las cantidades de una orden de compra 
+    $("#btn_guardar_cants").on( "click", function(){
+        $( this ).prop( "disabled", true );
+        $(".cnt_preord").prop( "readonly", true );
+        editarCantidadesOC();
     });
 
 });

@@ -172,6 +172,7 @@
                             <div class="col-md-9 col-sm-9 col-xs-12">
                               <select id="selprov_fr" name="proveedor" class="form-control selectpicker" 
                               required title="Seleccione">
+                                <option value="">Seleccione</option>
                                 <?php foreach ( $proveedores as $p ) { ?>
                                   <option value="<?php echo $p[id] ?>"><?php echo $p["numero"] ?></option>
                                 <?php } ?>

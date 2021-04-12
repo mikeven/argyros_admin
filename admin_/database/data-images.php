@@ -127,8 +127,8 @@
 
 		$archivo = substr( $id_p, 1 );
 		imagepng( $nva, "../salidas/$archivo.png", 9 ); 
-
 		$zip->addFile( "../salidas/$archivo.png" );
+
 		imagedestroy( $nva );
 	}
 	/* ----------------------------------------------------------------------------------- */
@@ -219,7 +219,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function linkZip( $archivo ){
-		//download='$n.png'
+		// 
 		$pre = "database/";
 		$lnk = "<a class='lnkig btn btn-app' href='$pre$archivo' target='_blank'>
 					Descargar imágenes <i class='fa fa-download'></a>";
@@ -233,28 +233,49 @@
 		session_write_close();
 	}
 	/* ----------------------------------------------------------------------------------- */
-	function eliminarImagenesGeneradas( $a_comp ){
+	function eliminarZipsGenerados(){
+		// Vacía el directorio donde se almacenan los archivos comprimidos
+		$tmax_m = 30; 	// máx t en minutos que puede permanecer en el directorio
+
+		date_default_timezone_set( 'America/Panama' );
+
+		$t_actual = strtotime( date ("Y-m-d H:i:s") );
+		
+		$files = glob( 'prints/*' ); 
+		foreach( $files as $file ){
+			$t_archivo = strtotime( date ( "Y-m-d H:i:s", filemtime( $file ) ) );
+			$t_dif = floor( ( $t_actual - $t_archivo ) / 60 );
+			
+		    if( is_file( $file ) && $t_dif >= $tmax_m ) 
+		    	//El archivo tiene más de $tmax_m mins desde la fecha de creación hasta la ejecución de este script 
+		    	unlink( $file );       
+		}
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function eliminarImagenesGeneradas(){
 		// Vacía el directorio donde se almacenan las imágenes generadas
 		
-		if( file_exists( $a_comp ) ) unlink( $a_comp );
 		$files = glob( '../salidas/*' ); 
 		foreach( $files as $file ){
 		    if( is_file( $file ) )
 		    unlink( $file );
 		}
+		
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function escribirImagenes( $productos, $frm ){
 		// Obtiene los datos a mostrar e invoca la generación de las imágenes con los datos
-
-		$filename 				= date("Ymd-h.i"); 
+		
+		date_default_timezone_set( 'America/Panama' );
+		
+		$filename 				= date("Ymd-his"); 
 		$enl 					= "";
-		$archivo_zip 			= $filename.".zip";
+		$dir 					= "prints/";
+		$archivo_zip 			= $dir.$filename.".zip";
 		$nregs 					= count( $productos );
 		$_SESSION["nimages"] 	= $nregs;
 		$_SESSION["images"] 	= array();
 		session_write_close();
-		eliminarImagenesGeneradas( $archivo_zip );
 
 		$zip = new ZipArchive();
 		if ( $zip->open( $archivo_zip, ZipArchive::CREATE | ZipArchive::OVERWRITE ) ){
@@ -272,8 +293,6 @@
 			$precio 	= 	precioP( $p, $frm );
 			$tallas 	= 	tallasP( $p, $frm );
 			$ubicacion 	= 	ubicacionP( $p, $frm );
-
-			$enl 		.= 	linkImg( substr( $id_p, 1 ) );
 			$enl 		= 	linkZip( $archivo_zip );
 
 			if( $img != "" ){
@@ -283,6 +302,9 @@
 		}
 
 		$zip->close();
+		eliminarImagenesGeneradas();
+		eliminarZipsGenerados();
+
 		echo $enl;
 	}
 	/* ------------------------------------------------------------------------------ */

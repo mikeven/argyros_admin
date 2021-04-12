@@ -5,21 +5,21 @@
 */
 
 /* --------------------------------------------------------- */	
-function eliminarProveedor( idl ){
+function borrarProveedor( idprv ){
     //Invocación al servidor para eliminar proveedor
     $.ajax({
         type:"POST",
         url:"database/data-providers.php",
-        data:{ elimprovider: idl },
+        data:{ elimprovider: idprv },
         success: function( response ){
             console.log( response );
             res = jQuery.parseJSON(response);
             if( res.exito == 1 ){ 
-                notificar( "Líneas", res.mje, "success" );
-                setTimeout( function() { window.location = "lines.php"; }, 3000 );
+                notificar( "Proveedores", res.mje, "success" );
+                setTimeout( function() { window.location = "providers.php"; }, 3000 );
             }
             if( res.exito == -1 ){ 
-                notificar( "Borrar líneas", res.mje, "error" );
+                notificar( "Proveedores", res.mje, "error" );
             }
         }
     });
@@ -45,19 +45,11 @@ function desvincularProductoLinea( idp, idl_d ){
     });
 }
 /* --------------------------------------------------------- */
-function iniciarBotonBorrarLinea(){
-    //Asigna los textos de la ventana de confirmación para borrar una línea
-    iniciarVentanaModal( "btn_borrar_linea", "btn_canc", 
-                         "Borrar línea", "", 
-                         "¿Confirma que desea borrar línea?", 
-                         "Confirmar acción" );
-}
-/* --------------------------------------------------------- */
-function iniciarBotonDesvincularProductoLinea(){
-    //Asigna los textos de la ventana de confirmación para desvincular una línea de un producto
-    iniciarVentanaModal( "btn_desv_linea_prod", "btn_canc", 
-                         "Desvincular producto", "", 
-                         "¿Confirma que desea desvincular este producto de la línea?", 
+function iniciarBotonBorrarProveedor(){
+    //Asigna los textos de la ventana de confirmación para borrar un proveedor
+    iniciarVentanaModal( "btn_borrar_proveedor", "btn_canc", 
+                         "Borrar proveedor", "", 
+                         "¿Confirma que desea borrar proveedor?", 
                          "Confirmar acción" );
 }
 /* --------------------------------------------------------- */
@@ -75,26 +67,14 @@ $( document ).ready(function() {
         });
     }
     /* ............................................................ */
-    $("#tabla_datos-lineas").on( "click", ".elim-linea", function(){
-        $("#id-linea-e").val( $(this).attr( "data-idl" ) );
-        iniciarBotonBorrarLinea();
+    $( "#tabla_datos-proveedores" ).on( "click", ".elim-proveedor", function(){
+        $("#id-proveedor-e").val( $(this).attr( "data-idp" ) );
+        iniciarBotonBorrarProveedor();
 
-        $('#btn_borrar_linea').on('click', function(){
-            var idl = $("#id-linea-e").val();
+        $('#btn_borrar_proveedor').on('click', function(){
+            var idp = $("#id-proveedor-e").val();
             $("#btn_canc").click();
-            borrarLinea( idl );
-        });
-    });
-    /* ............................................................ */
-    $("#tabla_datos-lineas").on( "click", ".desv-prod", function(){
-        var idl_d = $("#id-linea-d").val();
-        $("#id-producto-d").val( $(this).attr( "data-idp" ) );
-        iniciarBotonDesvincularProductoLinea();
-
-        $('#btn_desv_linea_prod').on('click', function(){
-            var idp = $("#id-producto-d").val();
-            $("#btn_canc").click();
-            desvincularProductoLinea( idp, idl_d );
+            borrarProveedor( idp );
         });
     });
 });

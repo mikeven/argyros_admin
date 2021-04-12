@@ -60,17 +60,16 @@
         <link href="build/css/custom.min.css" rel="stylesheet">
 
         <style type="text/css">  
-            .dcol{ display: none; }
             #datatable_do .dcol .fa:hover{ cursor: pointer; }
             .marked{ color: #5bc0de; }
             .icono_ista{ font-size: 14px; }
             .qdisp_orden{ width: 100%; text-align: center; }
-            .btn_accion_pedido{ float: left; }
+            .btn_accion_orden{ float: left; }
             .accion_observaciones{ margin-bottom: 20px; }
-            .tx_al_c{ text-align: center; }
-            .cnt_preord.act_preo {
+            .cnt_preord {
                 text-align: center;
             }
+            .btn-opc-editcants{ display: none; }
         </style>
     </head>
 
@@ -173,7 +172,7 @@
                                         <hr>
 
                                         <form id="frm_nvanota_oc" data-parsley-validate class="form-horizontal form-label-left" action="database/data-purchase.php?nvanota" method="post">
-                                            <input type="hidden" name="idorden" value="<?php echo $ido ?>">
+                                            <input type="hidden" id="idordenc" name="idorden" value="<?php echo $ido ?>">
                                             <input type="hidden" name="idusuario" value="<?php echo $idusuario ?>">
                                             <div class="nota_orden_compra">
                                               <textarea class="form-control" placeholder="Nota" name="nota" required></textarea>
@@ -202,7 +201,26 @@
                                 <div class="x_panel">
 
                                   <div class="x_title">
+
                                     <h2>Detalle de orden de compra</h2>
+
+                                    <?php if( $orden["estado"] == "creada" || $orden["estado"] == "enviada" ) { ?>
+                                        <div style="float: right;">
+                                            <button id="btn_edit_cants" type="button" class="btn btn-info btn-xs">
+                                                <i class="fa fa-edit" title="Editar cantidades"></i> Editar cantidades
+                                            </button>
+                                            <!-- opciones edición de cantidades -->
+                                            <button id="btn_guardar_cants" type="button" 
+                                                class="btn btn-primary btn-xs btn-opc-editcants">
+                                                <i class="fa fa-save" title="Editar cantidades"></i> Guardar
+                                            </button>
+                                            <button id="btn_cancelar_edit_cants" type="button" 
+                                                class="btn btn-xs btn-opc-editcants">
+                                                <i class="fa fa-times" title="Cancelar"></i> Cancelar
+                                            </button>
+                                        </div>
+                                    <?php } ?>
+
                                     <div class="clearfix"></div>
                                   </div>
                                   <div class="x_content">

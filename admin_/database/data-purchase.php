@@ -43,8 +43,8 @@
 	function obtenerDetalleOrdenCompra( $dbh, $ido ){
 		// Devuelve los registros de detalle de orden de compra indicado por id
 		$q = "select doc.id, doc.product_id as idp, doc.product_detail_id as idd, doc.status as estado,  
-		doc.quantity as cant, doc.detail_note as nota, p.name as producto, p.name as producto, 
-		s.id as idt, s.name as talla, s.unit as unidad, sd.weight as peso, pd.location as ubicacion 
+		doc.quantity as cant, doc.detail_note as nota, p.name as producto, p.name as producto, s.id as idt, 
+		s.name as talla, s.unit as unidad, sd.weight as peso, pd.location as ubicacion, pd.disused as desuso 
 		from purchases oc, purchase_details doc, products p, sizes s, size_product_detail sd, product_details pd 
 		where doc.purchase_id = oc.id and pd.product_id = p.id and doc.product_detail_id = pd.id and 
 		doc.size_id = s.id and sd.product_detail_id = pd.id and sd.size_id = s.id and oc.id = $ido 
@@ -121,6 +121,13 @@
 		
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
+	}
+	/* ----------------------------------------------------------------------------------- */
+	function actualizarCantidadItemOC( $dbh, $idord, $id_item, $cant ){
+		//Actualiza la nota de una orden de compra
+		$q = "update purchase_details set quantity = $cant where id = $id_item and purchase_id = $idord";
+		
+		return mysqli_query( $dbh, $q );
 	}
 
 	/* ----------------------------------------------------------------------------------- */
@@ -231,4 +238,28 @@
 
 		echo json_encode( $res );
 	}
+	/* ----------------------------------------------------------------------------------- */
+	if( isset( $_POST["editar_cants"] ) ){
+		//Invoca el cambio de estado de una orden de compra
+		include( "bd.php" );
+		$idordenc = $_POST["ido"];
+		$items_oc = json_decode( stripslashes( $_POST["editar_cants"] ) );
+		$ok = true;
+
+		foreach( $items_oc as $i ) {
+			$item = get_object_vars( $i );
+			$ok = actualizarCantidadItemOC( $dbh, $idordenc, $item["iddoc"], $item["cant"] );
+		}
+
+		if( $ok ){
+			$res["exito"] = 1;
+			$res["mje"] = "Orden de compra actualizada con éxito";
+		}else{
+			$res["exito"] = -1;
+			$res["mje"] = "Error al actualizar orden de compra";
+		}
+
+		echo json_encode( $res );
+	}
+	/* ----------------------------------------------------------------------------------- */
 ?>

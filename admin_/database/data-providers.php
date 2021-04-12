@@ -21,7 +21,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function modificarProveedor( $dbh, $id, $nombre, $numero ){
-		//Edita los datos de línea de proveedor
+		//Edita los datos de proveedor
 		$q = "update providers set name = '$nombre', name = '$nombre', description = '$descripcion', 
 				updated_at = NOW() where id = $id";
 				
@@ -30,7 +30,7 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	function agregarProveedor( $dbh, $nombre, $numero ){
-		//Agrega un registro de línea de proveedor
+		//Agrega un registro de proveedor
 		$q = "insert into providers ( name, number, created_at ) values ( '$nombre', '$numero', NOW() )";
 		$data = mysqli_query( $dbh, $q );
 		return mysqli_insert_id( $dbh );
@@ -42,7 +42,20 @@
 		return mysqli_query( $dbh, $q );
 	}
 	/* ----------------------------------------------------------------------------------- */
-	/* Solicitudes vía POST al servidor para procesar información de Líneas */
+	function tieneProductosAsociados( $dbh, $idprv ){
+		// Devuelve verdadero si un id de proveedor posee productos asociados
+		$asociado = false;
+		$q = "select count(*) as nregs from products where 
+				provider_id1 = $idprv or provider_id2 = $idprv or provider_id3 = $idprv";
+
+		$data = mysqli_fetch_array( mysqli_query( $dbh, $q ) );
+		if( $data["nregs"] > 0 )
+			$asociado = true;
+
+		return $asociado;
+	}
+	/* ----------------------------------------------------------------------------------- */
+	/* Solicitudes vía POST al servidor para procesar información de proveedores */
 	/* ----------------------------------------------------------------------------------- */
 	
 	//Registro de nueva proveedor
@@ -88,21 +101,21 @@
 	}
 	/* ----------------------------------------------------------------------------------- */
 	/* ----------------------------------------------------------------------------------- */
-	/* Solicitudes asíncronas al servidor para procesar información de Líneas */
+	/* Solicitudes asíncronas al servidor para procesar información de proveedores */
 	/* ----------------------------------------------------------------------------------- */
-	//Eliminar línea
+	//Eliminar proveedor
 	if( isset( $_POST["elimprovider"] ) ){
 		include( "bd.php" );	
-		include( "data-system.php" );
 		
-		if( registrosAsociadosLinea( $dbh, $_POST["id_elimlinea"] ) == true ){
+		if( tieneProductosAsociados( $dbh, $_POST["elimprovider"] ) == true ){
 			$res["exito"] = -1;
-			$res["mje"] = "Debe eliminar productos asociados a la línea primero.";
+			$res["mje"] = "Debe eliminar productos asociados al proveedor primero";
 		}else{
-			eliminarLinea( $dbh, $_POST["id_elimlinea"] );
+			eliminarProveedor( $dbh, $_POST["elimprovider"] );
 			$res["exito"] = 1;
-			$res["mje"] = "Línea eliminada con éxito";
+			$res["mje"] = "Proveedor eliminado con éxito";
 		}
+
 		echo json_encode( $res );
 	}
 	/* ----------------------------------------------------------------------------------- */

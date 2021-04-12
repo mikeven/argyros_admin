@@ -11,18 +11,20 @@
   <tbody>
     <?php 
       foreach ( $proveedores as $p ) {
-          $lnk_edit = "provider-edit.php?id=$p[id]";
+          $lnk_edit   = "provider-edit.php?id=$p[id]";
+          $prod_asoc  = tieneProductosAsociados( $dbh, $p["id"] );
     ?>
       <tr>
         <td><?php echo $p["nombre"]; ?></td>
         <td><?php echo $p["numero"]; ?></td>
-        <td></td>
-        <td></td>
-        <!--<td><a href="#!" disabled>Editar</a></td>
+        <td><a href="provider-edit.php?id=<?php echo $p[id] ?>">Editar</a></td>
         <td>
-            <a href="#!" class="elim-proveedor__" data-toggle="modal" data-idp="<?php //echo $p["id"]; ?>" 
-              data-target="#confirmar-accion" disabled>Borrar</a>
-        </td>-->
+          <?php if( !$prod_asoc ){ ?>
+            <a href="#!" class="elim-proveedor" data-toggle="modal" data-idp="<?php echo $p[id] ?>" 
+              data-target="#confirmar-accion" disabled>Borrar
+            </a>
+          <?php } ?>
+        </td>
       </tr>
     <?php } ?>
   </tbody>
